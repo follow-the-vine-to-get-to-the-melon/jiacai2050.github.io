@@ -4,6 +4,7 @@ title: "CDH 5.0.2带有Kerberos安全认证的全分布式tar包安装与部署"
 date: 2014-07-15 21:56:28 +0800
 comments: true
 categories: hadoop
+list_number: false
 ---
 
 俗话说得好，万事开头难。在软件开发中，环境部署要算是第一门槛了。我最近折腾了一周时间把cdh5.0.2.tar.gz版本在MRv1模式下，成功集成了Kerberos安全认证，并且是在全分布式模式下。经过这次安装过程，对hadoop的了解又深入了一层。现在趁着自己刚搭建完环境，脑子还时不时的闪现遇到的错误，把我的安装过程记录于此，一方面方便自己今后查阅，另一方面希望对今后遇到同样问题人有所启发。
@@ -16,19 +17,19 @@ categories: hadoop
 
 cdh5.0.2这里不再使用hadoop用户，取而代之的是mapred用户与hdfs用户，这里需要分别为它们生产ssh的公钥与秘钥，并且配置免密码登录（当然你可以为其中一个生产，然后直接copy过去）。
 
-#### 1. Kerberos安装
+## 1. Kerberos安装
 首先，Kerberos的原理、安装什么大家自己去维基百科去查，具体命令像kinit、kadmin怎么用也是大家自己查，以后有时间我会单独抽时间讲讲Kerberos。
 大家现在可以按照这个文章来进行操作：[Kerberos deploy guide](https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s1-kerberos-server.html)。
 
 后面需要为集群中每个节点的mapred与hdfs用户生成各自的principal与keytab，所以这里大家一定要熟悉kerberos的命令，把这些东西做成脚本，要不能烦死你。
 
-#### 2. CDH5.0.2.tar.gz安装
+## 2. CDH5.0.2.tar.gz安装
 
-##### 2.1 下载相关tar包
+### 2.1 下载相关tar包
 
 首先在这里[http://archive.cloudera.com/cdh5/cdh/5/](http://archive.cloudera.com/cdh5/cdh/5/)下载5.0.2的hadoop的tar包[hadoop-2.3.0-cdh5.0.2.tar.gz](http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.3.0-cdh5.0.2.tar.gz)，除了这个外，为了集成Kerberos，还需要下载[bigtop-jsvc-1.0.10-cdh5.0.2.tar.gz](http://archive.cloudera.com/cdh5/cdh/5/bigtop-jsvc-1.0.10-cdh5.0.2.tar.gz)。
 
-##### 2.2 YARN模式改成MRv1模式
+### 2.2 YARN模式改成MRv1模式
 
 这里需要讲一点是，5.0.2 tarball版本模式是YARN模式，我这里搭建的是MRv1（也就是普通的MapReduce）模式，所以需要对tar包解压出的文件做一些修改。
 
@@ -46,7 +47,7 @@ ln -s mapreduce1 mapreduce
 
 经过上面这两步后，就默认启用了MRv1模式了，大家可以先把不带Kerberos安全认证的全分布式搭建起来，等到不带Kerberos安全认证的全分布式搭建起来后（可参考[Hadoop全分布式搭建](http://blog.csdn.net/jiacai2050/article/details/8630329)），再进行下面的操作。
 
-##### 2.3 配置HDFS
+### 2.3 配置HDFS
 
 下面大家就可以按照[官网的教程][security-guide]进行操作，下面说下我遇到的坑：
 
@@ -63,7 +64,7 @@ sbin/hadoop-daemons.sh start datanode
 
 在这过程中，如果遇到什么logs文件夹不能写入，将其权限改为777即可。
 
-##### 2.4 配置mapreduce
+### 2.4 配置mapreduce
 
 配置mapreduce接着参考官方的[教程](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Security-Guide/cdh5sg_mrv1_security.html)，下面继续说我遇到的坑：
 
@@ -114,7 +115,7 @@ sbin/hadoop-daemons.sh start tasktracker
 也有由root启动。
 
 
-#### 3. 总结
+## 3. 总结
 
 这次搭建过程前前后后用了一个星期，麻烦是一回事，各种权限问题，最主要是还是我对hadoop的基本组成不够了解，hadoop的各个部分都是分开的，在share/hadoop目录下的每个文件夹都对应与一个功能，我一开始就想着把他们都放一起，导致不同模块的配置文件重复并产生冲突，最后导致进程起不来，今后还是要加强对基本概念的理解。其次是遇到错误多看看日志文件，很多错误能够直接根据错误信息就能够改正。
 

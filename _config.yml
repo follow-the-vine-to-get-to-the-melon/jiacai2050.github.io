@@ -5,14 +5,14 @@
 # Site
 title: Keep Writing Codes
 subtitle: Stop talking,Show me your codes
-description: 学习
-author: 刘家财
+description: 分享与交流，语言专注Java、LISP，方向研究Hadoop、MapReduce、HDFS、YARN等
+author: jiacai2050
 email: jiacai2050@gmail.com
 language: zh-CN
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://localhost:4000
+url: http://jiacai2050.github.io
 root: /
 permalink: blog/:year/:month/:day/:title/ #:year-:month-:day-:title.md  #:year/:month/:day/:title/
 tag_dir: tags
@@ -66,7 +66,7 @@ logger_format:
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
-date_format: MMM D YYYY
+date_format: YYYY-MM-DD HH:mm
 time_format: H:mm:ss
 
 # Pagination
@@ -86,6 +86,7 @@ exclude_generator:
 deploy:
   type: github
   repo: git@github.com:jiacai2050/jiacai2050.github.io.git
-  branch: source
+  branch: master
+  message: 去掉文章的作者链接
 
 # post_asset_folder: true

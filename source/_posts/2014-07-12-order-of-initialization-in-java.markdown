@@ -4,6 +4,7 @@ title: "Java类中的初始化顺序"
 date: 2014-07-12 13:02:29 +0800
 comments: true
 categories: java
+list_number: false
 ---
 
 Java中类成员初始化顺序，十分基础但同时也是容易出错的地方，我从去年参加阿里校招笔试到现在的公司笔试，都有这个问题，不能老是在同一个坑下跌倒，现根据《Thinking in Java》相关章节及自己的理解举例来说明类初始化顺序。
@@ -15,7 +16,7 @@ Java中类成员初始化顺序，十分基础但同时也是容易出错的地�
 
 
 <a name="init-with-one"></a>
-### （一）单一对象的初始化
+## （一）单一对象的初始化
 <!--more-->
 废话先不说，先上一段代码：
 ```
@@ -108,7 +109,6 @@ public class Alibaba {
     public static void main(String args[]) {
         Alibaba t = new Alibaba("init");
     }
-
 }
 ```
 
@@ -165,12 +165,11 @@ public class Alibaba {
 真心觉得一些基础概念掌握的太不牢固了，阿里巴巴这个面试题出个太好不过了，让我意识到了自己的技术的肤浅。以后需要恶补。
 
 <a name="init-with-inheritance"></a>
-### （二）带有继承关系的对象初始化
+## （二）带有继承关系的对象初始化
 
 上面介绍了单个对象的初始化顺序，有了这些基础下面在看个带有继承关系的类的初始化过程：
 
 ```
-
 class Insect {
     private int i = 9;
     protected int j;
@@ -203,7 +202,6 @@ public class Beetle extends Insect {
         Beetle b = new Beetle();
     }
 }
-
 ```
 当初始化的对象具有继承关系时，也是遵循单一对象初始化时的两大原则的。只不过在考虑static部分，非static部分时需要把子类与父类结合起来整体来看。
 ```

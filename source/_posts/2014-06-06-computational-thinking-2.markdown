@@ -1,18 +1,14 @@
----
-layout: post
 title: "计算思维之三语义符号化表达与计算"
 date: 2014-06-06 21:13:30 +0800
-comments: true
 categories: mooc
 description: "0和1与逻辑——思维符号化表达与逻辑运算" 
 keywords: 0和1,逻辑,思维,表达 
+list_number: false
 ---
 
-###0和1与逻辑——思维符号化表达与逻辑运算
+##0和1与逻辑——思维符号化表达与逻辑运算
 <!--more-->
-<center>图1. 语义符号化表达与计算</center>
 ![语义符号化表达与计算](/images/mooc/expression-calculation-of-semantic-symbol.png)
-
 
 有上图可知，在进行语义符号化表达与计算过程中分为如图所示的六步，下面分别进行阐述。
 
@@ -22,7 +18,6 @@ keywords: 0和1,逻辑,思维,表达
 
 老师用的例子是我们中国的经典著作《易经》讲述的，首先讲解卦相，最基本的两类元素是“阴”与“阳”，有这两种元素的不同组合，可以得到更多的卦相;此外，我们还可以对“阴”与“阳”进行语义化，比如“阴”代表“凉”，“阳”代表“热”，这样我们就可以得到二十四节气的变化图。
 
-<center>图1. 二十四节气</center>
 ![二十四节气](/images/mooc/24jieqi.png)
 
 #### 1.2 思维符号化与逻辑运算
@@ -154,18 +149,14 @@ keywords: 0和1,逻辑,思维,表达
 
 实现0和1的基本元器件：电信号和继电器开关、二极管、三极管。话说这一部门主要是数字逻辑部分的知识。这让我想起了我大学的沙老师。下面给几张电路图找找感觉：
 
-<center>图3. 用二极管实现门电路</center>
-![门电路](/images/mooc/gate-circuit.png)
+![用二极管实现门电路](/images/mooc/gate-circuit.png)
 
-<center>图4. 加法器</center>
 ![加法器](/images/mooc/adder.png)
 
-<center>图5. 2-4译码器</center>
 ![2-4译码器](/images/mooc/2-4decoder.png)
 
 复杂的逻辑器件是通过已证明无误的简单器件构成。这体现了分层处理问题的思想，和计算机网络上的ISO/OSI七层协议一样。
 
-<center>图6. 0和1与电子技术实现</center>
-![0-1总结](/images/mooc/0-1-conclusion.png)
+![0和1与电子技术实现](/images/mooc/0-1-conclusion.png)
 
-图6是这部分的一个总结。
+最后这张图片是这部分的一个总结。

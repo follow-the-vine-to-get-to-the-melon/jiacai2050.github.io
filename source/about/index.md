@@ -9,7 +9,7 @@ footer: true
 
 ### Intro
 
-<p><img alt="Me" src="/images/myself.jpg" width="180" height="200" /></p>
+<p><img src="/images/myself.jpg" width="180" height="200" /></p>
 
 刘家财 | 1991.2 | [山东临沂](http://j.map.baidu.com/Jxj9t) | 目前就职于[UCloud][]，担任Hadoop开发工程师。
 

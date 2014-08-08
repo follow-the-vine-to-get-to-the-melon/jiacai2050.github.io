@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "CDH的安全模式(kerberos)与高可靠性(HA)安装过程经验与总结"
 date: 2014-08-06 22:36:08 +0800
 comments: true
