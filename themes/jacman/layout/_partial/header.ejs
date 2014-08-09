@@ -1,5 +1,5 @@
-
 <div>
+
 		<% if	(theme.imglogo.enable&&theme.imglogo.src){ %>
 			<div id="imglogo">
 				<a href="<%- config.root %>"><img src="<%- config.root %><%= theme.imglogo.src %>" alt="<%= config.title %>" title="<%= config.title %>"/></a>
@@ -18,7 +18,7 @@
 				<a href="https://www.douban.com/people/<%=theme.author.douban %>" target="_blank" class="icon-douban" title="豆瓣"></a>
 				<% } %>
 				<% if(theme.author.zhihu){ %>
-				<a href="http://www.zhihu.com/people/<%=theme.author.douban %>" target="_blank" class="icon-zhihu" title="知乎"></a>
+				<a href="http://www.zhihu.com/people/<%=theme.author.zhihu %>" target="_blank" class="icon-zhihu" title="知乎"></a>
 				<% } %>    
 				<% if(theme.author.github){ %>
 				<a href="https://github.com/<%=theme.author.github %>" target="_blank" class="icon-github" title="github"></a>
@@ -51,11 +51,11 @@
 					<li><a href="http://blog.sina.com.cn/jiacai2050" target="_blank">爱好英语</a></li>
    
 					<li>
- 					<% if	(theme.google_cse.enable){ %>
-					<form class="search" action="<%- config.root %>search/index.html" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="search" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
-					</form>
+ 					<% if	(theme.swiftype.enable){ %>
+
+						<form class="search">
+						  <input type="text" id="st-search-input" class="st-search-input" />
+						</form>
 					<% } else { %>
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>

@@ -81,12 +81,20 @@ pagination_dir: page
 theme: jacman #landscape
 exclude_generator:
 
+plugins:
+- hexo-generator-sitemap
+- hexo-generator-feed
+
+feed:
+	type: atom
+	path: atom.xml
+	limit: 200  
+
+
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: github
   repo: git@github.com:jiacai2050/jiacai2050.github.io.git
   branch: master
-  message: 添加社交导航图标
-
-# post_asset_folder: true
+  message: 添加rss与sitemap
