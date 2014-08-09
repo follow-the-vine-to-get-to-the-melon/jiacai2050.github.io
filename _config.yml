@@ -4,15 +4,15 @@
 
 # Site
 title: Keep Writing Codes
-subtitle: Stop talking,Show me your codes
+subtitle: 语言专注Java、LISP，现阶段研究Python、MapReduce、HDFS、YARN等
 description: 分享与交流，语言专注Java、LISP，方向研究Hadoop、MapReduce、HDFS、YARN等
-author: jiacai2050
+author: 刘家财
 email: jiacai2050@gmail.com
 language: zh-CN
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://jiacai2050.github.io
+url: http://liujiacai.net
 root: /
 permalink: blog/:year/:month/:day/:title/ #:year-:month-:day-:title.md  #:year/:month/:day/:title/
 tag_dir: tags
@@ -97,4 +97,4 @@ deploy:
   type: github
   repo: git@github.com:jiacai2050/jiacai2050.github.io.git
   branch: master
-  message: 添加rss与sitemap
+  message: 修改subtitle
