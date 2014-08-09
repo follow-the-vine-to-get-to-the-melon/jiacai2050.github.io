@@ -1,3 +1,4 @@
+
 <div>
 		<% if	(theme.imglogo.enable&&theme.imglogo.src){ %>
 			<div id="imglogo">
@@ -8,6 +9,36 @@
 				<h1 class="site-name"><a href="<%- config.root %>" title="<%= config.title %>"><%= config.title %></a></h1>
 				<h2 class="blog-motto"><% if (config.subtitle){ %><%= config.subtitle %><% } %></h2>
 			</div>
+
+			<div class="social-font" class="clearfix">
+				<% if(theme.author.weibo){ %>
+				<a href="http://weibo.com/<%= theme.author.weibo %>" target="_blank" class="icon-weibo" title="weibo"></a>
+				<% } %>
+				<% if(theme.author.douban){ %>
+				<a href="https://www.douban.com/people/<%=theme.author.douban %>" target="_blank" class="icon-douban" title="豆瓣"></a>
+				<% } %>
+				<% if(theme.author.zhihu){ %>
+				<a href="http://www.zhihu.com/people/<%=theme.author.douban %>" target="_blank" class="icon-zhihu" title="知乎"></a>
+				<% } %>    
+				<% if(theme.author.github){ %>
+				<a href="https://github.com/<%=theme.author.github %>" target="_blank" class="icon-github" title="github"></a>
+				<% } %>
+				<% if(theme.author.stackoverflow){ %>
+				<a href="http://stackoverflow.com/users/<%=theme.author.stackoverflow %>" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+				<% } %>
+				<% if(theme.author.twitter){ %>
+				<a href="https://twitter.com/<%=theme.author.twitter %>" target="_blank" class="icon-twitter" title="twitter"></a>
+				<% } %>
+				<% if(theme.author.facebook){ %>
+				<a href="https://www.facebook.com/<%=theme.author.facebook %>" target="_blank" class="icon-facebook" title="facebook"></a>
+				<% } %>
+				<% if(theme.author.google_plus){ %>
+				<a href="https://plus.google.com/<%=theme.author.google_plus %>?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+				<% } %>
+				<% if(theme.author.email){ %>
+				<a href="mailto:<%=theme.author.email %>" target="_blank" class="icon-email" title="Email Me"></a>
+				<% } %>
+			</div>
 			<div class="navbar"><a class="navbutton navmobile" href="#" title="<%= __('menu') %>">
 			</a></div>
 			<nav class="animated">
@@ -16,6 +47,9 @@
 					 <% for (var i in theme.menu){ %>
 						<li><a href="<%- theme.menu[i] %>"><%= i %></a></li>
 					<% } %>
+					<li><a href="http://www.importnew.com/author/liujiacai" target="_blank">文章翻译</a></li>
+					<li><a href="http://blog.sina.com.cn/jiacai2050" target="_blank">爱好英语</a></li>
+   
 					<li>
  					<% if	(theme.google_cse.enable){ %>
 					<form class="search" action="<%- config.root %>search/index.html" method="get" accept-charset="utf-8">

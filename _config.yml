@@ -87,6 +87,6 @@ deploy:
   type: github
   repo: git@github.com:jiacai2050/jiacai2050.github.io.git
   branch: master
-  message: 去掉文章的作者链接
+  message: 添加社交导航图标
 
 # post_asset_folder: true

@@ -1,9 +1,5 @@
-title: about
+title: 关于我
 date: 2014-08-08 07:48:37
-comments: true
-sharing: true
-footer: true
-
 ---
 
 
