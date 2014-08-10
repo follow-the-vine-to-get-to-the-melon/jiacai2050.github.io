@@ -94,10 +94,34 @@ YARN的HA想对于hdfs与MRv1的简单了许多，自动Failover也不需要另�
     <value>localhost:2181</value>
 </property>
 ```
-其实上面的表格说的很详细了，不知道为什么给出的示例没写，不过这个错也比较好找，因为按照上面配置的开启RM时会报**yarn.resourcemanager.zk-address**
-没定义。
+其实上面的表格说的很详细了，不知道为什么给出的示例没写，不过这个错也比较好找，因为按照上面配置的开启RM时会报**yarn.resourcemanager.zk-address**没定义。
 
 其次需要注意的是**yarn.resourcemanager.ha.id**在active与standby的服务器上的值是不一样的，按照官方给的配置，那就一个是rm1,一个是rm2。
+
+如果我们在开启了安全模式还需要修改一处property即**yarn.resourcemanager.hostname**，ha中的两个RM这个property值是不一样的，分别为其hostname。这是因为我们在配置yarn的principal时用了**yarn/_HOST**这种方式，而_HOST对于NN与RM来说，不是按照hostname来替换的，而是分别按照**fs.defaultFS**与**yarn.resourcemanager.hostname**这两个property的值来替换的。DN与NM是按照每个服务器的hostname来替换的。替换规则也在[HDFS的安全模式文档](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Security-Guide/cdh5sg_secure_hdfs_config.html)中有说明。
+
+下面是我rm1服务器上这两个property的配置：
+```
+<property>
+    <name>yarn.resourcemanager.ha.id</name>
+    <value>rm1</value>
+</property>
+<property>
+    <name>yarn.resourcemanager.hostname</name>
+    <value>master</value>
+</property> 
+```
+下面是我rm2服务器上这两个property的配置：
+```
+<property>
+    <name>yarn.resourcemanager.ha.id</name>
+    <value>rm2</value>
+</property>
+<property>
+    <name>yarn.resourcemanager.hostname</name>
+    <value>master2</value>
+</property> 
+```
 
 ### （二） CDH各个模块安装总结
 
