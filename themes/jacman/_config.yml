@@ -15,10 +15,11 @@ menu:
 widgets: 
 - category
 - tagcloud
+- rss
 - links
 - recent_visitors
 - recent_comments
-- rss
+- upyun
 
 ## provide seven widgets:category,tag,rss,archive,tagcloud,links,weibo
 ## modify links in `/layout/_widget/links.ejs`.

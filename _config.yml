@@ -97,4 +97,4 @@ deploy:
   type: github
   repo: git@github.com:jiacai2050/jiacai2050.github.io.git
   branch: master
-  message: 修改subtitle
+  #message: 加上UPYUN链接
