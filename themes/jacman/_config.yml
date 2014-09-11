@@ -19,7 +19,6 @@ widgets:
 - links
 - recent_visitors
 - recent_comments
-- upyun
 
 ## provide seven widgets:category,tag,rss,archive,tagcloud,links,weibo
 ## modify links in `/layout/_widget/links.ejs`.
