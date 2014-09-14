@@ -8,7 +8,7 @@ list_number: false
 
 ##0和1与逻辑——思维符号化表达与逻辑运算
 <!--more-->
-![语义符号化表达与计算](/images/mooc/expression-calculation-of-semantic-symbol.png)
+<img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2G2hDapXXXXacXXXXXXXXXXXX_!!581166664.png" alt="语义符号化表达与计算"/>
 
 有上图可知，在进行语义符号化表达与计算过程中分为如图所示的六步，下面分别进行阐述。
 
@@ -18,7 +18,7 @@ list_number: false
 
 老师用的例子是我们中国的经典著作《易经》讲述的，首先讲解卦相，最基本的两类元素是“阴”与“阳”，有这两种元素的不同组合，可以得到更多的卦相;此外，我们还可以对“阴”与“阳”进行语义化，比如“阴”代表“凉”，“阳”代表“热”，这样我们就可以得到二十四节气的变化图。
 
-![二十四节气](/images/mooc/24jieqi.png)
+<img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2z4tzapXXXXbkXXXXXXXXXXXX_!!581166664.png" alt="二十四节气"/>
 
 #### 1.2 思维符号化与逻辑运算
 
@@ -59,9 +59,9 @@ list_number: false
 - (NOT B) AND (NOT C) = 1
 
 组合形成所有可能解：
-
+```
 {<A=1,B=0,C=0>,<A=0,B=1,C=0>,<A=0,B=0,C=1>}
-
+```
 就上面这三种情况，将这三种情况分别带入到已知条件中，都满足的便是问题的解：
 
 <A=1,B=0,C=0>
@@ -133,7 +133,7 @@ list_number: false
 
 当然，模的概念是我们人为的理解，计算机肯定不会这么“理解”，它是严格按照补码=反码+1的公式来运作的，因为采用模的思路来计算补码时需要用到减法，而计算机是不会做减法的。
 <center>图2. 8位二进制的补码表</center>
-![补码](/images/mooc/buma.jpg)
+<img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2OJ54apXXXXXXXpXXXXXXXXXX_!!581166664.jpg" alt="补码"/>
 
 如图2所示，8位二进制的补码表示的数值范围在-128～+127之间，之所以负数比正数的绝对值大1是因为只有+0,没有-0,在补码=反码+1公式中的+1操作把-0加没了，而与之对应的是负数的另一端向前（向负数轴方向）加1不就得到了-128了嘛。
 
@@ -148,15 +148,13 @@ list_number: false
 ### 3. 自动化0/1，分层构造化，构造集成化
 
 实现0和1的基本元器件：电信号和继电器开关、二极管、三极管。话说这一部门主要是数字逻辑部分的知识。这让我想起了我大学的沙老师。下面给几张电路图找找感觉：
+<img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2MHSVapXXXXbDXpXXXXXXXXXX_!!581166664.png" alt="用二极管实现门电路"/>
 
-![用二极管实现门电路](/images/mooc/gate-circuit.png)
+<img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2li94apXXXXXmXpXXXXXXXXXX_!!581166664.png" alt="加法器"/>
 
-![加法器](/images/mooc/adder.png)
-
-![2-4译码器](/images/mooc/2-4decoder.png)
+<img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2PP54apXXXXcFXXXXXXXXXXXX_!!581166664.png" alt="2-4译码器"/>
 
 复杂的逻辑器件是通过已证明无误的简单器件构成。这体现了分层处理问题的思想，和计算机网络上的ISO/OSI七层协议一样。
 
-![0和1与电子技术实现](/images/mooc/0-1-conclusion.png)
-
+<img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2Lwa6apXXXXcdXXXXXXXXXXXX_!!581166664.png" alt=" 0-1-conclusion"/>
 最后这张图片是这部分的一个总结。

@@ -9,7 +9,7 @@ list_number: false
 这次从计算机的宏观角度对整个计算机行业做个剖析，这里老师引入一个计算之树的模型。
 <!--more-->
 <center>图1.计算之树全貌</center>
-![计算之树](/images/mooc/compute-tree.png "计算之树")
+<img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2x7JuapXXXXXUXpXXXXXXXXXX_!!581166664.png" alt=" 计算之树"/>
 
 ## 1. 计算之树第一维度——计算思维的奠基行思维
 
@@ -26,7 +26,7 @@ list_number: false
 程序执行环境:由CPU-内存环境—>到CPU-存储体系环境—>到多CPU-多存储器环境—>云计算虚拟计算环境
 
 <center>图2. 通用环境的演化思维</center>
-![计算之树第二维度——通用环境的演化思维](/images/mooc/compute-tree-2.png "计算之树第二维度——通用环境的演化思维")
+<img src="http://img02.taobaocdn.com/imgextra/i2/581166664/TB2zBXwapXXXXXQXpXXXXXXXXXX_!!581166664.png" alt="计算之树第二维度——通用环境的演化思维"/>
 
 ## 3. 计算之树第三维度—— 交替促进与共同进化的问题求解思维
 
@@ -52,7 +52,7 @@ list_number: false
 - 协议与编码/解码，解决了机器与机器、物体与物体通信的问题
 
 <center>图3. 计算与社会/自然环境的融合思维</center>
-![计算之树第四维度——计算与社会/自然环境的融合思维](/images/mooc/compute-tree-4.png "计算之树第四维度——计算与社会/自然环境的融合思维")
+<img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2pNBzapXXXXbzXXXXXXXXXXXX_!!581166664.png" alt="计算之树第四维度——计算与社会/自然环境的融合思维"/>
 
 ## 5. 计算之树第五、六维度——网络化思维和数据化思维
 

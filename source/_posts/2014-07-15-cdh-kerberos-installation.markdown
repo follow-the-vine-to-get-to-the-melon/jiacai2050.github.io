@@ -37,7 +37,8 @@ cdh5.0.2这里不再使用hadoop用户，取而代之的是mapred用户与hdfs�
 
 1. 把bin-mapreduce1的所以文件拷贝到bin下，对于相同的文件，直接覆盖即可。
 2. 在/opt/hadoop/share/hadoop文件夹下有如下的文件结构
-![share/hadoop目录结构](/images/cdh/structure-of-share-hadoop.png)   
+<img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB20NG9apXXXXaoXXXXXXXXXXXX_!!581166664.png" alt="share/hadoop目录结构"/>
+
 把其中的mapreduce这个软链接文件删除，然后创建一个同名的软链接指向mapreduce1
 ```
 cd /opt/hadoop/share/hadoop/

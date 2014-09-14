@@ -42,7 +42,7 @@ tag: music
 
 PS:百度后发现这位周老师竟是中央音乐学院的副校长，网上的好评也是不断。
 最后附上周老师演讲的ppt与为我们准备的音乐资源（按类别分好）
-![周海宏功能音乐10CD MP3](/images/go-into-music.png "周海宏功能音乐10CD MP3")
+<img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2m4K_apXXXXX5XXXXXXXXXXXX_!!581166664.png" alt="周海宏功能音乐10CD MP3"/>
 
 [http://pan.baidu.com/s/1kTr5fy3]()
 

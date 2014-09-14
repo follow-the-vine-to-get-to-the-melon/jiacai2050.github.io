@@ -13,8 +13,7 @@ list_number: false
 首先来看一个搜索的宏观布局图
 
 图1. 搜索的一般架构<br>
-
-![](/images/lucene/search-arch.png)
+<img src="http://img02.taobaocdn.com/imgextra/i2/581166664/TB2810wapXXXXclXXXXXXXXXXXX_!!581166664.png" alt=" search-arch"/>
 <font color="red">其中深颜色部分是使用Lucene的地方，浅颜色部分需要程序员使用其他工具来完成。</font>
 
 ## 2. Lucene与搜索引擎概貌
