@@ -11,6 +11,9 @@
 			</div>
 
 			<div class="social-font" class="clearfix">
+				<% if(theme.author.v2ex){ %>
+				<a href="http://v2ex.com/member/<%=theme.author.v2ex %>" target="_blank" class="icon-v2ex" title="V2EX"></a>
+				<% } %>    			
 				<% if(theme.author.weibo){ %>
 				<a href="http://weibo.com/<%= theme.author.weibo %>" target="_blank" class="icon-weibo" title="weibo"></a>
 				<% } %>
