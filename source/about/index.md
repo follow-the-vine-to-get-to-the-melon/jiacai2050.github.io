@@ -24,7 +24,12 @@ Ubuntu | [Classic Music](http://v.youku.com/v_show/id_XNDc2MDU2ODE2.html) | 乒�
 Drop me a Line
 ====
 
-echo amlhY2FpMjA1MEBnbWFpbC5jb20K | base64 -d
+base64 -d <<< amlhY2FpMjA1MEBnbWFpbC5jb20K
+
+我的作品
+====
+
+- [gooreplacer](http://liujiacai.net/gooreplacer) 一个用于替换网页中Google Fonts/APIS等的浏览器插件，让你快速打开引用这些资源的页面
 
 互联网纪录片
 ====

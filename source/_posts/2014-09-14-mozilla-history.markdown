@@ -7,7 +7,7 @@ tags:
 
 ---
 
-最近想着开发个firefox浏览器插件，能够去掉网页中含有fonts.google.com、apis.google.com之类的链接，原因大家都知道，为什么选择firefox呢，chrome实在太吃内存了。
+最近想着开发个[firefox浏览器插件](http://liujiacai.net/gooreplacer)，能够去掉网页中含有fonts.google.com、apis.google.com之类的链接，原因大家都知道，为什么选择firefox呢，chrome实在太吃内存了。
 
 Mozilla这个词有三个含义:
 
