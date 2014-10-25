@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "CDH 5.0.2.tar.gz 高可靠性安装"
+title: "CDH高可靠性安装总结"
 date: 2014-07-17 23:07:34 +0800
 comments: true
 categories: hadoop

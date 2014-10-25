@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "CDH 5.0.2带有Kerberos安全认证的全分布式tar包安装与部署"
+title: "CDH安全认证安装与总结"
 date: 2014-07-15 21:56:28 +0800
 comments: true
 categories: hadoop
