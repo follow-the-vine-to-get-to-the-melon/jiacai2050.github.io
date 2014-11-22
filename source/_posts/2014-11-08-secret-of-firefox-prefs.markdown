@@ -49,6 +49,8 @@ firefox的配置我们一般可以在”工具 -> 选项“菜单中找到，但
 
 ##网络(network)相关
 
+与网络相关的参数一样要慎重设置，否则你的CPU会飙升到90%以上。。。
+
 ### pipelining
 把`network.http.pipelining`与`network.http.proxy.pipelining`设置为true
 `network.http.pipelining.maxrequests`可根据实际情况设置，我电脑上是默认值32.
@@ -84,7 +86,7 @@ firefox会把我们已经访问过得网页缓存起来，这样是加速我们�
 ## 即时编译（JIT）
 
 这里的JIT主要指的是JavaScript，我首次接触JIT还是在Java上，新版Android不也是通过JIT来提高系统的运行速度嘛。
-firefox的JIT是通过[TraceMonkey](https://wiki.mozilla.org/JavaScript:TraceMonkey)这个JavaScript引擎实现的，我们可以有两个布尔型配置项：
+firefox的JIT是通过[TraceMonkey](https://wiki.mozilla.org/JavaScript:TraceMonkey)这个JavaScript引擎实现的，这里主要有两个布尔型配置项：
 - `javascript.options.jit.content`，这个主要是用来JIT网页中的JS的，貌似默认就是true
 - `javascript.options.jit.chrome`，这个主要是用来JIT扩展（XUL/chrome）中的JS的，默认好像没有这个配置项，我们可以手动创建，设置为true。
 
