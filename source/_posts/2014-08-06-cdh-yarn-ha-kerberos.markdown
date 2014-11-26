@@ -15,14 +15,7 @@ categories: hadoop
 
 #### 安全模块
 1. 对于container-executor文件，tar包中没有，需要自己编译
-2. [官方教程](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Security-Guide/cdh5sg_yarn_security.html)的配置项中，在yarn-site.xml中少一项
-```
-<property>
-<name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
-<value>org.apache.hadoop.mapred.ShuffleHandler</value>
-</property> 
-```
-如果不加上这个，只按照官方教程上说的，会报下面的错误：
+2. 按照[官方教程](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Security-Guide/cdh5sg_yarn_security.html)做配置后，执行 mapreduce 任务时，在 shuffle 阶段，会报下面的错误：
 ```
 2014-08-03 00:34:19,619 WARN [main] org.apache.hadoop.mapred.YarnChild: Exception running child : org.apache.hadoop.mapreduce.task.reduce.Shuffle$ShuffleError: error in shuffle in fetcher#4
         at org.apache.hadoop.mapreduce.task.reduce.Shuffle.run(Shuffle.java:134)
@@ -50,7 +43,9 @@ Content-Type: text/plain; charset=UTF is not properly formed
 2014-08-03 00:34:19,614 WARN [fetcher#4] org.apache.hadoop.mapreduce.task.reduce.Fetcher: Invalid map id
 java.lang.IllegalArgumentException: TaskAttemptId string : TTP/1.1 500 Internal Server Error
 ```
-[网上很多说](http://mail-archives.apache.org/mod_mbox/hadoop-hdfs-user/201211.mbox/%3CBD42F346AE90F544A731516A805D1B8AD8548A@SMAIL1.prd.mpac.ca%3E)**Shuffle$ShuffleError: error in shuffle in fetcher#4**这个错误与内存，很明显，我这里不是这种情况，因为从** TTP/1.1 500 Internal Server Error**就应该知道是resourcemanager内部的错误。因为这个错，好几晚上没睡好。Q_Q
+[网上很多说](http://mail-archives.apache.org/mod_mbox/hadoop-hdfs-user/201211.mbox/%3CBD42F346AE90F544A731516A805D1B8AD8548A@SMAIL1.prd.mpac.ca%3E)**Shuffle$ShuffleError: error in shuffle in fetcher#4**这个错误与内存，很明显，我这里不是这种情况，因为从** TTP/1.1 500 Internal Server Error**就应该知道是resourcemanager内部的错误。
+
+经过我验证，这时由于tar包默认并不包含native的lib，位置在`<hadoop>/lib/native`文件夹，需要我们自己编译，把编译好的native文件拷贝到这里即可。
 
 #### HA
 

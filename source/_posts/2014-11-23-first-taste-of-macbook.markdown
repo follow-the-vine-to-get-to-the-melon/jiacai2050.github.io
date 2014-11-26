@@ -30,11 +30,11 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 ###~/.bashrc
 
 熟悉Linux的一般通过~/.bashrc这个文件进行环境变量的配置，但是在Mac下配置后，发现根本没有效果，这是为什么呢？
-其实这时个比较基础的问题，shell有两种：登录式shell与非登录式shell，直观理解，登录(login)式shell就是在你打开shell要求你输入用户名与密码的shell，我们在使用桌面Linux时一般只在登录时接触到这种shell，等我们进入系统后，再打开的Terminal就是非登录式shell了。
-* 登录式Shell启动时回去source ~/.profile文件（Redhat、Mac上为~/.bash_profile）
+其实这是个比较基础的问题，shell有两种：登录式shell与非登录式shell，直观理解，登录(login)式shell就是在你打开shell要求你输入用户名与密码的shell，我们在使用桌面Linux时一般只在登录时接触到这种shell，等我们进入系统后，再打开的Terminal就是非登录式shell了。
+* 登录式Shell启动时会去source ~/.profile文件（Redhat、Mac上为~/.bash_profile）
 * 非登录式Shell会去source ~/.bashrc文件
 
-在Mac上，我们开机后在打开终端时，这时的shell是登录式shell，因为Terminal.app（或iTerm.app）这个应用程序是通过'/usr/bin/login'这个命令打开终端的，所以不会去source ~/.bashrc了。
+在Mac上，我们开机后在打开终端时，这时的shell是登录式shell，因为Terminal.app（或iTerm.app）这个应用程序是通过`/usr/bin/login`这个命令打开终端的，所以不会去source ~/.bashrc了。
 解决方法也很简单，在~/.bash_profile加上下面一句代码就ok了
 ```
 [ -r ~/.bashrc ] && source ~/.bashrc
@@ -42,7 +42,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 ###iTerm.app
 
-Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了[iTerm](http://iterm2.com/)，这个终端可以很方便的用快捷键来达到分屏（CMD+D）、开多个Tab(CMD+T)、在多个Tab之间进行切换(CMD+数字)，其中有一点不好的是不能按字移动，如果我们在终端上键入"OPTION+向左键"，会输入一下特殊字符，我们需要自定义两个Action为Send Escape Sequence的快捷键，方式如下图：
+Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了[iTerm](http://iterm2.com/)，这个终端可以很方便的用快捷键来达到分屏（CMD+D）、开多个Tab(CMD+T)、在多个Tab之间进行切换(CMD+数字)，其中有一点不好的是不能按字移动，如果我们在终端上键入"OPTION+向左键"，会输入一个特殊字符，我们需要自定义两个Action为Send Escape Sequence的快捷键，效果如下图：
 <img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2hTnsbXXXXXbpXXXXXXXXXXXX_!!581166664.png" alt=" iterm2"/>
 我这里把向前按字移动设为了"OPTION+CMD+向左键"，向后按字移动设为了"OPTION+CMD+向右键"
 
@@ -52,7 +52,7 @@ Mac下的使用*dmg方式安装JDK后，JAVA_HOME在那里呢，这对于Linux�
 ```
 export JAVA_HOME="$(/usr/libexec/java_home)"
 ```
-可以看到，其实就是通过执行'/usr/libexec/java_home'这个命令来获取JAVA_HOME
+可以看到，其实就是通过执行`/usr/libexec/java_home`这个命令来获取JAVA_HOME
 
 ###修改hostname
 
@@ -65,10 +65,24 @@ sudo scutil --set HostName <name>
 尽管Mac的文件系统目录和*nix差不多，但还是有些差距，可参考下面的表格：
 <img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2SgzpbXXXXXbSXpXXXXXXXXXX_!!581166664.png" alt=" Mac-FileSystem"/>
 
+##常用软件
+
 ###软件的安装与删除
 
-我们用的软件都在'/Applications'下，每个应用程序就是一个单独的文件夹，我们常用的eclipse、sublime、iTerm之类的软件，下载tar包解压后直接放到里面就可以了。
-删除直接把对应文件夹删除即可，但是需要注意一点的时，应用程序一般都会有些配置文件，存放的位置是'/Users/<username>/Library/Application Support'这个文件夹下，也是一个应用程序对于一个文件夹，直接删除相应文件夹即可~~~
+我们用的软件都在`/Applications`下，每个应用程序就是一个单独的文件夹，我们常用的eclipse、sublime、iTerm之类的软件，下载tar包解压后直接放到里面就可以了。
+删除直接把对应文件夹删除即可，但是需要注意一点的时，应用程序一般都会有些配置文件，存放的位置是`/Users/<username>/Library/Application Support`这个文件夹下，也是一个应用程序对于一个文件夹，直接删除相应文件夹即可~~~
+
+###Sublime
+
+这里主要说下几个常用快捷键在Mac上的操作：
+
+- Multiple Selection
+
+> `Control+Command+G`（在 Linux/Windows 下，是`Alt+F3`）
+
+- 选中多行
+
+> `Shift+Command+L`
 
 ##总结
 
