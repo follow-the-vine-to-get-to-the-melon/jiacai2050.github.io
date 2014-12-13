@@ -66,13 +66,13 @@ RM在收到Client端发送的ASC后，它会查询是否有满足其资源要求
 ## 4. API
 
 通过上面的描述，开发者在开发YARN上的应用时主要需要关注以下接口：
-- [ClientRMProtocol](http://hadoop.apache.org/common/docs/r0.23.0/api/org/apache/hadoop/yarn/api/ClientRMProtocol.html)
+- [ApplicationClientProtocol](http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/yarn/api/ApplicationClientProtocol.html)
 > Client使用这个协议来与RM通信，来启动一个新应用，检查任务的运行状态或杀死任务
 
-- [AMRMProtocol](http://hadoop.apache.org/common/docs/r0.23.0/api/org/apache/hadoop/yarn/api/AMRMProtocol.html)
+- [ApplicationMasterProtocol](http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/yarn/api/ApplicationMasterProtocol.html)
 > AM使用这个协议来向RM注册/撤销，请求资源来运行任务。
 
-- [ContainerManager](http://hadoop.apache.org/common/docs/r0.23.0/api/org/apache/hadoop/yarn/api/ContainerManager.html)
+- [ContainerManagementProtocol](http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/yarn/api/ContainerManagementProtocol.html)
 > AM使用这个协议来与NM通信，来启动/停止container，查询container的状态。
 
 ## 5. 总结

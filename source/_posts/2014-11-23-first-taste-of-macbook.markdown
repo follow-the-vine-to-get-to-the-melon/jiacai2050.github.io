@@ -40,6 +40,13 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 [ -r ~/.bashrc ] && source ~/.bashrc
 ```
 
+Mac下ls默认是没有颜色的，我们可以自己设置一个alias，参考[链接](http://apple.stackexchange.com/questions/33677/how-can-i-configure-mac-terminal-to-have-color-ls-output)
+```
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+alias ls='ls -FG'
+alias ll='ls -l'
+```
+
 ###iTerm.app
 
 Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了[iTerm](http://iterm2.com/)，这个终端可以很方便的用快捷键来达到分屏（CMD+D）、开多个Tab(CMD+T)、在多个Tab之间进行切换(CMD+数字)，其中有一点不好的是不能按字移动，如果我们在终端上键入"OPTION+向左键"，会输入一个特殊字符，我们需要自定义两个Action为Send Escape Sequence的快捷键，效果如下图：
@@ -60,29 +67,77 @@ Mac下修改hostname也和Linux下不同，命令是
 ```
 sudo scutil --set HostName <name>
 ```
-###FileSystem
 
-尽管Mac的文件系统目录和*nix差不多，但还是有些差距，可参考下面的表格：
-<img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2SgzpbXXXXXbSXpXXXXXXXXXX_!!581166664.png" alt=" Mac-FileSystem"/>
-
-##常用软件
-
-###软件的安装与删除
+##软件的安装与删除
 
 我们用的软件都在`/Applications`下，每个应用程序就是一个单独的文件夹，我们常用的eclipse、sublime、iTerm之类的软件，下载tar包解压后直接放到里面就可以了。
-删除直接把对应文件夹删除即可，但是需要注意一点的时，应用程序一般都会有些配置文件，存放的位置是`/Users/<username>/Library/Application Support`这个文件夹下，也是一个应用程序对于一个文件夹，直接删除相应文件夹即可~~~
+删除直接把对应文件夹删除即可，但是需要注意一点的时，应用程序一般都会有些历史文件，存放的位置是
+- `~/Library/Application Support/<Application name>`
+- `~/Library/Cache/<Application name>`
+- `~/Library/Preferences/<Application name>.plist`
+大家使用`find + grep`的方式就能轻松找出来了。
+网上也有诸如[AppCleaner](http://appcleaner.en.softonic.com/mac)、[AppZapper](http://www.appzapper.com/)的小软件，大家可以根据需要自取之。
+
+## 常用快捷键
+
+###系统
+
+- 查看桌面`F11`
+- HOME  `Command + <-`
+- END   `Command + ->`
+- 锁屏   `Shift + Control + 电源键` （Windows 下为`Win+L`）
+
+###Bash （并不限于 mac，linux也可以）
+
+我们在终端中输入命令时，移动光标有两种方式，一个是 emacs，一个 vi，可以通过 set 命令来设置，默认的是 emacs 模式，也可以通过`set -o emacs`，有如下快捷键：
+- `ctrl + a`  Move cursor to beginning of line
+- `ctrl + e`  Move cursor to end of line
+- `meta + b`  Move cursor back one word
+- `meta + f`  Move cursor forward one word
+- `ctrl + w`  Cut the last word
+- `ctrl + u`  Cut everything before the cursor 
+- `ctrl + k`  Cut everything after the cursor
+- `ctrl + y`  Paste the last thing to be cut
+- `ctrl + _`  Undo
+
+如果想使用 vi 模式，可以使用如下命令`set -o vi`开启。
+开启vi 模式后，默认是 insert 模式，按下`esc`键进入命令模式。
+
+- `h`   Move cursor left
+- `l`   Move cursor right
+- `A`   Move cursor to end of line and put in insert mode
+- `0`   (zero) Move cursor to beginning of line (doesn't put in insert mode) 
+- `i`   Put into insert mode at current position
+- `a`   Put into insert mode after current position
+- `dd`  Delete line (saved for pasting)
+- `D`   Delete text after current cursor position (saved for pasting)
+- `p`   Paste text that was deleted
+- `j`   Move up through history commands
+- `k`   Move down through history commands
+- `u`   Undo
+
+参考：[Getting Started with BASH](http://www.hypexr.org/bash_tutorial.php)
 
 ###Sublime
 
 这里主要说下几个常用快捷键在Mac上的操作：
 
-- Multiple Selection
+- Multiple Selection `Control+Command+G`（在 Linux/Windows 下，是`Alt+F3`）
 
-> `Control+Command+G`（在 Linux/Windows 下，是`Alt+F3`）
+- 选中多行 `Shift+Command+L`
 
-- 选中多行
+##FileSystem
 
-> `Shift+Command+L`
+### 目录结构
+尽管Mac的文件系统目录和*nix差不多，但还是有些差距，可参考下面的表格：
+<img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2SgzpbXXXXXbSXpXXXXXXXXXX_!!581166664.png" alt=" Mac-FileSystem"/>
+
+### NTFS
+
+用惯了 Windows 的大家都习惯用 NTFS 文件系统格式，但是很遗憾，这个文件系统是微软自己搞得，不是开放的，所有我们的 Mac 是不支持的，如果你以前的 NTFS 格式的硬盘放到 Mac 上，会发现只能进行读操作，不能写入，这属于正常现象，不要惊慌。
+
+解决的方法也很简单，把移动硬盘格式化成FAT32(单个文件大小不能超过4G)或FAText 格式都可以，Mac 自带的磁盘工具就可以进行格式转化，当然你需要先把移动硬盘上的数据拷贝出来。
+
 
 ##总结
 
@@ -91,4 +146,8 @@ Mac的Retina屏幕真是无与伦比，虽说一开始需要适应适应软件�
 > Once you get Mac, you never come back!
 
 毕竟刚用Mac两天，很多Mac的特性都还不知道，随着今后的使用，我会在更新文章，与大家分享使用Mac的心得的~~
+
+##其他参考
+
+- [OS X 的一些技巧汇总](http://havee.me/mac/2014-01/os-x-tips-and-tricks.html)
 
