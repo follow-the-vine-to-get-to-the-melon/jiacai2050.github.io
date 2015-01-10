@@ -68,6 +68,11 @@ Mac下修改hostname也和Linux下不同，命令是
 sudo scutil --set HostName <name>
 ```
 
+###查看USB设备
+```
+system_profiler SPUSBDataType
+```
+
 ##软件的安装与删除
 
 我们用的软件都在`/Applications`下，每个应用程序就是一个单独的文件夹，我们常用的eclipse、sublime、iTerm之类的软件，下载tar包解压后直接放到里面就可以了。
@@ -77,6 +82,23 @@ sudo scutil --set HostName <name>
 - `~/Library/Preferences/<Application name>.plist`
 大家使用`find + grep`的方式就能轻松找出来了。
 网上也有诸如[AppCleaner](http://appcleaner.en.softonic.com/mac)、[AppZapper](http://www.appzapper.com/)的小软件，大家可以根据需要自取之。
+
+###图片编辑
+
+Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用[Evernote的圈点](https://www.yinxiang.com/skitch/)，洋名skitch，很好很强大。
+<center>
+<img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2XhstbpXXXXavXpXXXXXXXXXX_!!581166664.png" alt=" skitch" height="100px" width="500px" />
+</center>
+###视频播放器
+
+Mac下的自带的播放器QuickTime，功能实在是太弱了，支持的格式既少又难用，快进什么的貌似都没快捷键，只能手动点击进度条。
+不过幸好的是有Mplayer，在ubuntu上用的一直就是它，mac下当然也是了。
+官方地址：http://mplayerosx.ch/
+
+### *.webarchive
+
+大家都知道，在windows下保存网页时，如果想把网页上的资源，比如css、js、image等一起下载下来，会单独生成个文件夹，但是用mac上的safari保存整个网页时，是以`webarchive`为后缀名的文件进行保存的，如何把打开这种文件呢？推荐：
+http://sourceforge.net/projects/webarchivext/
 
 ## 常用快捷键
 

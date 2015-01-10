@@ -10,17 +10,17 @@ categories: linux
 
 ## 诞生期
 
-最早的正则表示式最早可以追溯到20世纪40年代的两个神经物理学家Warren McCulloch与Walter Pitts，他们将神经系统中的神经元描述成小而简单的自动控制元；紧接着，在50年代，数学家1950年代，数学家[Stephen Kleene](http://en.wikipedia.org/wiki/Stephen_Cole_Kleene)利用称之为“正则集合”的数学符号来描述此模型，并且建议使用一个简单的概念来表示，于是regular expressions就正式登上历史舞台了。插播一下，这个Kleene可不是凡人，大家都知道图灵是现代人工智能之父，那图灵的博导是[Alonzo Church](http://en.wikipedia.org/wiki/Alonzo_Church)，提出了lambda表达式，而Church的老师，就是Kleene了。关于lambda，之前也写过一篇文章，大家可以参考[编程语言的基石——Lambda calculus](/blog/2014/10/12/lambda-calculus-introduction/)。
+正则表示式这一概念最早可以追溯到20世纪40年代的两个神经物理学家Warren McCulloch与Walter Pitts，他们将神经系统中的神经元描述成小而简单的自动控制元；紧接着，在50年代，数学家1950年代，数学家[Stephen Kleene](http://en.wikipedia.org/wiki/Stephen_Cole_Kleene)利用称之为“正则集合”的数学符号来描述此模型，并且建议使用一个简单的概念来表示，于是regular expressions就正式登上历史舞台了。插播一下，这个Kleene可不是凡人，大家都知道图灵是现代人工智能之父，那图灵的博导是[Alonzo Church](http://en.wikipedia.org/wiki/Alonzo_Church)，提出了lambda表达式，而Church的老师，就是Kleene了。关于lambda，之前也写过一篇文章，大家可以参考[编程语言的基石——Lambda calculus](/blog/2014/10/12/lambda-calculus-introduction/)。
 
 在接下来的时间里，一直到60年代的这二十年里，正则表示式在[理论数学领略](http://en.wikipedia.org/wiki/Pure_mathematics)得到了长足的发展，[Robert Constable](http://www.cs.cornell.edu/home/rc/)为数学发烧友们写了一篇总结性文章[The Role of Finite Automata in the Development of Modern Computing Theory](http://www.sciencedirect.com/science/article/pii/S0049237X08712539)，由于版权问题，我在网上没找到这篇文章，大家有兴趣的可以参考[Basics of Automata Theory](http://cs.stanford.edu/people/eroberts/courses/soco/projects/2004-05/automata-theory/basics.html)。
 
-Ken Thompson大牛在1968年发表了[Regular Expression Search Algorithm](http://www.fing.edu.uy/inco/cursos/intropln/material/p419-thompson.pdf)论文，紧接着Thompson根据这篇论文的算法实现了[qed](http://en.wikipedia.org/wiki/QED_%28text_editor%29)，qed是unix上编辑器ed的前身。ed所支持的正则表示式并不比qed的高级，但是ed是第一个在非技术圈广泛传播的工具，ed有一个命令可以展示文本中符合给定正则表达式的行，这个命令是` g/Regular Expr ession/p`，在英文中读作“Global Regular Expression Print”，由于这个命令非常实用，所以后来有了grep、egrep这两个命令。
+Ken Thompson大牛在1968年发表了[Regular Expression Search Algorithm](http://www.fing.edu.uy/inco/cursos/intropln/material/p419-thompson.pdf)论文，紧接着Thompson根据这篇论文的算法实现了[qed](http://en.wikipedia.org/wiki/QED_%28text_editor%29)，qed是unix上编辑器ed的前身。ed所支持的正则表示式并不比qed的高级，但是ed是第一个在非技术圈广泛传播的工具，ed有一个命令可以展示文本中符合给定正则表达式的行，这个命令是` g/Regular Expression/p`，在英文中读作“Global Regular Expression Print”，由于这个命令非常实用，所以后来有了grep、egrep这两个命令。
 
 ## 成长期
 
 相比egrep，grep只支持很少的元符号，`＊`是支持的（但不能用于分组中），但是`+`、`|`与`?`是不支持的；而且，分组时需要加上反斜线转义，像`\( ...\)`这样才行，由于grep的缺陷性日渐明显，AT&T的[Alfred Aho](http://en.wikipedia.org/wiki/Alfred_Aho)实在受不了了，于是egrep诞生了，这里的e表示extended，加强版的意思，支持了`+`、`|`与`?`这三个元符号，并且可以在分组中使用`*`，分组可以直接写成`(...)`，同时用`\1,\2...`来引用分组。
 
-在grep、egrep发展的同时，awk、lex、sed等程序也开始发展起来，而且每个程序所支持的正则表达式都或多或少的和其他的不一样，这应该算是正则表达式发展的混乱期，因为这些程序在不断的发展过程中，有时新增加的功能因为bug原因，在后期的版本中取消了该功能，有如，如果让grep支持元符号`+`的话，那么grep就不能表示字符`+`了，而且grep的老用户会对这很反感。
+在grep、egrep发展的同时，awk、lex、sed等程序也开始发展起来，而且每个程序所支持的正则表达式都或多或少的和其他的不一样，这应该算是正则表达式发展的混乱期，因为这些程序在不断的发展过程中，有时新增加的功能因为bug原因，在后期的版本中取消了该功能，例如，如果让grep支持元符号`+`的话，那么grep就不能表示字符`+`了，而且grep的老用户会对这很反感。
 
 ## 成熟期
 
