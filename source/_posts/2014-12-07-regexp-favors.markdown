@@ -34,11 +34,13 @@ Ken Thompson大牛在1968年发表了[Regular Expression Search Algorithm](http:
 POSIX把正则表达式分为两种（favor）：BRE（Basic Regular Expressions）与ERE（Extended Regular Expressions ）。所有的POSIX程序可以选择支持其中的一种。具体规范如下表：
 <img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2uVx6bpXXXXaDXpXXXXXXXXXX_!!581166664.png" alt=" posix-regexp-favor"/>
 
-从上图可以看出，POSIX版本的 ERE 中，并不支持`\1`、`\2`...`\9`这样的反引用，那就意味着我们不能反引用分组了吗？
+从上图可以看出，有三个空白栏，那么是不是就意味这无法使用该功能了呢？答案是否定的，因为我们现在使用的linux发行版，都是集成GNU套件的，GNU是Gnu's Not Unix的缩写，GNU在实现了POXIS标准的同时，做了一定的扩展，所以上面空白栏中的功能也能使用。下面一一讲解：
 
-答案是否定的。因为我们现在使用的linux发行版，都是集成GNU套件的，GNU是Gnu's Not Unix的缩写，GNU在实现了POXIS标准的同时，做了一定的扩展，所有我们在Linux下使用ERE是可以使用反引用的。
+1. BRE如何使用`+`、`?`呢？需要用`\+`、`\?`
+2. BRE如何使用`|`呢？呢？需要用`\|`
+3. ERE如何使用`\1`、`\2`...`\9`这样的反引用？和BRE一样，就是`\1`、`\2`...`\9`
 
-GNU中的ERE与BRE的功能相同，只是语法不同，例如`a{1,2}`，在ERE表示的是`a`或`aa`，在BRE中表示的是`a{1,2}`这个字符串。为了能够在Linux下熟练使用文本处理工具，我们必须知道这些命令支持那种正则表达式。现对常见的命令总结如下：
+通过上面总结，可以发现：GNU中的ERE与BRE的功能相同，只是语法不同。例如`a{1,2}`，在ERE表示的是`a`或`aa`，在BRE中表示的是`a{1,2}`这个字符串。为了能够在Linux下熟练使用文本处理工具，我们必须知道这些命令支持那种正则表达式。现对常见的命令总结如下：
 
 － 使用BRE语法的命令有：grep、ed、sed、vim
 － 使用ERE语法的命令有：egrep、awk、emacs
