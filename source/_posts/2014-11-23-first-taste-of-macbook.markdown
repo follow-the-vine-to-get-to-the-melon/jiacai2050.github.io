@@ -1,7 +1,7 @@
 title: MacBook 初体验
 date: 2014-11-23 20:40:07
 tags: mac
-categories: life
+categories: 热爱生活
 
 ---
 
@@ -83,12 +83,19 @@ system_profiler SPUSBDataType
 大家使用`find + grep`的方式就能轻松找出来了。
 网上也有诸如[AppCleaner](http://appcleaner.en.softonic.com/mac)、[AppZapper](http://www.appzapper.com/)的小软件，大家可以根据需要自取之。
 
-###图片编辑
+###图片截屏、编辑
 
-Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用[Evernote的圈点](https://www.yinxiang.com/skitch/)，洋名skitch，很好很强大。
+Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用[snip](http://snip.qq.com/)，才2M大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是`Cmd + Shift + 6`。
+更重要的一点是，snip可以解决Retina下截屏2x问题（就是截出来的图超大），就光这个特点就足以让你使用snip。
 <center>
-<img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2XhstbpXXXXavXpXXXXXXXXXX_!!581166664.png" alt=" skitch" height="100px" width="500px" />
+<img width="500px" src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2UXoxbFXXXXXnXXXXXXXXXXXX_!!581166664.png" alt="我的snip配置"/>
 </center>
+我平常用图片编辑就是修改像素大小，mac自带的preview就够用了。 像旋转、添加文字功能Preview也有，基本能够满足大部分人的需求。
+<center>
+<img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2KtMobFXXXXXkXpXXXXXXXXXX_!!581166664.png" alt="Preview工具栏"/>
+</center>
+如果你依赖于Evernote，可以试试[圈点](https://www.yinxiang.com/skitch/)，洋名skitch，同样很好很强大。
+
 ###视频播放器
 
 Mac下的自带的播放器QuickTime，功能实在是太弱了，支持的格式既少又难用，快进什么的貌似都没快捷键，只能手动点击进度条。

@@ -3,10 +3,8 @@ layout: post
 title: "深入Java世界"
 date: 2014-05-19 08:18:39 +0800
 comments: true
-categories:
-- java
-tags:
-- life
+categories: 编程语言
+tags: [java]
 ---
 
 俗话说的好：不经一事，不长一智。

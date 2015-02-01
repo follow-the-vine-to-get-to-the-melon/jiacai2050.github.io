@@ -1,7 +1,6 @@
 title: inter- intra- cept -ee -er词缀讲解
 date: 2014-08-09 15:46:12 +0800
-categories: English
-tags:
+categories: 爱好英语
 ---
 
 故事是这么开始的，我遇到了inter-organizational与intra-organizational这么两个词组，其实也很好区分，前面是“不同组织之间的”，后者是“同一组织内部的”，搞计算机的应该知道有个叫intranet的网，它是与internet不一样的，专指企业内部网络。我这里想以这两个词缀为基准，展开一系列联想，学英语的乐趣不就在于此嘛。

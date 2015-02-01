@@ -3,7 +3,7 @@ layout: post
 title: "计算思维之一序言篇"
 date: 2014-06-06 11:58:43 +0800
 comments: true
-categories: mooc
+tags: mooc
 list_number: false
 ---
 

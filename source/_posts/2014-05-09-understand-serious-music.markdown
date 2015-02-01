@@ -2,7 +2,7 @@
 title: "一个音乐盲如何才能听'懂'严肃音乐？"
 date: 2014-05-09 11:59:40 +0800
 comments: true
-category: life
+category: 热爱生活
 tag: music
 ---
 

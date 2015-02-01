@@ -3,7 +3,8 @@ layout: post
 title: "Java类中的初始化顺序"
 date: 2014-07-12 13:02:29 +0800
 comments: true
-categories: java
+categories: 编程语言
+tags: java
 list_number: false
 ---
 

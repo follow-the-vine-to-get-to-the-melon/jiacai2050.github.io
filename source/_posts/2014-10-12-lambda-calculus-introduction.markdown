@@ -1,6 +1,6 @@
 title: 编程语言的基石——Lambda calculus
 date: 2014-10-12 10:16:42 +0800
-category: story
+category: 没事找事
 tags: lambda
 ---
 
