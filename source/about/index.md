@@ -44,19 +44,14 @@ date: 2014-08-08 07:48:37
 高质量博客
 ====
 
-* [Matrix67][] 一位数学高手 
-* [考据癖][localhost] Matrix67的另一半
+* [Matrix67][] 一位数学高手
 * [王垠][yinwang] 你还记得那年的<del>[我和权威的故事][6]</del>（好吧，又被垠神删了）的故事吗
 * [Daniel P. Friedman][daniel] 语言学专家，[The Little Schemer](http://book.douban.com/subject/1632977/)（豆瓣评分9.3）作者，王垠极力推荐
 * [NathanMarz][] Cascalog与Storm作者
-* [阮一峰][ryf] 一位热情互联网开发的经济学博士
-* [酷壳][coolshell] 左耳朵叔，文章写的真的很易懂
+* [Mozilla Labs](https://mozillalabs.com/en-US/) Welcome to the edge of the Web.
 
 [Matrix67]: http://www.matrix67.com/blog/
-[localhost]: http://localhost-8080.com/
 [yinwang]: http://www.yinwang.org/
 [6]: http://www.yinwang.org/blog-cn/2014/01/04/authority/
-[ryf]: http://www.ruanyifeng.com/
 [daniel]: http://www.cs.indiana.edu/~dfried/
-[coolshell]: http://coolshell.cn/
 [NathanMarz]: http://nathanmarz.com/

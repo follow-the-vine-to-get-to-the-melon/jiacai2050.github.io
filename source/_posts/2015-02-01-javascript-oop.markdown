@@ -4,7 +4,7 @@ categories: 编程语言
 tags: [javascript, mozilla]
 ---
 
-最近工作一直在用nodejavascript做开发，有了node，前端、后端、脚本全都可以用javascript搞定，很是方便。但是javascript的很多语法，比如对象，就和我们常用的面向对象的编程语言Java不同，看某个javascript开源项目，也经常会看到使用this关键字，而这个this关键字在javascript中因上下文不同而意义不同，这些零零碎碎的东西加起来就很容易让人不知所措，所以，有必要对javascript这门语言进行一下深入了解。
+最近工作一直在用nodejs做开发，有了nodejs，前端、后端、脚本全都可以用javascript搞定，很是方便。但是javascript的很多语法，比如对象，就和我们常用的面向对象的编程语言Java不同，看某个javascript开源项目，也经常会看到使用this关键字，而这个this关键字在javascript中因上下文不同而意义不同，这些零零碎碎的东西加起来就很容易让人不知所措，所以，有必要对javascript这门语言进行一下深入了解。
 
 我这篇文章主要想说说如何在javascript中进行面向对象的编程，同时会讲一些javascript这门语言在设计之初的理念。下面让我们开始吧。
 
@@ -27,11 +27,11 @@ javascript中提供了一种简单的方法用来创建对象：`对象字面量
 var empty_object = {};//创建了一个空对象
 //创建了一个有两个属性的对象
 var stooge = {
-         "first-name": "Jerome",
-         "last-name": "Howard"
+    "first-name": "Jerome",
+    "last-name": "Howard"
 };
 ```
-当然，javascript中也有一些预定义对象，像是`Function`、`Date`、`Number`、`String`、`Array`等。其中比较重要的是`Function`与`Array`，下面讲一下这两个非常有用的对象。
+当然，javascript中也有一些[预定义对象](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)，像是`Function`、`Date`、`Number`、`String`、`Array`等。其中比较重要的是`Function`与`Array`，下面讲一下这两个非常有用的对象。
 ###函数对象Function
 函数是javascript中的精髓。对函数的理解程度决定了对javascript的理解程度。
 
@@ -88,7 +88,7 @@ sum(4, 8, 15, 16, 23, 42); // 108
 数组是一种在内存中线性分配的数据结构，通过下标计算出元素偏移量，从而取出元素。数组应该是一个快速存取的数据结构，但是在javascript中，数组不具备这种特性。
 数组在javascript中一个具有传统数组特性的对象，这种对象能够把数组下标转为字符串，然后把这个字符串作为对象的key，最后对取出对应该key的value（这又一次说明了对象在javascript中就是一系列键值对）。
 
-虽然javascript中的数组没有传统语言中的数组那么快，但是由于javascript是弱类型的语言，所有javascript中的数组中可以存放任何值；其次是Array有很多便捷的方法，大家可以去[MDN Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)查看。
+虽然javascript中的数组没有传统语言中的数组那么快，但是由于javascript是弱类型的语言，所以javascript中的数组可以存放任何值；关于Array更多的知识点，大家可以去[MDN Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)查看。
 javascript也为数组提供了很方便的`字面量(Array Literal)`定义方式：
 ```
 var arr = [1,2,3]
