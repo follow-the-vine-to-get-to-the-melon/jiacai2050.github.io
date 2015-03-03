@@ -26,4 +26,16 @@
         $('html, body').animate({scrollTop:0}, scrollSpeed); return false; 
     });
 
+    if (window && window.console) {
+        console.log("%s\n%s\n%s\n%s\n%s",
+            "Aha, You find me!",
+            "Welcome to exchange links if you like my blog",
+            "I can buy you a coffee if you are in Shanghai",
+            "------------------------------------------------",
+            "Type readme() to get more"
+        );
+    };
 })(jQuery);
+function readme() {
+    window.location.href="/about";
+}

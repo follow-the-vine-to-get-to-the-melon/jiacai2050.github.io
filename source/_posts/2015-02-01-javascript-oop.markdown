@@ -20,9 +20,9 @@ Javascript1.0的功能相对简单，为了在今后不断丰富javascript本身
 wikipedia这样描述到：JavaScript is classified as a [prototype-based](http://en.wikipedia.org/wiki/Prototype-based_programming) scripting language with [dynamic typing](http://en.wikipedia.org/wiki/Dynamic_language) and [first-class functions](http://en.wikipedia.org/wiki/First-class_functions)。这些特性使得javascript是一种[多范式](http://en.wikipedia.org/wiki/Multi-paradigm)的[解释性](http://en.wikipedia.org/wiki/Interpreter_%28computing%29)编程语言，支持[面向对象](http://en.wikipedia.org/wiki/Object-oriented_programming),[命令式(imperative)](http://en.wikipedia.org/wiki/Imperative_programming), [函数式(functional)](http://en.wikipedia.org/wiki/Functional_programming)编程风格。
 
 ##对象
-在javascript中，除了数字、字符串、布尔值（true/false）、undefined这几个简单类型外，其他的都是对象。
+在javascript中，除了`Undefined`, `Null`, `Boolean`, `Number`, `String`这几个简单类型外，其他的都是对象。
 数字、字符串、布尔值这些简单类型都是不可变量，对象是可变的键值对的集合(mutable keyed conllections)，对象包括数组`Array`、正则表达式`RegExp`、函数`Function`，当然对象`Object`也是对象。
-对象在javascript中说白了就是`一系列的键值对`。键可以是任何字符串，包括空串；值可以是除了undefined以外的任何值。在javascript中是没有类的概念(class-free)的，但是它有一个原型链(prototype linkage)。javascript对象通过这个链来实现继承关系。
+对象在javascript中说白了就是`一系列的键值对`。键可以是任意字符串，包括空串；值可以是任何值。在javascript中是没有类的概念(class-free)的，但是它有一个原型链(prototype linkage)。javascript对象通过这个链来实现继承关系。
 
 javascript中有一些[预定义对象](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)，像是[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)、[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)、[Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)、[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)、[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)、[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)等。
 
@@ -123,7 +123,7 @@ var add = function (a, b) {
 一个函数在被调用时，除了声明的参数外，还会隐式传递两个额外的参数：`this`与`arguments`。
 this在OOP中很重要，this的值随着调用方式的不同而不同。javascript中共有四种调用方式：
 1. method invocation pattern。当函数作为某对象一个属性调用时，this指向这个对象。this赋值过程发生在函数调用时（也就是运行时），这叫做late binding
-2. function invocation pattern。当函数不作为属性调用时，this指向全局对象，这是个设计上的错误，正确的话，内部函数的this应该指向外部函数。可以通过在函数中定义一个变量来解决这个问题。
+2. function invocation pattern。当函数不作为属性调用时，this指向全局对象（这里的全局对象依宿舍环境而异，在浏览器中，是window对象），这是个设计上的错误，正确的话，内部函数的this应该指向外部函数。可以通过在函数中定义一个变量来解决这个问题。
     
         var add = function(a, b) {return a+b;}
         var obj = {

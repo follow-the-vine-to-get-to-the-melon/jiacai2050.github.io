@@ -83,6 +83,15 @@ system_profiler SPUSBDataType
 大家使用`find + grep`的方式就能轻松找出来了。
 网上也有诸如[AppCleaner](http://appcleaner.en.softonic.com/mac)、[AppZapper](http://www.appzapper.com/)的小软件，大家可以根据需要自取之。
 
+###Finder
+Finder是Mac上的文件浏览器，功能很是强大，其中有个比较严重的问题时，没有“剪贴(cut)”功能，当我们选中一个文件后，菜单中的“Edit”->“Cut”是灰色的，也就是无法使用，这是因为Finder中的“Cut”只适用于文本，对于文件就无能为力了。
+我们当然可以通过打开两个Finder窗口，然后“拖”过去。但是这样未免太麻烦了，其实我们可以这么做：
+1. 首先`Cmd + C`复制文件
+2. 然后找到你想要放到文件夹
+3. 最后`Cmd + Option + V`就能实现“剪贴”的效果了。
+
+参考：[Why is it not possible to use the “cut” command to manipulate a file in the Finder?](http://apple.stackexchange.com/questions/12391/why-is-it-not-possible-to-use-the-cut-command-to-manipulate-a-file-in-the-find)
+
 ###图片截屏、编辑
 
 Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用[snip](http://snip.qq.com/)，才2M大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是`Cmd + Shift + 6`。
