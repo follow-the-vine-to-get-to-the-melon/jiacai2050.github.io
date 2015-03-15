@@ -74,19 +74,25 @@ var c = {
 b.calculate(30); // 60
 c.calculate(40); // 80
 ```
-上面的代码在声明对象b、c时，指明了它们的原型为对象a（a的原型默认指向Object.prototye，Object.prototype这个对象的原型指向null），这几个对象在内存中的结构大致是这样的：
+上面的代码在声明对象b、c时，指明了它们的原型为对象a（a的原型默认指向Object.prototype，Object.prototype这个对象的原型指向null），这几个对象在内存中的结构大致是这样的：
 <center>
 <img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2RwVEbVXXXXaCXpXXXXXXXXXX_!!581166664.png" alt="prototype-chain"/>
 </center>
 
-这里需要说明一点，我们如果想在声明对象时指定它的原型，一般采用[Object.create()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create)方法，这样效率更高。
+
+这里需要说明一点，`__proto__`不是ECMAScript的规定，而是由于在javascript早期，ECMAScript没有明确的说明如何访问一个对象的原型，所以各大实现商采用了约定俗成的`__proto__`记法。
+在ECMAScript 3.1及以后的版本中，为内置对象`Object`添加了访问设置、对象原型的方法：
+- [getPropertyOf()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf)，用于获取对象的原型
+- [create()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create)，在创建对象时设置对象的原型。
+
+####\_\_proto\_\_ vs prototype
 除了我们这里说的`__proto__`属性，相信大家平常更常见的是`prototype`属性。比如，Date对象中没有加几天的函数，那么我们可以这么做：
 ```
 Date.prototype.addDays = function(n) {
     this.setDate(this.getDate() + n);
 }
 ```
-那么以后所有的Date对象都拥有`addDays`方法了（后面讲解继承是会解释为什么）。那么`__proto__`属性与`prototype`属性有什么区别呢？
+那么所有通过`new Date()`得到的对象就拥有`addDays`方法了（后面讲解继承是会解释原因）。那么`__proto__`属性与`prototype`属性有什么区别呢？
 > javascript的每个对象都有`__proto__`属性，但是只有`函数对象`有`prototype`属性。
 
 那么在函数对象中， 这两个属性的有什么区别呢？
@@ -96,6 +102,38 @@ Date.prototype.addDays = function(n) {
         d.__proto__ === Date.prototype; //这里为true
 
 看到这里，希望大家能够理解这两个属性的区别了。
+
+####instanceof
+
+instanceof在javascript中是个[关键字](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords)，用法如下：
+
+    obj instanceof constructorFunction
+
+用于检测`constructorFunction.prototype`对象是否在`obj`的`原型链`中。
+如果我们自己实现类似于`instanceof`的函数，可以这么做：
+```
+function instanceOf(obj, constructorFunction) {
+    while (obj != null) {
+        if (obj === constructorFunction.prototype)
+            return true;
+        obj = Object.getPrototypeOf(obj);
+    }
+    return false;
+}
+```
+下面看一个使用`instanceof`的例子：
+```
+function Car(make, model, year) {
+  this.make = make;
+  this.model = model;
+  this.year = year;
+}
+var mycar = new Car("Honda", "Accord", 1998);
+mycar instanceof Car;    // true，因为mycar.__proto__ === Car.prototype
+mycar instanceof Object; // true，因为mycar.__proto__.__proto__ === Object.prototype
+```
+
+
 在javascript，原型和函数是最重要的两个概念，上面说完了原型，下面说说函数对象。
 
 ###函数对象Function
@@ -167,7 +205,7 @@ var arr = [1,2,3]
 
 在Java中，对象是某个类的实例，一个类可以从另一个类中继承。但是在基于原型链的javascript中，对象可以直接从另一个对象创建。
 
-在上面讲解对象时，我们知道了在创建一个对象时，该对象会自动赋予一个`__proto__`属性，使用各种类型的`字面量(Literal)`时，javascript解释器自动为`__proto__`进行了赋值。当我们在javascript执行使用new操作符创建对象时，javascript解释器在构造函数时，同时会执行类似于下面的语句
+在上面讲解对象时，我们知道了在创建一个对象时，该对象会自动赋予一个`__proto__`属性，使用对象`字面量(Literal)`来创建对象时，javascript解释器自动为`__proto__`赋值。当我们在javascript使用new操作符创建对象时，javascript解释器在调用构造函数时，会执行类似于下面的语句
 ```
      this.__proto__ = {constructor: this};
 ```
@@ -208,6 +246,7 @@ javascript解释器会顺着原型链查看某个方法或属性。如果想查�
 ##参考
 
 - [JavaScript. The core](http://dmitrysoshnikov.com/ecmascript/javascript-the-core/)
+- [Object.getPrototypeOf](http://ejohn.org/blog/objectgetprototypeof/) JQuery的作者
 - [《Javascript: The Good Parts》](http://book.douban.com/subject/2994925/)强烈建议大家去看这个书。
 <center>
 ![Javascript: The Good Parts](http://img3.douban.com/lpic/s2931482.jpg)

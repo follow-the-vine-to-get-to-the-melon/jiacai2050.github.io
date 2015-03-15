@@ -34,6 +34,47 @@ int l = s.getBytes().length;
 - `Number`类型的值是遵循IEEE 754标准的64位浮点数的集合，类似于Java的double。没有整型数据结构。此外还包含三个特殊的值：`NaN`、`Infinity`、`-Infinity`
 - `String`类型的值是有穷个Unicode字符的集合。必须用`'`或`"`括起来。
 
+#### 基本类型的string与对象类型的string区别
+在javascript是区分基本类型的string与对象类型的string（Number、Boolean与之类似）。
+- 使用字面量方式创建的字符串，为基本类型的string
+- 使用`String()`创建的字符串，为基本类型的string
+- 使用`new String()`的方式创建的字符串，为对象类型的string
+```
+str1 = "javascript"
+str2 = String("javascript")
+str3 = new String("javascript")
+
+> typeof str1
+"string"
+> typeof str2
+"string"
+> typeof str3
+"object"
+```
+javascript会在合适的时候自动把基本类型的string转为对象类型的string，也就是说我们可以对基本类型string使用`String.prototype`中的方法。这两者也可以进行显式转化。
+```
+// 基本类型----->对象类型
+str1 = "javascript"
+str1 = new String(str1)
+> typeof str1
+"object"
+// 对象类型----->基本类型
+str1 = new String("javascript")
+str1 = str1.valueOf()
+> typeof str1
+"string"
+```
+这两者用在`eval`函数中时，结果有所区别：
+```
+var s1 = '2 + 2';
+var s2 = new String('2 + 2');
+> eval(s1)
+4
+> eval(s2)
+[String: '2 + 2']   //这里还是返回的string对象
+```
+
+
 #### null与undefined
 
 `null`与`undefined`都表示“没有值(non-value)”的概念，如果严格区分：
@@ -161,5 +202,6 @@ Object.defineProperty(obj, 'conflict', {
 - [《Speaking JavaScript》 Chapter 8. Values](http://speakingjs.com/es5/ch08.html#undefined_null)
 - [A Survey of the JavaScript Programming Language](http://javascript.crockford.com/survey.html)
 - [Object.defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+- [Standard built-in objects String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 - [typeof](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof)
 - [The history of “typeof null”](http://www.2ality.com/2013/10/typeof-null.html) （需翻墙）

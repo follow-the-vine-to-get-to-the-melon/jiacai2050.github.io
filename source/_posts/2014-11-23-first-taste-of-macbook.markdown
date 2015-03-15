@@ -124,10 +124,11 @@ http://sourceforge.net/projects/webarchivext/
 - HOME  `Command + <-`
 - END   `Command + ->`
 - 锁屏   `Shift + Control + 电源键` （Windows 下为`Win+L`）
+- 强制关闭程序 `Command + Option + esc`（Windows 下为`Ctrl+Alt+Delete`）
 
 ###Bash （并不限于 mac，linux也可以）
 
-我们在终端中输入命令时，移动光标有两种方式，一个是 emacs，一个 vi，可以通过 set 命令来设置，默认的是 emacs 模式，也可以通过`set -o emacs`，有如下快捷键：
+我们在终端中输入命令时，移动光标有两种方式，一个是 emacs，一个 vi，可以通过 set 命令来设置，默认的是 emacs 模式，也可以通过`set -o emacs`来显式设置，有如下快捷键：
 - `ctrl + a`  Move cursor to beginning of line
 - `ctrl + e`  Move cursor to end of line
 - `meta + b`  Move cursor back one word
@@ -155,6 +156,10 @@ http://sourceforge.net/projects/webarchivext/
 - `u`   Undo
 
 参考：[Getting Started with BASH](http://www.hypexr.org/bash_tutorial.php)
+
+其他一些有用的快捷键：
+- `Control + r` 搜索历史命令
+- `!!` 执行上条命令
 
 ###Sublime
 
