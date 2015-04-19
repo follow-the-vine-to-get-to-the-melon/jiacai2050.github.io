@@ -49,7 +49,7 @@ x y z 应该解释为 (x y) z
 def add(x):
     return lambda y: x+y
 
-((add 4) 3) //return 7   
+add(4)(3) //return 7   
 ```
 如果用函数式语言clojure来表示就是：
 ```
