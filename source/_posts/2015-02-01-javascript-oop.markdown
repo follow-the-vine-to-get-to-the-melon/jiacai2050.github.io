@@ -100,6 +100,7 @@ Date.prototype.addDays = function(n) {
 2. `prototype`表示使用new来执行该函数时（这种函数一般成为构造函数，后面会讲解），新创建的对象的原型。例如：
         var d = new Date();
         d.__proto__ === Date.prototype; //这里为true
+        Date.__proto__ === Object.__proto__  //这里为true
 
 看到这里，希望大家能够理解这两个属性的区别了。
 
@@ -133,13 +134,13 @@ mycar instanceof Car;    // true，因为mycar.__proto__ === Car.prototype
 mycar instanceof Object; // true，因为mycar.__proto__.__proto__ === Object.prototype
 ```
 
-
 在javascript，原型和函数是最重要的两个概念，上面说完了原型，下面说说函数对象。
 
 ###函数对象Function
 
 首先，函数在javascript中无非也是个对象，可以作为value赋值给某个变量，唯一不同的是函数能够被执行。
-使用对象字面量方式创建的对象的`__proto__`属性指向`Object.prototype`(`Object.prototype`的`__proto__`属性指向`null`)；使用函数字面量创建的对象的`__proto__`属性指向`Function.prototype`(`Function.prototype`对象的`__proto__`属性指向`Object.prototype`)。
+- 使用对象字面量方式创建的对象的`__proto__`属性指向`Object.prototype`(`Object.prototype`的`__proto__`属性指向`null`)；
+- 使用函数字面量创建的对象的`__proto__`属性指向`Function.prototype`(`Function.prototype`对象的`__proto__`属性指向`Object.prototype`)。
 函数对象除了`__proto__`这个隐式属性外，还有两个隐式的属性：
 1. 函数的上下文(function’s context)
 2. 实现函数的代码(the code that implements the function’s behavior)
