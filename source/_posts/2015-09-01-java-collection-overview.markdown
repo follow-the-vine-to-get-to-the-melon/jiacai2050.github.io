@@ -4,7 +4,7 @@ categories: 编程语言
 tags: java
 ---
 
-最近被陆陆续续问了几遍HashMap的实现，回答的不好，打算复习复习JDK中的[集合框架](https://docs.oracle.com/javase/8/docs/technotes/guides/collections/overview.html)，并尝试分析其源码，这么做一方面是这些类非常实用，掌握其实现能更好的优化我们的程序；另一方面是学习借鉴JDK是如何实现了这么一套优雅高效的类库，提升编程能力。
+最近被陆陆续续问了几遍HashMap的实现，回答的不好，打算复习复习JDK中的[集合框架](http://docs.oracle.com/javase/7/docs/technotes/guides/collections/overview.html)，并尝试分析其源码，这么做一方面是这些类非常实用，掌握其实现能更好的优化我们的程序；另一方面是学习借鉴JDK是如何实现了这么一套优雅高效的类库，提升编程能力。
 
 在介绍具体适合类之前，本篇文章对Java中的集合框架做一个大致描述，从一个高的角度俯视这个框架，了解了这个框架的一些理念与约定，会大大帮助后面分析某个具体类，让我们开始吧。
 
@@ -57,6 +57,18 @@ tags: java
 - 把map的内容看作value的集合（map's contents to be viewed as a collection of values）
 - 把map的内容看作key-value映射的集合（map's contents to be viewed as a set of key-value mappings）
 
+## 集合的实现（Collection Implementations）
+
+实现集合接口的类一般遵循`<实现方式>+<接口>`的命名方式，通用的集合实现类如下表：
+
+|Interface | Hash Table | Resizable Array | Balanced Tree | Linked List | Hash Table + Linked List |
+|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+|Set| HashSet| &nbsp;| TreeSet| &nbsp;| LinkedHashSet|
+| List| &nbsp;| ArrayList| &nbsp;| LinkedList| &nbsp;|
+| Deque| &nbsp;| ArrayDeque| &nbsp;| LinkedList| &nbsp;|
+| Map| [HashMap][]| &nbsp;| [TreeMap][]| &nbsp;| [LinkedHashMap][]|
+
+
 ## 总结
 
 今天先开个头，后面会陆陆续续来一系列干货，Stay Tuned。
@@ -73,3 +85,9 @@ tags: java
 
 - http://docs.oracle.com/javase/7/docs/technotes/guides/collections/overview.html
 - https://en.wikipedia.org/wiki/Java_collections_framework 
+
+[HashMap]: /blog/2015/09/03/java-hashmap/
+[TreeMap]: /blog/2015/09/04/java-treemap/
+[LinkedHashMap]: /blog/2015/09/12/java-linkedhashmap/
+
+

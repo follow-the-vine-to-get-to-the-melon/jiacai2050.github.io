@@ -15,7 +15,7 @@ public class HashMap<K,V>
 ```
 可以看到`HashMap`继承了
 
-- 标记接口[Cloneable](http://docs.oracle.com/javase/7/docs/api/index.html?java/lang/Cloneable.html)，用于表明`HashMap`对象可以调用`java.lang.Object#clone()`方法进行深拷贝
+- 标记接口[Cloneable](http://docs.oracle.com/javase/7/docs/api/index.html?java/lang/Cloneable.html)，用于表明`HashMap`对象会重写`java.lang.Object#clone()`方法，HashMap实现的是浅拷贝（shallow copy）。
 - 标记接口[Serializable](http://docs.oracle.com/javase/7/docs/api/index.html?java/io/Serializable.html)，用于表明`HashMap`对象可以被序列化
 
 比较有意思的是，`HashMap`同时继承了抽象类`AbstractMap`与接口`Map`，因为抽象类`AbstractMap`的签名为
@@ -27,7 +27,14 @@ public abstract class AbstractMap<K,V> implements Map<K,V>
 > 在语法层面继承接口`Map`是多余的，这么做仅仅是为了让阅读代码的人明确知道`HashMap`是属于`Map`体系的，起到了文档的作用
 
 `AbstractMap`相当于个辅助类，`Map`的一些操作这里面已经提供了默认实现，后面具体的子类如果没有特殊行为，可直接使用`AbstractMap`提供的实现。
-所以，我们这里先介绍最重要的`Map`接口，然后再介绍`AbstractMap`抽象类。
+
+### [Cloneable](http://docs.oracle.com/javase/7/docs/api/index.html?java/lang/Cloneable.html)接口
+
+    It's evil, don't use it.
+
+`Cloneable`这个接口设计的非常不好，最致命的一点是它里面竟然没有`clone`方法，也就是说我们自己写的类完全可以实现这个接口的同时不重写`clone`方法。
+
+关于`Cloneable`的不足，大家可以去看看《Effective Java》一书的作者[给出的理由](http://www.artima.com/intv/bloch13.html)，在所给链接的文章里，Josh Bloch也会讲如何实现深拷贝比较好，我这里就不在赘述了。
 
 ### [Map](http://docs.oracle.com/javase/7/docs/api/index.html?java/util/Map.html)接口
 
@@ -173,7 +180,7 @@ public abstract class AbstractMap<K,V> implements Map<K,V>
 
 但是这里有个问题，如果`hashCode(key)`的大于`length`的值，而且`hashCode(key)`的二进制位的低位变化不大，那么冲突就会很多，举个例子：
 
-> Java中对象的哈希值都32位整数，而HashMap默认大小为16，那么有两个对象那么的哈希值分别为：`0xABAB0000`与`0xBABA0000`，它们的后几位都为0，那么与16与后得到的都是0，也就是产生了冲突。
+> Java中对象的哈希值都32位整数，而HashMap默认大小为16，那么有两个对象那么的哈希值分别为：`0xABAB0000`与`0xBABA0000`，它们的后几位都是一样，那么与16异或后得到结果应该也是一样的，也就是产生了冲突。
 
 造成冲突的原因关键在于16限制了只能用低位来计算，高位直接舍弃了，所以我们需要额外的哈希函数而不只是简单的对象的`hashCode`方法了。
 具体来说，就是HashMap中`hash`函数干的事了
@@ -181,9 +188,9 @@ public abstract class AbstractMap<K,V> implements Map<K,V>
 >
 > 然后如果是字符串，用了`sun.misc.Hashing.stringHash32((String) k);`来获取索引值
 >
-> 最后，通过一系列无符号右移操作，来把高位与低位进行或操作，来降低冲突发生的几率
+> 最后，通过一系列无符号右移操作，来把高位与低位进行异或操作，来降低冲突发生的几率
 
-右移的偏移量20，12，7，4是怎么来的呢？因为Java中对象的哈希值都是32位的，所以这几个数应该就是把高位与低位做与运算，至于这几个数是如何选取的，就不清楚了，网上搜了半天也没统一且让人信服的说法，大家可以参考下面几个链接：
+右移的偏移量20，12，7，4是怎么来的呢？因为Java中对象的哈希值都是32位的，所以这几个数应该就是把高位与低位做异或运算，至于这几个数是如何选取的，就不清楚了，网上搜了半天也没统一且让人信服的说法，大家可以参考下面几个链接：
 
 - http://stackoverflow.com/questions/7922019/openjdks-rehashing-mechanism/7922219#7922219
 - http://stackoverflow.com/questions/9335169/understanding-strange-java-hash-function/9336103#9336103
@@ -226,7 +233,7 @@ HashMap中存放的是HashMap.Entry对象，它继承自Map.Entry，其比较重
         }
     }
 ```
-可以看到，Entry是用单向链表实现的，用`next`成员变量来级连起来。
+可以看到，Entry实现了单向链表的功能，用`next`成员变量来级连起来。
 
 介绍完Entry对象，下面要说一个比较重要的成员变量
 ```    
@@ -237,11 +244,17 @@ HashMap中存放的是HashMap.Entry对象，它继承自Map.Entry，其比较重
     transient Entry<K,V>[] table = (Entry<K,V>[]) EMPTY_TABLE;
 ```
 你也许会疑问，Entry不是单向链表嘛，怎么这里又需要个数组类型的table呢？
-我翻了下之前的算法书，其实这是解决冲突的一个方式：[开散列法（链地址法）](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining)，效果如下：
+我翻了下之前的算法书，其实这是解决冲突的一个方式：[链地址法（开散列法）](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining)，效果如下：
 <center>
 <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2rlT0eVXXXXazXpXXXXXXXXXX_!!581166664.gif" alt="链地址法处理冲突得到的散列表">
 </center>
-就是相同的索引值的Entry，会以单向链表的形式存在
+就是相同索引值的Entry，会以单向链表的形式存在
+
+#### 链地址法的可视化
+
+网上找到个很好的网站，用来可视化各种常见的算法，很棒。瞬间觉得国外大学比国内的强不知多少倍。
+下面的链接可以模仿哈希表采用链地址法解决冲突，大家可以自己去玩玩😊
+- https://www.cs.usfca.edu/~galles/visualization/OpenHash.html
 
 ### get操作
 
@@ -287,7 +300,8 @@ get操作相比put操作简单，所以先介绍get操作
         return null;
     }
 ```
-### put操作
+
+### put操作（含update操作）
 因为put操作有可能需要对HashMap进行resize，所以实现略复杂些
 
 ```
@@ -317,7 +331,7 @@ get操作相比put操作简单，所以先介绍get操作
         //当新增的key所对应的索引i，对应table[i]中已经有值时，进入循环体
         for (Entry<K,V> e = table[i]; e != null; e = e.next) {
             Object k;
-            //判断是否存在本次插入的key，如果存在用本次的value替换之前oldValue
+            //判断是否存在本次插入的key，如果存在用本次的value替换之前oldValue，相当于update操作
             //并返回之前的oldValue
             if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
                 V oldValue = e.value;
@@ -343,9 +357,10 @@ get操作相比put操作简单，所以先介绍get操作
         createEntry(hash, key, value, bucketIndex);
     }
     void createEntry(int hash, K key, V value, int bucketIndex) {
-        //首先得到该索引处的冲突链Entries，有可能为null，不为null
+        //首先得到该索引处的冲突链Entries，第一次插入bucketIndex位置时冲突链为null，也就是e为null
         Entry<K,V> e = table[bucketIndex];
         //然后把新的Entry添加到冲突链的开头，也就是说，后插入的反而在前面（第一次还真没看明白）
+        //table[bucketIndex]为新加入的Entry，是bucketIndex位置的冲突链的第一个元素
         table[bucketIndex] = new Entry<>(hash, key, value, e);
         size++;
     }
@@ -409,9 +424,131 @@ get操作相比put操作简单，所以先介绍get操作
     
 ```
 
-一般而言，认为HashMap中get与put的时间复杂度为O(1)，因为它良好的hash函数，保证了冲突发生的几率比较小。
+### remove操作
 
-### HashMap的序列化
+```
+    public V remove(Object key) {
+        Entry<K,V> e = removeEntryForKey(key);
+        //可以看到删除的key如果存在，就返回其所对应的value
+        return (e == null ? null : e.value);
+    }
+    final Entry<K,V> removeEntryForKey(Object key) {
+        if (size == 0) {
+            return null;
+        }
+        int hash = (key == null) ? 0 : hash(key);
+        int i = indexFor(hash, table.length);
+        //这里用了两个Entry对象，相当于两个指针，为的是防治冲突链发生断裂的情况
+        //这里的思路就是一般的单向链表的删除思路
+        Entry<K,V> prev = table[i];
+        Entry<K,V> e = prev;
+
+        //当table[i]中存在冲突链时，开始遍历里面的元素
+        while (e != null) {
+            Entry<K,V> next = e.next;
+            Object k;
+            if (e.hash == hash &&
+                ((k = e.key) == key || (key != null && key.equals(k)))) {
+                modCount++;
+                size--;
+                if (prev == e) //当冲突链只有一个Entry时
+                    table[i] = next;
+                else
+                    prev.next = next;
+                e.recordRemoval(this);
+                return e;
+            }
+            prev = e;
+            e = next;
+        }
+
+        return e;
+    }
+```
+
+> 到现在为止，HashMap的增删改查都介绍完了。
+一般而言，认为HashMap的这四种操作时间复杂度为O(1)，因为它hash函数性质较好，保证了冲突发生的几率较小。
+
+### fast-fail的HashIterator
+
+集合类用[Iterator](http://docs.oracle.com/javase/7/docs/api/java/util/Iterator.html)类来遍历其包含的元素，[接口Enumeration](http://docs.oracle.com/javase/7/docs/api/java/util/Enumeration.html)已经不推荐使用。相比Enumeration，Iterator有下面两个优势：
+
+1. Iterator允许调用者在遍历集合类时删除集合类中包含的元素（相比Enumeration增加了remove方法）
+2. 比Enumeration的命名更简短
+
+HashMap中提供的三种集合视角，底层都是用HashIterator实现的。
+```
+    private abstract class HashIterator<E> implements Iterator<E> {
+        Entry<K,V> next;        // next entry to return
+        //在初始化Iterator实例时，纪录下当前的修改次数
+        int expectedModCount;   // For fast-fail
+        int index;              // current slot
+        Entry<K,V> current;     // current entry
+
+        HashIterator() {
+            expectedModCount = modCount;
+            if (size > 0) { // advance to first entry
+                Entry[] t = table;
+                //遍历HashMap的table，依次查找元素
+                while (index < t.length && (next = t[index++]) == null)
+                    ;
+            }
+        }
+
+        public final boolean hasNext() {
+            return next != null;
+        }
+
+        final Entry<K,V> nextEntry() {
+            //在访问下一个Entry时，判断是否有其他线程有对集合的修改
+            //说明HashMap是线程非安全的
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+            Entry<K,V> e = next;
+            if (e == null)
+                throw new NoSuchElementException();
+
+            if ((next = e.next) == null) {
+                Entry[] t = table;
+                while (index < t.length && (next = t[index++]) == null)
+                    ;
+            }
+            current = e;
+            return e;
+        }
+
+        public void remove() {
+            if (current == null)
+                throw new IllegalStateException();
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+            Object k = current.key;
+            current = null;
+            HashMap.this.removeEntryForKey(k);
+            expectedModCount = modCount;
+        }
+    }
+
+    private final class ValueIterator extends HashIterator<V> {
+        public V next() {
+            return nextEntry().value;
+        }
+    }
+
+    private final class KeyIterator extends HashIterator<K> {
+        public K next() {
+            return nextEntry().getKey();
+        }
+    }
+
+    private final class EntryIterator extends HashIterator<Map.Entry<K,V>> {
+        public Map.Entry<K,V> next() {
+            return nextEntry();
+        }
+    }
+```
+
+### 序列化
 
 介绍到这里，基本上算是把HashMap中一些核心的点讲完了，但还有个比较严重的问题：保存Entry的table数组为transient的，也就是说在进行序列化时，并不会包含该成员，这是为什么呢？
 ```
@@ -528,12 +665,15 @@ transient Entry<K,V>[] table = (Entry<K,V>[]) EMPTY_TABLE;
 - 一方面是由于时间久不用
 - 另一方面是由于本身没理解好
 
+平时多去思考，这样在遇到一些性能问题时也好排查。
 
-平时多去思考，这样在遇到一些性能问题时也好排查，今天到此为止，下面打算分析[TreeMap](http://docs.oracle.com/javase/7/docs/api/java/util/TreeMap.html)。
+还有一点就是我们在分析某些具体类或方法时，不要花太多时间一些细枝末节的边界条件上，这样很得不偿失，倒不是说这么边界条件不重要，程序的bug往往就是边界条件没考虑周全导致的。
+只是说我们可以在理解了这个类或方法的总体思路后，再来分析这些边界条件。
+如果一开始就分析，那真是丈二和尚——摸不着头脑了，随着对它工作原理的加深，才有可能理解这些边界条件的场景。
 
-Stay Tuned！
+今天到此为止，下次打算分析[TreeMap](/blog/2015/09/04/java-treemap/)。<del>Stay Tuned！🍺</del>。我已经写完了，两篇文章对比看，效果更好。😊
 
-PS：今天是反法西斯战争胜利70周年，虽然这是个和平的年代，但是我们仍然不能忘了曾经的伤痛，做好身边的事，爱国从现在做起。🚩🚩🚩🚩🚩🚩
+PS：今天是反法西斯战争胜利70周年，虽然这是个和平的年代，但是我们仍然不能忘了那些为了和平做出牺牲的英雄们。爱国从自己身边的每个小事做起。🚩🚩🚩🚩🚩🚩
 
 ## 参考
 
