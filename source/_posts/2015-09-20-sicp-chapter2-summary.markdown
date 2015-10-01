@@ -107,19 +107,32 @@ Scheme的基本复合结构称为“序对”，序对本身也是数据对象,�
 
 ### 八皇后问题
 
+<center>
+<img src="https://img.alicdn.com/imgextra/i3/581166664/TB23LNQfFXXXXckXXXXXXXXXXXX_!!581166664.png" alt="八皇后示意图"/>    
+</center>
+
 经典的问题，参考[习题2.42](https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.42_2.43.md)。
 
 ### 图形语言
 
+<center>
+    <img src="https://img.alicdn.com/imgextra/i3/581166664/TB2lhtEfFXXXXaRXpXXXXXXXXXX_!!581166664.png" alt="图形语言"/>
+</center>
 这个示例比较好玩，设计了一个图形语言，基本的元素painter用一过程表示，进一步模糊过程与数据的区别。参考相关习题，推荐[2.44](https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.44_2.45.md)、[2.49](https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.49.md)。
 你可以看到，把painter用过程实现后，相关操作（flip-vert、besides等）变得何其简单。
 
 ### Huffman编码树🌲
 
+<center>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2Uy8RfFXXXXcEXXXXXXXXXXXX_!!581166664.png" alt="一个Huffman的例子"/>
+</center>
 又一经典算法，一定要看，推荐[练习2.69](https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.69.scm)，学习如果构造一个Huffman编码树。
 
 ### 复数的表示
 
+<center>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB213J7fFXXXXXOXXXXXXXXXXXX_!!581166664.png" alt="复数的表示"/>
+</center>
 这种主要是用直角坐标与极坐标两种形式表示复数，用带标志的数据，实现了数据导向的设计风格。
 
 两种坐标的实现，参考代码[lib/generic_arithmetic.scm](https://github.com/jiacai2050/sicp/blob/master/exercises/02/lib/generic_arithmetic.scm)
@@ -128,12 +141,18 @@ Scheme的基本复合结构称为“序对”，序对本身也是数据对象,�
 
 ### 通用型算术包的实现
 
+<center>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2GYJSfFXXXXcFXXXXXXXXXXXX_!!581166664.png" alt="通用型算术包"/>
+</center>
 这一示例基本在前面有理数与复数的基础上，定义了统一的接口（add、sub等）来操作`scheme-number`、`rational`与`complex`三种类型的数据。
 
 参考[lib/complex_number.scm](https://github.com/jiacai2050/sicp/blob/master/exercises/02/lib/complex_number.scm)
 
 ### 符号代数——多项式算术
 
+<center>
+    <img src="https://img.alicdn.com/imgextra/i3/581166664/TB2_HRVfFXXXXbzXXXXXXXXXXXX_!!581166664.png" alt="多边形的继承性（强制的难点）"/>
+</center>
 本章最后一个例子，难度比之前通用型算术包要大，因为不同类型的数据间操作需要“强制（coercion）”，而强制就需要一定的规则，实际编程中这种规则可能很复杂，所有这里需要注意的细节点比较多。
 
 从“强制”引出的问题可以看出强类型语言的劣势，现在像python、javascript等弱类型的语言这么火，很大程序上就是由于弱类型语言的编译器把“强制”的工作给做了，程序员根本不用去关心。当然，如果所有“强制”工作都让编译器去做，也是不合适的，具体如何选择，就需要综合多种因素了。

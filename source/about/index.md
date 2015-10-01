@@ -34,6 +34,7 @@ date: 2014-08-08 07:48:37
 ====
 
 - [gooreplacer](http://liujiacai.net/gooreplacer) 一个用于替换网页中Google Fonts/APIS等的浏览器插件，让你快速打开引用这些资源的页面
+- [ImportNew 文章翻译](http://www.importnew.com/author/liujiacai)
 
 互联网纪录片
 ====
