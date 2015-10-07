@@ -16,6 +16,7 @@ widgets:
 - category
 - tagcloud
 - rss
+- cc
 - links
 - recent_visitors
 - recent_comments

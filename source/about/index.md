@@ -11,12 +11,12 @@ date: 2014-08-08 07:48:37
     (email "base64 -d <<< amlhY2FpMjA1MEBnbWFpbC5jb20K")
     (daydream "Make my codes run around the World, so keep writing")
     (favorites 
-      (mix 
-        ("不断在折腾ubuntu")
-        ("努力听古典" "http://v.youku.com/v_show/id_XNDc2MDU2ODE2.html")
-        ("乒乓球")
-        ("英语翻译" "http://importnew.com/author/liujiacai")
-        ("MORE..." "http://liujiacai.net/blog/archives")))))
+      (list 
+        "不断在折腾ubuntu"
+        "努力听古典" "http://v.youku.com/v_show/id_XNDc2MDU2ODE2.html"
+        "乒乓球"
+        "英语翻译" "http://importnew.com/author/liujiacai"
+        "MORE..." "http://liujiacai.net/blog/archives"))))
 ```
 
 本博客的目的就是记录自己学习过程中的所得所想，我觉得所有事情都可以用感性的直觉去理解。如果自己在两三句话向一个陌生人讲不清楚某个知识点，说明我也是没懂。
@@ -33,6 +33,7 @@ date: 2014-08-08 07:48:37
 我的作品
 ====
 
+- [JCScheme](https://github.com/jiacai2050/JCScheme) Java 写的一 Scheme 方言
 - [gooreplacer](http://liujiacai.net/gooreplacer) 一个用于替换网页中Google Fonts/APIS等的浏览器插件，让你快速打开引用这些资源的页面
 - [ImportNew 文章翻译](http://www.importnew.com/author/liujiacai)
 
@@ -40,19 +41,20 @@ date: 2014-08-08 07:48:37
 ====
 
 * [互联网之子](http://www.tudou.com/programs/view/jefojo_-HjQ/&lvt=76) 他是RSS、Reddit等创始人
-* [Code Rush](http://v.youku.com/v_show/id_XNjA2NDI2MTUy.html) 见证[Mozilla](http://liujiacai.net/blog/2014/09/14/mozilla-history/)的诞生，见证计算机史上惊心动魄的一幕
+* [Code Rush](http://v.youku.com/v_show/id_XNjA2NDI2MTUy.html) 见证[Mozilla](http://liujiacai.net/blog/2014/09/14/mozilla-history/)的诞生，见证互联网史上惊心动魄的一幕
+* [Revolution OS 操作系统革命](http://www.tudou.com/programs/view/lCsZxfWXJ0k/)，一群改变世界的hacker
 
 高质量博客
 ====
 
 * [Matrix67][] 一位数学高手
-* [王垠][yinwang] 你还记得那年的<del>[我和权威的故事][6]</del>（好吧，又被垠神删了）的故事吗
+* [王垠][yinwang] 你还记得那年的[我和权威的故事][authority] 的故事吗
 * [Daniel P. Friedman][daniel] 语言学专家，[The Little Schemer](http://book.douban.com/subject/1632977/)（豆瓣评分9.3）作者，王垠极力推荐
 * [NathanMarz][] Cascalog与Storm作者
 * [Mozilla Labs](https://mozillalabs.com/en-US/) Welcome to the edge of the Web.
 
 [Matrix67]: http://www.matrix67.com/blog/
 [yinwang]: http://www.yinwang.org/
-[6]: http://www.yinwang.org/blog-cn/2014/01/04/authority/
+[authority]: http://www.yinwang.org/blog-cn/2014/01/04/authority/
 [daniel]: http://www.cs.indiana.edu/~dfried/
 [NathanMarz]: http://nathanmarz.com/
