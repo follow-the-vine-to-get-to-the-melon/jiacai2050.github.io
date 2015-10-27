@@ -35,9 +35,15 @@ JCScheme 完整代码托管到[Github](https://github.com/jiacai2050/JCScheme)�
 
 可以看到，JCScheme 解释器的主要工作就是将按照自定义语法规则书写的源程序，转化为 Java 代码，之后的事情就由 JVM 来处理了。
 
-所以我们实现自己的语言要做的就是两件事：
-1. 制定语法
-2. 编写解释器，解析自定义的语法
+
+### JCScheme 解释器
+
+JCScheme解释器主要分为两部分，解析（Parse）和求值（Evaluation）：
+
+- 解析：解析源程序，并生成解释器可以理解的中间（Intermediate）结构。这部分包含词法分析，语法分析，语义分析，生成语法树。
+- 求值：执行解析阶段得到的中介结构然后得到运行结果。这部分包含作用域，类型系统设计和语法树遍历。
+
+明确了解释的工作后，我们第一步是制定语言的语法，然后进行解析、求值即可。
 
 ## JCScheme 语法
 ```
@@ -64,11 +70,11 @@ null
 3. 支持整数的`+`、`-`、`*`、`/`四种基本算术操作，`>`、`<`、`=`三种比较操作。参数可以为多个
 4. 更多的特性可以参考[ChangeLog](https://github.com/jiacai2050/JCScheme#ChangeLog)
 
-现在 JCScheme 中只有一个全局环境（Java Map实现），后面定义的同名变量会覆盖之前的。
+## 解析过程
+`解析过程`的一般顺序为
+> 词法分析 ----> 语法分析 ----> 语义分析
 
-## 基本概念与实现
-实现一个解释器时，一般步骤如下：
-> 词法分析 --> 语法分析 ---> 语义分析 ---> 求值
+解析过程最主要的是得到语法树，之后，就可以由后面的`求值过程`进行求值了。
 
 ### 词法分析
 
@@ -161,12 +167,15 @@ public class SExpression {
 
 因为 JCScheme 中类型比较简单，而且去做语义分析，需要做很多异常处理，有些繁琐，我这里为了简单都忽略了。所以如果你输入的语法有误（比如括号不匹配），那么解释器就会报错，在后面的迭代中会逐步改善这块。
 
-## 求值（eval与apply）
+## 求值过程
 
-做完了词法分析、语法分析，我们已经得到了与具体语言无关的 AST，那么如果求值呢，SICP 书中给出了`eval-apply cycle`，如下图
+经过`解析过程`，我们已经得到了与具体语言无关的 AST，那么如何进行求值呢，SICP 书中给出答案：`eval-apply cycle`，如下图
 <center>
-    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2KjMVfFXXXXbOXpXXXXXXXXXX_!!581166664.png" alt="ICP-eval-apply"/>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2KjMVfFXXXXbOXpXXXXXXXXXX_!!581166664.png" alt="SICP-eval-apply"/>
 </center>
+eval、apply 这两个规则描述了求值过程的核心部分，也就是它的基本循环。在这一循环中
+> 表达式在环境中的求值被规约到过程对实际参数的应用，而这种应用又被规约到新的表达式在新的环境中的求值，如此下去，直到下降到符号（其值可以在环境中找到）或者基本过程（它们可以直接应用）。
+
 在[StackOverflow](http://stackoverflow.com/a/6269132/2163429)上找到一比较好理解的解释：
 -  the one that eval is doing, is dealing with the syntactic translation of code to its meaning -- but it's doing almost nothing except dispatching over the expression type
 -  apply is to call function with values.
@@ -292,27 +301,118 @@ public class SFunction extends SObject{
     
 }
 ```
-可以看到，`SFunction`内部有两个成员变量，用来表示其`参数列表`与`函数体`。其中的`apply`表示函数调用，可以看到无非就是把形式参数与实际参数进行捆绑（现在放到全局环境中，按理说这时应该生成一新环境，后面再改进），之后调用`SExpression`的`eval`方法，得到用内置类型表示的结果。
+可以看到，`SFunction`内部有两个成员变量，用来表示其`参数列表`与`函数体`。其中的`apply`表示函数调用，可以看到无非就是把形式参数与实际参数进行捆绑（现在放到全局环境中，按理说这时应该生成一新环境，后面讲求值过程时会介绍改进版的SFunction），之后调用`SExpression`的`eval`方法，得到用内置类型表示的结果。
 
 可以看到，这里的重点又回到`eval`方法上去了。 JCScheme 的主要复杂点也就算在`SExpression`的`eval`方法上，因为它涉及到把`SExpression`转为内置类型，所以按理说也应该是复杂的。
 
 `eval`的工作原理最直接的方式就是看源码[JCScheme/SExpression.java](https://github.com/jiacai2050/JCScheme/blob/master/src/main/java/net/liujiacai/jcscheme/SExpression.java)，这个方法后面会不断完善。
 
+### 作用域
 
+作用域也可以理解为环境，里面是一系列的 binding，用以保存变量名与其对应值。
+在现代编程语言中，作用域一般分为两种：
+- 静态作用域（static/lexical scope），环境在声明时指定。JCScheme、C、Java、Python 等现在大部分语言都属于此类。
+- 动态作用域（dynamic scope），环境在运行时指定。最常见的就是各种 Shell，像Bash、Ksh等，其次还有 emacs-lisp。更多可参考 [what are other pure dynamically scoped languages?](http://stackoverflow.com/questions/1473111/besides-logo-and-emacs-lisp-what-are-other-pure-dynamically-scoped-languages)
+
+为了解决在 JCScheme 中函数调用时，新创建环境的父环境应该指向运行时的环境还是声明时的这个问题，我去 Stackoverflow 上提了个[问题](http://stackoverflow.com/questions/33056236/scheme-environment-model-closure-issue)，对作用域不清楚的可以去看看。
+
+ JCScheme 中，一开始只有一个全局作用域，后面我逐渐把这快给完善了，主要是 [SScope](https://github.com/jiacai2050/JCScheme/blob/master/src/main/java/net/liujiacai/jcscheme/SScope.java) 类 与 [SFunction](https://github.com/jiacai2050/JCScheme/blob/master/src/main/java/net/liujiacai/jcscheme/type/SFunction.java) 类。
+ ```
+ public class SScope {
+    // 每个环境都指向一个父环境，全局环境父环境为 null
+    private SScope parent;
+    private Map<String, SObject> env;
+
+    public SScope getParent() {
+        return parent;
+    }
+
+    public Map<String, SObject> getEnv() {
+        return env;
+    }
+    // 在查找变量时，如何当前 scope 中没有，会沿着环境链，一直找到全局环境中 
+    public SObject findVariable(String var) {
+        if (env.containsKey(var)) {
+            return env.get(var);
+        } else {
+            SScope p = this.getParent();
+            while (p != null) {
+                Map<String, SObject> subEnv = p.getEnv();
+                if (subEnv.containsKey(var)) {
+                    return subEnv.get(var);
+                }
+                p = p.getParent();
+            }
+            return null;
+        }
+    }
+    // 当前的环境
+    public static SScope current = null;
+    public static Map<String, String> builtinFuncs = new HashMap<String, String>();
+    public static Map<String, String> builtinKeywords = new HashMap<String, String>();
+    // 省略一个内置函数、关键字的初始化
+    // ... 
+}
+public class SFunction extends SObject {
+
+    private List<String> param;
+    private List<SExpression> body;
+    private SScope scope;
+
+    public List<String> getParam() {
+        return param;
+    }
+    // 在声明函数时，传入当前的环境
+    public SFunction(List<String> param, List<SExpression> body, SScope scope) {
+        this.param = param;
+        this.body = body;
+        this.scope = scope;
+    }
+
+    public SObject apply(SObject... args) {
+        // 保存函数调用之前的环境，相当于入栈
+        SScope originScope = SScope.current;
+        // 创建一个指向函数声明传入的环境的新环境，保存形参与实参的绑定关系。
+        // 这里构造新环境时用到了声明函数时传入的环境，这点说明了 JCScheme 是静态作用域的
+        SScope funcScope = new SScope(this.scope);
+        // 设置当前环境为 新创建的环境，这时所有的求值，都是在其中进行
+        SScope.current = funcScope;
+        SObject ret = null;
+        for (int i = 0; i < args.length; i++) {
+            SScope.current.getEnv().put(param.get(i), args[i]);
+        }
+        if (args.length < param.size()) {
+            // 实现函数部分调用， currying
+            List<String> subParam = param.subList(args.length, param.size());
+            ret = new SFunction(subParam, body, funcScope);
+        } else {
+            int bodySize = body.size();
+            for (int i = 0; i < bodySize - 1; i++) {
+                body.get(i).eval();
+            }
+            // only return last exp
+            ret = body.get(bodySize - 1).eval();
+        }
+        // GC will clean unused scope 
+        // 恢复函数调用之前的环境，相当于出栈
+        SScope.current = originScope;
+        return ret;
+    }
+ ```
 ## 不足
 
-经过上面这些工作，运行是没问题了（希望没有bug😊），函数定义也有了。但是下面这些点都没有涉及
+经过上面这些工作，JCScheme 已经大功告成了（希望没有bug😊）。但是下面这些点都没有涉及
 1. 函数的递归调用
 2.  <del>匿名函数的直接调用，如`((lambda (a b) (+ a b)) 1 2)`，现在这样的方式是不支持的， 需要先定义个变量，然后在调用</del>，已经支持。
-3. 函数的部分调用，也就是`currying`
+3. <del>函数的部分调用，也就是`currying`</del>，已经支持
 ......
 
 后面会逐步添坑，大家可以查看 JCScheme 的 [ChangeLog](https://github.com/jiacai2050/JCScheme#ChangeLog) 获取最新进展。
 
 ## 总结
 
-“纸上得来终觉浅，绝知此事要躬行”，最开始时，觉得像 Scheme 语法这么简单的语言实现起来应该不难，做了后才发现眼高手低。比如，我第一次设计`SExpression`时没有`parent`这个属性导致了无法正确实现`parse`函数。
-不过感触最深应该是这点：动手。在之前学习编程语言，被各种语法类库虐的死去活来，虽然想尝试去实现个自己的语言，但是一直觉得自己能力不够，没敢去尝试，经过这次 JCScheme 的开发，真是有种“不入虎穴,焉得虎子”的感觉。
+“纸上得来终觉浅，绝知此事要躬行”，最开始时，觉得像 Scheme 语法这么简单的语言实现起来应该不难，做了后才发现眼高手低。比如，我第一次设计`SExpression`时没有`parent`这个属性导致了无法正确实现`parse`函数。以及后面在设计作用域时，分不清楚到底是声明时创建环境还是运行时创建，环境的父环境应该怎么指向，应该指向声明时的环境还是运行时的环境。
+不过感触最深应该是这点：动手。在之前学习编程语言，被各种语法类库虐的死去活来，虽然想尝试去实现个自己的语言，但是一直觉得自己能力不够，没敢去尝试，随着不断完善 JCScheme 的功能，对编程语言有了更深刻的认识，真是有种“不入虎穴,焉得虎子”的感觉。
 
 当然，JCScheme 语言只是刚开始，还比较简陋，高手请不要见笑，后面随着学习的深入我会逐步完善。
 
@@ -320,3 +420,4 @@ public class SFunction extends SObject{
 
 - 王垠的[谈谈Parser](http://www.yinwang.org/blog-cn/2015/09/19/parser/)
 - [90分钟实现一门编程语言——极简解释器教程](http://zh.lucida.me/blog/how-to-implement-an-interpreter-in-csharp/)
+- Wiki [Scope (computer science)](https://en.wikipedia.org/wiki/Scope_%28computer_science%29)

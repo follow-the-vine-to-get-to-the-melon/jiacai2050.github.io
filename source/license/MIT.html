@@ -7,8 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.7">
     <script>
     window.onload = function() {
-        var year = new Date().getFullYear();
-        document.getElementById("year").innerHTML = year;
+        var m = /year=(\d+)/.exec(window.location.search);
+        if(m) {
+            document.getElementById("year").innerHTML = m[1];
+        } else {
+            document.getElementById("year").innerHTML = new Date().getFullYear();
+        }
     }
     </script>
     <style type="text/css">
