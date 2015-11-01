@@ -98,9 +98,8 @@ jiathis:
   tsina: 608384123  ## e.g.  Your weibo id,It will be used in share button.
 
 #### Custom Search
-swiftype: 
-  enable: true
-  cx:   ## e.g. 018294693190868310296:abnhpuysycw your Custom Search ID.
+google:
+  enable: true  
 ## https://www.google.com/cse/ 
 ## To enable the custom search You must create a "search" folder in '/source' and a "index.md" file
 ## set the 'front-matter' as

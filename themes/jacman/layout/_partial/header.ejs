@@ -51,18 +51,14 @@
 						<li><a href="<%- theme.menu[i] %>"><%= i %></a></li>
 					<% } %>
 					<li>
+					<a href="/timeline">时光轴</a>
+					</li>
+					<li>
 					<a href="http://en.liujiacai.net/">English blog</a>
 					</li>
    
 					<li>
- 					<% if	(theme.swiftype.enable){ %>
-
-						<form class="search">
-						  <input type="text" id="st-search-input" class="st-search-input" />
-						</form>
-					<% } else { %>
-
-					<a href="http://blog.sina.com.cn/s/articlelist_1609439470_2_1.html" >爱好英语</a>
+ 					<% if (theme.google.enable){ %>
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
 						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
