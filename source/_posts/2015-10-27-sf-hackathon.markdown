@@ -15,7 +15,7 @@ categories: 热爱生活
 
 ## 赛前准备
 
-由于时间短，我就想着这次比赛用 nodejs 来做，参加比赛前的一周，我停止了 [SICP](https://github.com/jiacai2050/sicp) 的阅读，转而进攻[《Node.js实战》](http://book.douban.com/subject/25870705/)，这本书之前断断续续翻过前两章，这次基本把这本书看完了，主要是学习了下如何系统的开发一个完整的 node 应用，包括常用模块、通用架构等，之前写的 node 都是玩具，没有错误处理，没有单元测试（这次比赛虽然也没用上，但是知道了如何使用相应工具去测了）。
+编程语言我毫无疑问的选择了 javascript，一来 javascript 与 Scheme 有[很深的渊源](https://en.wikipedia.org/wiki/JavaScript#JavaScript_and_Java)，其次我也一直想好好系统学习下 nodejs，所以就是它了。参加比赛前的一周，我停止了 [SICP](https://github.com/jiacai2050/sicp) 的阅读，转而进攻[《Node.js实战》](http://book.douban.com/subject/25870705/)，这本书之前断断续续翻过前两章，这次基本把这本书看完了，主要是学习了下如何系统的开发一个完整的 node 应用，包括常用模块、通用架构等，之前写的 node 都是玩具，没有错误处理，没有单元测试（这次比赛虽然也没用上，但是知道了如何使用相应工具去测了）。
 
 书上最后一章介绍了 node 中较为底层的知识，像`net`库，node 的定位就是提供小而美的核心类库，常用的模块都是基于这些核心类库构建。下面纪录两个书中比较有趣的例子：
 ```
@@ -52,11 +52,11 @@ socket.on("close", function() {
 如何扫码是我们遇到的第一个问题，是借助微信还是自己做原生应用，由于我俩都不会 Android 与 IOS 开发，所以微信成了唯一选择。
 微信开发需要有公众号，如果调用 [JS-SDK](http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html)，需要有备过案的域名，我们都没有，这时我想到了[大宝](http://sundabao.com/)兄，他很慷慨的给我提供云主机、mysql、nginx，加上宝贵的域名，很是感谢。（后面知道了可以用[测试号](http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)）。
 
-这里必须吐槽下微信的开发文档，真是烂：排版烂、个别语句不通顺、经常有死链接，真不知道微信团队里都是些什么人。
+这里必须吐槽下微信的开发文档，真是烂：排版烂、个别语句不通顺、经常有死链接，希望微信团队好好维护下。
 
 比如这里的[签名算法](http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html)，由于微信的人不知道[命名锚（named anchors）](http://www.w3school.com.cn/html/html_links.asp)，所以你在打开上面的链接后，需要用`Ctrl + F` 来搜索 “签名算法” 才能找到我这里所指的签名算法，最最坑人的是，由于签名是针对网页 URL 的，所以一个网页需要签名一个，而这个 URL 必须是以`/`结尾，比如，如果用`http://1024.sundabao.com`这个 URL 来签名是不对的，必须是`http://1024.sundabao.com/`，这个真的好坑。
 
-相比之下，Github的[开发者文档](https://developer.github.com/v3)，看起来就很让人舒服，希望微信的好好学学。
+相比之下，Github的[开发者文档](https://developer.github.com/v3)，看起来就很让人舒服，希望微信团队好好学学。
 
 ### 订单系统
 
