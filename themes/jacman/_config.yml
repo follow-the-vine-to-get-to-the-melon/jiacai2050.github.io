@@ -3,7 +3,7 @@ menu:
   首页: /
   归档: /archives
   关于: /about
-  
+
 ## you can create `tags` and `categories` folders in `../source`.
 ## And create a `index.md` file in each of them.
 ## set `front-matter`as
@@ -14,12 +14,11 @@ menu:
 #### Widgets
 widgets: 
 - category
-- tagcloud
+- tag
 - rss
 - cc
 - links
-- recent_visitors
-- recent_comments
+- archive
 
 ## provide seven widgets:category,tag,rss,archive,tagcloud,links,weibo
 ## modify links in `/layout/_widget/links.ejs`.
@@ -80,16 +79,10 @@ author:
   email:      ## e.g. wuchong1014@gmail.com
   google_plus:    ## eg:111190881341800841449 for https://plus.google.com/u/0/111190881341800841449
 ## if you set them, the corresponding  share button will show on the footer
- 
-
-#### Comment
-duoshuo: 
-  enable: true  ## duoshuo.com
-  short_name: jiacai2050   ##e.g. wuchong   for duoshuo short name.
 
 disqus:
-  enable: false  ## disqus.com
-  short_name:    ##e.g. wuchong   for disqus short name.  
+  enable: true  ## disqus.com
+  short_name: jiacai2050   ##e.g. wuchong   for disqus short name.  
 
 #### Share button
 jiathis:

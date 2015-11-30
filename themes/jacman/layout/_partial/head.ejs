@@ -48,17 +48,28 @@
     <link rel="icon" href="<%- config.root %><%- theme.favicon %>">
     <% } %>
     <%- css('css/style') %>
-    <% if (theme.duoshuo.enable){ %>
+    <% if (theme.disqus.enable){ %>
 <script type="text/javascript">
-  var duoshuoQuery = {short_name:"<%= theme.duoshuo.short_name %>"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] 
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
+  window.onload = function() {
+    if(document.getElementById("comments")) {
+      var disqus_shortname = "<%= theme.disqus.short_name %>";
+      (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        
+      }());
+      (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }());  
+    }
+  }
 </script> 
 <% } %>
 </head>
