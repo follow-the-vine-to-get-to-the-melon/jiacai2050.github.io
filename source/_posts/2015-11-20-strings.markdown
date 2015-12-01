@@ -19,43 +19,101 @@ categories: 理解计算机
 
 当我们谈到字符串（string或text）时，你可能会想到“计算机屏幕上的那些字符（characters）与符号（symbols）”，你正在阅读的文章，无非也是由一串字符组成的。但是你也许会发现，你无法给“字符串”一明确定义，但是我们就是知道，就像给你一个苹果，你能说出其名字，但是不能给出准确定义一样。这个问题先放一放，后面我再解释。
 
-我们知道，计算机并不能直接处理操作字符与符号，它只认识 0、1 这两个数字，所以如果想让计算机显示各种各样的字符与符号，就必须定义它们与数字的一一映射关系，也就是我们所熟知的字符编码（character encoding）。你可简单的认为，字符编码为计算机屏幕上显示的字符与这些字符保存在内存或磁盘中的形式提供了一种映射关系。字符编码纷繁复杂，有些专门为特定语言优化，像针对简体中文的编码就有 [GB2312](https://en.wikipedia.org/wiki/GB_2312)，[GBK](https://en.wikipedia.org/wiki/GBK)（GB 是 Guajia Biaozhun 的简写）等，针对英文的 [ASCII](https://en.wikipedia.org/wiki/ASCII)；另一些专门用于多语言环境，像后面要讲到的 [UTF-8](https://en.wikipedia.org/wiki/UTF-8)。
+我们知道，计算机并不能直接处理操作字符与符号，它只认识 0、1 这两个数字，所以如果想让计算机显示各种各样的字符与符号，就必须定义它们与数字的一一映射关系，也就是我们所熟知的字符编码（character encoding）。你可简单的认为，字符编码为计算机屏幕上显示的字符与这些字符保存在内存或磁盘中的形式提供了一种映射关系。字符编码纷繁复杂，有些专门为特定语言优化，像针对简体中文的编码就有 [EUC-CN](https://en.wikipedia.org/wiki/Extended_Unix_Code#EUC-CN)，[HZ](https://en.wikipedia.org/wiki/HZ_%28character_encoding%29)；针对日文的[EUC-JP](https://en.wikipedia.org/wiki/Extended_Unix_Code#EUC-JP)，针对英文的 [ASCII](https://en.wikipedia.org/wiki/ASCII)；另一些专门用于多语言环境，像后面要讲到的 [UTF-8](https://en.wikipedia.org/wiki/UTF-8)。
 
 我们可以把**字符编码**看作一种解密密钥（decryption key），当我们收到一段字节流时，无论来自文件还是网络，如果我们知道它是“文本（text）”，那么我们就需要知道采用何种字符编码来**解码**这些字节流，否则，我们得到的只是一堆无意义的符号，像 ������。
 
-### 编码所产生的问题
+### 单字节编码
 
 计算机最早起源于以英文为母语的美国，英文中的符号比较少，用七个二进制位就足以表示，现在最常见也是最流行的莫过于 ASCII 编码，该编码使用 0 到 127 之间的数字来存储字符（65表示“A”，97表示“a”）。
-<img src="https://img.alicdn.com/imgextra/i2/581166664/TB2uLAFhpXXXXXZXXXXXXXXXXXX_!!581166664.png" alt=" ASCII_Code_Chart-Quick_ref_card"/>
-
-我们知道一个字节是 8 位，ASCII 编码其实只使用了其中的低 7 位，还剩下 1 位。在早期，很多 OEM 厂商就想着可以利用 128-255 来表示一些特殊符号，其中比较有名的是 IBM-PC 提出了 [OEM 字符集](https://en.wikipedia.org/wiki/Code_page#IBM_PC_.28OEM.29_code_pages)（character set），为欧洲国家的语言提供注音以及一些线画符号（line drawing characters），如下图，利用这些人们可以在计算机上画一些有趣的图形。
+<center>
+<img src="https://img.alicdn.com/imgextra/i2/581166664/TB2uLAFhpXXXXXZXXXXXXXXXXXX_!!581166664.png_620x10000.jpg" alt=" ASCII_Code_Chart-Quick_ref_card"/>
+</center>
+我们知道一个字节是 8 位，ASCII 编码其实只使用了其中的低 7 位，还剩下 1 位。很多人就想着可以利用这最高的一位来表示更多的可见字符，由于 IBM 是那时最有名的 OEM，其制定的编码规则影响范围也最广。
 <center>
 <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2acofhpXXXXbQXpXXXXXXXXXX_!!581166664.gif" alt="ascii-dos"/>
 </center>
 
-随着计算机的普及，使用计算机的人不再仅仅局限于以英文为母语的国家，不同国家的 OEM 字符集也如雨后春笋，层出不穷。由于0-127的编码已经固定下来，所以它们大都使用128-255来编码自己的符号集。例如，有些地方用 130 表示 `é`，但在以色列表示为 Hebrew letter Gimel `ג`。
-
-这种 OEM 厂商“混战”的情况最终被 [ANSI 标准](https://en.wikipedia.org/wiki/Code_page#Windows_.28ANSI.29_code_pages)制止，在 ANSI 标准中，对于0-127之间的编码与 ASCII 保持一致，最高位用 0 填充。但是对于128以及之上的编码，争议比较大，不同地区往往不一致，这些不同的编码，导致了不同的 [code pages](https://en.wikipedia.org/wiki/Code_page) 的产生。
-
-可以看到，只是单字节的编码问题就已经存在这么严重的问题了，像中文（Chinese），日文（Japanese），韩文（Korean）（业界一般称为 CJK）等象形（表意）文字（ideograph-based language），字符数量比较多，1 个字节是放不下的，所以需要更多的字节来进行字符的编码。和单字节编码一样，如果没有统一的规范，不同国家自己定制自己的编码标准，那么不同国家之间是无法进行交流的，所以，需要一个囊括世界上所有字符的编码方案的出现，但是这里还有个问题，如果用多字节来对字符进行编码，那么对于 ASCII 字符来说，是比较浪费空间的，针对这两个问题，聪明的人们提出了一全新的字符编码方案——Unicode。
-
+随着时间的推进，计算机的使用范围扩展到西方欧洲国家，像法国🇫🇷、西班牙🇪🇸，德国🇩🇪等，它们这些国家的字母比英文要多。所以为了表示这些国家的语言，也需要借助最高位扩展 ASCII 编码。但由于没有统一的标准，有些地方用 130 表示 `é`，有些地方表示为 Hebrew letter Gimel `ג`。在这些语言中，使用最广的是 [CP-1252 编码](https://en.wikipedia.org/wiki/Windows-1252)，也称为 Windows-1252 编码，因为在 [Windows 在 1.0 时就使用了该编码](https://en.wikipedia.org/wiki/Windows-1252#History)，随着 Windows 的普及，大家就沿用了 Windows-1252 的说法。
 <center>
-<img src="https://img.alicdn.com/imgextra/i2/581166664/TB2GcoghpXXXXc6XpXXXXXXXXXX_!!581166664.png" alt="Unicode_logo"/>
+    <img src="https://img.alicdn.com/imgextra/i1/581166664/TB25E0xhVXXXXbtXXXXXXXXXXXX_!!581166664.png_310x310.jpg" alt=" Windows-1252"/>
 </center>
+
+#### ISO-8859-1
+
+既然说到了 Windows-1252，那么就不能不提它与 ISO-8859-1 的关系，我相信大家对 ISO-8859-1 这个编码肯定很熟悉，我还记得第一次用 Dreamweaver 写 HTML 时，其 HTML 模板中默认编码就是 ISO-8859-1，还有一个比较常见的场景是在 mysql 中，mysql 的默认编码为 latin-1，这其实是 ISO-8859-1 的一个别名而已。
+
+[ISO-8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) 是早期 8 位编码方案的一种，是 [ISO/IEC 8859](https://en.wikipedia.org/wiki/ISO/IEC_8859) 编码系列的一种， 第一版发布于 1987 年。它主要是针对西欧国家设计，现在大多数流行的 8 位编码方案都以它为基础，这其中就包括 Windows-1252。
+
+Windows-1252 与 ISO-8859-1 的主要不同在于 0x80 到 0x9F 之间的字符，在 ISO-8859-1 中为控制字符（control characters），在 Windows-1252 中为可打印字符（printable characters）。
+
+在 HTTP 协议中，以`text/`开头的 MIME 类型的文件默认编码为 ISO-8859-1，但是由于控制字符在文件中用处不大，所以大多数客户端程序用 Windows-1252 来解码，这也就是它们之间经常混淆的主要原因。 
+ 
+
+### 字符集 vs 字符编码
+
+在介绍完 ASCII 之后，需要强调一个很重要但被大多数人都忽略的一个概念问题。
+
+我们平时说的 ASCII 其实有两个含义，一个是 ASCII 字符集，另一个是 ASCII 编码。
+
+> ASCII 字符集只是定义了字符与字符码（character code）的对应关系。也就是说这一层面只是规定了字符`A`用 65 表示，至于这个 65 在内存或硬盘中怎么表示，它不管，那是 ASCII 编码做的事。
+
+> ASCII 编码规定了用 7 个二进制位来保存 ASCII 字符码，即定义了字符集的`存储形式`。
+
+说到这里你也许会问，那既然用 7 个二进制位就能够表示所有 ASCII 字符码了，为什么现在一个字节是 8 位，而不是 7 位呢，这不是浪费吗？
+
+其实这是早期设计者有意而为之：
+> 7 位表示 ASCII 字符码，剩下 1 位为 [Parity bit](https://en.wikipedia.org/wiki/Parity_bit)，也称为校验位，用以检查数据的正确性。
+
+关于数据校验，我这里不打算展开讲，感兴趣的可以参考 [Error detection and correction](https://en.wikipedia.org/wiki/Error_detection_and_correction)。
+
+我们这里只需要知道，当我们说 ASCII 时，其有两层含义就够了。
+
+### 多字节编码
+
+多字节编码主要用于我们亚洲国家，像中文（Chinese），日文（Japanese），韩文（Korean）（业界一般称为 CJK）等象形（表意）文字（ideograph-based language），字符数量比较多，1 个字节是放不下的，所以需要更多的字节来进行字符的编码。
+
+[ISO/IEC 2022](https://en.wikipedia.org/wiki/ISO/IEC_2022) 标准为多字节编码制定了一套标准，主要有下面两个方面：
+
+1. 一个编码系统里面可以表示多种字符集
+2. 一个编码系统既可以在 7 位编码系统中表示所有字符集，也可以在 8 位编码系统表示所有字符集
+
+为了能够表示多种字符集 ISO/IEC 2022 引入了[escape sequences](https://en.wikipedia.org/wiki/Escape_sequence)，也就是我们中文里面说的“转义字符”的意思；为了能够兼容之前的 7 位编码系统，像 ASCII，实现 ISO/IEC 2022 标准的编码系统一般都是**变长编码**。
+
+#### GB2312
+
+[GB2312](https://en.wikipedia.org/wiki/GB_2312) 是我国国家标准总局在1980年发布一套遵循 ISO/IEC 2022 标准的`字符集`，在 GB2312 中，字符码一般称为区位码，由于该字符集需要兼容 ASCII 字符集，所以它只能一个字节中的 7 位，剩下 1 位用于区分，比如可以通过最高位为 1 表示 GB2312 字符集，为 0 表示 ASCII 字符集。
+
+GB2312 使用两个字节来表示字符码，最多可以表示 94 * 94 个字符，但是 GB2312 并没有全部使用，留了一部分方便后面扩展用。
+
+实现 GB2312 字符集的编码主要是 [EUC-CN](https://en.wikipedia.org/wiki/Extended_Unix_Code#EUC-CN)，该编码与 ASCII 编码兼容。
+
+我们平时说的 GB2312 编码其实就是指的 EUC-CN 编码，这一点需要明白。
+
+#### GBK
+
+[GBK](https://en.wikipedia.org/wiki/GBK) 字符集是对 GB2312 字符集的扩展，GBK 并没有一个官方标准，现在使用最广的标准是微软在 Windows 95 中实现的版本——[CP936](https://en.wikipedia.org/wiki/Code_page_936) 编码。
+
+GBK 也使用两个字节来表示字符码，94 * 94 的区位码分布可以参考下面这个图，截自 [Wikipedia](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/GBK_encoding.svg/1290px-GBK_encoding.svg.png)
+<center>
+![GBK_encoding](https://img.alicdn.com/imgextra/i4/581166664/TB2wxevhVXXXXaUXpXXXXXXXXXX_!!581166664.png_310x310.jpg)
+</center>
+
+同 GB2312 一样，我们平时说的 GBK 编码其实就是指的 CP936 编码。
+
+除了我们中国的 GB* 系统字符集以外，日本、韩国各有各的字符集标准，虽然都是基于 ISO/IEC 2022，但是具体的表示方式千差万别，比如 1601 在 GB2312 中表示“啊”，但在日韩就不知道表示什么含义了。
+
+所以，我们需要一种囊括世界上所有字符的一套字符集，在该字符集中，字符码与字符一一对应，比如字符码 0x41 表示英文字母`A`，在任何国家都表示`A`，即使该国家没有这个字符。解决这个问题的是现在最流行的一套字符集——Unicode。
 
 ## Unicode
 
 Unicode 的全称是 universal character encoding，中文一般翻译为“统一码、万国码、单一码”。
 
-Unicode 主要解决了前面所提到的两个问题：
-1. 统一世界上所有字符的编码，使得语言不同的国家也能正常交换信息
-2. 提出了一个中间层，使得字符的编码与存储形式分离解耦，这样不同国家就可以采用不同的存储方案，来解决单字节表达字符数有限与多字节编码浪费的矛盾。
+<center>
+<img src="https://img.alicdn.com/imgextra/i2/581166664/TB2GcoghpXXXXc6XpXXXXXXXXXX_!!581166664.png_160x160.jpg" alt="Unicode_logo"/>
+</center>
 
-Unicode 的关键创新点在于为字符编码与最终的存储形式加了一中间层（术语为 code points），这样，当一种语言有新字符产生时，只需分配新的 code point 即可，具体的存储形式（一个字节还是两个字节，采用大端还是小端）不需要关心。
-这让我想到了之前在 [SICP](https://github.com/jiacai2050/sicp/) 看到的一句话，真是软件开发领域的银弹
-> 任何问题，都可以通过增加一层抽象来解决。
-
-Unicode 中采用四个字节来定义 code point，每一个 code point 都代表世界上唯一的字符，不会出现同一 code point 在不同国家表示不同字符的情况。比如，`U+0041`总是代表`A`，即便某语言中没有这个字符。
+在 Unicode 中字符码称为 code point，用 4 个字节来表示，这么做主要是为了涵盖世界上所有的字符。写法一般为`U+XXXX`，XXXX 为用 16 进制表示的数字。比如，`U+0041`表示`A`。
 
 ### Unicode 的存储形式
 
@@ -86,8 +144,11 @@ UTF-8 的编码规则很简单，只有二条：
 
 UTF-8 的一劣势是查找第 N 个字符时需要`O(N)` 的时间，也就是说，字符串越长，就需要更长的时间来查找其中的每个字符。其次是在对字节流解码、字符编码时，需要遵循上面两条规则，比 UTF-16、UTF-32 略麻烦。
 
-随着互联网的兴起，UTF-8 是逐渐成为使用范围最广的编码方案。
-<img src="https://img.alicdn.com/imgextra/i3/581166664/TB2XnsQhpXXXXXUXXXXXXXXXXXX_!!581166664.png" alt=" UnicodeGrow2b.png"/>
+随着互联网的兴起，UTF-8 是逐渐成为使用范围最广的编码方案。下图为 Google 在 2010 年初做的[统计](http://googleblog.blogspot.com/2010/01/unicode-nearing-50-of-web.html)（链接需翻墙）
+<center>
+<img src="https://img.alicdn.com/imgextra/i2/581166664/TB2PjtzhVXXXXbnXXXXXXXXXXXX_!!581166664.png_620x10000.jpg" alt=" Growth_of_Unicode_on_the_Web"/>
+</center>
+由于 Google 的爬虫遍布全世界，这个数据可信度比较高。
 
 ### UCS
 
@@ -176,7 +237,7 @@ xxd encoding_test.bin | vim -
 ```
 $ cat str.py
 #!/usr/bin/env python
-a = "众人过"
+a = "中国人"
 
 $ python str.py
   File "str.py", line 2
@@ -216,7 +277,7 @@ XML 使用属性标注其编码
 
 ## 总结
 
-这篇文章我用了周末 2 天时间才完成，在 wiki 上搜索的资料时，需要消耗较大精力去整理，因为各个编码都不是孤立存在的，要想完整了解某编码，需要从起发展历史开始，在不同编码条目间来回切换，才能对其有深入理解。这是我意料之外的。
+这篇文章第一次写用了周末 2 天时间才完成，在后面陆陆续续又增删了不少，我只能说真是长见识了。在 wiki 上搜索的资料时，需要消耗较大精力去整理，因为各个编码都不是孤立存在的，要想完整了解某编码，需要从起发展历史开始，在不同编码条目间来回切换，才能对其有深入理解。这是我意料之外的。
 
 字符串，这个既熟悉又陌生的东西，相信大家在看本文后，大家都能够对其有一全新的认识。
 
