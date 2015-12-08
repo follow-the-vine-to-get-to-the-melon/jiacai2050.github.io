@@ -53,6 +53,14 @@ date: 2014-08-08 07:48:37
 * [NathanMarz][] Cascalog与Storm作者
 * [Mozilla Labs](https://mozillalabs.com/en-US/) Welcome to the edge of the Web.
 
+更新日志
+====
+
+- 2015-11-30，由多说评论迁移至 [disqus](https://disqus.com/)
+- 2014-08-10，使用 CNAME 自定义域名 [liujiacai.net](http://liujiacai.net)
+- 2014-08-08，由 octopress 迁移至 [hexo](https://hexo.io/)
+- 2014-05-07，开启个人博客之旅。使用 [octopress](http://octopress.org/) 制作
+
 [Matrix67]: http://www.matrix67.com/blog/
 [yinwang]: http://www.yinwang.org/
 [authority]: http://www.yinwang.org/blog-cn/2014/01/04/authority/

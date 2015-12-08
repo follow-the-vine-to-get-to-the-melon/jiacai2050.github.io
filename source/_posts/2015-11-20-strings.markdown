@@ -56,7 +56,7 @@ Windows-1252 与 ISO-8859-1 的主要不同在于 0x80 到 0x9F 之间的字符�
 
 我们平时说的 ASCII 其实有两个含义，一个是 ASCII 字符集，另一个是 ASCII 编码。
 
-> ASCII 字符集只是定义了字符与字符码（character code）的对应关系。也就是说这一层面只是规定了字符`A`用 65 表示，至于这个 65 在内存或硬盘中怎么表示，它不管，那是 ASCII 编码做的事。
+> ASCII 字符集只是定义了字符与字符码（character code，也称 code point 代码点）的对应关系。也就是说这一层面只是规定了字符`A`用 65 表示，至于这个 65 在内存或硬盘中怎么表示，它不管，那是 ASCII 编码做的事。
 
 > ASCII 编码规定了用 7 个二进制位来保存 ASCII 字符码，即定义了字符集的`存储形式`。
 
@@ -67,7 +67,16 @@ Windows-1252 与 ISO-8859-1 的主要不同在于 0x80 到 0x9F 之间的字符�
 
 关于数据校验，我这里不打算展开讲，感兴趣的可以参考 [Error detection and correction](https://en.wikipedia.org/wiki/Error_detection_and_correction)。
 
-我们这里只需要知道，当我们说 ASCII 时，其有两层含义就够了。
+为了让大家更清楚的明白这两者以及相关概念的关系，我画了图，便于大家理解。
+<center>
+![字符、代码点、二进制字节关系图](https://img.alicdn.com/imgextra/i1/581166664/TB2bda5iXXXXXbHXpXXXXXXXXXX_!!581166664.png)
+</center>
+
+- `Character 字符`。即我们看到的单个符号，像“A”、“啊”等
+- `Code point 代码点`。一个无符号数字，通常用16进制表示。代码点与字符的一一对应关系称为字符集（Character Set），这种对应关系肯定不止一种，也就导致了不同字符集的出现，像 ASCII、ISO-8859-1、GB2312、GBK、Unicode 等。
+- `Bytes 二进制字节`。其含义为代码点在内存或磁盘中的表示形式。代码点与二进制字节的一一对应关系称为编码（Encoding），当然这种对应关系也不是唯一的，所以编码也有很多种，像 ASCII、ISO-8859-1、ENC-CN、GBK、UTF-8等。
+
+> 上面这个图基本把我们平时经常混淆的概念清晰地区分开了，大家一定要充分理解并牢记于心。
 
 ### 多字节编码
 
