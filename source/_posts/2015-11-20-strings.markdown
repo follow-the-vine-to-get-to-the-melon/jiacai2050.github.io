@@ -165,7 +165,8 @@ UTF-8 的一劣势是查找第 N 个字符时需要`O(N)` 的时间，也就是�
 
 [UCS](https://en.wikipedia.org/wiki/Universal_Coded_Character_Set) 全称是 **Universal Coded Character Set**，是由 [ISO/IEC 10646](https://en.wikipedia.org/wiki/ISO/IEC_10646)定义的一套标准字符集，是很多字符编码的基础，UCS 中大概包含 100,000 个抽象字符，每一个字符都有一唯一的数字编码，称为 code point。
 
-在19世纪八十年代晚期，有两个组织同时在 UCS 的基础上开发一种与具体语言无关的统一的编码方案，这两个组织分别是 [IEEE](https://en.wikipedia.org/wiki/IEEE) 与 [Unicode Consortium](https://en.wikipedia.org/wiki/Unicode_Consortium)，为了保持这两个组织间编码方案的兼容性，两个组织尝试着合作。早期的两字节编码方案叫做“Unicode”，后来改名为“UCS-2”，在研发过程发，发现 16 位根本不能够囊括所有字符，于是 IEEE 引入了新的编码方案——UCS-4 编码，这种编码每个字符需要 4 个字节，这一行为立刻被 Unicode Consortium 制止了，因为这种编码太浪费空间了，又因为一些设备厂商已经对 2 字节编码技术投入大量成本，所以在 1996 年 7 月发布的 Unicode 2.0 中提出了 UTF-16 来打破 UCS-2 与 UCS-4 之间的僵局，UTF-16 在 2000 年被 [IEFE](https://en.wikipedia.org/wiki/IETF) 组织制定为[RFC 2781](https://tools.ietf.org/html/rfc2781)标准。
+在19世纪八十年代晚期，有两个组织同时在 UCS 的基础上开发一种与具体语言无关的统一的编码方案，这两个组织分别是 [IEEE](https://en.wikipedia.org/wiki/IEEE) 与 [Unicode Consortium](https://en.wikipedia.org/wiki/Unicode_Consortium)，为了保持这两个组织间编码方案的兼容性，两个组织尝试着合作。早期的两字节编码方案叫做“Unicode”，后来改名为“UCS-2”，在研发过程发，发现 16 位根本不能够囊括所有字符，于是 IEEE 引入了新的编码方案——UCS-4 编码，这种编码每个字符需要 4 个字节，这一行为立刻被 Unicode Consortium 制止了，因为这种编码太浪费空间了，又因为一些设备厂商已经对 2 字节编码技术投入大量成本，所以在 1996 年 7 月发布的 Unicode 2.0 中提出了 UTF-16 来打破 UCS-2 与 UCS-4 之间的僵局，UTF-16 在 2000 年被 [IEFE](https://en.wikipedia.org/wiki/IETF) 组织制定为[RFC 2781](https://tools.ietf.org/html/rfc2781)标准。更多可参考：
+- [Q: What is the difference between UCS-2 and UTF-16?](http://unicode.org/faq/utf_bom.html#utf16-11)
 
 由此可见，`UCS-*` 编码是一历史产物，目前来说，统一编码方案最终的赢家是 `UTF-*` 编码。
 
@@ -238,11 +239,14 @@ xxd encoding_test.bin | vim -
 <img src="https://img.alicdn.com/imgextra/i1/581166664/TB2RigHhpXXXXb5XpXXXXXXXXXX_!!581166664.png" alt="以16进制显示的memory dump"/>
 其中我用红框标注部分就是上面 EncodingTest 类中字符串`s`的内容，`4e2d`是“中”的 code point，`56fd`是“国”的 code point， `4eba`是“人”的 code point，`0061`是“a”的 code point。而在 UTF-16 编码中，0-66535之间的字符直接用两个字节存储，这也就证明了 Java 中的 `Character` 是使用 UTF-16 编码的。
 
+关于 Java 支持的所有编码，可以在 Oracle 官方文档 [Supported Encodings](https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html)中找到。
+
 #### Python
 
-首先说下 Python 解释器如何解析 Python 源程序。
+##### Python 解释器
+首先说下 Python 解释器如何读取、解析 Python 源程序。
 
-在 Python 2 中，Python 解析器默认用 ASCII 编码来读取源程序，当程序中包含非 ASCII 字符时，解释器会报错，下面实验在我 Mac 上用 python 2.7.6 进行：
+在 Python 2 中，Python 解析器默认用 ASCII 编码（而非系统默认编码）来读取源程序，当程序中包含非 ASCII 字符时，解释器会报错，下面实验在我 Mac 上用 python 2.7.6 进行：
 ```
 $ cat str.py
 #!/usr/bin/env python
@@ -256,11 +260,91 @@ SyntaxError: Non-ASCII character '\xe4' in file str.py on line 2, but no encodin
 
 Python 3 中改变了这一行为，解析器默认采用 UTF-8 解析源程序。
 
-按理接下来应该介绍 Python 中对字符的处理了，但是发现这里面东西太多了，介于本文篇幅原因，这里不再介绍，后面有空可以单独写篇文件介绍。大家感兴趣的可以参考下面的文章：
+##### str 类型
+
+下面介绍 Python 2/3 中对字符的处理。
+
+Python 2 中字符字面量（即 str 类型）表示的是`byte string`，也就是说`foo = "abc"`这一赋值语句表示的是把`a、b、c`所对应的 ASCII 码赋值给变量`foo`，也就是说在 Python 2 中，str 类型直接保存的是字符的 ASCII 码。在 Python 2如果想表示 Unicode 字符，需要在字符前面加`u`，像`foo = u"abc"`，此时保存的就不是字符的 ASCII 码了。
+
+Python 3 中改变了这一行为，字符字面量直接表示为 Unicode 字符，引入以“字节”类型表示 Python 2 中的 str 类型，根据[PEP-0393](https://www.python.org/dev/peps/pep-0393/#specification)，Python 3 内部采用多种编码方案，而不仅仅是单单一种（细节可以参考[c-api/unicode](https://github.com/python/cpython/blob/1fe0fd9feb6a4472a9a1b186502eb9c0b2366326/Doc/c-api/unicode.rst)），这么做是权衡字符存储空间与字符操作速度后的结果，下面给出 CPython 中相关的定义：
+```
+typedef struct {
+  PyObject_HEAD
+  Py_ssize_t length;
+  Py_hash_t hash;
+  struct {
+      unsigned int interned:2;
+      unsigned int kind:2;
+      unsigned int compact:1;
+      unsigned int ascii:1;
+      unsigned int ready:1;
+  } state;
+  wchar_t *wstr;
+} PyASCIIObject;
+
+typedef struct {
+  PyASCIIObject _base;
+  Py_ssize_t utf8_length;
+  char *utf8;
+  Py_ssize_t wstr_length;
+} PyCompactUnicodeObject;
+
+typedef struct {
+  PyCompactUnicodeObject _base;
+  // 可以看到，这里用了 union 类型，实际中 data 的类型为四种中的一个
+  // 同时，这里的 ucs2 相当于 utf-16；ucs4 相当于 utf-32
+  union {
+      void *any;
+      Py_UCS1 *latin1;
+      Py_UCS2 *ucs2;
+      Py_UCS4 *ucs4;
+  } data;
+} PyUnicodeObject;
+```
+我们也可以做个实验验证 Python 中 Unicode 的存储方案：
+```
+$ python3
+Python 3.5.0 (v3.5.0:374f501f4567, Sep 12 2015, 11:00:19)
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> a  = "中国人"
+>>> import ctypes
+>>> import binascii
+>>> binascii.hexlify(ctypes.string_at(id(a), a.__sizeof__()))
+b'010000000000000020c52200010000000300000000000000cfb73264f62ba107a81c22000100000000000000000000000000000000000000000000000
+000000000000000000000002d4efd56ba4e0000'
+>>> binascii.hexlify(a.encode('utf-16'))
+b'fffe2d4efd56ba4e'
+```
+`fffe`是 UTF-16 的 BOM，表明我的Mac是小端模式。随后的`2d4e`表示`中`；`fd56`表示`国`；`ba4e`表示`人`，最后的`0000`表明 Python 中的字符串和 C 语言中的一样，用`\0`标明字符的结尾。
+如果你比较细心，可能会发现 CPython 中字符相关的结构体中包含了`length`这一字段了，为什么这里又多此一举，加个尾标呢？其实这主要是为了Python 与 C 的交互，有了`\0`，Python 就可以直接读取 C 中的字符，也可以直接将 Python 中的字符直接传给 C 了。
+
+参考：
 - [More About Unicode in Python 2 and 3](http://lucumr.pocoo.org/2014/1/5/unicode-in-2-and-3/)
+- [ Python3 的 str 底层是用什么编码储存的？](http://v2ex.com/t/247821)
 
 #### JavaScript
 
+JavaScript 遵循 ECMAScript 规范，在 [ECMAScript 5.1](http://es5.github.io/x2.html#x2) 中有下面的定义：
+> A conforming implementation of this International standard shall interpret characters in conformance with the Unicode Standard, Version 3.0 or later and ISO/IEC 10646-1 with either UCS-2 or UTF-16 as the adopted encoding form, implementation level 3. If the adopted ISO/IEC 10646-1 subset is not otherwise specified, it is presumed to be the BMP subset, collection 300. If the adopted encoding form is not otherwise specified, it is presumed to be the UTF-16 encoding form.
+
+也就是说 JavaScript 解释器的实现，即可以用 UCS-2 也可以用 UTF-16，但是考虑到 UTF-16 是 UCS-2 的超集，所以现在浏览器中的 JavaScript 引擎都用 UTF-16 存储字符串。
+我这里做了个实验验证 Nodejs 中字符的存储方案：
+```
+# 1. 安装这个模块
+npm install heapdump
+# 2. 写个简单的程序
+var heapdump = require('heapdump');
+var a = "中国人";
+heapdump.writeSnapshot('str_test.heapsnapshot');
+# 3. 执行上面的程序后，找个二进制编辑器，打开生成的内存快照文件。我这里用了 xxd
+xxd str_test.heapsnapshot | vim -
+```
+![Nodejs 字符内存快照](https://img.alicdn.com/imgextra/i1/581166664/TB2yyi9jXXXXXauXXXXXXXXXXXX_!!581166664.png)
+
+上图中的`\u4E2D`即为“中”，在内存中的字节序为`5c75 3445 3244`，这一串数字是`\u4E2D`的 ASCII 码。
+
+参考：
 - [JavaScript’s internal character encoding: UCS-2 or UTF-16?](https://mathiasbynens.be/notes/javascript-encoding)
 
 ### HTML/XML

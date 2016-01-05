@@ -1,13 +1,12 @@
 title: MacBook 初体验
 date: 2014-11-23 20:40:07
-tags: mac
 categories: 热爱生活
 
 ---
 
 这个周末终于入手MacBook-Retina了，我觉得每个屌丝在购买这么好（gui）的产品时应该都会再三考虑吧。我的初衷也很简单，一直在用的lenovo z460已经四年了，最近在用时风扇呼呼的，只开个浏览器都觉得有些卡了，在加上老话说的"工欲善其事，必先利其器"、"如果你有两个选择，那么就选择那个成本高的"，正好还可以用同学的学生证搞个教育优惠，于是这周六就去南京路的苹果店潇洒了一把。
 
-上面扯蛋完毕。下面我想说下，作为一个从Windows转到Linux的用户，如何把玩Macbook，不至于产生"为什么XX上有，Mac上为什么没有"的尴尬问题。当然我也是刚接触，也在慢慢熟悉中，如果那里说的不对，欢迎大家斧正。
+上面扯蛋完毕。下面我想说下，作为一个从Windows转到Linux的用户，如何把玩Macbook，不至于产生"为什么XX上有，Mac上为什么没有"的尴尬问题。当然我也是刚接触，也在慢慢熟悉中，后面有更好的最佳实践我会更新文章，希望对初入 Mac 的你有些许帮助。😊
 
 ##Mac OS 简介
 
@@ -47,12 +46,6 @@ alias ls='ls -FG'
 alias ll='ls -l'
 ```
 
-###iTerm.app
-
-Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了[iTerm](http://iterm2.com/)，这个终端可以很方便的用快捷键来达到分屏（CMD+D）、开多个Tab(CMD+T)、在多个Tab之间进行切换(CMD+数字)，其中有一点不好的是不能按字移动，如果我们在终端上键入"OPTION+向左键"，会输入一个特殊字符，我们需要自定义两个Action为Send Escape Sequence的快捷键，效果如下图：
-<img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2hTnsbXXXXXbpXXXXXXXXXXXX_!!581166664.png" alt=" iterm2"/>
-我这里把向前按字移动设为了"OPTION+CMD+向左键"，向后按字移动设为了"OPTION+CMD+向右键"
-
 ###JAVA_HOME
 
 Mac下的使用*dmg方式安装JDK后，JAVA_HOME在那里呢，这对于Linux下使用tar包安装的人可傻眼了，设置JAVA_HOME可参考下面的命令
@@ -61,7 +54,7 @@ export JAVA_HOME="$(/usr/libexec/java_home)"
 ```
 可以看到，其实就是通过执行`/usr/libexec/java_home`这个命令来获取JAVA_HOME
 
-###修改hostname
+### 修改hostname
 
 Mac下修改hostname也和Linux下不同，命令是
 ```
@@ -73,9 +66,9 @@ sudo scutil --set HostName <name>
 system_profiler SPUSBDataType
 ```
 
-##软件的安装与删除
+## 常用软件
 
-我们用的软件都在`/Applications`下，每个应用程序就是一个单独的文件夹，我们常用的eclipse、sublime、iTerm之类的软件，下载tar包解压后直接放到里面就可以了。
+我们用的软件都在`/Applications`下，每个应用程序就是一个单独的文件夹，我们常用的eclipse、sublime、iTerm之类的软件，下载压缩包解压后直接放到里面就可以了。
 删除直接把对应文件夹删除即可，但是需要注意一点的时，应用程序一般都会有些历史文件，存放的位置是
 - `~/Library/Application Support/<Application name>`
 - `~/Library/Cache/<Application name>`
@@ -83,18 +76,27 @@ system_profiler SPUSBDataType
 大家使用`find + grep`的方式就能轻松找出来了。
 网上也有诸如[AppCleaner](http://appcleaner.en.softonic.com/mac)、[AppZapper](http://www.appzapper.com/)的小软件，大家可以根据需要自取之。
 
-###Finder
-Finder是Mac上的文件浏览器，功能很是强大，其中有个比较严重的问题时，没有“剪贴(cut)”功能，当我们选中一个文件后，菜单中的“Edit”->“Cut”是灰色的，也就是无法使用，这是因为Finder中的“Cut”只适用于文本，对于文件就无能为力了。
-我们当然可以通过打开两个Finder窗口，然后“拖”过去。但是这样未免太麻烦了，其实我们可以这么做：
-1. 首先`Cmd + C`复制文件
-2. 然后找到你想要放到文件夹
-3. 最后`Cmd + Option + V`就能实现“剪贴”的效果了。
+下面介绍下我日常编程、娱乐时的一些免费软件，供大家参考。
 
-参考：[Why is it not possible to use the “cut” command to manipulate a file in the Finder?](http://apple.stackexchange.com/questions/12391/why-is-it-not-possible-to-use-the-cut-command-to-manipulate-a-file-in-the-find)
+### 文本编辑器 [Sublime](https://www.sublimetext.com/3)
 
-###图片截屏、编辑
+小巧强大的文本编辑器，一直用的很爽，上手很快，功能强大，谁用谁知道。
+这里主要说下我最长用的两个常用快捷键在Mac上的操作：
 
-Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用[snip](http://snip.qq.com/)，才2M大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是`Cmd + Shift + 6`。
+- Multiple Selection `Control+Command+G`（在 Linux/Windows 下，是`Alt+F3`）
+- 选中多行 `Shift+Command+L`
+
+### 终端 [iTerm 2](http://iterm2.com/)
+
+Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了 iTerm2，这个终端可以很方便的用快捷键来达到分屏（CMD+D）、开多个Tab(CMD+T)、在多个Tab之间进行切换(CMD+数字)，其中有一点不好的是不能按字移动，如果我们在终端上键入"OPTION+向左键"，会输入一个特殊字符，我们需要自定义两个Action为Send Escape Sequence的快捷键，效果如下图：
+![iTerm2](http://img01.taobaocdn.com/imgextra/i1/581166664/TB2hTnsbXXXXXbpXXXXXXXXXXXX_!!581166664.png)
+我这里把向前按字移动设为了"OPTION+CMD+向左键"，向后按字移动设为了"OPTION+CMD+向右键"
+
+当然，说到了 iTerm2，不得不提到终端复用软件 [tmux](https://tmux.github.io/)，tmux 默认配置文件在 Mac 上很别扭，你可以参考我这里的[配置文件](https://github.com/jiacai2050/code-wheels/blob/master/config/.tmux.conf)，这样 tmux 就可以像 vim 一样实现各种分屏的效果了。如果你还不知道 tmux 为何物，强烈推荐你看这个13分钟的[视频](http://pan.baidu.com/s/1gdLZzB9)，绝对物超所值，感谢 [happypeter](http://haoduoshipin.com/u/happypeter) 的分享。
+
+###图片截屏、编辑 [Snip](http://snip.qq.com/)
+
+Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用 Snip，才 2M 大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是`Cmd + Shift + 6`。
 更重要的一点是，snip可以解决Retina下截屏2x问题（就是截出来的图超大），就光这个特点就足以让你使用snip。
 <center>
 <img width="500px" src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2UXoxbFXXXXXnXXXXXXXXXXXX_!!581166664.png" alt="我的snip配置"/>
@@ -105,11 +107,18 @@ Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是�
 </center>
 如果你依赖于Evernote，可以试试[圈点](https://www.yinxiang.com/skitch/)，洋名skitch，同样很好很强大。
 
+###流程图制作工具
+
+对于程序员来说，流程图应该是再亲切不过的了，一张图胜过千言万语。之前我都是用 Keynote 来画，但是实在是不好用，后来在[知乎](https://www.zhihu.com/question/19588698)上发现了在线版的[ProcessOn](https://www.processon.com/)，大大减少了我画流程图的时间，上手也比较快。
+
 ###视频播放器
 
-Mac下的自带的播放器QuickTime，功能实在是太弱了，支持的格式既少又难用，快进什么的貌似都没快捷键，只能手动点击进度条。
-不过幸好的是有Mplayer，在ubuntu上用的一直就是它，mac下当然也是了。
-官方地址：http://mplayerosx.ch/
+Mac下的自带的播放器QuickTime，功能实在是太弱了，支持的格式既少又难用，快进什么的貌似都没快捷键，只能手动点击进度条，试用了一段时间的[Mplayer](http://mplayerosx.ch/)，发现效果也不好，会有视频卡顿的现象，最终选择了 [VLC](http://www.videolan.org/vlc/download-macosx.html)，一直用的还不错。
+
+
+###音乐频播放器
+
+官方的 iTunes 实在是不适应，喜欢简洁清爽的朋友可以试试 [VOX](http://coppertino.com/)
 
 ### *.webarchive
 
@@ -126,7 +135,7 @@ http://sourceforge.net/projects/webarchivext/
 - 锁屏   `Shift + Control + 电源键` （Windows 下为`Win+L`）
 - 强制关闭程序 `Command + Option + esc`（Windows 下为`Ctrl+Alt+Delete`）
 
-###Bash （并不限于 mac，linux也可以）
+###Bash
 
 我们在终端中输入命令时，移动光标有两种方式，一个是 emacs，一个 vi，可以通过 set 命令来设置，默认的是 emacs 模式，也可以通过`set -o emacs`来显式设置，有如下快捷键：
 - `ctrl + a`  Move cursor to beginning of line
@@ -161,19 +170,23 @@ http://sourceforge.net/projects/webarchivext/
 - `Control + r` 搜索历史命令
 - `!!` 执行上条命令
 
-###Sublime
+###Finder
+Finder是Mac上的文件浏览器，其中有个比较严重的问题时，没有“剪贴(cut)”功能，当我们选中一个文件后，菜单中的“Edit”->“Cut”是灰色的，也就是无法使用，这是因为Finder中的“Cut”只适用于文本，对于文件就无能为力了。
+我们当然可以通过打开两个Finder窗口，然后“拖”过去。但是这样未免太麻烦了，其实我们可以这么做：
+1. 首先`Cmd + C`复制文件
+2. 然后找到你想要放到文件夹
+3. 最后`Cmd + Option + V`就能实现“剪贴”的效果了。
 
-这里主要说下几个常用快捷键在Mac上的操作：
+参考：[Why is it not possible to use the “cut” command to manipulate a file in the Finder?](http://apple.stackexchange.com/questions/12391/why-is-it-not-possible-to-use-the-cut-command-to-manipulate-a-file-in-the-find)
 
-- Multiple Selection `Control+Command+G`（在 Linux/Windows 下，是`Alt+F3`）
 
-- 选中多行 `Shift+Command+L`
-
-##FileSystem
+## FileSystem
 
 ### 目录结构
+
 尽管Mac的文件系统目录和*nix差不多，但还是有些差距，可参考下面的表格：
-<img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2SgzpbXXXXXbSXpXXXXXXXXXX_!!581166664.png" alt=" Mac-FileSystem"/>
+![Mac-FileSystem](http://img04.taobaocdn.com/imgextra/i4/581166664/TB2SgzpbXXXXXbSXpXXXXXXXXXX_!!581166664.png)
+
 
 ### NTFS
 
@@ -184,13 +197,11 @@ http://sourceforge.net/projects/webarchivext/
 
 ##总结
 
-Mac的Retina屏幕真是无与伦比，虽说一开始需要适应适应软件、键盘的操作，但我相信，Mac绝对不会让你失望的，不是有句话嘛：
+Mac 的 Retina 屏幕真是无与伦比，虽说系统一开始需要适应，但我相信，Mac Pro 绝对不会让你失望的，不是有句话嘛：
 
 > Once you get Mac, you never come back!
 
-毕竟刚用Mac两天，很多Mac的特性都还不知道，随着今后的使用，我会在更新文章，与大家分享使用Mac的心得的~~
-
-##其他参考
+## 参考
 
 - [OS X 的一些技巧汇总](http://havee.me/mac/2014-01/os-x-tips-and-tricks.html)
 
