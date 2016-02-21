@@ -106,7 +106,7 @@ tags: sicp
 ![带首尾指针的队列](https://img.alicdn.com/imgextra/i3/581166664/TB27OhWiVXXXXcjXpXXXXXXXXXX_!!581166664.png)
 </center>
 
-队列是一个“先进后出”的数据结构，这里主要是引入首尾指针的思想来加速对队列末端的访问。队列的实现可以参考我 Github 库的[/exercises/03/lib/queue.scm](https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/queue.scm)。
+队列是一个“先进先出”的数据结构，这里主要是引入首尾指针的思想来加速对队列末端的访问。队列的实现可以参考我 Github 库的[/exercises/03/lib/queue.scm](https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/queue.scm)。
 其中[习题3.23](https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.23.md)让我们实现一双向链表，一种很实用的队列的变种，大家一定要自己做一下。
 
 ### 表格

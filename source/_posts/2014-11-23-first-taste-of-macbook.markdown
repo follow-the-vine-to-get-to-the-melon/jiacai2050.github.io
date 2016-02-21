@@ -1,10 +1,10 @@
-title: MacBook 初体验
+title: MacBook 最佳实践
 date: 2014-11-23 20:40:07
 categories: 热爱生活
 
 ---
 
-这个周末终于入手MacBook-Retina了，我觉得每个屌丝在购买这么好（gui）的产品时应该都会再三考虑吧。我的初衷也很简单，一直在用的lenovo z460已经四年了，最近在用时风扇呼呼的，只开个浏览器都觉得有些卡了，在加上老话说的"工欲善其事，必先利其器"、"如果你有两个选择，那么就选择那个成本高的"，正好还可以用同学的学生证搞个教育优惠，于是这周六就去南京路的苹果店潇洒了一把。
+这个周末终于入手 [MacBook Pro](http://www.apple.com/macbook-pro/) 了，我觉得每个屌丝在购买这么好（gui）的产品时应该都会再三考虑吧。我的初衷也很简单，一直在用的lenovo z460已经四年了，最近在用时风扇呼呼的，只开个浏览器都觉得有些卡了，在加上老话说的"工欲善其事，必先利其器"、"如果你有两个选择，那么就选择那个成本高的"，正好还可以用同学的学生证搞个教育优惠，于是这周六就去南京路的苹果店潇洒了一把。
 
 上面扯蛋完毕。下面我想说下，作为一个从Windows转到Linux的用户，如何把玩Macbook，不至于产生"为什么XX上有，Mac上为什么没有"的尴尬问题。当然我也是刚接触，也在慢慢熟悉中，后面有更好的最佳实践我会更新文章，希望对初入 Mac 的你有些许帮助。😊
 
@@ -94,10 +94,10 @@ Mac自带的终端不是很强，程序员们需要一个强劲的终端来工�
 
 当然，说到了 iTerm2，不得不提到终端复用软件 [tmux](https://tmux.github.io/)，tmux 默认配置文件在 Mac 上很别扭，你可以参考我这里的[配置文件](https://github.com/jiacai2050/code-wheels/blob/master/config/.tmux.conf)，这样 tmux 就可以像 vim 一样实现各种分屏的效果了。如果你还不知道 tmux 为何物，强烈推荐你看这个13分钟的[视频](http://pan.baidu.com/s/1gdLZzB9)，绝对物超所值，感谢 [happypeter](http://haoduoshipin.com/u/happypeter) 的分享。
 
-###图片截屏、编辑 [Snip](http://snip.qq.com/)
+###图片截屏、编辑
 
 Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用 Snip，才 2M 大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是`Cmd + Shift + 6`。
-更重要的一点是，snip可以解决Retina下截屏2x问题（就是截出来的图超大），就光这个特点就足以让你使用snip。
+更重要的一点是，[Snip](http://snip.qq.com/) 可以解决Retina下截屏2x问题（就是截出来的图超大），就光这个特点就足以让你使用snip。
 <center>
 <img width="500px" src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2UXoxbFXXXXXnXXXXXXXXXXXX_!!581166664.png" alt="我的snip配置"/>
 </center>
@@ -106,6 +106,14 @@ Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是�
 <img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2KtMobFXXXXXkXpXXXXXXXXXX_!!581166664.png" alt="Preview工具栏"/>
 </center>
 如果你依赖于Evernote，可以试试[圈点](https://www.yinxiang.com/skitch/)，洋名skitch，同样很好很强大。
+
+###录屏 gif
+
+很多时候我们需要把自己的操作展示给别人看，比较好的做法是通过录屏软件将自己的操作保存成 gif 格式的图片。
+[开源免费](https://github.com/lepht/licecap)的[licecap](http://www.cockos.com/licecap/) 很好的解决了这个问题。
+
+![使用 licecap 制作的例子](http://ww3.sinaimg.cn/mw690/5fee18eegw1f17799uiz1g20ci0cijs2.gif)
+
 
 ###流程图制作工具
 
@@ -143,7 +151,7 @@ http://sourceforge.net/projects/webarchivext/
 - `meta + b`  Move cursor back one word
 - `meta + f`  Move cursor forward one word
 - `ctrl + w`  Cut the last word
-- `ctrl + u`  Cut everything before the cursor 
+- `ctrl + u`  Cut everything before the cursor
 - `ctrl + k`  Cut everything after the cursor
 - `ctrl + y`  Paste the last thing to be cut
 - `ctrl + _`  Undo
@@ -154,7 +162,7 @@ http://sourceforge.net/projects/webarchivext/
 - `h`   Move cursor left
 - `l`   Move cursor right
 - `A`   Move cursor to end of line and put in insert mode
-- `0`   (zero) Move cursor to beginning of line (doesn't put in insert mode) 
+- `0`   (zero) Move cursor to beginning of line (doesn't put in insert mode)
 - `i`   Put into insert mode at current position
 - `a`   Put into insert mode after current position
 - `dd`  Delete line (saved for pasting)
@@ -204,4 +212,3 @@ Mac 的 Retina 屏幕真是无与伦比，虽说系统一开始需要适应，�
 ## 参考
 
 - [OS X 的一些技巧汇总](http://havee.me/mac/2014-01/os-x-tips-and-tricks.html)
-
