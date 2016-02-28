@@ -1,7 +1,7 @@
 title: 编程语言的基石——Lambda calculus
 date: 2014-10-12 10:16:42 +0800
 categories: 理解计算机
-tags: lambda
+tags: [lambda, lisp]
 ---
 
 Lambda calculus我们一般称为[λ演算](http://en.wikipedia.org/wiki/Lambda_calculus)，最早是由[邱奇（Alonzo Church，图灵的博导）](http://en.wikipedia.org/wiki/Alonzo_Church)在20世纪30年代引入，当时的背景是解决[函数可计算的本质](http://en.wikipedia.org/wiki/Computable_function)性问题，初期λ演算成功的解决了在可计算理论中的[判定性问题](http://en.wikipedia.org/wiki/Entscheidungsproblem)，后来根据[Church–Turing thesis](http://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis)，证明了λ演算与图灵机是等价的。
@@ -54,7 +54,7 @@ add(4)(3) //return 7
 如果用函数式语言clojure来表示就是：
 ```
 (defn add [x]
-  (fn [y] (+ x y))) 
+  (fn [y] (+ x y)))
 
 ((add 4) 3) ;return 7
 ```    
@@ -109,7 +109,7 @@ add(4)(3) //return 7
 
 ##λ演算与编程语言的关系
 
-在λ演算中只有函数（变量依附于函数而有意义），如果要用纯λ演算来实现一门编程语言的话，我们还需要一些数据类型，比如boolean、number、list等，那怎么办呢？ 
+在λ演算中只有函数（变量依附于函数而有意义），如果要用纯λ演算来实现一门编程语言的话，我们还需要一些数据类型，比如boolean、number、list等，那怎么办呢？
 λ的强大又再一次展现出来，所有的数据类型都能用函数模拟出来，秘诀就是
 `不要去关心数据的值是什么，重点是我们能对这个值做什么操作`，然后我们用合法的λ表达式把这些操作表示出来即可。
 
@@ -150,7 +150,7 @@ Answer：我们能够选择pair中的任意一个元素
 
 这里用到了true与false的编码。解释一下：
 pair就是这么一个函数，参数是一个boolean值，根据这个参数确定返回值。还是看例子：
-    
+
     fst (mkpair x y)--->(mkpair x y) true--->true x y--->x   
 
 这样我们就能取到pair的第一个元素了。很好玩吧，下面的更有趣，继续
@@ -176,12 +176,12 @@ Answer：我们能够依次遍历这些数字
 
 然后，就可以定义加法与乘法了
 
-    add n1 n2 = n1 succ n2 
+    add n1 n2 = n1 succ n2
     mult n1 n2 = n1 (add n2) 0
 
 只看定义要想弄懂应该还是有些困难，下面看个具体的例子：
 
-    add 0 = 
+    add 0 =
     (λn1. λn2. n1 succ n2) 0  --->
     λn2. 0 succ n2 =
     λn2. (λf. λs. s) succ n2 --->
@@ -192,18 +192,18 @@ Answer：我们能够依次遍历这些数字
 
 哈哈，看来也不过如此嘛，如果你能看到这里，说明你已经对lambda掌握的差不多了。下面再来看个“难点”的例子——`1+1`：
 
-    add 1 1 ---> 
+    add 1 1 --->
     1 succ 1 --->
     succ 1 --->
     λf. λs. f (f s) ---> 2
 
 最后一个例子，`2*2`：
 
-    mult 2 2 ---> 
-    2 (add 2) 0 ---> 
+    mult 2 2 --->
+    2 (add 2) 0 --->
     (add 2) ((add 2) 0) --->
-    2 succ (add 2 0) ---> 
-    2 succ (2 succ 0) ---> 
+    2 succ (add 2 0) --->
+    2 succ (2 succ 0) --->
     succ (succ (succ (succ 0))) --->
     succ (succ (succ (λf. λs. f (0 f s)))) --->
     succ (succ (succ (λf. λs. f s))) --->
@@ -246,9 +246,12 @@ Answer：我们能够依次遍历这些数字
 
 我这里介绍的lambda calculus并不完全，只是其中的一部分，像[递归](http://en.wikipedia.org/wiki/Lambda_calculus#Recursion_and_fixed_points)这个重要的东西就没说，大家凭借兴趣再自己去看吧，我觉得我这篇文章就是个砖头，希望能引出大家的宝玉就好。
 
-我们现在的编程语言趋向于多范式化，像pyton、ruby的兴起就说明了这点。
+我们现在的编程语言趋向于多范式化，像python、ruby的兴起就说明了这点。
 因为纯函数式语言不能改变变量状态，这个恐怕在很多场合不适用吧。
 纯OO也不好，因为我们大多数程序员，都是用OO的语言来写过程式的程序，看看大家有多Helper类，Util类就明白了。
 
-最后，推荐王垠大神的一篇文章，以飨读者：
+有了对 lambda 的认识后，就可以尝试下一个主题了——Y 算子，下面给出我觉得讲解的最好的一篇文章：
+- [(译) The Y combinator (Slight Return)](http://shellfly.org/blog/2015/01/07/yi-the-y-combinator-slight-return/)
+
+最后，推荐王垠的一篇文章，以飨读者：
 - [面向对象编程和函数式编程的问题出在哪里？](http://geek.csdn.net/news/detail/3603)

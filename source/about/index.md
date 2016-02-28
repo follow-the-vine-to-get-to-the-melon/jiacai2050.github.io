@@ -10,8 +10,8 @@ date: 2014-08-08 07:48:37
     (university "烟台大学")
     (email "base64 -d <<< amlhY2FpMjA1MEBnbWFpbC5jb20K")
     (daydream "Make my codes run around the World, so keep writing")
-    (favorites 
-      (list 
+    (favorites
+      (list
         "不断在折腾ubuntu"
         "努力听古典" "http://v.youku.com/v_show/id_XNDc2MDU2ODE2.html"
         "乒乓球"
@@ -35,6 +35,7 @@ date: 2014-08-08 07:48:37
 
 - [JCScheme](https://github.com/jiacai2050/JCScheme) Java 写的一 Scheme 方言
 - [gooreplacer](http://liujiacai.net/gooreplacer) 一个用于替换网页中Google Fonts/APIS等的浏览器插件，让你快速打开引用这些资源的页面
+- [SICP 读书笔记](https://github.com/jiacai2050/sicp)：读书笔记与习题解答
 - [ImportNew 文章翻译](http://www.importnew.com/author/liujiacai)
 
 互联网纪录片

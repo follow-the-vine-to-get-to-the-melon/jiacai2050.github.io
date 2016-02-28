@@ -8,8 +8,8 @@ tags: sicp
 实现 JCScheme 这个语言前后大概用了一天时间，功能虽然简单，但是“麻雀虽小，五脏俱全”，编程语言中最基本的类型、作用域、函数都涵盖了，以后在扩展时也很方便。
 如果你和之前的我一样，想实现一门语言但又苦于无从下手，那么你应该花半个小时看看本文，相信你肯定会有所收获。
 本文没有复杂难懂的编译原理知识，没有学过编译原理的人不要害怕。
-JCScheme 完整代码托管到[Github](https://github.com/jiacai2050/JCScheme)，并且以后会持续更新，感兴趣的可以去 star。
 
+JCScheme 完整代码托管到我的 [Github](https://github.com/jiacai2050/JCScheme)，并且以后会持续更新，如果你先从无到有实现个语言可以关注这个项目。由于 JCScheme 一直在更新中，下面某些设计或链接可以会失效，所以还是建议你关注  Github 上的项目。
 
 ## 预备知识
 
@@ -194,7 +194,7 @@ eval、apply 这两个规则描述了求值过程的核心部分，也就是它�
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
                          env))
-        ((begin? exp) 
+        ((begin? exp)
          (eval-sequence (begin-actions exp) env))
         ((cond? exp) (eval (cond->if exp) env))
         ((application? exp)
@@ -245,7 +245,7 @@ public class SNumber extends SObject{
     public String toString() {
         return String.valueOf(value);
     }
-    
+
 }
 public class SBool extends SObject{
     private boolean value;
@@ -298,7 +298,7 @@ public class SFunction extends SObject{
         buffer.append(body.toString());
         return buffer.toString();
     }
-    
+
 }
 ```
 可以看到，`SFunction`内部有两个成员变量，用来表示其`参数列表`与`函数体`。其中的`apply`表示函数调用，可以看到无非就是把形式参数与实际参数进行捆绑（现在放到全局环境中，按理说这时应该生成一新环境，后面讲求值过程时会介绍改进版的SFunction），之后调用`SExpression`的`eval`方法，得到用内置类型表示的结果。
@@ -330,7 +330,7 @@ public class SFunction extends SObject{
     public Map<String, SObject> getEnv() {
         return env;
     }
-    // 在查找变量时，如何当前 scope 中没有，会沿着环境链，一直找到全局环境中 
+    // 在查找变量时，如何当前 scope 中没有，会沿着环境链，一直找到全局环境中
     public SObject findVariable(String var) {
         if (env.containsKey(var)) {
             return env.get(var);
@@ -351,7 +351,7 @@ public class SFunction extends SObject{
     public static Map<String, String> builtinFuncs = new HashMap<String, String>();
     public static Map<String, String> builtinKeywords = new HashMap<String, String>();
     // 省略一个内置函数、关键字的初始化
-    // ... 
+    // ...
 }
 public class SFunction extends SObject {
 
@@ -393,7 +393,7 @@ public class SFunction extends SObject {
             // only return last exp
             ret = body.get(bodySize - 1).eval();
         }
-        // GC will clean unused scope 
+        // GC will clean unused scope
         // 恢复函数调用之前的环境，相当于出栈
         SScope.current = originScope;
         return ret;
