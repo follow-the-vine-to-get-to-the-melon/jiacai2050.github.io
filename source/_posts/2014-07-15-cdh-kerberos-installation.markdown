@@ -3,7 +3,7 @@ layout: post
 title: "hadoop1.0 安全认证(kerberos)安装与总结"
 date: 2014-07-15 21:56:28 +0800
 comments: true
-categories: 开源软件
+categories: hadoop
 tags: hadoop
 list_number: false
 ---

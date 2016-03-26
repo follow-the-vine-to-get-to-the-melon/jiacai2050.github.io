@@ -3,7 +3,7 @@ layout: post
 title: "搜索引擎概貌"
 date: 2014-05-22 15:28:26 +0800
 comments: true
-categories: 开源软件
+categories: 搜索引擎
 tags: lucene
 list_number: false
 ---
@@ -126,4 +126,3 @@ PS: 在本文写作期间，katta貌似已经停止了更新，最后一次更�
 [katta]: http://katta.sourceforge.net/
 [es]: http://www.elasticsearch.com/
 [found]: https://www.found.no/
-

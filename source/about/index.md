@@ -33,10 +33,17 @@ date: 2014-08-08 07:48:37
 我的作品
 ====
 
-- [JCScheme](https://github.com/jiacai2050/JCScheme) Java 写的一 Scheme 方言
+- [JCScheme](https://github.com/jiacai2050/JCScheme) 另一个 Scheme 解释器，支持正则序与应用序两种求值方式
 - [gooreplacer](http://liujiacai.net/gooreplacer) 一个用于替换网页中Google Fonts/APIS等的浏览器插件，让你快速打开引用这些资源的页面
 - [SICP 读书笔记](https://github.com/jiacai2050/sicp)：读书笔记与习题解答
 - [ImportNew 文章翻译](http://www.importnew.com/author/liujiacai)
+
+我的分享
+===
+
+- [Lambda-calculus 介绍](http://pan.baidu.com/s/1sjYoG25)，第一次 2014-10-11，第二次 2015-08-03，关键字：Lambda、编程语言
+- [有赞客满总结](http://youzan.liujiacai.net)，2015-04-03，关键字：电商、去中心化
+- [Python 最佳实践](http://python-best-practice.liujiacai.net/)，2016-03-03，关键字：Python、编码风格
 
 互联网纪录片
 ====

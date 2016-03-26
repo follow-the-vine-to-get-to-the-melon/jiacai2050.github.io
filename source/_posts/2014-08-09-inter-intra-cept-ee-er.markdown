@@ -1,12 +1,12 @@
 title: inter- intra- cept -ee -er词缀讲解
 date: 2014-08-09 15:46:12 +0800
-categories: 爱好英语
+categories: 热爱生活
 ---
 
 故事是这么开始的，我遇到了inter-organizational与intra-organizational这么两个词组，其实也很好区分，前面是“不同组织之间的”，后者是“同一组织内部的”，搞计算机的应该知道有个叫intranet的网，它是与internet不一样的，专指企业内部网络。我这里想以这两个词缀为基准，展开一系列联想，学英语的乐趣不就在于此嘛。
 
 ##inter-
-a prefix occurring in loanwords from Latin, where it meant “between,” “among,” “in the midst of,” “mutually,” “reciprocally,” “together,” “during” 
+a prefix occurring in loanwords from Latin, where it meant “between,” “among,” “in the midst of,” “mutually,” “reciprocally,” “together,” “during”
 
 >intercept　拦截。在里面（inter）握住（cept），想想小时侯站在河里用手抓鱼的场景吧
 >>cept也是词根，意为take、hold、seize“拿，抓，握住”
@@ -55,9 +55,9 @@ a prefix meaning “within,” used in the formation of compound words
 > moonshiner烈酒走私者（是的，你没看错，moonshine除了月光外，还有妄想、私酒的意思，貌似后面这两个意思一般都是在有月光的大晚上干的哈）
 2. 从一些特征或环境来指明某人的身份
 > six-footer身高六英尺的人，六英尺长的东西
-> three-master 三桅的船； 三桅船 
-> teetotaler 绝对禁酒者，禁酒主义者 
-> fiver　<英·非正>五镑钞票a five-pound note；<美>五元钞a five-dollar bill. 
+> three-master 三桅的船； 三桅船
+> teetotaler 绝对禁酒者，禁酒主义者
+> fiver　<英·非正>五镑钞票a five-pound note；<美>五元钞a five-dollar bill.
 > tenner <美>十磅纸币，十元纸币
 3. 用于动词，表明动作具有反复的性质
 > flicker闪烁； 飘扬，摆动
@@ -68,5 +68,3 @@ a prefix meaning “within,” used in the formation of compound words
 ##单词参考
 1. http://dictionary.reference.com/
 2. http://www.iciba.com/
-
-

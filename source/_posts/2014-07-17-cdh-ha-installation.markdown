@@ -3,7 +3,7 @@ layout: post
 title: "hadoop1.0 高可靠性(HA)安装与总结"
 date: 2014-07-17 23:07:34 +0800
 comments: true
-categories: 开源软件
+categories: hadoop
 tags: hadoop
 ---
 继上次[安装完Kerberos安全认证](/blog/2014/07/15/cdh-kerberos-installation/)后，现在我在这基础上，又给CDH加上了HA（high availability），也就是高可靠性，具体来讲就是双NameNode，双Jobtracker（我还是在MRv1模式下），有了HA后，这下集群的健壮性就能够得到很好的保证了。

@@ -1,6 +1,6 @@
 title: 两个水壶问题
 date: 2014-08-16 13:04:37 +0800
-categories: Algorithm
+categories: 算法
 tags: gcd
 ---
 
@@ -30,15 +30,15 @@ tags: gcd
 大家从直观上也很好理解这个定理，两个数的线性组合肯定是能凑出它们的最大公约数的呀。
 
 也就是说，如果这里的a，b两个水壶的体积互质，可以测量出的水的范围x是
- 
+
 > 1<=x<=max(a,b)
- 
+
 很多题目出的时候（比如本题），一般也都会让a，b互质，因为这样更具有一般性。
 
 好了，现在我们知道在给定水壶容量为5升与6升的前提下，为什么能够测量出体积为3升的水了，下面就是如何如何操作了，处于21世纪的我们是幸运的，因为这个问题早在2000多年前，就被欧几里得给解决了。没错就是[辗转相除法](http://zh.wikipedia.org/wiki/%E8%BE%97%E8%BD%AC%E7%9B%B8%E9%99%A4%E6%B3%95)。这个方法大家早就在中学阶段就直接接触了，但这个算法本身所蕴涵的东西远比课本上那些公式来的深刻。但为了描述，还是要用公式，
 
 > gcd(a,b)=gcd(b,a-b) #这里假设a>b
- 
+
 上面这个就是辗转相除法的精髓，简洁(simple)巧妙(ingenious)，而这就是[优雅（elegant）](http://www.oxforddictionaries.com/us/definition/american_english/elegant?q=elegant)。
 
 把辗转相除法运用到我们的两个水壶a（6升），b（5升）上，就是不断把a的水向b里面倒，具体操作如下：
@@ -59,7 +59,7 @@ tags: gcd
 
 这个问题看似简单，但其实这涉及到我们对数字，负数一些本质上的理解，我这里有收藏的[Matrix67大神一个关于负数的视频](http://pan.baidu.com/s/1i321Tvn)，大家可以自行看之，Matrix67这么总结了一句：负数的真正涵义是把减法变为加法。好了到这里一切明朗了，我从新整理一遍。
 
- 
+
 > gcd(5,6)=gcd(5,5+(-6))=gcd(6,5)=gcd(6,6+(-5))
 
 也就是说不管我们是从a向b倒水，还是从b向a倒水，其本质上进行的都是加法操作。如果你对这句话还是有疑问，想想Matrix67说的，什么样的动物有负数只腿吧。
@@ -77,15 +77,15 @@ tags: gcd
   (defn solve[p q]
     (let [pour-volumn #(min p (- b q))] ;返回a壶能够向b壶倒入的最大值
       (println " -> " p " " q)    
-      (cond 
+      (cond
         (or (= p t) (= q t)) (println "------- OK! ------")
         (= p 0) (do (print "Fill A full") (solve a q))
         (= q b) (do (print "Empty pot B") (solve p 0))
         :else (do (print "Pour A to B") (solve (- p (pour-volumn)) (+ q (pour-volumn)))))))
-  (cond 
+  (cond
     (or (< a 1) (< b 1) (< t 0) (> t (max a b))) (print "Arg out of range")
     (not (= (rem t (gcd a b)) 0)) (print "No solve!")
-    :else 
+    :else
       (do (print "Start with ") (solve 0 0))))
 
 ```

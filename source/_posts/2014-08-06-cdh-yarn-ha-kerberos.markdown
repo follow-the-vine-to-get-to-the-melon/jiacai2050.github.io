@@ -2,7 +2,7 @@
 title: "Yarn的安全模式与高可靠性安装总结"
 date: 2014-08-06 22:36:08 +0800
 comments: true
-categories: 开源软件
+categories: hadoop
 tags: hadoop
 ---
 

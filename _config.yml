@@ -43,6 +43,12 @@ highlight:
 # Category & Tag
 default_category: uncategorized
 category_map:
+    编程语言: PL
+    算法: algorithm
+    搜索引擎: search_engine
+    热爱生活: life
+    理解计算机: aha_computer
+    其他: other
 tag_map:
 
 # Archives
@@ -88,7 +94,7 @@ plugins:
 feed:
 	type: atom
 	path: atom.xml
-	limit: 200  
+	limit: 200
 
 
 # Deployment
