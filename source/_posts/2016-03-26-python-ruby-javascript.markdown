@@ -481,6 +481,7 @@ $ python
 
 - http://stackoverflow.com/questions/7299010/why-is-string-concatenation-faster-than-array-join
 - https://waymoot.org/home/python_string/
-- http://stackoverflow.com/questions/214714/mutable-vs-immutable-objects
 - https://wyeworks.com/blog/2015/12/1/immutable-strings-in-ruby-2-dot-3
 - http://stackoverflow.com/questions/7156955/whats-the-difference-between-equal-eql-and
+- http://stackoverflow.com/questions/214714/mutable-vs-immutable-objects
+- https://kentreis.wordpress.com/2007/02/08/identity-and-equality-in-ruby-and-smalltalk/

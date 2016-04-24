@@ -148,7 +148,7 @@ mycar instanceof Object; // true，因为mycar.__proto__.__proto__ === Object.pr
 和对象字面量一样，我们可以使用`函数字面量(function literal)`来创建函数。类似于下面的方式：
 ```
 //使用字面量方式创建一个函数，并赋值给add变量
-var add = function (a, b) { 
+var add = function (a, b) {
     return a + b;
 };
 ```
@@ -163,7 +163,7 @@ var add = function (a, b) {
 this在OOP中很重要，this的值随着调用方式的不同而不同。javascript中共有四种调用方式：
 1. method invocation pattern。当函数作为某对象一个属性调用时，this指向这个对象。this赋值过程发生在函数调用时（也就是运行时），这叫做late binding
 2. function invocation pattern。当函数不作为属性调用时，this指向全局对象（这里的全局对象依宿舍环境而异，在浏览器中，是window对象），这是个设计上的错误，正确的话，内部函数的this应该指向外部函数。可以通过在函数中定义一个变量来解决这个问题。
-    
+
         var add = function(a, b) {return a+b;}
         var obj = {
             value: 3,
@@ -179,7 +179,7 @@ this在OOP中很重要，this的值随着调用方式的不同而不同。javasc
 
 除了this外，函数在调用是额外传入的另一个参数是[arguments](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments)。它是函数内部的一个变量，包含函数调用处的所有参数，甚至包含函数定义时没有的参数。
 ```
-var sum = function () { 
+var sum = function () {
     var i, sum = 0;
     for (i = 0; i < arguments.length; i += 1) {
         sum += arguments[i];
@@ -244,11 +244,9 @@ javascript解释器会顺着原型链查看某个方法或属性。如果想查�
 
 通过上面多次讲解，希望大家对`对象在javascript中就是一系列的键值对`、`原型`与`函数`这三个概念有更加深刻的认识，使用javascript来写前端、后端与脚本。在[React.js 2015大会](http://conf.reactjs.com/)上，Facebook公布了即将开源的[React Native](https://github.com/facebook/react)，这意味着今后我们可以用javascript来写IOS、Android的原生应用了，这可真是`learn-once, write-anywhere`。相信随着ECMAScript 6的发布，javascript这门语言还会有一系列翻天覆地的变化，Stay Tuned。:-)
 
-##参考
+## 参考
 
 - [JavaScript. The core](http://dmitrysoshnikov.com/ecmascript/javascript-the-core/)
-- [Object.getPrototypeOf](http://ejohn.org/blog/objectgetprototypeof/) JQuery的作者
-- [《Javascript: The Good Parts》](http://book.douban.com/subject/2994925/)强烈建议大家去看这个书。
-<center>
-![Javascript: The Good Parts](http://img3.douban.com/lpic/s2931482.jpg)
-</center>
+- [Javascript: The Good Parts](http://book.douban.com/subject/2994925/)
+- JQuery作者的 [Object.getPrototypeOf](http://ejohn.org/blog/objectgetprototypeof/)
+- JS 之父的 [New JavaScript Engine Module Owner](https://brendaneich.com/2011/06/new-javascript-engine-module-owner/)
