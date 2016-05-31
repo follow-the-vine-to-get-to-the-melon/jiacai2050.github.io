@@ -64,7 +64,7 @@ tags: sicp
   (lambda (amount)
     (if (> amount balance)
       "Insufficient"
-      (begin 
+      (begin
         (set! balance (- balance amount))
         balance))))
 
@@ -94,7 +94,7 @@ tags: sicp
 
 变动的表这一数据结构，主要是借助`set!`，实现了`set-car!`与`set-cdr!`，进而可以实现变动的表，其中比较有意思的是[习题3.19](https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.19.md)，让我们在`O(1)`空间复杂度检查一个表中是否包含环，这也是面试题中经常出现的一道，大家一定要掌握。基本思路就是
 > 设置两个指针，一个一次走一步，另一个一次走两步，然后如果两个指针相等，那么就说明有环存在。
- 
+
 更进一步，如果一个表中有环的存在，如何找出那个环的交叉点（即如何找出下图中的`m`点）。如果不清楚，可以参考我[习题3.19](https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.19.md) 的解答。
 <center>
 <img src="https://img.alicdn.com/imgextra/i1/581166664/TB2kxxRiVXXXXXmXFXXXXXXXXXX_!!581166664.png" alt="环交叉点检测"/>
@@ -163,7 +163,7 @@ tags: sicp
   (forget-value! sum me)
   (forget-value! a1 me)
   (forget-value! a2 me)
-  ; TODO 为什么需要理解执行 process-new-value 
+  ; TODO 为什么需要理解执行 process-new-value
   (process-new-value))
 ```
 整个约束系统的代码可以在[propagation.scm](https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/propagation.scm)找到。
@@ -189,7 +189,7 @@ tags: sicp
 更进一步，如果保证 n 对象间交互的原子性呢？这应该就是现在比较热门的一领域：分布式系统中，如何保证数据的一致性，后面有精力可以看看看业界使用最广泛的 [zookeeper 的实现原理](http://stackoverflow.com/questions/3662995/explaining-apache-zookeeper)。
 
 书上进一步扩展，讲述了并发问题与物理学的联系。有种发现一世界未解之谜的感觉，摘抄如下：
-> 从本质上看，在并发控制中，任何时间概念都必然与通信有内在的密切联系。有意思的是，时间与通信之间的这种联系也出现在相对论里，在那里的光速（可能用于同步事件的最快信号）是与时间和空间有关的基本常亮。在处理时间和状态时，我们在计算模型领域所遭遇的复杂性，事实上，可能就是物理世界中最基本的复杂性的一种反映。
+> 从本质上看，在并发控制中，任何时间概念都必然与通信有内在的密切联系。有意思的是，时间与通信之间的这种联系也出现在相对论里，在那里的光速（可能用于同步事件的最快信号）是与时间和空间有关的基本常量。在处理时间和状态时，我们在计算模型领域所遭遇的复杂性，事实上，可能就是物理世界中最基本的复杂性的一种反映。
 
 ## 流
 
@@ -217,7 +217,7 @@ tags: sicp
 ; 求解一个数的平方
 (define (sqrt-stream x)
   (define guesses
-    (cons-stream 1.0 
+    (cons-stream 1.0
                  (stream-map (lambda (guess) (sqrt-improve guess x))
                              guesses)))
   guesses)

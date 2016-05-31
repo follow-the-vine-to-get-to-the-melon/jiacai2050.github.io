@@ -49,6 +49,7 @@ Javascript 在语言设计之初根本没考虑到其应用范围会如此之广
 ## 语法
 
 如果你之前没接触过 ruby、python 的语法，推荐先去了解下：
+- 官方文档 [Ruby in Twenty Minutes](https://www.ruby-lang.org/en/documentation/quickstart/)
 - [Ruby Essentials](http://www.techotopia.com/index.php/Ruby_Essentials)，两个小时绝对看完了
 - [python 最佳实践](http://python-best-practice.liujiacai.net)，应该用不了半个小时
 
@@ -249,7 +250,7 @@ puts iter.resume
 
 - 不可变字符串没有上面的两个问题，但是不可变字符串在进行修改时由于会新生成一个对象，所以会比较消耗空间，所以这采用不可变字符串实现的语言一般都会提供一个具备 buffer 的字符串构造对象来生成字符串，像 Java 中的 [StringBuffer](https://docs.oracle.com/javase/7/docs/api/java/lang/StringBuffer.html)，Python 中的 [StringIO](https://docs.python.org/2/library/stringio.html)。
 
-Ruby 中字符串是不可变的，但是 Ruby 中提供了不可变字符串的替代品 Symbol，而且 Ruby 2.3 也提供了`--enable-frozen-string-literal` 选项用以声明字符串是不可变的。具体可参考：
+Ruby 中字符串是`可变`的，但是 Ruby 中提供了不可变字符串的替代品 Symbol，而且 Ruby 2.3 也提供了`--enable-frozen-string-literal` 选项用以声明字符串是不可变的。具体可参考：
 
 - https://wyeworks.com/blog/2015/12/1/-strings-in-ruby-2-dot-3
 
@@ -281,7 +282,7 @@ $ irb
 > str.__id__
  => 70099856250160    # 与之前的 id 不一样，说明 += 在进行字符串拼接时，会生成一新对象
  ```
-Python、Javascript 中字符串都是不可变的。
+Python、Javascript 中字符串都是`不可变`的。
 
 ```
 $ python
