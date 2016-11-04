@@ -1,5 +1,5 @@
 <div id="main" class="<%= item.layout %>" itemscope itemprop="blogPost">
-	<article itemprop="articleBody"> 
+	<article itemprop="articleBody">
 		<%- partial('header') %>
 	<div class="article-content">
 		<%- partial('gallery') %>
@@ -13,10 +13,11 @@
 		<% } %>
 		</div>
 		<% } %>
-		<%- item.content %>  
+		<%- item.content %>
 	</div>
-		<%- partial('footer') %>   	       
+		<%- partial('footer') %>
 	</article>
+	
 	<%- partial('pagination') %>
 	<%- partial('comment') %>
-</div>  
+</div>

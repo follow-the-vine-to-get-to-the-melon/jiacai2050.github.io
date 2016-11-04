@@ -2,20 +2,19 @@ title: README
 date: 2014-08-08 07:48:37
 ---
 
-<p><img src="/images/myself.jpg" width="180" height="200" /></p>
 ```
 (define 刘家财
   (lambda ()
-    (hometown "山东")
+    (hometown "山东临沂")
     (university "烟台大学")
     (email "base64 -d <<< amlhY2FpMjA1MEBnbWFpbC5jb20K")
     (daydream "Make my codes run around the World, so keep writing")
     (favorites
       (list
-        "不断在折腾ubuntu"
-        "努力听古典" "http://v.youku.com/v_show/id_XNDc2MDU2ODE2.html"
         "乒乓球"
-        "英语翻译" "http://importnew.com/author/liujiacai"
+        "翻译英文文档"
+        "人丑就要多读书"
+        "写博客"
         "MORE..." "http://liujiacai.net/blog/archives"))))
 ```
 
@@ -34,7 +33,9 @@ date: 2014-08-08 07:48:37
 ====
 
 - [JCScheme](https://github.com/jiacai2050/JCScheme) 另一个 Scheme 解释器，支持正则序与应用序两种求值方式
-- [gooreplacer](http://liujiacai.net/gooreplacer) 一个用于替换网页中Google Fonts/APIS等的浏览器插件，让你快速打开引用这些资源的页面
+- [Scheme.clj](http://liujiacai.net/scheme.clj/) Yet another scheme dialect written in Clojure and ClojureScript
+- [gooreplacer](http://liujiacai.net/gooreplacer) 一个用于替换网页中Google Fonts/APIS等的 [Firefox](https://addons.mozilla.org/zh-CN/firefox/addon/gooreplacer/) / [Chrome](https://chrome.google.com/webstore/detail/jnlkjeecojckkigmchmfoigphmgkgbip) 插件
+- [Advanced History](https://github.com/jiacai2050/better-history) 一个用于分析浏览记录的  [Firefox](https://addons.mozilla.org/firefox/addon/advanced-history/) / [Chrome](https://chrome.google.com/webstore/detail/advanced-history/mkfgjjeggnmkbobjmelbjhdchcoadnin) 插件
 - [SICP 读书笔记](https://github.com/jiacai2050/sicp)：读书笔记与习题解答
 - [ImportNew 文章翻译](http://www.importnew.com/author/liujiacai)
 

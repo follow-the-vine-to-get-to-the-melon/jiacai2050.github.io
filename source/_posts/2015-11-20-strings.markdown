@@ -47,8 +47,8 @@ categories: 理解计算机
 
 Windows-1252 与 ISO-8859-1 的主要不同在于 0x80 到 0x9F 之间的字符，在 ISO-8859-1 中为控制字符（control characters），在 Windows-1252 中为可打印字符（printable characters）。
 
-在 HTTP 协议中，以`text/`开头的 MIME 类型的文件默认编码为 ISO-8859-1，但是由于控制字符在文件中用处不大，所以大多数客户端程序用 Windows-1252 来解码，这也就是它们之间经常混淆的主要原因。 
- 
+在 HTTP 协议中，以`text/`开头的 MIME 类型的文件默认编码为 ISO-8859-1，但是由于控制字符在文件中用处不大，所以大多数客户端程序用 Windows-1252 来解码，这也就是它们之间经常混淆的主要原因。
+
 
 ### 字符集 vs 字符编码
 
@@ -260,11 +260,11 @@ SyntaxError: Non-ASCII character '\xe4' in file str.py on line 2, but no encodin
 
 Python 3 中改变了这一行为，解析器默认采用 UTF-8 解析源程序。
 
-##### str 类型
+##### 字符类型
 
 下面介绍 Python 2/3 中对字符的处理。
 
-Python 2 中字符字面量（即 str 类型）表示的是`byte string`，也就是说`foo = "abc"`这一赋值语句表示的是把`a、b、c`所对应的 ASCII 码赋值给变量`foo`，也就是说在 Python 2 中，str 类型直接保存的是字符的 ASCII 码。在 Python 2如果想表示 Unicode 字符，需要在字符前面加`u`，像`foo = u"abc"`，此时保存的就不是字符的 ASCII 码了。
+Python 2 中对字符的处理坑比较多，我这里单独写了篇文章介绍，感兴趣的可以参考：[《Python2 中的编码问题》](/blog/2016/06/30/python2-encoding/)。 
 
 Python 3 中改变了这一行为，字符字面量直接表示为 Unicode 字符，引入以“字节”类型表示 Python 2 中的 str 类型，根据[PEP-0393](https://www.python.org/dev/peps/pep-0393/#specification)，Python 3 内部采用多种编码方案，而不仅仅是单单一种（细节可以参考[c-api/unicode](https://github.com/python/cpython/blob/1fe0fd9feb6a4472a9a1b186502eb9c0b2366326/Doc/c-api/unicode.rst)），这么做是权衡字符存储空间与字符操作速度后的结果，下面给出 CPython 中相关的定义：
 ```
@@ -384,3 +384,4 @@ XML 使用属性标注其编码
 6. [Python Unicode HOWTO](https://docs.python.org/2/howto/unicode.html)
 7. [How does my computer store things in memory?](http://www.tldp.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO/core-formats.html)
 8. [谈谈Unicode编码，简要解释UCS、UTF、BMP、BOM等名词](http://www.fmddlmyy.cn/text6.html)
+9. [The Python Language Reference: Data model](https://docs.python.org/2.7/reference/datamodel.html#the-standard-type-hierarchy)
