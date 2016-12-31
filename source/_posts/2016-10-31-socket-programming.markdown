@@ -55,8 +55,9 @@ TCP socket 由于在通信前需要建立连接，所以其模式较 UDP socket 
 API 的具体含义这里不在赘述，可以查看[手册](https://en.wikipedia.org/wiki/Berkeley_sockets#Socket_API_functions)，这里给出 Python 语言实现的 echo server。
 
 - [echo_server.py](https://github.com/jiacai2050/socket.py/blob/master/simple_tcp_echo/echo_server.py)
+
 ```
-# coding=utf8
+
 import socket
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -81,9 +82,11 @@ if __name__ == '__main__':
         client_sock, addr = sock.accept()
         handler(client_sock, addr)
 ```
+
 - [echo_client.py](https://github.com/jiacai2050/socket.py/blob/master/simple_tcp_echo/echo_client.py)
+
 ```
-# coding=utf8
+
 import socket
 
 if __name__ == '__main__':
@@ -98,6 +101,7 @@ if __name__ == '__main__':
         sock.close()
 print('socket closed')
 ```
+
 上面代码有一点需要注意：server 端的 socket 设置了`SO_REUSEADDR`为1，目的是可以立即使用处于`TIME_WAIT`状态的socket，那么`TIME_WAIT`又是什么意思呢？后面在讲解 [tcp 状态机](#TCP_的状态机)时再做详细介绍。
 
 ### UDP socket
@@ -109,8 +113,9 @@ print('socket closed')
 UDP 版的 socket server 的代码在进行`bind`后，无需调用`listen`方法。
 
 - [udp_echo_server.py](https://github.com/jiacai2050/socket.py/blob/master/simple_udp_echo/echo_server.py)
+
 ```
-# coding=utf8
+
 import socket
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -126,9 +131,11 @@ if __name__ == '__main__':
         print('new client from %s:%s' % addr)
         sock.sendto(data, addr)
 ```
+
 - [udp_echo_client.py](https://github.com/jiacai2050/socket.py/blob/master/simple_udp_echo/echo_client.py)
+
 ```
-# coding=utf8
+
 import socket
 
 udp_server_addr = ('', 5500)
@@ -143,11 +150,13 @@ if __name__ == '__main__':
     finally:
         sock.close()
 ```
+
 ## 常见陷阱
 
 ### 忽略返回值
 
 本文中的 echo server 示例因为篇幅限制，也忽略了返回值。网络通信是个非常复杂的问题，通常无法保障通信双方的网络状态，很有可能在发送/接收数据时失败或部分失败。所以有必要对发送/接收函数的返回值进行检查。本文中的 tcp echo client 发送数据时，正确写法应该如下：
+
 ```
 total_send = 0
 content_length = len(data_to_sent)
@@ -157,13 +166,29 @@ while total_send < content_length:
         raise RuntimeError("socket connection broken")
     total_send += total_send + sent
 ```
+
+同理，接收数据时也应该检查返回值：
+
+```
+
+chunks = []
+bytes_recd = 0
+while bytes_recd < MSGLEN:   # MSGLEN 为实际数据大小
+    chunk = self.sock.recv(min(MSGLEN - bytes_recd, 2048))
+    if chunk == b'':
+        raise RuntimeError("socket connection broken")
+    chunks.append(chunk)
+    bytes_recd = bytes_recd + len(chunk)
+return b''.join(chunks)    
+```
+
 `send/recv`操作的是网络缓冲区的数据，它们不必处理传入的所有数据。
 > 一般来说，当网络缓冲区填满时，[send函数](https://docs.python.org/3/library/socket.html#socket.socket.send)就返回了；当网络缓冲区被清空时，[recv 函数](https://docs.python.org/3/library/socket.html#socket.socket.recv)就返回。
-> 当 recv 函数返回0时，意味着对端已经关闭。
 
 可以通过下面的方式设置缓冲区大小。
 
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, buffer_size)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, buffer_size)  # 发送
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, buffer_size)  # 接受
 
 ### 误认为 TCP 具有 framing
 
@@ -203,7 +228,7 @@ TCP 不提供 framing，这使得其很适合于传输数据流。这是其与 U
 http 协议是如今万维网的基石，可以通过 socket API 来简单模拟一个浏览器（UA）是如何解析 HTTP 协议数据的。
 
 ```
-#coding=utf8
+
 import socket
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -227,7 +252,9 @@ print('%sreceived%s' % ('-'*20, '-'*20))
 http_response = sock.recv(4096)
 print(http_response)
 ```
+
 运行上面的代码可以得到下面的输出
+
 ```
 --------------------received--------------------
 HTTP/1.1 200 OK
@@ -246,6 +273,7 @@ Content-Type: text/html
 <meta http-equiv="refresh" content="0;url=http://www.baidu.com/">
 </html>
 ```
+
 `http_response`是通过直接调用`recv(4096)`得到的，万一真正的返回大于这个值怎么办？我们前面知道了 TCP 协议是面向流的，它本身并不关心消息的内容，需要应用程序自己去界定消息的边界，对于应用层的 HTTP 协议来说，有几种情况，最简单的一种时通过解析返回值头部的`Content-Length`属性，这样就知道`body`的大小了，对于 HTTP 1.1版本，支持`Transfer-Encoding: chunked`传输，对于这种格式，这里不在展开讲解，大家只需要知道， TCP 协议本身无法区分消息体就可以了。对这块感兴趣的可以查看 CPython 核心模块 [http.client](https://github.com/python/cpython/blob/master/Lib/http/client.py)
 
 ### Unix_domain_socket
@@ -256,7 +284,8 @@ UDS 用于同一机器上不同进程通信的一种机制，其API适用与 net
 
 ### ping
 
-ping 命令作为检测网络联通性最常用的工具，其适用的传输协议既不是TCP，也不是 UDP，而是 ICMP，利用 raw sockets，我们可以适用纯 Python 代码来实现其功能。
+ping 命令作为检测网络联通性最常用的工具，其适用的传输协议既不是TCP，也不是 UDP，而是 [ICMP](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol)。
+ICMP 消息（messages）通常用于诊断 IP 协议产生的错误，traceroute 命令也是基于 ICMP 协议实现。利用 Python raw sockets API 可以模拟发送 ICMP 消息，实现类似 ping 的功能。
 
 代码示例参考：[ping.py](https://github.com/jiacai2050/socket.py/blob/master/in_action/ping.py)
 
@@ -274,7 +303,7 @@ netstat 是比较老牌的命令，我常用的选择有
 
 ss 是新兴的命令，其选项和 netstat 差不多，主要区别是能够进行过滤（通过`state`与`exclude`关键字）。
 
-```
+```shell
 $ ss -o state time-wait -n | head
 Recv-Q Send-Q             Local Address:Port               Peer Address:Port
 0      0                 10.200.181.220:2222              10.200.180.28:12865  timer:(timewait,33sec,0)
@@ -287,6 +316,7 @@ Recv-Q Send-Q             Local Address:Port               Peer Address:Port
 0      0                      127.0.0.1:45954                 127.0.0.1:3306   timer:(timewait,21sec,0)
 0      0               ::ffff:127.0.0.1:3306           ::ffff:127.0.0.1:45964  timer:(timewait,31sec,0)
 ```
+
 这两个命令更多用法可以参考：
 - [SS Utility: Quick Intro](http://www.cyberciti.biz/files/ss.html)
 - [10 basic examples of linux netstat command](http://www.binarytides.com/linux-netstat-command-examples/)

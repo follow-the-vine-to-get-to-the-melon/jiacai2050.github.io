@@ -6,7 +6,7 @@ tags:
 
 ---
 
-最近想着开发个[firefox浏览器插件](http://liujiacai.net/gooreplacer)，能够去掉网页中含有fonts.google.com、apis.google.com之类的链接，原因大家都知道，为什么选择firefox呢，chrome实在太吃内存了。
+用过 Firefox 的同学多多少少都应该对 Mozilla 有些了解，Mozilla 作为一老牌软件公司，诞生了很多传奇性的故事和人物，现在就让我们一起来探索上个世纪九十年代发生的那些激荡人心的时刻吧。
 
 Mozilla这个词有三个含义:
 
@@ -83,7 +83,7 @@ AOL接管Netscape之后也发布过几次Navigator的版本，但到2003年7月�
 又是一个牛叉的小胖子，[Mozilla官方博客](https://blog.mozilla.org/blog/author/pavlovmozilla-com/)，创办[rise](http://www.rise.us/)，并且是CTO。
 
 
-好了，纪录片截图就这些，看完后我觉得你也一定会忍不住看一遍把。Go ahead, buddy!
+好了，纪录片截图就这些，看完后我觉得你也一定会忍不住看一遍吧。Go ahead, buddy!
 
 
 我从Mozilla开始，基本上把围绕Mozilla的一些重要的事情都整理了一边，大部分资料都来自[wikipedia](http://en.wikipedia.org)，最后我在副上一张图，让大家了解下浏览器发展史上百家争鸣的场面。

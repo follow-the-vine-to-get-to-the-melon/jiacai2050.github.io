@@ -26,20 +26,21 @@ Mac OS可以被分成操作系统的两个系列：
 ```
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
-###~/.bashrc
+### ~/.bashrc
 
-熟悉Linux的一般通过~/.bashrc这个文件进行环境变量的配置，但是在Mac下配置后，发现根本没有效果，这是为什么呢？
-其实这是个比较基础的问题，shell有两种：登录式shell与非登录式shell，直观理解，登录(login)式shell就是在你打开shell要求你输入用户名与密码的shell，我们在使用桌面Linux时一般只在登录时接触到这种shell，等我们进入系统后，再打开的Terminal就是非登录式shell了。
-* 登录式Shell启动时会去source ~/.profile文件（Redhat、Mac上为~/.bash_profile）
-* 非登录式Shell会去source ~/.bashrc文件
+Linux 一般通过`~/.bashrc`进行环境变量的配置，但是在 Mac 下配置后，发现根本没有效果，这是为什么呢？
+其实这是个比较基础的问题，shell有两种：登录式shell与非登录式shell，直观理解，登录(login)式shell就是在你打开shell要求你输入用户名与密码的shell，我们在使用桌面Linux时一般只在登录时接触到这种shell，等我们进入系统后，再打开的Terminal就是非登录式shell了。这两种 shell 读取配置的文件是不同的：
 
-在Mac上，我们开机后在打开终端时，这时的shell是登录式shell，因为Terminal.app（或iTerm.app）这个应用程序是通过`/usr/bin/login`这个命令打开终端的，所以不会去source ~/.bashrc了。
+- 登录式Shell启动时会去读取`~/.profile`文件（Redhat、Mac上为 `~/.bash_profile`）
+- 非登录式Shell会去读取`~/.bashrc`文件
+
+这也就解释了为什么在 Linux 系统上只需要修改 `~/.bashrc` 后即可生效的原因。但在 Mac 上有些不同，开机后再通过 Terminal.app（或iTerm.app） 打开终端时，这时的 shell 是登录式shell，因为Terminal.app（或iTerm.app）这个应用程序是通过`/usr/bin/login`这个命令打开终端的，所以不会去`source ~/.bashrc`了。
 解决方法也很简单，在~/.bash_profile加上下面一句代码就ok了
 ```
 [ -r ~/.bashrc ] && source ~/.bashrc
 ```
 
-Mac下ls默认是没有颜色的，我们可以自己设置一个alias，参考[链接](http://apple.stackexchange.com/questions/33677/how-can-i-configure-mac-terminal-to-have-color-ls-output)
+Mac下`ls`命令默认是没有颜色的，不是很直观，可以自己设置一个alias，参考[链接](http://apple.stackexchange.com/questions/33677/how-can-i-configure-mac-terminal-to-have-color-ls-output)
 ```
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 alias ls='ls -FG'
@@ -48,11 +49,10 @@ alias ll='ls -l'
 
 ###JAVA_HOME
 
-Mac下的使用*dmg方式安装JDK后，JAVA_HOME在那里呢，这对于Linux下使用tar包安装的人可傻眼了，设置JAVA_HOME可参考下面的命令
+Mac下的使用`*dmg`文件安装JDK后，JAVA_HOME在那里呢，可以通过执行`/usr/libexec/java_home`这个命令来获取JAVA_HOME
 ```
 export JAVA_HOME="$(/usr/libexec/java_home)"
 ```
-可以看到，其实就是通过执行`/usr/libexec/java_home`这个命令来获取JAVA_HOME
 
 ### 修改hostname
 
@@ -78,10 +78,9 @@ system_profiler SPUSBDataType
 
 下面介绍下我日常编程、娱乐时的一些免费软件，供大家参考。
 
-### 文本编辑器 [Sublime](https://www.sublimetext.com/3)
+### 文本编辑器 [Atom](https://atom.io/)
 
-小巧强大的文本编辑器，一直用的很爽，上手很快，功能强大，谁用谁知道。
-这里主要说下我最长用的两个常用快捷键在Mac上的操作：
+Atom 新时代的文本编辑器，功能和 Sublime 差不多，但是免费开源，快捷键也类似，可以无缝迁移。两个非常实用的快捷键：
 
 - Multiple Selection `Control+Command+G`（在 Linux/Windows 下，是`Alt+F3`）
 - 选中多行 `Shift+Command+L`
@@ -93,6 +92,42 @@ Mac自带的终端不是很强，程序员们需要一个强劲的终端来工�
 我这里把向前按字移动设为了"OPTION+CMD+向左键"，向后按字移动设为了"OPTION+CMD+向右键"
 
 当然，说到了 iTerm2，不得不提到终端复用软件 [tmux](https://tmux.github.io/)，tmux 默认配置文件在 Mac 上很别扭，你可以参考我这里的[配置文件](https://github.com/jiacai2050/code-wheels/blob/master/config/.tmux.conf)，这样 tmux 就可以像 vim 一样实现各种分屏的效果了。如果你还不知道 tmux 为何物，强烈推荐你看这个13分钟的[视频](http://pan.baidu.com/s/1gdLZzB9)，绝对物超所值，感谢 [happypeter](http://haoduoshipin.com/u/happypeter) 的分享。
+
+终端中输入命令时，移动光标有两种方式，一个是 emacs，一个 vi，可以通过 set 命令来设置，默认的是 emacs 模式，也可以通过`set -o emacs`来显式设置，有如下快捷键：
+- `ctrl + a`  Move cursor to beginning of line
+- `ctrl + e`  Move cursor to end of line
+- `meta + b`  Move cursor back one word
+- `meta + f`  Move cursor forward one word
+- `ctrl + w`  Cut the last word
+- `ctrl + u`  Cut everything before the cursor
+- `ctrl + k`  Cut everything after the cursor
+- `ctrl + y`  Paste the last thing to be cut
+- `ctrl + _`  Undo
+
+如果想使用 vi 模式，可以使用如下命令`set -o vi`开启。
+开启vi 模式后，默认是 insert 模式，按下`esc`键进入命令模式。
+
+- `h`   Move cursor left
+- `l`   Move cursor right
+- `A`   Move cursor to end of line and put in insert mode
+- `0`   (zero) Move cursor to beginning of line (doesn't put in insert mode)
+- `i`   Put into insert mode at current position
+- `a`   Put into insert mode after current position
+- `dd`  Delete line (saved for pasting)
+- `D`   Delete text after current cursor position (saved for pasting)
+- `p`   Paste text that was deleted
+- `j`   Move up through history commands
+- `k`   Move down through history commands
+- `u`   Undo
+
+参考：
+- [Getting Started with BASH](http://www.hypexr.org/bash_tutorial.php)
+- [How To Use the Emacs Editor in Linux](https://www.digitalocean.com/community/tutorials/how-to-use-the-emacs-editor-in-linux)
+
+其他一些有用的快捷键：
+- `Ctrl + r` 搜索历史命令
+- `!!` 执行上条命令
+- `Ctrl+X Ctrl+E` 调用默认编辑器去编辑一个特别长的命令
 
 ###图片截屏、编辑
 
@@ -115,7 +150,7 @@ Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是�
 ![使用 licecap 制作的例子](http://ww3.sinaimg.cn/mw690/5fee18eegw1f17799uiz1g20ci0cijs2.gif)
 
 
-###流程图制作工具
+### 流程图制作工具
 
 对于程序员来说，流程图应该是再亲切不过的了，一张图胜过千言万语。之前我都是用 Keynote 来画，但是实在是不好用，后来在[知乎](https://www.zhihu.com/question/19588698)上发现了在线版的[ProcessOn](https://www.processon.com/)，大大减少了我画流程图的时间，上手也比较快。
 
@@ -143,41 +178,6 @@ http://sourceforge.net/projects/webarchivext/
 - 锁屏   `Shift + Control + 电源键` （Windows 下为`Win+L`）
 - 强制关闭程序 `Command + Option + esc`（Windows 下为`Ctrl+Alt+Delete`）
 
-###Bash
-
-我们在终端中输入命令时，移动光标有两种方式，一个是 emacs，一个 vi，可以通过 set 命令来设置，默认的是 emacs 模式，也可以通过`set -o emacs`来显式设置，有如下快捷键：
-- `ctrl + a`  Move cursor to beginning of line
-- `ctrl + e`  Move cursor to end of line
-- `meta + b`  Move cursor back one word
-- `meta + f`  Move cursor forward one word
-- `ctrl + w`  Cut the last word
-- `ctrl + u`  Cut everything before the cursor
-- `ctrl + k`  Cut everything after the cursor
-- `ctrl + y`  Paste the last thing to be cut
-- `ctrl + _`  Undo
-
-如果想使用 vi 模式，可以使用如下命令`set -o vi`开启。
-开启vi 模式后，默认是 insert 模式，按下`esc`键进入命令模式。
-
-- `h`   Move cursor left
-- `l`   Move cursor right
-- `A`   Move cursor to end of line and put in insert mode
-- `0`   (zero) Move cursor to beginning of line (doesn't put in insert mode)
-- `i`   Put into insert mode at current position
-- `a`   Put into insert mode after current position
-- `dd`  Delete line (saved for pasting)
-- `D`   Delete text after current cursor position (saved for pasting)
-- `p`   Paste text that was deleted
-- `j`   Move up through history commands
-- `k`   Move down through history commands
-- `u`   Undo
-
-参考：[Getting Started with BASH](http://www.hypexr.org/bash_tutorial.php)
-
-其他一些有用的快捷键：
-- `Control + r` 搜索历史命令
-- `!!` 执行上条命令
-
 ###Finder
 Finder是Mac上的文件浏览器，其中有个比较严重的问题时，没有“剪贴(cut)”功能，当我们选中一个文件后，菜单中的“Edit”->“Cut”是灰色的，也就是无法使用，这是因为Finder中的“Cut”只适用于文本，对于文件就无能为力了。
 我们当然可以通过打开两个Finder窗口，然后“拖”过去。但是这样未免太麻烦了，其实我们可以这么做：
@@ -202,8 +202,17 @@ Finder是Mac上的文件浏览器，其中有个比较严重的问题时，没�
 
 解决的方法也很简单，把移动硬盘格式化成FAT32(单个文件大小不能超过4G)或FAText 格式都可以，Mac 自带的磁盘工具就可以进行格式转化，当然你需要先把移动硬盘上的数据拷贝出来。
 
+## Wi-Fi 时常中断
 
-##总结
+Mac 生于乔帮主之手时，为了凸显尊贵，接口与一般的电脑有很大不同。常见的网线没办法直接连接 Mac 电脑，需要单独购买一个[以太网转接器](http://www.apple.com/cn/shop/product/MC704FE/A/apple-usb-ethernet-adapter)，所以大部分同学都是使用无线连接，但 Mac 这里应该是有个 bug，而且是很久的 bug，我用 Mac 两年了，偶尔会遇到几次，网上解决的方法有如下几种：
+
+1. 修改网络位置，不是其默认的“自动”就好
+2. 修改路由器，把无线信道改为6或9
+3. 关闭蓝牙，Mac 中，同时打开蓝牙与 Wi-Fi 会冲突。[详情](http://apple.stackexchange.com/a/162406/103966)
+
+如果你的 Mac 也遇到了 Wi-Fi 问题，可以试试上面三个解决方法。
+
+## 总结
 
 Mac 的 Retina 屏幕真是无与伦比，虽说系统一开始需要适应，但我相信，Mac Pro 绝对不会让你失望的，不是有句话嘛：
 

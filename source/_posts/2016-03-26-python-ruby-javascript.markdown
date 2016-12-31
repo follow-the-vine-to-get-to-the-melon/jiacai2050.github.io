@@ -8,6 +8,10 @@ tags: [python, ruby, javascript]
 
 本篇文章着重从编程语言设计的角度进行阐述，希望对编程语言爱好者理解这三门语言有所帮助，做到融会贯通。
 
+<center>
+<img src="https://img.alicdn.com/imgextra/i4/581166664/TB2kVcxcByN.eBjSZFgXXXmGXXa_!!581166664.png" alt=" js_python_ruby"/>
+</center>
+
 ## 讨论范围
 
 Python、Ruby、Javascript(ECMAScript) 准确说是一种语言规范，规范可以有多种实现，这体现在不同的解释器上。
@@ -112,7 +116,7 @@ $ irb
 
 ### lambda 表达式
 
-lambda 表达式表示的是匿名函数，也就是我们通常说的闭包。由于在这三门语言中，函数均是一等成员，所以可以很方便的进行函数式编程
+lambda 表达式表示的是匿名函数。由于在这三门语言中，函数均是一等成员，所以可以很方便的进行函数式编程
 ```
 $ node
 > [1,2,3].map((x) => x + 1)

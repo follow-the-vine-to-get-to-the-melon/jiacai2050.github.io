@@ -71,7 +71,7 @@ Perl语言第一版是由[Larry Wall](http://en.wikipedia.org/wiki/Larry_Wall)�
 
 随着Perl的不断发展，其支持的正则表达式的功能也越来越强大。其中影响较大的是于1994年10月发布的Perl 5，其增加了很多特性，比如non-capturing parentheses、lazy quantifiers、look-ahead、元符号\\G等等。
 
-正好这时也是WWW兴起的时候，而Perl就是为了文本处理而发明的，所有Perl基本上成了web开发的首选语言。Perl语言应用是如此广泛，以至于其他语言开始移植Perl，最终Perl compatible（兼容）的PCRE诞生了，这其中包括了Tcl, Python, Microsoft’s .NET , Ruby, PHP, C/C++, Java等等。
+正好这时也是WWW兴起的时候，而Perl就是为了文本处理而发明的，所以Perl基本上成了web开发的首选语言。Perl语言应用是如此广泛，以至于其他语言开始移植Perl，最终Perl compatible（兼容）的PCRE诞生了，这其中包括了Tcl, Python, Microsoft’s .NET , Ruby, PHP, C/C++, Java等等。
 
 前面说了shorthand在POSIX与PCRE是不同的，PCRE中我们常用的有如下这些：
 
