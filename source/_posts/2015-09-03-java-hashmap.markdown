@@ -1,10 +1,18 @@
 title: Java HashMap 源码解析
 date: 2015-09-03 11:51:12
 categories: 编程语言
-tags: java
+tags: Java
 ---
 
 继上一篇文章[Java集合框架综述](/blog/2015/09/01/java-collection-overview)后，今天正式开始分析具体集合类的代码，首先以既熟悉又陌生的[HashMap](http://docs.oracle.com/javase/7/docs/api/index.html?java/util/HashMap.html)开始。
+
+> 本文源码分析基于[Oracle JDK 1.7.0_71](http://www.oracle.com/technetwork/java/javase/7u71-relnotes-2296187.html)，请知悉。
+```
+$ java -version
+java version "1.7.0_71"
+Java(TM) SE Runtime Environment (build 1.7.0_71-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 24.71-b01, mixed mode)
+```
 
 ## 签名（signature）
 
@@ -266,7 +274,7 @@ get操作相比put操作简单，所以先介绍get操作
         if (key == null)
             return getForNullKey();
         Entry<K,V> entry = getEntry(key);
-    
+
         return null == entry ? null : entry.getValue();
     }
     private V getForNullKey() {
@@ -421,7 +429,7 @@ get操作相比put操作简单，所以先介绍get操作
         }
         return switching;
     }
-    
+
 ```
 
 ### remove操作

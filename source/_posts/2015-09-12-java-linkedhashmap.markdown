@@ -1,7 +1,7 @@
 title: Java LinkedHashMap源码解析
 date: 2015-09-12 18:31:12
 categories: 编程语言
-tags: java
+tags: Java
 ---
 
 上周把[HashMap](/blog/2015/09/03/java-hashmap/)、[TreeMap](/blog/2015/09/04/java-treemap/)这两个Map体系中比较有代表性的类介绍完了，大家应该也能体会到，如果该类所对应的数据结构与算法掌握好了，再看这些类的源码真是太简单不过了。
@@ -11,6 +11,14 @@ tags: java
 > HashSet 内部用一个HashMap对象存储数据，更具体些，只用到了key，value全部为一dummy对象。
 
 HashSet这个类太简单了，我不打算单独写文章介绍。今天介绍个比较实用的类——[LinkedHashMap](http://docs.oracle.com/javase/7/docs/api/java/util/LinkedHashMap.html)。
+
+> 本文源码分析基于[Oracle JDK 1.7.0_71](http://www.oracle.com/technetwork/java/javase/7u71-relnotes-2296187.html)，请知悉。
+```
+$ java -version
+java version "1.7.0_71"
+Java(TM) SE Runtime Environment (build 1.7.0_71-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 24.71-b01, mixed mode)
+```
 
 ## 签名
 
@@ -122,7 +130,7 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
          */
         //删除一个节点时，需要把
         //1. 前继节点的后继指针 指向 要删除节点的后继节点
-        //2. 后继节点的前继指针 指向 要删除节点的前继节点 
+        //2. 后继节点的前继指针 指向 要删除节点的前继节点
         private void remove() {
             before.after = after;
             after.before = before;
@@ -265,11 +273,11 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
      */
     protected boolean removeEldestEntry(Map.Entry<K,V> eldest) {
         return false;
-    } 
+    }
 ```
 上面是LinkedHashMap中重写了HashMap的两个方法，当调用put时添加Entry（新增Entry之前不存在）整个方法调用链是这样的：
 
-> `LinkedHashMap.put` -> `LinkedHashMap.addEntry` -> 
+> `LinkedHashMap.put` -> `LinkedHashMap.addEntry` ->
 > `HashMap.addEntry` -> `LinkedHashMap.createEntry`
 
 有了这个调用链，再结合上面createEntry方法中的注释，就可以明白如何在添加Entry保证双向链表不断链的了。

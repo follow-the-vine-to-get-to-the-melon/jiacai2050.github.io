@@ -13,11 +13,10 @@ menu:
 
 #### Widgets
 widgets:
+- rss
 - category
 - tag
-- rss
 - cc
-- links
 - archive
 
 ## provide seven widgets:category,tag,rss,archive,tagcloud,links,weibo

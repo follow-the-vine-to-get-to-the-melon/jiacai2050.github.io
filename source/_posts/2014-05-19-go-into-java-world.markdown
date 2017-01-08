@@ -4,7 +4,7 @@ title: "深入Java世界"
 date: 2014-05-19 08:18:39 +0800
 comments: true
 categories: 编程语言
-tags: [java]
+tags: [Java]
 ---
 
 俗话说的好：不经一事，不长一智。
@@ -33,4 +33,3 @@ tags: [java]
 [2]:http://docs.oracle.com/javase/tutorial/
 [3]:http://docs.oracle.com/javase/tutorial/collections/index.html
 [4]:http://docs.oracle.com/javase/7/docs/index.html
-

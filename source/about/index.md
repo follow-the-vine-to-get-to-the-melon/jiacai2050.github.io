@@ -45,6 +45,7 @@ date: 2014-08-08 07:48:37
 - [Lambda-calculus 介绍](http://pan.baidu.com/s/1sjYoG25)，第一次 2014-10-11，第二次 2015-08-03，关键字：Lambda、编程语言
 - [有赞客满总结](http://youzan.liujiacai.net)，2015-04-03，关键字：电商、去中心化
 - [Python 最佳实践](http://python-best-practice.liujiacai.net/)，2016-03-03，关键字：Python、编码风格
+- [深入浅出 Spark RDD](http://jiacai2050.coding.me/spark-rdd-share/)，2016-12-26，关键字：Spark
 
 互联网纪录片
 ====

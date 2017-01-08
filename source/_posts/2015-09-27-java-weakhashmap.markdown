@@ -1,12 +1,20 @@
 title: Java WeakHashMap 源码解析
 date: 2015-09-27 14:10:24
 categories: 编程语言
-tags: java
+tags: Java
 ---
 
 前面把基于特定数据结构的Map介绍完了，它们分别利用了相应数据结构的特点来实现特殊的目的，像HashMap利用哈希表的快速插入、查找实现`O(1)`的增删改查，TreeMap则利用了红黑树来保证key的有序性的同时，使得增删改查的时间复杂度为`O(log(n))`。
 
 今天要介绍的[WeakHashMap](http://docs.oracle.com/javase/7/docs/api/java/util/WeakHashMap.html)并没有基于某种特殊的数据结构，它的主要目的是为了优化JVM，使JVM中的垃圾回收器（garbage collector，后面简写为 GC）更智能的回收“无用”的对象。
+
+> 本文源码分析基于[Oracle JDK 1.7.0_71](http://www.oracle.com/technetwork/java/javase/7u71-relnotes-2296187.html)，请知悉。
+```
+$ java -version
+java version "1.7.0_71"
+Java(TM) SE Runtime Environment (build 1.7.0_71-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 24.71-b01, mixed mode)
+```
 
 ## 引用类型
 
@@ -92,7 +100,7 @@ queue = ReferenceQueue.NULL
 next = this
 ```
 有了这些约束，GC 只需要检测`next`字段就可以知道是否需要对该引用对象采取特殊处理
-- 如果`next`为`null`，那么说明该引用为`Active`状态 
+- 如果`next`为`null`，那么说明该引用为`Active`状态
 - 如果`next`不为`null`，那么 GC 应该按其正常逻辑处理该引用。
 
 我自己根据`Reference.ReferenceHandler.run`与`ReferenceQueue.enqueue`这两个方法，画出了这四种状态的转移图，供大家参考：
@@ -277,7 +285,7 @@ public class RefTest {
 
         KeyHolder kh = new KeyHolder();    
         ValueHolder vh = new ValueHolder();
-        
+
         weakMap.put(kh, vh);
 
         while (true) {

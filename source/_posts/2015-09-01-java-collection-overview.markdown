@@ -1,7 +1,7 @@
 title: Java集合框架综述
 date: 2015-09-01 21:18:05
 categories: 编程语言
-tags: java
+tags: Java
 ---
 
 最近被陆陆续续问了几遍HashMap的实现，回答的不好，打算复习复习JDK中的[集合框架](http://docs.oracle.com/javase/7/docs/technotes/guides/collections/overview.html)，并尝试分析其源码，这么做一方面是这些类非常实用，掌握其实现能更好的优化我们的程序；另一方面是学习借鉴JDK是如何实现了这么一套优雅高效的类库，提升编程能力。
@@ -84,10 +84,8 @@ tags: java
 ## 参考
 
 - http://docs.oracle.com/javase/7/docs/technotes/guides/collections/overview.html
-- https://en.wikipedia.org/wiki/Java_collections_framework 
+- https://en.wikipedia.org/wiki/Java_collections_framework
 
 [HashMap]: /blog/2015/09/03/java-hashmap/
 [TreeMap]: /blog/2015/09/04/java-treemap/
 [LinkedHashMap]: /blog/2015/09/12/java-linkedhashmap/
-
-
