@@ -50,6 +50,7 @@ category_map:
     理解计算机: aha_computer
     其他: other
 tag_map:
+    Java: java
 
 # Archives
 ## 2: Enable pagination

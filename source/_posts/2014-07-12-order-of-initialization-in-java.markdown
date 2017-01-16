@@ -1,83 +1,218 @@
 ---
-layout: post
-title: "Java类中的初始化顺序"
+title: JVM 的类初始化机制
 date: 2014-07-12 13:02:29 +0800
-comments: true
 categories: 编程语言
 tags: Java
-list_number: false
 ---
 
-Java中类成员初始化顺序，十分基础但同时也是容易出错的地方，我从去年参加阿里校招笔试到现在的公司笔试，都有这个问题，不能老是在同一个坑下跌倒，现根据《Thinking in Java》相关章节及自己的理解举例来说明类初始化顺序。
-
-这篇文章主要分为两个部分：
-
-- [单一对象的初始化](#init-with-one)
-- [带有继承关系的对象初始化](#init-with-inheritance)
+当你在 Java 程序中`new`对象时，有没有考虑过 JVM 是如何把静态的字节码（byte code）转化为运行时对象的呢，这个问题看似简单，但清楚的同学相信也不会太多，这篇文章首先介绍 JVM 类初始化的机制，然后给出几个易出错的实例来分析，帮助大家更好理解这个知识点。
 
 
-<a name="init-with-one"></a>
-## （一）单一对象的初始化
-<!--more-->
-废话先不说，先上一段代码：
+## Loading, Linking, and Initialization
+
+JVM 将字节码转化为运行时对象分为三个阶段，分别是：loading 、Linking、initialization。
+
+![The beginning of a class's lifetime](https://img.alicdn.com/imgextra/i1/581166664/TB2kGtOc88lpuFjy0FnXXcZyXXa_!!581166664.gif)
+
+下面分别介绍这三个过程：
+
+### Loading
+
+Loading 过程主要工作是由`ClassLoader`完成。该过程具体包括三件事：
+
+1. 根据类的全名，生成一份二进制字节码来表示该类
+2. 将二进制的字节码解析成[方法区](http://www.artima.com/insidejvm/ed2/jvm5.html)对应的数据结构
+3. 最后生成一 `Class` 对象的实例来表示该类
+
+![ClassLoader 继承关系，不同 CL 负责加载不同类](https://img.alicdn.com/imgextra/i2/581166664/TB2HtNyc4dkpuFjy0FbXXaNnpXa_!!581166664.gif)
+
+JVM 中除了最顶层的`Boostrap ClassLoader`是用 C/C++ 实现外，其余类加载器均由 Java 实现，我们可以用`getClassLoader`方法来获取当前类的类加载器：
 ```
-class Student {
-    int age = defaultAge();
-    static int height = defaultHeight();
+public class ClassLoaderDemo {
+    public static void main(String[] args) {
+        System.out.println(ClassLoaderDemo.class.getClassLoader());
+    }
+}
 
-    public Student() {
-        System.out.println("construct " + this.age);
+# sun.misc.Launcher$AppClassLoader@30a4effe
+# AppClassLoader 也就是上图中的 System Class Loader
+```
+此外，我们在启动`java`传入`-verbose:class`来查看加载的类有那些。
+```
+java -verbose:class ClassLoaderDemo
+
+[Opened /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+[Loaded java.lang.Object from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+[Loaded java.io.Serializable from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+[Loaded java.lang.Comparable from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+[Loaded java.lang.CharSequence from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+
+....
+....
+
+[Loaded java.security.BasicPermissionCollection from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+[Loaded ClassLoaderDemo from file:/Users/liujiacai/codes/IdeaProjects/mysql-test/target/classes/]
+[Loaded sun.launcher.LauncherHelper$FXHelper from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+[Loaded java.lang.Class$MethodArray from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+[Loaded java.lang.Void from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+sun.misc.Launcher$AppClassLoader@2a139a55
+[Loaded java.lang.Shutdown from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+[Loaded java.lang.Shutdown$Lock from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
+```
+
+
+
+### Linking
+
+#### Verification
+
+`Verification` 主要是保证类符合 Java 语法规范，确保不会影响 JVM 的运行。包括但不限于以下事项：
+
+- bytecode 的完整性（integrity）
+- 检查`final`类没有被继承，`final`方法没有被覆盖
+- 确保没有不兼容的方法签名
+
+#### Preparation
+
+在一个类已经被`load`并且通过`verification`后，就进入到`preparation`阶段。在这个阶段，JVM 会为类的成员变量分配内存空间并且赋予默认初始值，需要注意的是这个阶段不会执行任何代码，而只是根据`变量类型`决定初始值。如果不进行默认初始化，分配的空间的值是随机的，有点类型c语言中的[野指针](http://zh.wikipedia.org/zh/%E8%BF%B7%E9%80%94%E6%8C%87%E9%92%88)问题。
+```
+Type	Initial Value
+int	0
+long	0L
+short	(short) 0
+char	'\u0000'
+byte	(byte) 0
+boolean	false
+reference	null
+float	0.0f
+double	0.0d
+```
+
+在这个阶段，JVM 也可能会为有助于提高程序性能的数据结构分配内存，常见的一个称为`method table`的数据结构，它包含了指向所有类方法（也包括也从父类继承的方法）的指针，这样再调用父类方法时就不用再去搜索了。
+
+#### Resolution
+
+`Resolution` 阶段主要工作是确认类、接口、属性和方法在类`run-time constant pool`的位置，并且把这些符号引用（symbolic references）替换为直接引用（direct references）。
+
+> locating classes, interfaces, fields, and methods referenced symbolically from a type's constant pool, and replacing those symbolic references with direct references.
+
+这个过程不是必须的，也可以发生在第一次使用某个符号引用时。
+
+![JVM_Internal_Architecture](https://img.alicdn.com/imgextra/i3/581166664/TB2iQhEcYFlpuFjy0FgXXbRBVXa_!!581166664.png)
+
+### Initialization
+
+经过了上面的`load`、`link`后，`第一次` `主动调用`某类的最后一步是`Initialization`，这个过程会去按照代码书写顺序进行初始化，这个阶段会去真正执行代码，注意包括：代码块（static与static）、构造函数、变量显式赋值。如果一个类有父类，会先去执行父类的`initialization`阶段，然后在执行自己的。
+
+上面这段话有两个关键词：`第一次`与`主动调用`。`第一次`是说只在第一次时才会有初始化过程，以后就不需要了，可以理解为每个类`有且仅有一次`初始化的机会。那么什么是`主动调用`呢？
+JVM 规定了以下六种情况为`主动调用`，其余的皆为`被动调用`：
+
+1. 一个类的实例被创建（`new`操作、反射、`cloning`，反序列化）
+2. 调用类的`static`方法
+3. 使用或对类/接口的`static`属性进行赋值时（这不包括`final`的与在编译期确定的常量表达式）
+4. 当调用 API 中的某些反射方法时
+5. 子类被初始化
+6. 被设定为 JVM 启动时的启动类（具有`main`方法的类）
+
+本文后面会给出一个示例用于说明`主动调用`的`被动调用`区别。
+
+在这个阶段，执行代码的顺序遵循以下两个原则：
+
+1. 有static先初始化static，然后是非static的
+2. 显式初始化，构造块初始化，最后调用构造函数进行初始化
+
+
+## 示例
+
+### 属性在不同时期的赋值
+
+```
+class Singleton {
+
+    private static Singleton mInstance = new Singleton();// 位置1
+    public static int counter1;
+    public static int counter2 = 0;
+
+//    private static Singleton mInstance = new Singleton();// 位置2
+
+    private Singleton() {
+        counter1++;
+        counter2++;
     }
 
-    private int defaultAge() {
-        System.out.println(age + " defaultAge");
-        return 10;
+    public static Singleton getInstantce() {
+        return mInstance;
+    }
+}
+
+public class InitDemo {
+
+    public static void main(String[] args) {
+
+        Singleton singleton = Singleton.getInstantce();
+        System.out.println("counter1: " + singleton.counter1);
+        System.out.println("counter2: " + singleton.counter2);
+    }
+}
+```
+当`mInstance`在位置1时，打印出
+```
+counter1: 1
+counter2: 0
+```
+当`mInstance`在位置2时，打印出
+```
+counter1: 1
+counter2: 1
+```
+`Singleton`中的三个属性在`Preparation`阶段会根据类型赋予默认值，在`Initialization`阶段会根据显示赋值的表达式再次进行赋值（按顺序自上而下执行）。根据这两点，就不难理解上面的结果了。
+
+### 主动调用 vs. 被动调用
+
+```
+class NewParent {
+
+    static int hoursOfSleep = (int) (Math.random() * 3.0);
+
+    static {
+        System.out.println("NewParent was initialized.");
+    }
+}
+
+class NewbornBaby extends NewParent {
+
+    static int hoursOfCrying = 6 + (int) (Math.random() * 2.0);
+
+    static {
+        System.out.println("NewbornBaby was initialized.");
+    }
+}
+
+public class ActiveUsageDemo {
+
+    // Invoking main() is an active use of ActiveUsageDemo
+    public static void main(String[] args) {
+
+        // Using hoursOfSleep is an active use of NewParent,
+        // but a passive use of NewbornBaby
+        System.out.println(NewbornBaby.hoursOfSleep);
     }
 
     static {
-        System.out.println("static block");
-    }
-    {
-        System.out.println("non-static block");
-    }
-
-    static int defaultHeight() {
-        System.out.println(height + " defaultHeight");
-        return 170;
-    }
-}
-
-public class InitOrder {
-    public static void main(String[] args) {
-        new Student();
+        System.out.println("ActiveUsageDemo was initialized.");
     }
 }
 ```
-上面这一小段程序的输出顺序为：
+上面的程序最终输出：
 ```
-0 defaultHeight
-static block
-0 defaultAge
-non-static block
-construct 10
+ActiveUsageDemo was initialized.
+NewParent was initialized.
+1
 ```
-从输出的第一行可以看出，static的height变量在被defaultHeight()赋值前已经有了初始值，我这里称这一步为**默认初始化**这一点非常重要，所有的成员变量（不论是不是static的）在声明时如果显式进行了赋值，那么这个成员变量至少会被初始化两次，一次是编译器自动的初始化（基本类型像int、false初始化为0、false，对象初始化为null）也就是默认初始化，然后是**显式初始化**。
+之所以没有输出`NewbornBaby was initialized.`是因为没有主动去调用`NewbornBaby`，如果把打印的内容改为`NewbornBaby.hoursOfCrying` 那么这时就是主动调用`NewbornBaby`了，相应的语句也会打印出来。
 
-对于输出的其他行，大家应该没什么大问题，两大基本原则就是：
+### 首次主动调用才会初始化
 
-1. 有static先初始化static，然后是非static的
-2. 显式初始化（如果有的话），构造块初始化（如果有的话），最后调用构造函数进行初始化
-
-《Thinking in java》中总结创建对象时成员的初始化过程（以一个Dog.java类为例）：
-
-1. 首先需要明确的是，虽然构造函数没有显式用static声明，但所以类的构造函数都是static的[<sup>注1</sup>](#notation1)。所以当第一次创建Dog对象或者访问Dog类中的static方法/成员，JVM必须通过classpath定位Dog.class文件。
-2. 当在classpath中找到Dog.class文件时JVM会进行加载，这时Dog类会对static相关部分（包括static成员变量与static块）进行默认初始化，<font color="red">而且也仅会执行这一次</font>。
-3. 当我们用new Dog()创建Dog对象时，JVM会在heap上为其分配空间（由此可以看出类的static成员并不再这个类对象的heap中，我理解的应该在一个全局区的heap上）。
-4. 在为heap上的非static成员分配空间的同时按照其类型进行默认初始化（我这里这么理解的，在为成员变量分配空间时会按照其类型进行第一次初始化，如果不进行默认初始化，分配的空间的值是随机的，有点类型c语言中的[野指针][raw-pointer]问题）。
-5. 如果成员变量被显式赋值过，现在进行显式初始化。
-6. 执行构造函数。
-
-上面这6步大家务必好好理解，下面以阿里巴巴2014校招笔试题来练手，看看大家是否真正理解：
 ```
 public class Alibaba {
 
@@ -113,115 +248,72 @@ public class Alibaba {
 }
 ```
 
-我当时看到这个题，就觉得与阿里无缘了。 囧
+上面这个例子是阿里巴巴在14年的校招附加题，我当时看到这个题，就觉得与阿里无缘了。囧
 
-```
-1:j   i=0    n=0
-2:构造块   i=1    n=1
-3:t1   i=2    n=2
-4:j   i=3    n=3
-5:构造块   i=4    n=4
-6:t2   i=5    n=5
-7:i   i=6    n=6
-8:静态块   i=7    n=99
-9:j   i=8    n=100
-10:构造块   i=9    n=101
-11:init   i=10    n=102
-
-```
-
-上面是程序的输出结果，下面我来一行行分析之。
-
-1. 我们要调用Alibaba类的static方法main，所以JVM会在classpath中加载Alibaba.class，然后对所有static的成员变量进行默认初始化。这时k、i、n被赋值为0，t1、t2被赋值为null。
-2. 又因为static变量被显式赋值了，所以进行显式初始化，当对t1进行显式赋值时，用new的方法调用了Alibaba的构造函数，所以这次需要对t1对象进行初始化。因为Alibaba所有static部分已经在第一步中初始化过了（虽然第一步中还没有执行static块，但在初始化t1时也不会去执行static块，因为JVM认为这次是第二次加载Alibaba这个类了，所有的static部分都会被忽略掉），所以这次直接初始化非static部分。于是有了
-    ```
     1:j   i=0    n=0
     2:构造块   i=1    n=1
     3:t1   i=2    n=2
-    ```
-的输出。
-3. 接着对t2进行赋值，过程与t1相同
-    ```
     4:j   i=3    n=3
     5:构造块   i=4    n=4
     6:t2   i=5    n=5
-    ```
-4. t1、t2这两个static成员变量赋值完后到了static的i与n，于是有了下面的输出：
-    ```
     7:i   i=6    n=6
-    ```
-5. 到现在为止，所有的static的成员变量已经被第二次赋值过了，下面到static块了
-    ```
     8:静态块   i=7    n=99
-    ```
-6. 至此，所有的static部分赋值完毕了，下面开始执行main方法里面的内容，因为main方法的第一行就又用new的方式调用了Alibaba的构造函数，所以其过程与t1、t2类似
-    ```
     9:j   i=8    n=100
     10:构造块   i=9    n=101
     11:init   i=10    n=102
-    ```
-
-经过上面这6步，Alibaba这个类的初始化过程就完全结束了。
-
-真心觉得一些基础概念掌握的太不牢固了，阿里巴巴这个面试题出个太好不过了，让我意识到了自己的技术的肤浅。以后需要恶补。
-
-<a name="init-with-inheritance"></a>
-## （二）带有继承关系的对象初始化
-
-上面介绍了单个对象的初始化顺序，有了这些基础下面在看个带有继承关系的类的初始化过程：
-
-```
-class Insect {
-    private int i = 9;
-    protected int j;
-
-    Insect() {
-        System.out.println("i = " + i + " j = " + j);
-        j = 39;
-    }
-
-    private static int x1 = printInit("static Insect.x1 initialized");;
-
-    static int printInit(String s) {
-        System.out.println(s);
-        return 47;
-    }
-}
-
-public class Beetle extends Insect {
-    private int k = printInit("Beetle.k initialized");
-
-    public Beetle() {
-        System.out.println("k = " + k);
-        System.out.println("j = " + j);
-    }
-
-    private static int x2 = printInit("static Beetle.x2 initialized");
-
-    public static void main(String[] args) {
-        System.out.println("Beetle constructor");
-        Beetle b = new Beetle();
-    }
-}
-```
-当初始化的对象具有继承关系时，也是遵循单一对象初始化时的两大原则的。只不过在考虑static部分，非static部分时需要把子类与父类结合起来整体来看。
-```
-static Insect.x1 initialized
-static Beetle.x2 initialized
-Beetle constructor
-i = 9 j = 0
-Beetle.k initialized
-k = 47
-j = 39
-```
-上面是程序的输出，在初始化子类时，需要把父类的相关成分先初始化好，比如要想初始化子类的static部分，必须先初始化父类的static部分，其他的也没什么特别的了。输出的具体过程我这里也就不再赘述了。有疑问可以留言。
-
-<a name="notation1"></a>
-**注1.** 这里好像和我上面说的两大基本原则矛盾，不是说最后执行构造函数，请注意这里的构造函数必须与new来搭配使用，也就是说我们不能在程序中像普通函数调用那样直接使用
-```
-Dog()
-```
-的这种方式来调用Dog的构造函数，编译器会报找不到Dog()这个方法的错误，这里可能是java中对new进行了特殊处理，使得身为static的构造函数，在初始化阶段的最后执行。
 
 
-[raw-pointer]: http://zh.wikipedia.org/zh/%E8%BF%B7%E9%80%94%E6%8C%87%E9%92%88
+上面是程序的输出结果，下面我来一行行分析之。
+
+1. 由于`Alibaba`是 JVM 的启动类，属于主动调用，所以会依此进行 loading、linking、initialization 三个过程。
+2. 经过 loading与 linking 阶段后，所有的属性都有了默认值，然后进入最后的 initialization 阶段。
+3. 在 initialization 阶段，先对 static 属性赋值，然后在非 static 的。`k` 第一个显式赋值为 0 。
+4. 接下来是`t1`属性，由于这时`Alibaba`这个类已经处于 initialization 阶段，static 变量无需再次初始化了，所以忽略 static 属性的赋值，只对非 static 的属性进行赋值，所有有了开始的：
+
+        1:j   i=0    n=0
+        2:构造块   i=1    n=1
+        3:t1   i=2    n=2
+
+5. 接着对`t2`进行赋值，过程与t1相同
+
+        4:j   i=3    n=3
+        5:构造块   i=4    n=4
+        6:t2   i=5    n=5
+
+6. 之后到了 static 的 `i` 与 `n`：
+
+        7:i   i=6    n=6
+
+7. 到现在为止，所有的static的成员变量已经赋值完成，接下来就到了 static 代码块
+
+        8:静态块   i=7    n=99
+
+8. 至此，所有的 static 部分赋值完毕，接下来是非 static 的 `j`
+
+        9:j   i=8    n=100
+
+9. 所有属性都赋值完毕，最后是构造块与构造函数
+
+        10:构造块   i=9    n=101
+        11:init   i=10    n=102
+
+经过上面这9步，`Alibaba`这个类的初始化过程就算完成了。这里面比较容易出错的是第3步，认为会再次初始化 static 变量或代码块。而实际上是没必要，否则会出现多次初始化的情况。
+
+希望大家能多思考思考这个例子的结果，加深 JVM 初始化类过程的理解。
+
+## 总结
+
+经过最后这三个例子，相信大家对 JVM 的类加载机制都有了更深的理解，如果大家还是有疑问，欢迎留言讨论。
+
+## 参考
+
+- [Java Virtual Machine Specification Chapter 5](https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-5.html)
+- [Chapter 7 of Inside the Java Virtual Machine](http://www.artima.com/insidejvm/ed2/lifetypeP.html)
+- [JVM Internals](http://blog.jamesdbloom.com/JVMInternals.html)
+- [What kind of method is Constructor, static or non static?](https://www.quora.com/What-kind-of-method-is-Constructor-static-or-non-static)
+- [Understanding the Java ClassLoader](http://www.ibm.com/developerworks/java/tutorials/j-classloader/j-classloader.html)
+
+## 更新日志
+
+- 2014-07-12, 根据校招经验，完成[初稿](https://github.com/jiacai2050/jiacai2050.github.io/blob/c7a3e971d8906841eb2ac8b592ea2453d3ad2533/source/_posts/2014-07-12-order-of-initialization-in-java.markdown)，很多地方没写清楚
+- 2017-01-15，全部重写，增加 Load、Link、Initialization 过程与三个示例

@@ -1,6 +1,5 @@
 title: Mozilla 前世今生
 date: 2014-09-14 00:14:52 +0800
-categories: 其他
 tags:
 - mozilla
 

@@ -1,6 +1,6 @@
 title: MacBook 最佳实践
 date: 2014-11-23 20:40:07
-categories: 热爱生活
+tags: 最佳实践
 
 ---
 
@@ -21,8 +21,6 @@ Mac OS可以被分成操作系统的两个系列：
 
 ![Mac-FileSystem](http://img04.taobaocdn.com/imgextra/i4/581166664/TB2SgzpbXXXXXbSXpXXXXXXXXXX_!!581166664.png)
 
-
-
 ## Mac 开发环境部署
 
 ### 包管理器 [Homebrew](http://brew.sh/)
@@ -34,19 +32,106 @@ Mac OS可以被分成操作系统的两个系列：
 ```
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
+- `brew install <cli-program>`，安装命令行工具
+- `brew cask install <gui-program>`，安装图形界面软件，这得益于[Homebrew-Cask](https://github.com/caskroom/homebrew-cask)扩展
 
 ### 文本编辑器 [Atom](https://atom.io/)
 
+```
+# 安装命令
+brew cask install atom
+```
 Atom 新时代的文本编辑器，功能和 Sublime 差不多，但是免费开源，快捷键也类似，可以无缝迁移。两个非常实用的快捷键：
 
 - Multiple Selection `Control+Command+G`（在 Linux/Windows 下，是`Alt+F3`）
 - 选中多行 `Shift+Command+L`
 
-### 终端 [iTerm 2](http://iterm2.com/)
+### 神之编辑器 [Emacs](https://www.emacswiki.org/emacs?interface=en)
 
+```
+# 安装命令
+brew install --with-cocoa --srgb emacs
+```
+其实 Mac 是有自带 Emacs 的，位置是`/usr/bin/emacs`，只是版本非常旧，通过`brew`安装的位置在`/usr/local/bin/emacs`，可以通过下面的命令删除 Mac 自带的 Emacs：
+```
+sudo rm /usr/bin/emacs
+sudo rm -rf /usr/share/emacs
+```
+为了能在 git，终端中默认使用 Emacs，需要做以下配置：
+```
+# ~/.bashrc
+export EDITOR="emacsclient -t -a=\"\""
+export ALTERNATE_EDITOR=""
+
+# ~/.gitconfig
+[core]
+    editor = emacsclient -t -a=\\\"\\\"
+```
+上面的配置会调用 `emacsclient` 去连接 `emacs daemon`服务，如果服务没启，就先启动服务再去连接。
+
+### API 查阅工具[Dash](https://kapeli.com/dash)
+
+```
+# 安装命令
+brew cask install dash
+```
+> Dash gives your Mac instant offline access to 150+ API documentation sets.
+
+安装 Dash 后，就可以离线查各种语言/框架的 API 文档了。🍺
+
+![](https://img.alicdn.com/imgextra/i2/581166664/TB2x_3QcNdkpuFjy0FbXXaNnpXa_!!581166664.png)
+
+### 抓包工具 [Wireshark](https://www.wireshark.org/)
+
+```
+# 安装命令
+brew cask install wireshark
+```
+也许是最强大的抓包工具，从其名字上就能体现出：wire（线路）+ shark（鲨鱼）。但这个软件初次使用时有些难度，最重要的是区分两个概念：
+- `capture filter`，在抓包开始时指定。
+![capture filter](https://img.alicdn.com/imgextra/i1/581166664/TB2dcIUcHXlpuFjSszfXXcSGXXa_!!581166664.png)
+常见表达式
+
+```
+# Capture only traffic to or from IP address 172.18.5.4:
+host 172.18.5.4
+
+# Capture traffic to or from a range of IP addresses:
+net 192.168.0.0/24
+
+# Capture non-HTTP and non-SMTP traffic on your server (both are equivalent):
+host www.example.com and not (port 80 or port 25)
+host www.example.com and not port 80 and not port 25
+
+# Capture traffic within a range of ports  with newer versions of libpcap (0.9.1 and later):
+tcp portrange 1501-1549
+
+#Capture only IPv4 traffic - the shortest filter, but sometimes very useful to get rid of lower layer protocols like ARP and STP:
+ip
+
+# Capture only unicast traffic - useful to get rid of noise on the network if you only want to see traffic to and from your machine, not, for example, broadcast and multicast announcements:
+not broadcast and not multicast
+```
+- `display filter`，在抓取一定包后进行过滤。
+![display filter](https://img.alicdn.com/imgextra/i2/581166664/TB2L5U0cHJkpuFjy1zcXXa5FFXa_!!581166664.png)
+常见表达式
+
+```
+ip.dst_host == 192.168.30.103 and tcp.dstport == 80
+
+ip.addr == 10.43.54.65
+# is equivalent to
+ip.src == 10.43.54.65 or ip.dst == 10.43.54.65
+```
+
+### 终端 [iTerm 2](http://iterm2.com/)
+```
+# 安装命令
+brew cask install iterm2
+```
 Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了 iTerm2，这个终端可以很方便的用快捷键来达到分屏（CMD+D）、开多个Tab(CMD+T)、在多个Tab之间进行切换(CMD+数字)，其中有一点不好的是不能按字移动，如果我们在终端上键入"OPTION+向左键"，会输入一个特殊字符，我们需要自定义两个Action为Send Escape Sequence的快捷键，效果如下图：
 ![iTerm2](http://img01.taobaocdn.com/imgextra/i1/581166664/TB2hTnsbXXXXXbpXXXXXXXXXXXX_!!581166664.png)
-我这里把向前按字移动设为了"OPTION+CMD+向左键"，向后按字移动设为了"OPTION+CMD+向右键"
+我这里把向前按字移动设为了"OPTION+CMD+向左键"，向后按字移动设为了"OPTION+CMD+向右键"。
 
 当然，说到了 iTerm2，不得不提到终端复用软件 [tmux](https://tmux.github.io/)，tmux 默认配置文件在 Mac 上很别扭，你可以参考我这里的[配置文件](https://github.com/jiacai2050/code-wheels/blob/master/config/.tmux.conf)，这样 tmux 就可以像 vim 一样实现各种分屏的效果了。如果你还不知道 tmux 为何物，强烈推荐你看这个13分钟的[视频](http://pan.baidu.com/s/1gdLZzB9)，绝对物超所值，感谢 [happypeter](http://haoduoshipin.com/u/happypeter) 的分享。
 
@@ -84,7 +169,7 @@ Mac自带的终端不是很强，程序员们需要一个强劲的终端来工�
 其他一些有用的快捷键：
 - `Ctrl + r` 搜索历史命令
 - `!!` 执行上条命令
-- `Ctrl+X Ctrl+E` 调用默认编辑器去编辑一个特别长的命令
+- `Ctrl+x Ctrl+e` 调用[默认编辑器去编辑一个特别长的命令](http://www.commandlinefu.com/commands/view/1446/rapidly-invoke-an-editor-to-write-a-long-complex-or-tricky-command)
 
 
 ### ~/.bashrc
@@ -107,6 +192,13 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 alias ls='ls -FG'
 alias ll='ls -l'
 ```
+为了在命令行提示符中显示时间，可以设置`PS1`变量
+```
+export PS1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\$ "
+
+# 效果如下
+[liujiacai@macbook 22:02:13 ~]
+```
 
 ### 系统快捷键
 
@@ -125,23 +217,61 @@ Finder是Mac上的文件浏览器，其中有个比较严重的问题时，没�
 
 参考：[Why is it not possible to use the “cut” command to manipulate a file in the Finder?](http://apple.stackexchange.com/questions/12391/why-is-it-not-possible-to-use-the-cut-command-to-manipulate-a-file-in-the-find)
 
-### JAVA_HOME
+### JDK
 
-Mac下的使用`*dmg`文件安装JDK后，JAVA_HOME在那里呢，可以通过执行`/usr/libexec/java_home`这个命令来获取JAVA_HOME
+```
+# 安装命令
+brew cask install java
+```
+通过`brew cask`安装后，可以通过执行`/usr/libexec/java_home`这个命令来获取JAVA_HOME
 ```
 export JAVA_HOME="$(/usr/libexec/java_home)"
 ```
 
-### 修改hostname
+### 实用命令
 
-Mac下修改hostname也和Linux下不同，命令是
 ```
+# 修改hostname
 sudo scutil --set HostName <name>
+# 查看USB设备
+system_profiler SPUSBDataType
 ```
 
-### 查看USB设备
+下面的命令需要通过`brew`进行安装后在使用
 ```
-system_profiler SPUSBDataType
+# 查看网络请求
+brew install httpstat
+$ httpstat baidu.com
+Connected to 180.149.132.47:80 from 172.17.10.80:54727
+
+HTTP/1.1 200 OK
+Date: Sat, 14 Jan 2017 13:49:16 GMT
+Server: Apache
+Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+ETag: "51-47cf7e6ee8400"
+Accept-Ranges: bytes
+Content-Length: 81
+Cache-Control: max-age=86400
+Expires: Sun, 15 Jan 2017 13:49:16 GMT
+Connection: Keep-Alive
+Content-Type: text/html
+
+Body stored in: /var/folders/2g/fxz_98ks0lgc79sjp5vn5cxc0000gn/T/tmpsawHq4
+
+  DNS Lookup   TCP Connection   Server Processing   Content Transfer
+[    69ms    |      37ms      |       33ms        |        0ms       ]
+             |                |                   |                  |
+    namelookup:69ms           |                   |                  |
+                        connect:106ms             |                  |
+                                      starttransfer:139ms            |
+                                                                 total:139ms
+
+# Swiss Army Knife for macOS !
+brew install m-cli
+$ m trash status
+Size:  51G
+Number of files: 252172
+
 ```
 
 ## 常用软件
@@ -160,6 +290,14 @@ system_profiler SPUSBDataType
 > PS: Mac 下有很多非常实用的收费软件，我个人用的并不多，这里就不在列举了。
 大家可以参考知乎上的 [macOS (OS X) 平台上有哪些值得推荐的常用软件？](https://www.zhihu.com/question/19550256)
 
+### 浏览器
+
+Mac 上自带的 Safari 比较轻量，虽然比较省电，但扩展性远不如 Chrome、Firefox，所以这两个是必须的。
+```
+brew cask install firefox
+brew cask install google-chrome
+```
+
 ### 图片截屏、编辑
 
 Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用 Snip，才 2M 大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是`Cmd + Shift + 6`。
@@ -174,7 +312,10 @@ Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是�
 如果你依赖于Evernote，可以试试[圈点](https://www.yinxiang.com/skitch/)，洋名skitch，同样很好很强大。
 
 ### 录屏 gif
-
+```
+# 安装命令
+brew cask install licecap
+```
 很多时候我们需要把自己的操作展示给别人看，比较好的做法是通过录屏软件将自己的操作保存成 gif 格式的图片。
 [开源免费](https://github.com/lepht/licecap)的[licecap](http://www.cockos.com/licecap/) 很好的解决了这个问题。
 
@@ -184,15 +325,21 @@ Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是�
 
 对于程序员来说，流程图应该是再亲切不过的了，一张图胜过千言万语。之前我都是用 Keynote 来画，但是实在是不好用，后来在[知乎](https://www.zhihu.com/question/19588698)上发现了在线版的[ProcessOn](https://www.processon.com/)，大大减少了我画流程图的时间，上手也比较快。
 
-此外， 有网友补充道 [mpv](https://mpv.io/) 才是程序员最佳播放器，大家也可以尝试下。
-
 ### 视频播放器
 
+```
+# 安装命令
+brew cask install vlc
+```
 Mac下的自带的播放器QuickTime，功能实在是太弱了，支持的格式既少又难用，快进什么的貌似都没快捷键，只能手动点击进度条，试用了一段时间的[Mplayer](http://mplayerosx.ch/)，发现效果也不好，会有视频卡顿的现象，最终选择了 [VLC](http://www.videolan.org/vlc/download-macosx.html)，一直用的还不错。
 
+此外， 有网友补充道 [mpv](https://mpv.io/) 才是程序员最佳播放器，大家也可以尝试下。
 
 ### 音乐频播放器
-
+```
+# 安装命令
+brew cask install vox
+```
 官方的 iTunes 实在是不适应，喜欢简洁清爽的朋友可以试试 [VOX](http://coppertino.com/)
 
 ### *.webarchive
@@ -202,6 +349,11 @@ Mac下的自带的播放器QuickTime，功能实在是太弱了，支持的格�
 http://sourceforge.net/projects/webarchivext/
 
 ### 虚拟机 [Virtualbox](https://www.virtualbox.org/)
+
+```
+# 安装命令
+brew cask install virtualbox
+```
 
 在天朝，很多网站是只支持 IE 的，Mac 下的 Firefox, Chrome, Safari 这时候都显得心有力而不足了，而且很多软件也只有 Windows 版，所以装个虚拟机是非常有必要的。 Virtualbox 是我自用 Ubuntu 以来一直用的虚拟机，开源免费。
 
@@ -232,3 +384,7 @@ Mac 生于乔帮主之手时，为了凸显尊贵，接口与一般的电脑有�
 ## 参考
 
 - [OS X 的一些技巧汇总](http://havee.me/mac/2014-01/os-x-tips-and-tricks.html)
+
+## 更新日志
+
+- 2017/01/14，增加 emacs、dash、`brew cask`、`httpstat`、`m-cli`
