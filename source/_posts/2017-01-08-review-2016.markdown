@@ -50,7 +50,9 @@ categories: 热爱生活
 - [The Seasoned Schemer](http://book.douban.com/subject/1726083/)，TLS 的晋级篇
 - [On Lisp](https://book.douban.com/subject/1432683/)，Advanced Techniques for Common LISP，主要是学习 Lisp 中宏的强大
 
-为了不重蹈覆辙，之后会做个详细的读书计划，目标太大不容易实现，切分成小目标就好多了，和减肥一个道理。目标是在 17 年把上面几本书全部消灭。
+<del>为了不重蹈覆辙，之后会做个详细的读书计划</del>，目标太大不容易实现，切分成小目标就好多了，和减肥一个道理。目标是在 17 年把上面几本书全部消灭。
+
+![17 年读书计划时间表，From 日事清APP](https://img.alicdn.com/imgextra/i4/581166664/TB2mf.BancCL1FjSZFPXXXZgpXa_!!581166664.png)
 
 ### Github
 

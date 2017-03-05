@@ -298,17 +298,29 @@ brew cask install firefox
 brew cask install google-chrome
 ```
 
-### 图片截屏、编辑
+### 图片截屏、合并
 
 Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用 Snip，才 2M 大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是`Cmd + Shift + 6`。
 更重要的一点是，[Snip](http://snip.qq.com/) 可以解决Retina下截屏2x问题（就是截出来的图超大），就光这个特点就足以让你使用snip。
 <center>
 <img width="500px" src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2UXoxbFXXXXXnXXXXXXXXXXXX_!!581166664.png" alt="我的snip配置"/>
 </center>
-我平常用图片编辑就是修改像素大小，mac自带的preview就够用了。 像旋转、添加文字功能Preview也有，基本能够满足大部分人的需求。
+Mac自带的 Preview 可以对图片进行旋转、调整大小、添加文字，不需要在额外安装软件。
 <center>
 <img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2KtMobFXXXXXkXpXXXXXXXXXX_!!581166664.png" alt="Preview工具栏"/>
 </center>
+
+此外，如果要对两张图片进行合并，需要通过安装 [ImageMagick](https://www.imagemagick.org)，并且通过以下命令操作：[出处](http://apple.stackexchange.com/a/52882/103966)
+
+```
+brew install ImageMagick
+
+# 下面两条命令都会把 left.png right.png 合并到 merged.png 里面
+convert +append left.png right.png merged.png
+
+montage -geometry 100% left.jpg right.jpg merged.jpg
+```
+
 如果你依赖于Evernote，可以试试[圈点](https://www.yinxiang.com/skitch/)，洋名skitch，同样很好很强大。
 
 ### 录屏 gif

@@ -305,7 +305,7 @@ public class SFunction extends SObject{
 
 可以看到，这里的重点又回到`eval`方法上去了。 JCScheme 的主要复杂点也就算在`SExpression`的`eval`方法上，因为它涉及到把`SExpression`转为内置类型，所以按理说也应该是复杂的。
 
-`eval`的工作原理最直接的方式就是看源码[JCScheme/SExpression.java](https://github.com/jiacai2050/JCScheme/blob/master/src/main/java/net/liujiacai/jcscheme/SExpression.java)，这个方法后面会不断完善。
+`eval`的工作原理最直接的方式就是看源码[JCScheme/SExpression.java](https://github.com/jiacai2050/JCScheme/blob/master/src/main/java/net/liujiacai/jcscheme/JCExpression.java#L41)，这个方法后面会不断完善。
 
 ### 作用域
 
