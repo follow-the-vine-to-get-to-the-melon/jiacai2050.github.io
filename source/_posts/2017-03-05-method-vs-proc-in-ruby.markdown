@@ -2,6 +2,7 @@ title: 辨析 Ruby 中的 Method 与 Proc
 date: 2017-03-05 15:26:28
 categories: 编程语言
 tags: [Ruby]
+toc: true
 ---
 
 > Ruby is simple in appearance, but is very complex inside, just like our human body.  
@@ -13,7 +14,7 @@ Ruby 与 Python、Scala 类似，在一切皆是对象（Seeing Everything as an
 
 ## Block-oriented Programming
 
-`block` 这一特性在 Ruby 代码中随处可见，比如：
+Ruby 中代码块最常见的形式既不是 Proc 也不是 Method，而是 `block`。比如：
 ```
 # 遍历 Range/Array 等
 (0..10).each do |num|
@@ -75,6 +76,7 @@ myinc = Proc.new {|num| num + 1}
 [1,2,3].map(myinc)
 # 这种写法会报下面的错误
 # in `map': wrong number of arguments (given 1, expected 0) (ArgumentError)
+
 ```
 
 所以，Ruby 中的 Proc 和其他动态语言的函数是等价的，下面再举一例说明
@@ -87,7 +89,19 @@ def myfilter(arr, validator)
   end
 end
 
-myfilter([1,2,3,4], lambda {|num| num > 3})
+myfilter([1,2,3,4], lambda {|num| num > 3})  # 输出 4
+
+# 此外， 还可以在定义 myfilter 时，利用 & 将最后的 block 转为 Proc
+
+def myfilter(arr, &validator)
+  arr.each do |item|
+    if validator.call(item)
+      puts item
+    end
+  end
+end
+
+myfilter([1,2,3,4]) {|num| num > 3}
 # 输出 4
 ```
 ### proc vs. lambda
@@ -98,7 +112,7 @@ myinc = proc {|num| num + 1}   # 与 Proc.new 等价
 myinc = lambda {|num| num + 1}
 ```
 这两种形式的 Proc 有以下两点不同：
-- `proc`形式不限制参数个数；而`lambda`形式严格要求一致
+1. `proc`形式不限制参数个数；而`lambda`形式严格要求一致
     ```
     myadd = proc {|x, y| puts x}
 
@@ -114,7 +128,7 @@ myinc = lambda {|num| num + 1}
     myadd.call(1, 2, 3)  #ArgumentError
     ```
 
-- `proc`中的`return`语句对调用方有效；而`lambda`仅仅对其本身起作用
+2. `proc`中的`return`语句对调用方有效；而`lambda`仅仅对其本身起作用
     ```
     def foo(some_proc)
       some_proc.call
@@ -159,15 +173,14 @@ puts rect.area
 # 消息传递方式
 puts rect.send :area
 ```
-由于 Ruby 中方法名表示的是调用，所以一般可用与方法同名的[Symbol](http://ruby-doc.org/core-2.4.0/Symbol.html) 来表示。
+由于 Ruby 中方法名表示的是调用，所以一般可用与方法同名的 [Symbol](http://ruby-doc.org/core-2.4.0/Symbol.html) 来表示。
 ```
 puts rect.method(:area)
 
 #<Method: Rectangle#area>    
 ```
-由于 Method 总是与一对象关联，所以其内`self`是固定的，而`Proc`是随着调用者不同`self`也随之变化的。
 
-可以通过 `Method` 的 `to_proc` 方法可以将一 Method 转为功能等价的 Proc。比如：
+可以通过 `Method` 的 `to_proc` 方法可以将 Method 转为功能等价的 Proc。比如：
 
 ```
 def myinc(num)
@@ -182,6 +195,10 @@ end
 
 
 ## 总结
+
+- `block` 为 Proc 的语法糖衣，用于单次使用时
+- `Proc` 专为函数式编程设计，与其他动态语言的函数等价
+- `Method` 专为面向对象设计，消息传递的第一个参数
 
 弄清 Method 与 Proc 的区别后，不得不欣赏 Ruby 语言设计的巧妙，兼具函数式与面向对象的精髓。实在是程序员必备利器。
 
