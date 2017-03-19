@@ -1,7 +1,7 @@
 title: python, ruby, javascript 浅析
 date: 2016-03-26 17:03:40
 categories: 编程语言
-tags: [python, ruby, javascript]
+tags: [Python, Ruby, JavaScript]
 ---
 
 最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面、实现层面有很多共同的地方，但是它们也在很多设计理念上存在重要差异，通过对比这些相同点、异同点，更加有助于理解这两门语言。同时，Node.js、React Native 的出现，将 javascript 这门“前端”语言推向了全栈，同样作为一门动态语言，javascript 与 ruby、python 在很多概念上也存在很多相同点、异同点。

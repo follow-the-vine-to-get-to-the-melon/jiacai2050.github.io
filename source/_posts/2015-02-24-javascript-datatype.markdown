@@ -1,7 +1,7 @@
 title: javascript中的数据类型
 date: 2015-02-24 21:09:45
 categories: 编程语言
-tags: [javascript]
+tags: [JavaScript]
 ---
 
 学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上object。
@@ -90,7 +90,7 @@ var s2 = new String('2 + 2');
 5
 ```
 > 在javascript1.0时，还没有异常处理(exception handling)，对于一些异常情况（没有初始化的变量、调用函数时缺失的参数等），需要标明为一种特殊的值，`null`本来是个很好的选择，但是Brendan Eich同时想避免下面两件事：
-- 这个特殊值不应该有引用的特性，因为那是对象特有的 
+- 这个特殊值不应该有引用的特性，因为那是对象特有的
 - 这个特殊值不应该能转为0，因为这样不容易发现程序中的错误
 
 > 基于这两个原因，Brendan Eich选择了`undefined`，它可以被强转为`NaN`。
@@ -182,7 +182,7 @@ Object.defineProperty(obj, 'conflict', {
   value: 0x9f91102,
   get: function() { return 0xdeadbeef; }
 });
-// throws a TypeError: property descriptors must not specify a value 
+// throws a TypeError: property descriptors must not specify a value
 // or be writable when a getter or setter has been specified
 
 ```

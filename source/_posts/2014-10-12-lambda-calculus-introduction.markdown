@@ -1,7 +1,7 @@
 title: 编程语言的基石——Lambda calculus
 date: 2014-10-12 10:16:42 +0800
 categories: 理解计算机
-tags: [lambda, lisp]
+tags: [Lambda, Lisp]
 ---
 
 Lambda calculus我们一般称为[λ演算](http://en.wikipedia.org/wiki/Lambda_calculus)，最早是由[邱奇（Alonzo Church，图灵的博导）](http://en.wikipedia.org/wiki/Alonzo_Church)在20世纪30年代引入，当时的背景是解决[函数可计算的本质](http://en.wikipedia.org/wiki/Computable_function)性问题，初期λ演算成功的解决了在可计算理论中的[判定性问题](http://en.wikipedia.org/wiki/Entscheidungsproblem)，后来根据[Church–Turing thesis](http://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis)，证明了λ演算与图灵机是等价的。

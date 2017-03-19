@@ -28,6 +28,12 @@ date: 2014-08-08 07:48:37
 
 是的，生活的乐趣就在于此。
 
+![KeepWritingCodes 微信公众号](/images/wx_qrcode.jpg)
+
+> 本博客使用 disqus 评论系统不幸被墙，不会翻墙的同学可以通过关注上面的公众号与我交流。
+希望我们的交流能给你我带来些许启发。
+
+
 我的作品
 ====
 
@@ -40,11 +46,12 @@ date: 2014-08-08 07:48:37
 我的专栏
 ====
 
-- [ImportNew](http://www.importnew.com/author/liujiacai)，技术文档翻译
+- [豆瓣](https://www.douban.com/people/liujiacai/)，读书
 - [简书](http://www.jianshu.com/u/8a5466e37198)，纪录精彩生活
 - [掘金](https://gold.xitu.io/user/57c2431b165abd00665ee39f)
 - [KeepWritingCodes 公众号](http://weixin.sogou.com/weixin?query=keepwritingcodes)
 - [CSDN](http://blog.csdn.net/jiacai2050)，大学期间写作的地方
+- [ImportNew](http://www.importnew.com/author/liujiacai)，技术文档翻译
 
 我的分享
 ===
@@ -64,7 +71,7 @@ date: 2014-08-08 07:48:37
 更新日志
 ====
 
-- 2017-03-06，hexo2 --> hexo2，主题 jacman --> maupassant
+- 2017-03-06，hexo2 --> hexo3，主题 jacman --> maupassant
 - 2015-11-30，由多说评论迁移至 [disqus](https://disqus.com/)
 - 2014-08-10，使用 CNAME 自定义域名 [liujiacai.net](http://liujiacai.net)
 - 2014-08-08，由 octopress 迁移至 [hexo](https://hexo.io/)

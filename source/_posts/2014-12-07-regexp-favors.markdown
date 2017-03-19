@@ -100,5 +100,6 @@ Perl语言第一版是由[Larry Wall](http://en.wikipedia.org/wiki/Larry_Wall)�
 
 - [GNU Regular Expression Extensions](http://www.regular-expressions.info/gnu.html)
 - [POSIX Bracket Expressions](http://www.regular-expressions.info/posixbrackets.html)
+- [Different types of regular expressions Gnulib supports](https://www.gnu.org/software/gnulib/manual/html_node/Regular-expression-syntaxes.html)
 - [Regular_expression](http://en.wikipedia.org/wiki/Regular_expression)
 - [Linux/Unix工具与正则表达式的POSIX规范](http://www.infoq.com/cn/news/2011/07/regular-expressions-6-POSIX)

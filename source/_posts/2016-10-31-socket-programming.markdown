@@ -1,7 +1,7 @@
 title: Socket 编程实战
 date: 2016-10-31 16:24:17
 categories: 理解计算机
-tags: [python]
+tags: [Python]
 
 ---
 
