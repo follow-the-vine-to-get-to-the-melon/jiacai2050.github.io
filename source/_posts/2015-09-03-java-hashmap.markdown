@@ -571,100 +571,100 @@ transient Entry<K,V>[] table = (Entry<K,V>[]) EMPTY_TABLE;
 >
 > 所以说，当序列化一个HashMap对象时，保存Entry的table是不需要序列化进来的，因为它在另一台机器上是错误的。
 
-因为这个原因，HashMap重现了`writeObject`与`readObject` 方法
+因为这个原因，HashMap重写了`writeObject`与`readObject` 方法
+```
+private void writeObject(java.io.ObjectOutputStream s)
+    throws IOException
+{
+    // Write out the threshold, loadfactor, and any hidden stuff
+    s.defaultWriteObject();
 
-    private void writeObject(java.io.ObjectOutputStream s)
-        throws IOException
-    {
-        // Write out the threshold, loadfactor, and any hidden stuff
-        s.defaultWriteObject();
+    // Write out number of buckets
+    if (table==EMPTY_TABLE) {
+        s.writeInt(roundUpToPowerOf2(threshold));
+    } else {
+       s.writeInt(table.length);
+    }
 
-        // Write out number of buckets
-        if (table==EMPTY_TABLE) {
-            s.writeInt(roundUpToPowerOf2(threshold));
-        } else {
-           s.writeInt(table.length);
+    // Write out size (number of Mappings)
+    s.writeInt(size);
+
+    // Write out keys and values (alternating)
+    if (size > 0) {
+        for(Map.Entry<K,V> e : entrySet0()) {
+            s.writeObject(e.getKey());
+            s.writeObject(e.getValue());
         }
+    }
+}
 
-        // Write out size (number of Mappings)
-        s.writeInt(size);
+private static final long serialVersionUID = 362498820763181265L;
 
-        // Write out keys and values (alternating)
-        if (size > 0) {
-            for(Map.Entry<K,V> e : entrySet0()) {
-                s.writeObject(e.getKey());
-                s.writeObject(e.getValue());
-            }
+private void readObject(java.io.ObjectInputStream s)
+     throws IOException, ClassNotFoundException
+{
+    // Read in the threshold (ignored), loadfactor, and any hidden stuff
+    s.defaultReadObject();
+    if (loadFactor <= 0 || Float.isNaN(loadFactor)) {
+        throw new InvalidObjectException("Illegal load factor: " +
+                                           loadFactor);
+    }
+
+    // set other fields that need values
+    table = (Entry<K,V>[]) EMPTY_TABLE;
+
+    // Read in number of buckets
+    s.readInt(); // ignored.
+
+    // Read number of mappings
+    int mappings = s.readInt();
+    if (mappings < 0)
+        throw new InvalidObjectException("Illegal mappings count: " +
+                                           mappings);
+
+    // capacity chosen by number of mappings and desired load (if >= 0.25)
+    int capacity = (int) Math.min(
+                mappings * Math.min(1 / loadFactor, 4.0f),
+                // we have limits...
+                HashMap.MAXIMUM_CAPACITY);
+
+    // allocate the bucket array;
+    if (mappings > 0) {
+        inflateTable(capacity);
+    } else {
+        threshold = capacity;
+    }
+
+    init();  // Give subclass a chance to do its thing.
+
+    // Read the keys and values, and put the mappings in the HashMap
+    for (int i = 0; i < mappings; i++) {
+        K key = (K) s.readObject();
+        V value = (V) s.readObject();
+        putForCreate(key, value);
+    }
+}
+private void putForCreate(K key, V value) {
+    int hash = null == key ? 0 : hash(key);
+    int i = indexFor(hash, table.length);
+
+    /**
+     * Look for preexisting entry for key.  This will never happen for
+     * clone or deserialize.  It will only happen for construction if the
+     * input Map is a sorted map whose ordering is inconsistent w/ equals.
+     */
+    for (Entry<K,V> e = table[i]; e != null; e = e.next) {
+        Object k;
+        if (e.hash == hash &&
+            ((k = e.key) == key || (key != null && key.equals(k)))) {
+            e.value = value;
+            return;
         }
     }
 
-    private static final long serialVersionUID = 362498820763181265L;
-
-    private void readObject(java.io.ObjectInputStream s)
-         throws IOException, ClassNotFoundException
-    {
-        // Read in the threshold (ignored), loadfactor, and any hidden stuff
-        s.defaultReadObject();
-        if (loadFactor <= 0 || Float.isNaN(loadFactor)) {
-            throw new InvalidObjectException("Illegal load factor: " +
-                                               loadFactor);
-        }
-
-        // set other fields that need values
-        table = (Entry<K,V>[]) EMPTY_TABLE;
-
-        // Read in number of buckets
-        s.readInt(); // ignored.
-
-        // Read number of mappings
-        int mappings = s.readInt();
-        if (mappings < 0)
-            throw new InvalidObjectException("Illegal mappings count: " +
-                                               mappings);
-
-        // capacity chosen by number of mappings and desired load (if >= 0.25)
-        int capacity = (int) Math.min(
-                    mappings * Math.min(1 / loadFactor, 4.0f),
-                    // we have limits...
-                    HashMap.MAXIMUM_CAPACITY);
-
-        // allocate the bucket array;
-        if (mappings > 0) {
-            inflateTable(capacity);
-        } else {
-            threshold = capacity;
-        }
-
-        init();  // Give subclass a chance to do its thing.
-
-        // Read the keys and values, and put the mappings in the HashMap
-        for (int i = 0; i < mappings; i++) {
-            K key = (K) s.readObject();
-            V value = (V) s.readObject();
-            putForCreate(key, value);
-        }
-    }
-    private void putForCreate(K key, V value) {
-        int hash = null == key ? 0 : hash(key);
-        int i = indexFor(hash, table.length);
-
-        /**
-         * Look for preexisting entry for key.  This will never happen for
-         * clone or deserialize.  It will only happen for construction if the
-         * input Map is a sorted map whose ordering is inconsistent w/ equals.
-         */
-        for (Entry<K,V> e = table[i]; e != null; e = e.next) {
-            Object k;
-            if (e.hash == hash &&
-                ((k = e.key) == key || (key != null && key.equals(k)))) {
-                e.value = value;
-                return;
-            }
-        }
-
-        createEntry(hash, key, value, i);
-    }
-
+    createEntry(hash, key, value, i);
+}
+```
 简单来说，在序列化时，针对Entry的key与value分别单独序列化，当反序列化时，再单独处理即可。
 
 ## 总结
@@ -679,9 +679,7 @@ transient Entry<K,V>[] table = (Entry<K,V>[]) EMPTY_TABLE;
 只是说我们可以在理解了这个类或方法的总体思路后，再来分析这些边界条件。
 如果一开始就分析，那真是丈二和尚——摸不着头脑了，随着对它工作原理的加深，才有可能理解这些边界条件的场景。
 
-今天到此为止，下次打算分析[TreeMap](/blog/2015/09/04/java-treemap/)。<del>Stay Tuned！🍺</del>。我已经写完了，两篇文章对比看，效果更好。😊
-
-PS：今天是反法西斯战争胜利70周年，虽然这是个和平的年代，但是我们仍然不能忘了那些为了和平做出牺牲的英雄们。爱国从自己身边的每个小事做起。🚩🚩🚩🚩🚩🚩
+今天到此为止，下次打算分析[TreeMap](/blog/2015/09/04/java-treemap/)。<del>Stay Tuned！🍺</del>。我已经写完了，两篇文章对比看，效果更好。
 
 ## 参考
 

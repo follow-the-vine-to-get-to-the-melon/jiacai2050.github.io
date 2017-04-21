@@ -99,7 +99,11 @@ public class how_clojure_work.core__init {
   public static {};
 }
 ```
-可以看到，命名空间加载类里面有一些`Var`与`AFn`变量，可以认为一个`Var`对应一个`AFn`。使用 Intellj 或 [JD](http://jd.benow.ca/) 打开这个类文件，首先查看静态代码快
+
+> Clojure 里面所有的函数都继承 [IFn 接口](https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/IFn.java)，该接口有 20 个重载的 invoke 方法，之所以有这么多 invoke 方法，是因为 [JVM 擅长根据参数数目进行方法调度（dispatch）](http://stackoverflow.com/a/2736636/2163429)。
+[抽象类 AFn](https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/AFn.java) 为 IFn 里的 20 个 invoke 方法提供了的默认实现（通过抛 throwArity 异常），这样其他函数就只需要继承 AFn 并重写相应 invoke 方法即可。
+
+可以看到，命名空间加载类里面有一些`Var`与`AFn`变量，可以认为一个`Var`对应一个`AFn`。使用 Intellj 或 [JD](http://jd.benow.ca/) 打开这个类文件，首先查看静态代码快。
 ```
 static {
     __init0();
@@ -338,3 +342,4 @@ Clojure 作为一门 host 在 JVM 上的语言，其独特的实现方式让其�
 - http://stackoverflow.com/questions/7471316/how-does-clojure-class-reloading-work
 - http://blog.headius.com/2011/10/why-clojure-doesnt-need-invokedynamic.html
 - http://www.deepbluelambda.org/programming/clojure/how-clojure-works-a-simple-namespace
+- https://8thlight.com/blog/aaron-lahey/2016/07/20/relationship-between-clojure-functions-symbols-vars-namespaces.html

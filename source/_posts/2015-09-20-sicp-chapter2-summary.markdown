@@ -58,7 +58,7 @@ Scheme的基本复合结构称为“序对”，序对本身也是数据对象,�
 (define y (cons 5 6))
 (define z (cons x y))
 ; 注意理解序对pair 与表list 的区别
-(define x (cons 1 2)) 
+(define x (cons 1 2))
 (define y (list 1 2))
 (cdr x)  ; 2
 (cdr y)  ; (2)
@@ -77,6 +77,10 @@ Scheme的基本复合结构称为“序对”，序对本身也是数据对象,�
 
 由于序对是构造复杂数据对象的基础，所有掌握序对的操作也就显得尤为重要，在学习这些操作时，我们可以感受到函数式编程的奇妙。
 废话不多说，直接看代码[list.scm](https://github.com/jiacai2050/sicp/blob/master/exercises/02/lib/list.scm)看代码吧。
+
+## 数据导向 vs. 消息传递
+
+这两种方式是本章着重接受的两种数据抽象方式，分别对象函数式编程（数据导向）与面向对象编程（消息传递），具体辨析可参考[习题2.76](https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.76.md)。
 
 ## 示例
 
@@ -136,8 +140,6 @@ Scheme的基本复合结构称为“序对”，序对本身也是数据对象,�
 这种主要是用直角坐标与极坐标两种形式表示复数，用带标志的数据，实现了数据导向的设计风格。
 
 两种坐标的实现，参考代码[lib/generic_arithmetic.scm](https://github.com/jiacai2050/sicp/blob/master/exercises/02/lib/generic_arithmetic.scm)
-
-关于带有`显示分派`的通用型操作、`数据导向`的通用型操作与`消息传递`的通用型操作的比较参考[习题2.76](https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.76.md)。
 
 ### 通用型算术包的实现
 
