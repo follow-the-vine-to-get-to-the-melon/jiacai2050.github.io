@@ -35,16 +35,18 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 - `brew install <cli-program>`，安装命令行工具
 - `brew cask install <gui-program>`，安装图形界面软件，这得益于[Homebrew-Cask](https://github.com/caskroom/homebrew-cask)扩展
 
-### 文本编辑器 [Atom](https://atom.io/)
+### 文本编辑器 [VSCode](https://code.visualstudio.com/)
 
 ```
 # 安装命令
-brew cask install atom
+brew cask install visual-studio-code
 ```
-Atom 新时代的文本编辑器，功能和 Sublime 差不多，但是免费开源，快捷键也类似，可以无缝迁移。两个非常实用的快捷键：
+新时代的文本编辑器，功能和 Sublime 差不多，快捷键也类似，可以无缝迁移。两个非常实用的快捷键：
 
 - Multiple Selection `Control+Command+G`（在 Linux/Windows 下，是`Alt+F3`）
 - 选中多行 `Shift+Command+L`
+
+我个人使用编辑器的经历是 Sublime --> Atom --> VSCode。·
 
 ### 神之编辑器 [Emacs](https://www.emacswiki.org/emacs?interface=en)
 
@@ -298,6 +300,20 @@ brew cask install firefox
 brew cask install google-chrome
 ```
 
+### 科学上网 Shadowsocks
+
+```
+brew install shadowsocks-libev
+```
+Mac 下不推荐安装 GUI 版本，已经很久没人维护了。安装之后编辑`/usr/local/etc/shadowsocks-libev.json`，填入 server 地址即可。
+```
+# 测试
+ss-local -v -c /usr/local/etc/shadowsocks-libev.json
+# 开机启动
+brew services start shadowsocks-libev
+
+```
+
 ### 图片截屏、合并
 
 Mac上的截图工具已经很好了，`Cmd + Shift + 3/4`就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用 Snip，才 2M 大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是`Cmd + Shift + 6`。
@@ -335,17 +351,29 @@ brew cask install licecap
 
 ### 流程图制作工具
 
-对于程序员来说，流程图应该是再亲切不过的了，一张图胜过千言万语。之前我都是用 Keynote 来画，但是实在是不好用，后来在[知乎](https://www.zhihu.com/question/19588698)上发现了在线版的[ProcessOn](https://www.processon.com/)，大大减少了我画流程图的时间，上手也比较快。
+对于程序员来说，流程图应该是再亲切不过的了，一张图胜过千言万语。之前我都是用 Keynote 来画，但是实在是不好用，<del>后来在[知乎](https://www.zhihu.com/question/19588698)上发现了在线版的[ProcessOn](https://www.processon.com/)，大大减少了我画流程图的时间，上手也比较快。</del>现在 ProcessOn 有了限制，只能保留 9 张流程图。我又找到了新的工具，[draw.io](https://www.draw.io)，时序图、状态图统统不在话下。
 
-### 视频播放器
+其次，国外很多项目的图是用纯文本画的，比较好用的在线工具是：[asciiflow](http://asciiflow.com/)。
+
+### 视频播放器、截取
 
 ```
 # 安装命令
 brew cask install vlc
 ```
 Mac下的自带的播放器QuickTime，功能实在是太弱了，支持的格式既少又难用，快进什么的貌似都没快捷键，只能手动点击进度条，试用了一段时间的[Mplayer](http://mplayerosx.ch/)，发现效果也不好，会有视频卡顿的现象，最终选择了 [VLC](http://www.videolan.org/vlc/download-macosx.html)，一直用的还不错。
-
 此外， 有网友补充道 [mpv](https://mpv.io/) 才是程序员最佳播放器，大家也可以尝试下。
+
+很多时候，我们只需要截取视频中的某一段视频，或者简单的进行格式转换，这时候就需要 ffmpeg 出马了。
+```
+# 安装命令
+brew  install ffmpeg
+
+# 将 mov 格式的视频转为 mp4，ffmpeg 能根据文件后缀名自动识别
+ffmpeg  -i foo.mov foo.mp4
+# 从第 6 秒开始，截取10s 视频，并且转为 mp4 格式
+ffmpeg -t 10 -ss 00:00:06 -i foo.mov smaller.mp4
+```
 
 ### 音乐频播放器
 ```
@@ -400,3 +428,4 @@ Mac 生于乔帮主之手时，为了凸显尊贵，接口与一般的电脑有�
 ## 更新日志
 
 - 2017/01/14，增加 emacs、dash、`brew cask`、`httpstat`、`m-cli`
+- 2017/06/03，增加 ffmpeg、asciiflow

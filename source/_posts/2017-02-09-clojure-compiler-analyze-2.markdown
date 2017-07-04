@@ -343,3 +343,4 @@ Clojure 作为一门 host 在 JVM 上的语言，其独特的实现方式让其�
 - http://blog.headius.com/2011/10/why-clojure-doesnt-need-invokedynamic.html
 - http://www.deepbluelambda.org/programming/clojure/how-clojure-works-a-simple-namespace
 - https://8thlight.com/blog/aaron-lahey/2016/07/20/relationship-between-clojure-functions-symbols-vars-namespaces.html
+- http://blog.cognitect.com/blog/2016/9/15/works-on-my-machine-understanding-var-bindings-and-roots
