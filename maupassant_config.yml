@@ -59,6 +59,6 @@ timeline:
 # Static files
 js: js
 css: css
-
+toc_number: true
 # Theme version
 version: 0.0.0

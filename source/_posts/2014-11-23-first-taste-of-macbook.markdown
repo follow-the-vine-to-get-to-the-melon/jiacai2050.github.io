@@ -131,48 +131,18 @@ ip.src == 10.43.54.65 or ip.dst == 10.43.54.65
 # 安装命令
 brew cask install iterm2
 ```
-Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了 iTerm2，这个终端可以很方便的用快捷键来达到分屏（CMD+D）、开多个Tab(CMD+T)、在多个Tab之间进行切换(CMD+数字)，其中有一点不好的是不能按字移动，如果我们在终端上键入"OPTION+向左键"，会输入一个特殊字符，我们需要自定义两个Action为Send Escape Sequence的快捷键，效果如下图：
-![iTerm2](http://img01.taobaocdn.com/imgextra/i1/581166664/TB2hTnsbXXXXXbpXXXXXXXXXXXX_!!581166664.png)
-我这里把向前按字移动设为了"OPTION+CMD+向左键"，向后按字移动设为了"OPTION+CMD+向右键"。
-
-当然，说到了 iTerm2，不得不提到终端复用软件 [tmux](https://tmux.github.io/)，tmux 默认配置文件在 Mac 上很别扭，你可以参考我这里的[配置文件](https://github.com/jiacai2050/code-wheels/blob/master/config/.tmux.conf)，这样 tmux 就可以像 vim 一样实现各种分屏的效果了。如果你还不知道 tmux 为何物，强烈推荐你看这个13分钟的[视频](http://pan.baidu.com/s/1gdLZzB9)，绝对物超所值，感谢 [happypeter](http://haoduoshipin.com/u/happypeter) 的分享。
-
-终端中输入命令时，移动光标有两种方式，一个是 emacs，一个 vi，可以通过 set 命令来设置，默认的是 emacs 模式，也可以通过`set -o emacs`来显式设置，有如下快捷键：
-- `ctrl + a`  Move cursor to beginning of line
-- `ctrl + e`  Move cursor to end of line
-- `meta + b`  Move cursor back one word
-- `meta + f`  Move cursor forward one word
-- `ctrl + w`  Cut the last word
-- `ctrl + u`  Cut everything before the cursor
-- `ctrl + k`  Cut everything after the cursor
-- `ctrl + y`  Paste the last thing to be cut
-- `ctrl + _`  Undo
-
-如果想使用 vi 模式，可以使用如下命令`set -o vi`开启。
-开启vi 模式后，默认是 insert 模式，按下`esc`键进入命令模式。
-
-- `h`   Move cursor left
-- `l`   Move cursor right
-- `A`   Move cursor to end of line and put in insert mode
-- `0`   (zero) Move cursor to beginning of line (doesn't put in insert mode)
-- `i`   Put into insert mode at current position
-- `a`   Put into insert mode after current position
-- `dd`  Delete line (saved for pasting)
-- `D`   Delete text after current cursor position (saved for pasting)
-- `p`   Paste text that was deleted
-- `j`   Move up through history commands
-- `k`   Move down through history commands
-- `u`   Undo
-
-参考：
-- [Getting Started with BASH](http://www.hypexr.org/bash_tutorial.php)
-- [How To Use the Emacs Editor in Linux](https://www.digitalocean.com/community/tutorials/how-to-use-the-emacs-editor-in-linux)
-
-其他一些有用的快捷键：
+Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了 iTerm2。需要设置一项：Left Option act as +Esc（Preferences-->Profiles-->Keys），这样 Option 就可以用作 Meta 键了。
+- `Cmd + D` 垂直分屏 
+- `Cmd + Shift + D` 水平分屏 
+- `Cmd + T` 开多个Tab 
+- `Cmd + 数字` 在多个Tab之间进行切换 
+- `Option + F/B（向前、向后）` 按字移动。Bash Shell 光标默认按照 Emacs 风格移动，也可改为 VIM，可参考[Modifying the Bash Shell with the set Command](http://www.hypexr.org/bash_tutorial.php#set)。 
 - `Ctrl + r` 搜索历史命令
 - `!!` 执行上条命令
 - `Ctrl+x Ctrl+e` 调用[默认编辑器去编辑一个特别长的命令](http://www.commandlinefu.com/commands/view/1446/rapidly-invoke-an-editor-to-write-a-long-complex-or-tricky-command)
 
+
+当然，说到了 iTerm2，不得不提到终端复用软件 [tmux](https://tmux.github.io/)，tmux 默认配置文件在 Mac 上很别扭，你可以参考我这里的[配置文件](https://github.com/jiacai2050/conf/blob/master/.tmux.conf)，这样 tmux 就可以像 vim 一样实现各种分屏的效果了。如果你还不知道 tmux 为何物，强烈推荐你看这个13分钟的[视频](http://pan.baidu.com/s/1gdLZzB9)，绝对物超所值，感谢 [happypeter](http://haoduoshipin.com/u/happypeter) 的分享。
 
 ### ~/.bashrc
 
@@ -228,6 +198,13 @@ brew cask install java
 通过`brew cask`安装后，可以通过执行`/usr/libexec/java_home`这个命令来获取JAVA_HOME
 ```
 export JAVA_HOME="$(/usr/libexec/java_home)"
+```
+
+### Docker
+
+```
+# 安装命令
+brew cask install docker
 ```
 
 ### 实用命令
@@ -429,3 +406,4 @@ Mac 生于乔帮主之手时，为了凸显尊贵，接口与一般的电脑有�
 
 - 2017/01/14，增加 emacs、dash、`brew cask`、`httpstat`、`m-cli`
 - 2017/06/03，增加 ffmpeg、asciiflow
+- 2017/07/06，修改 iTerm2 部分，增加 docker
