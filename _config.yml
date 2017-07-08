@@ -50,6 +50,7 @@ category_map:
     搜索引擎: search_engine
     热爱生活: life
     理解计算机: aha_computer
+    大数据: bigdata
     其他: other
 tag_map:
     Java: java

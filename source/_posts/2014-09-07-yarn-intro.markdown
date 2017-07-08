@@ -1,7 +1,7 @@
 title: Yarn概述
 date: 2014-09-07 22:07:51 +0800
-categories: hadoop
-tags: [hadoop, yarn]
+categories: 大数据
+tags: [hadoop]
 list_number: false
 ---
 
