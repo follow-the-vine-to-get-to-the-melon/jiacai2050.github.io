@@ -15,7 +15,7 @@ categories: 编程语言
 简单来说，作用域限定了程序中变量的查找范围。
 
 在编程语言中有子过程（subroutine，也称为函数、过程）之前，所有的变量都在一个称为“global”的环境中，现在来看这当然是非常不合理，所以在之后有子过程的大部分静态语言（变量的类型不可变）里面，不同的 block（像if、while、for、函数等），具有不同的环境。例如：
-```
+```c
 #include <stdio.h>
 
 int main() {
@@ -34,7 +34,7 @@ int main() {
 </center>
 
 上面这一做法符合我们的直观印象，也是比较合理的设计。但是在一些动态语言（变量的类型可以任意改变）中，并没有变量声明与使用的区别，而是在第一次使用时去声明这个变量，像下面这个 Python 示例：
-```
+```python
 if 1 == 1:
     i = 1
 else:
@@ -59,7 +59,7 @@ print i  # 输出 1
 - static scope 的语言，函数作用域的外围环境是`声明时`
 
 看下面这个 Python 示例：
-
+```python
     # foo.py
     s = "foo"
     def foo():
@@ -69,7 +69,7 @@ print i  # 输出 1
     from foo import foo
     s = "bar"
     foo()   # 输出 foo
-
+```
 上面的示例包括两个文件：`foo.py`、`bar.py`，在`bar.py`中调用`foo.py`的`foo`函数，因为 Python 属于 static scope 的语言，所以这时的环境是这样的：
 <center>
 <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2yp6lpFXXXXXAXFXXXXXXXXXX_!!581166664.png" alt=" 在 bar 中调用 foo 函数时的环境示意图"/>
@@ -85,7 +85,7 @@ static scope 是比较符合正常思维的，也是比较正确的实现方式�
 
 就像前面说的，Javascript 具有 function level 的 static scope，但是这里有一个常见的问题，具体代码：
 
-```
+```js
 var list = document.getElementById("list");
 
 for (var i = 1; i <= 5; i++) {
@@ -103,41 +103,52 @@ for (var i = 1; i <= 5; i++) {
 <center>
 <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2YEkppFXXXXXbXXXXXXXXXXXX_!!581166664.png" alt=" 使用 var 定义 i 时，单击 Item 时的环境模型示意图"/>
 </center>
-在 for 代码块执行完后，`i` 的值为6，又因为Javascript 中只有 function level 的作用域，所有这里的 `i` 被定义在了 E0 中。
+在 for 代码块执行完后，`i` 的值为6，又因为Javascript 中只有 function level 的作用域，所以这里的 `i` 被定义在了 E0 中。
 
 为了解决这个问题，ES6 引入了`let`，使用`let`定义的变量具有 block level 的作用域，所以如果把上面的代码片段中的`var`换成`let`，环境会变成下面的形式：
 <center>
 <img src="https://img.alicdn.com/imgextra/i2/581166664/TB29sDTpFXXXXXpXpXXXXXXXXXX_!!581166664.png" alt=" 使用 let 定义 i 时，单击 Item 时的环境模型示意图"/>
 </center>
-相信大家通过上面的图示，可以解决心中的疑惑了。
+相信大家通过上面的图示，可以解决心中的疑惑了。最后，给出一个思考，下面的代码片段输出什么值：
+```js
+var a = "before";
+function foo(){
+    console.log(a);
+}
+function bar(fun){
+    var a = "after";
+    fun();
+}
+bar(foo);   // 输出 ？
+```
 
 ### hoisting
 
 先看一个比较典型的例子：
-
-    var foo = 1;
-    function bar() {
-    	if (!foo) {
-    		var foo = 10;
-    	}
-    	alert(foo);
+```js
+var foo = 1;
+function bar() {
+    if (!foo) {
+        var foo = 10;
     }
-    bar();
-
-你也许知道，这里弹出的值是10，而不是1，因为javascript会把所有的变量提前（hositing），也就是说，上面的代码等价于：
-
-    var foo = 1;
-    function bar() {
-        var foo;
-    	if (!foo) {
-    		foo = 10;
-    	}
-    	alert(foo);
-    }
-    bar();
-
-上面这个例子就简单演示了什么是变量提升，下面重点讲述为什么要这么设计？首先看下面一段代码：
+    alert(foo);
+}
+bar();
 ```
+你也许知道，这里弹出的值是10，而不是1，因为javascript会把所有的变量提前（hositing），也就是说，上面的代码等价于：
+```js
+var foo = 1;
+function bar() {
+    var foo;
+    if (!foo) {
+        foo = 10;
+    }
+    alert(foo);
+}
+bar();
+```
+上面这个例子就简单演示了什么是变量提升，下面重点讲述为什么要这么设计？首先看下面一段代码：
+```js
 function is_even(n) {
   if (n == 0) {
     return true;
@@ -159,9 +170,9 @@ function is_odd(n) {
 
 ```
 
-按照常规思维，在运行`is_even(2);` 时，会去调用还没定义的`is_odd`函数，所以应该会报错，但是由于 Javascript 里面有 hositing，所有是可以运行，但是为什么要这么设计呢？
+按照常规思维，在运行`is_even(2);` 时，会去调用还没定义的`is_odd`函数，所以应该会报错，但是由于 Javascript 里面有 hositing，所以是可以运行，但是为什么要这么设计呢？
 这要追溯到 Javascript 语言设计者的初衷了，Brendan Eich 在创造这门世界级语言时，一开始打算用 Scheme 的思想来实现，而且当时 Brendan 也是在看 SICP 这本书，[SICP 4.1.6](https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-26.html#%_sec_4.1.6) 在介绍内部定义时，给出了解决变量同一时刻定义的一种解决方式：将所有的变量名提前。这样同一环境中的其他地方就能够使用所有的定义了。需要注意的是，这里只是将变量名提前，赋值的动作不变，显然，Javascript 采用了这一思想（这其实是[forward_declaration](https://en.wikipedia.org/wiki/Forward_declaration) 技术的一种实现手段）。
-```
+```lisp
 ;; SICP 书中的示例代码
 (lambda <vars>
   (define u <e1>)
@@ -188,7 +199,7 @@ function is_odd(n) {
 
 准确来说，Python 里面有四种作用域：`function`, `module`, `global`和 `class` 作用域。由于 Python 不区分变量的声明，所以在第一次初始化变量时（必须为赋值操作）将变量加入当前环境中。如果在没对变量进行初始化的情况下使用该变量就会报运行时异常，但如果仅仅是访问（并不赋值）的情况下，查找变量的顺序会按照 LEGB 规则 (Local, Enclosing, Global, Built-in)。
 
-```
+```python
 s = "hello"
 def foo():
     s += "world"
@@ -207,7 +218,7 @@ def foo():
 foo()  # return "hello world"
 ```
 但由于 global 关键字只能限定在`global`作用域内查找变量，在有嵌套定义的时候就有问题了，比如：
-```
+```python
 def foo():
     s = "hello"
     def bar():
@@ -219,7 +230,7 @@ def foo():
 foo()()    
 ```
 Python 3 中引入了 `nonlocal` 关键字来解决这个问题，：
-```
+```python
 def foo():
     s = "hello"
     def bar():
@@ -231,7 +242,7 @@ def foo():
 foo()()   # return "hello world"
 ```
 在 Python 2 中，我们可以通过引入一可变容器解决（其实就是绕过直接修改 `s` 的值）
-```
+```python
 def foo():
     s = ["hello"]
     def bar():
@@ -245,7 +256,7 @@ foo()()   # return "hello world"
 ### 类级别作用域
 
 还是先看代码：
-```
+```python
 class Foo(object):
     username = "Foo"
     def say_hello(self):
@@ -254,8 +265,8 @@ class Foo(object):
 foo = Foo()
 foo.say_hello()  # NameError: global name 'username' is not defined                
 ```
-`username`是定义在`Foo`类级别的，内部的`say_hello`方法在查找自由变量`username`的作用域会按照上面说的LEGB 规则 (Local, Enclosing, Global, Built-in)，并不会去查找类级别作用域的变量，所有这里会报错。修改的方法也很简单：
-```
+`username`是定义在`Foo`类级别的，内部的`say_hello`方法在查找自由变量`username`的作用域会按照上面说的LEGB 规则 (Local, Enclosing, Global, Built-in)，并不会去查找类级别作用域的变量，所以这里会报错。修改的方法也很简单：
+```python
 def say_hello(self):
     print "Hello %s" % Foo.username
 ```
@@ -267,7 +278,7 @@ def say_hello(self):
 
 还是先看一个例子：
 
-```
+```js
 function add(x) {
   return function(y) {
     return x + y;

@@ -35,24 +35,29 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 - `brew install <cli-program>`，安装命令行工具
 - `brew cask install <gui-program>`，安装图形界面软件，这得益于[Homebrew-Cask](https://github.com/caskroom/homebrew-cask)扩展
 
+可以根据需要，配置国内源：
+- 中科大，https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git
+- 清华，https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/
+
 ### 文本编辑器 [VSCode](https://code.visualstudio.com/)
 
 ```
 # 安装命令
 brew cask install visual-studio-code
 ```
-新时代的文本编辑器，功能和 Sublime 差不多，快捷键也类似，可以无缝迁移。两个非常实用的快捷键：
+新时代的文本编辑器，功能和 Atom/Sublime 差不多，但是不会出现卡顿现象，而且官方提供了 [Sublime Text Keymap](https://github.com/Microsoft/vscode-sublime-keybindings) 插件，如果之前熟悉 Sublime，推荐安装。下面是我非常依赖的快捷键：
 
-- Multiple Selection `Control+Command+G`（在 Linux/Windows 下，是`Alt+F3`）
+- Multiple Selection: `Control+Command+G`（在 Linux/Windows 下，是 Alt+F3）
 - 选中多行 `Shift+Command+L`
+- 多行合并为一行`Command+J`
 
-我个人使用编辑器的经历是 Sublime --> Atom --> VSCode。·
 
 ### 神之编辑器 [Emacs](https://www.emacswiki.org/emacs?interface=en)
 
 ```
 # 安装命令
 brew install --with-cocoa --srgb emacs
+brew install sbcl # 顺便把 common lisp 也装上
 ```
 其实 Mac 是有自带 Emacs 的，位置是`/usr/bin/emacs`，只是版本非常旧，通过`brew`安装的位置在`/usr/local/bin/emacs`，可以通过下面的命令删除 Mac 自带的 Emacs：
 ```
@@ -144,6 +149,8 @@ Mac自带的终端不是很强，程序员们需要一个强劲的终端来工�
 
 当然，说到了 iTerm2，不得不提到终端复用软件 [tmux](https://tmux.github.io/)，tmux 默认配置文件在 Mac 上很别扭，你可以参考我这里的[配置文件](https://github.com/jiacai2050/conf/blob/master/.tmux.conf)，这样 tmux 就可以像 vim 一样实现各种分屏的效果了。如果你还不知道 tmux 为何物，强烈推荐你看这个13分钟的[视频](http://pan.baidu.com/s/1gdLZzB9)，绝对物超所值，感谢 [happypeter](http://haoduoshipin.com/u/happypeter) 的分享。
 
+我现在用的主题是：[Tomorrow Night](https://github.com/chriskempson/tomorrow-theme/blob/master/iTerm2/Tomorrow%20Night.itermcolors)。
+
 ### ~/.bashrc
 
 Linux 一般通过`~/.bashrc`进行环境变量的配置，但是在 Mac 下配置后，发现根本没有效果，这是为什么呢？
@@ -185,31 +192,27 @@ Host * (asterisk for all hosts or add specific host)
   UseKeychain yes
   IdentityFile <key> (e.g. ~/.ssh/userKey)
 ```
+参考：
+- [Saving SSH keys in macOS Sierra keychain](https://github.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain)
 
-参考：[Saving SSH keys in macOS Sierra keychain](https://github.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain)
+除此之外，对于 OpenSSH 4.0 以及之后的版本，引入一新功能 ControlMaster，可以复用之前已经登录的连接，建议开启：
+```
+Host *
+  ControlMaster auto
+  ControlPath ~/.ssh/master-%r@%h:%p
+  ControlPersist 60m
+```
+参考：
+- [Accelerating OpenSSH connections with ControlMaster](https://www.linux.com/news/accelerating-openssh-connections-controlmaster)
+- [https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing](OpenSSH/Cookbook/Multiplexing)
 
-### 系统快捷键
-
-- 查看桌面`F11`
-- HOME  `Command + <-`
-- END   `Command + ->`
-- 锁屏   `Shift + Control + 电源键` （Windows 下为`Win+L`）
-- 强制关闭程序 `Command + Option + esc`（Windows 下为`Ctrl+Alt+Delete`）
-
-### Finder
-Finder是Mac上的文件浏览器，其中有个比较严重的问题时，没有“剪贴(cut)”功能，当我们选中一个文件后，菜单中的“Edit”->“Cut”是灰色的，也就是无法使用，这是因为Finder中的“Cut”只适用于文本，对于文件就无能为力了。
-我们当然可以通过打开两个Finder窗口，然后“拖”过去。但是这样未免太麻烦了，其实我们可以这么做：
-1. 首先`Cmd + C`复制文件
-2. 然后找到你想要放到文件夹
-3. 最后`Cmd + Option + V`就能实现“剪贴”的效果了。
-
-参考：[Why is it not possible to use the “cut” command to manipulate a file in the Finder?](http://apple.stackexchange.com/questions/12391/why-is-it-not-possible-to-use-the-cut-command-to-manipulate-a-file-in-the-find)
-
-### JDK
+### Java
 
 ```
 # 安装命令
 brew cask install java
+brew install maven
+brew cask install intellij-idea-ce  # IDE，不要告诉我你还在用 eclipse
 ```
 通过`brew cask`安装后，可以通过执行`/usr/libexec/java_home`这个命令来获取JAVA_HOME
 ```
@@ -222,6 +225,90 @@ export JAVA_HOME="$(/usr/libexec/java_home)"
 # 安装命令
 brew cask install docker
 ```
+国内访问 Docker Hub 有时会遇到困难，最好可以配置[镜像加速器](https://yeasy.gitbooks.io/docker_practice/install/mirror.html)。
+
+### 数据库 GUI 客户端
+
+```
+# 安装命令
+brew cask install sequel-pro # mysql
+brew cask install robo-3t    # mongodb
+brew cask install rdm        # redis
+```
+
+### 科学上网 Shadowsocks
+
+```
+brew install shadowsocks-libev
+```
+Mac 下不推荐安装 GUI 版本，已经很久没人维护了。安装之后编辑`/usr/local/etc/shadowsocks-libev.json`，填入 server 地址即可。
+```
+# 测试
+ss-local -v -c /usr/local/etc/shadowsocks-libev.json
+# 开机启动
+brew services start shadowsocks-libev
+```
+为了让终端可以使用代理，需要将 http(s) 转为 socks 流量。ss 官方推荐的是 [proxychains](https://github.com/shadowsocks/shadowsocks/wiki/Using-Shadowsocks-with-Command-Line-Tools)，但是在OS X 10.11 以后引入了 [SIP安全机制](https://developer.apple.com/library/content/releasenotes/MacOSX/WhatsNewInOSX/Articles/MacOSX10_11.html)，导致无法直接使用，关闭 SIP 貌似也不可取，可以选用 [privoxy](https://www.privoxy.org/) 来替代 proxychains。（[参考](https://tech.jandou.com/to-accelerate-the-terminal.html)）
+```
+brew install privoxy
+# privoxy 使用 8118 端口， ss 使用 1080
+echo 'listen-address 0.0.0.0:8118\nforward-socks5 / localhost:1080 .' >> /usr/local/etc/privoxy/config
+# 测试，查看 8118 有没有在监听， netstat -an | grep 8118
+/usr/local/sbin/privoxy /usr/local/etc/privoxy/config
+# 开机启动
+brew services start privoxy
+```
+经过上面这几步 `http(s)->socks5` 就完成，下面只需要让终端走这个代理即可：
+```
+export http_proxy='http://localhost:8118'
+export https_proxy='http://localhost:8118'
+
+# 可以将以下函数放入 ~/.bashrc 中，方便开启/关闭代理
+function proxy_off(){
+    unset http_proxy
+    unset https_proxy
+    echo -e "已关闭代理"
+}
+function proxy_on() {
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+    export http_proxy="http://127.0.0.1:8118"
+    export https_proxy=$http_proxy
+    echo -e "已开启代理"
+}
+```
+
+### 虚拟机 [Virtualbox](https://www.virtualbox.org/)
+
+```
+# 安装命令
+brew cask install virtualbox
+brew cask install vagrant   # 虚拟机管理工具，方便命令行操作
+```
+
+在天朝，很多网站是只支持 IE 的，Mac 下的 Firefox, Chrome, Safari 这时候都显得心有力而不足了，而且很多软件也只有 Windows 版，所以装个虚拟机是非常有必要的。 Virtualbox 是我自用 Ubuntu 以来一直用的虚拟机，开源免费。
+
+[vagrant](https://github.com/hashicorp/vagrant) 是一款非常简单且使用的虚拟机命令行工具，支持市面上主流虚拟机，当然包括 VBox，通过下面的命令即可安装一个干净的 Ubuntu 环境：
+```
+vagrant init hashicorp/precise32
+vagrant up
+```
+为了方便今后操作，我自己制作了一个基于 debian8 的 box，安装上了 [Clojure 开发环境](https://app.vagrantup.com/jiacai2050/boxes/debian8)，一键即可安装。
+
+![Virtualbox](https://img.alicdn.com/imgextra/i4/581166664/TB2aVGdcNlmpuFjSZPfXXc9iXXa_!!581166664.png)
+
+
+### 系统快捷键
+
+| 功能| 快捷键 |
+| ---------|--------- |
+| 查看桌面|`F11` |
+| 查看Dashboard|`F12` |
+| HOME|`Command + <-` |
+| END|`Command + ->` |
+| 锁屏|`Shift + Control + 电源键` （Windows 下为`Win+L`） |
+| 强制关闭程序|`Command + Option + esc`（Windows 下为`Ctrl+Alt+Delete`） |
+| [在同一应用不同窗口切换](https://apple.stackexchange.com/questions/193937/shortcut-for-toggling-between-different-windows-of-same-app)|`Command + ~` |
+| [Finder 里面剪切](http://apple.stackexchange.com/questions/12391/why-is-it-not-possible-to-use-the-cut-command-to-manipulate-a-file-in-the-find)|`Cmd + Option + V` |
 
 ### 实用命令
 
@@ -292,19 +379,11 @@ Mac 上自带的 Safari 比较轻量，虽然比较省电，但扩展性远不�
 brew cask install firefox
 brew cask install google-chrome
 ```
-
-### 科学上网 Shadowsocks
-
+Chrome 默认会按照一个 Update 程序，在 `~/Library/Google/GoogleSoftwareUpdate`，可以执行[下面命令删除](https://superuser.com/a/1077420)：
 ```
-brew install shadowsocks-libev
-```
-Mac 下不推荐安装 GUI 版本，已经很久没人维护了。安装之后编辑`/usr/local/etc/shadowsocks-libev.json`，填入 server 地址即可。
-```
-# 测试
-ss-local -v -c /usr/local/etc/shadowsocks-libev.json
-# 开机启动
-brew services start shadowsocks-libev
+cd /Users/liujiacai/Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Resources/GoogleSoftwareUpdateAgent.app/Contents/Resources
 
+./ksinstall --nuke
 ```
 
 ### 图片截屏、合并
@@ -348,6 +427,38 @@ brew cask install licecap
 
 其次，国外很多项目的图是用纯文本画的，比较好用的在线工具是：[asciiflow](http://asciiflow.com/)。
 
+### Calibre mobi 转化器
+
+如果你有 Kinder 阅读器，那么这个应该适合你！
+```
+# 安装命令
+brew cask install calibre
+
+==> Installing Cask calibre
+==> Moving App 'calibre.app' to '/Applications/calibre.app'.
+==> Linking Binary 'calibre' to '/usr/local/bin/calibre'.
+==> Linking Binary 'calibre-complete' to '/usr/local/bin/calibre-complete'.
+==> Linking Binary 'calibre-customize' to '/usr/local/bin/calibre-customize'.
+==> Linking Binary 'calibre-debug' to '/usr/local/bin/calibre-debug'.
+==> Linking Binary 'calibre-parallel' to '/usr/local/bin/calibre-parallel'.
+==> Linking Binary 'calibre-server' to '/usr/local/bin/calibre-server'.
+==> Linking Binary 'calibre-smtp' to '/usr/local/bin/calibre-smtp'.
+==> Linking Binary 'calibredb' to '/usr/local/bin/calibredb'.
+==> Linking Binary 'ebook-convert' to '/usr/local/bin/ebook-convert'.
+==> Linking Binary 'ebook-device' to '/usr/local/bin/ebook-device'.
+==> Linking Binary 'ebook-edit' to '/usr/local/bin/ebook-edit'.
+==> Linking Binary 'ebook-meta' to '/usr/local/bin/ebook-meta'.
+==> Linking Binary 'ebook-polish' to '/usr/local/bin/ebook-polish'.
+==> Linking Binary 'ebook-viewer' to '/usr/local/bin/ebook-viewer'.
+==> Linking Binary 'fetch-ebook-metadata' to '/usr/local/bin/fetch-ebook-metadata'.
+==> Linking Binary 'lrf2lrs' to '/usr/local/bin/lrf2lrs'.
+==> Linking Binary 'lrfviewer' to '/usr/local/bin/lrfviewer'.
+==> Linking Binary 'lrs2lrf' to '/usr/local/bin/lrs2lrf'.
+==> Linking Binary 'markdown-calibre' to '/usr/local/bin/markdown-calibre'.
+==> Linking Binary 'web2disk' to '/usr/local/bin/web2disk'.
+```
+
+
 ### 视频播放器、截取
 
 ```
@@ -380,17 +491,6 @@ brew cask install vox
 在windows下保存网页时，如果想把网页上的资源，比如css、js、image等一起下载下来，会单独生成个文件夹，但是用 Mac 上的 Safari 保存整个网页时，是以`webarchive`为后缀名的文件进行保存的，如何把打开这种文件呢？推荐：
 
 http://sourceforge.net/projects/webarchivext/
-
-### 虚拟机 [Virtualbox](https://www.virtualbox.org/)
-
-```
-# 安装命令
-brew cask install virtualbox
-```
-
-在天朝，很多网站是只支持 IE 的，Mac 下的 Firefox, Chrome, Safari 这时候都显得心有力而不足了，而且很多软件也只有 Windows 版，所以装个虚拟机是非常有必要的。 Virtualbox 是我自用 Ubuntu 以来一直用的虚拟机，开源免费。
-
-![Virtualbox](https://img.alicdn.com/imgextra/i4/581166664/TB2aVGdcNlmpuFjSZPfXXc9iXXa_!!581166664.png)
 
 ## 常见问题
 

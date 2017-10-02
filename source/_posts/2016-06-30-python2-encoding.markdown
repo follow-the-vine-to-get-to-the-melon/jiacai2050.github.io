@@ -269,12 +269,13 @@ print "你好" == u"你好"
 ## 总结
 
 通过上面的分析，想象大家对 Python 2 中为什么会出现那么多的编码错误有所了解，根本原因就在于 Python 设计早期混淆了`byte`类型与`str`类型，好歹在 Python 3 解决了这个设计错误。
-在另一方面，这里的编码问题对我们理解计算机的运行原理很有帮助，也反映出`copy & paste`的危害，希望大家看了我这篇文章之后，严禁`reload(sys)`这种做法。
+在另一方面，这里的编码问题对我们理解计算机的运行原理很有帮助，也反映出`copy & paste`的危害，希望大家看了我这篇文章之后，严禁`reload(sys)`这种做法，推荐使用`from __future__ import unicode_literals`来将所有字符字面量表示为 unicode。
 
 如果大家对 Python 2 中的编码问题，还有任何疑问，欢迎留言讨论。
 
 ## 参考
 
+- [Should I import unicode_literals?](http://python-future.org/unicode_literals.html)
 - [Overcoming frustration: Correctly using unicode in python2](https://pythonhosted.org/kitchen/unicode-frustrations.html)
 - [PrintFails](https://wiki.python.org/moin/PrintFails)
 - [Unicode HOWTO](https://docs.python.org/2/howto/unicode.html)

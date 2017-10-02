@@ -187,10 +187,18 @@ def myinc(num)
   num + 1
 end
 
-[1,2,3].map(&method(:myinc))  
+[1,2,3].map(&method(:myinc).to_proc)
 # => [2,3,4]
-# 在 Ruby 源文件的顶层定义的函数属于 Object 对象，所以上面的调用相当于：
+# 在 Ruby 源文件的顶层定义的函数属于 main 对象（Object 类），所以上面的调用相当于：
 # [1,2,3].map(&Object.method(:myinc))
+```
+通过 `define_method` 可以将 Proc 转为某对象的实例方法
+```
+class Foo
+  define_method :pp { puts "p" }
+end
+Foo.new.pp
+=> p
 ```
 
 
