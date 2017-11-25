@@ -70,7 +70,7 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
 
 ### 构造函数
 
-```
+```java
     //accessOrder为true表示该LinkedHashMap的key为访问顺序
     //accessOrder为false表示该LinkedHashMap的key为插入顺序
     private final boolean accessOrder;
@@ -115,7 +115,7 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
 
 ### LinkedHashMap.Entry
 
-```
+```java
     private static class Entry<K,V> extends HashMap.Entry<K,V> {
         // These fields comprise the doubly linked list used for iteration.
         //每个节点包含两个指针，指向前继节点与后继节点
@@ -190,7 +190,8 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
     <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2lqv0fXXXXXaeXpXXXXXXXXXX_!!581166664.jpg" alt="增加节点">
 </center>
 上图中的c节点相当于下面代码中的existingEntry，要插入的是x节点
-```
+
+```java
     private void addBefore(Entry<K,V> existingEntry) {
         after  = existingEntry;         //相当于上图中的操作 1
         before = existingEntry.before;  //相当于上图中的操作 3
@@ -198,8 +199,10 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
         after.before = this;            //相当于上图中的操作 2
     }
 ```
+
 知道了增加节点的原理，下面看看LinkedHashMap的代码是怎么实现put方法的
-```
+
+```java
     /**
      * This override alters behavior of superclass put method. It causes newly
      * allocated entry to get inserted at the end of the linked list and
@@ -275,6 +278,7 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
         return false;
     }
 ```
+
 上面是LinkedHashMap中重写了HashMap的两个方法，当调用put时添加Entry（新增Entry之前不存在）整个方法调用链是这样的：
 
 > `LinkedHashMap.put` -> `LinkedHashMap.addEntry` ->
@@ -288,7 +292,7 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
 
 如果你不了解flume、hdfs、sink等这些概念，也不要紧，也不会影响阅读下面的代码，相信我😊。
 
-```
+```java
   /*
    * Extended Java LinkedHashMap for open file handle LRU queue.
    * We want to clear the oldest file handle if there are too many open ones.
@@ -330,7 +334,8 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
 ### 更高效的LinkedHashIterator
 
 由于元素之间用双向链表连接起来了，所以在遍历元素时只需遍历双向链表即可，这比HashMap中的遍历方式要高效。
-```
+
+```java
     private abstract class LinkedHashIterator<T> implements Iterator<T> {
         Entry<K,V> nextEntry    = header.after;
         Entry<K,V> lastReturned = null;
@@ -370,7 +375,8 @@ LinkedHashMap中采用的这种`环型双向链表`，环型双向链表的用�
     }
 ```
 除了LinkedHashIterator利用了双向链表遍历的优势外，下面的两个方法也利用这个优势加速执行。
-```
+
+```java
     /**
      * Transfers all entries to new table array.  This method is called
      * by superclass resize.  It is overridden for performance, as it is

@@ -93,7 +93,8 @@ public abstract class AbstractMap<K,V> implements Map<K,V>
 ## 源码剖析
 
 首先从构造函数开始讲，`HashMap`遵循[集合框架的约束](/blog/2015/09/01/java-collection-overview/#两大基类Collection与Map)，提供了一个参数为空的构造函数与有一个参数且参数类型为Map的构造函数。除此之外，还提供了两个构造函数，用于设置`HashMap`的容量（capacity）与平衡因子（loadFactor）。
-```
+
+```java
     public HashMap(int initialCapacity, float loadFactor) {
         if (initialCapacity < 0)
             throw new IllegalArgumentException("Illegal initial capacity: " +
@@ -115,8 +116,10 @@ public abstract class AbstractMap<K,V> implements Map<K,V>
         this(DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 ```
+
 从代码上可以看到，容量与平衡因子都有个默认值，并且容量有个最大值
-```
+
+```java
     /**
      * The default initial capacity - MUST be a power of two.
      */
@@ -134,13 +137,14 @@ public abstract class AbstractMap<K,V> implements Map<K,V>
      */
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 ```
+
 可以看到，默认的平衡因子为0.75，这是权衡了时间复杂度与空间复杂度之后的最好取值（JDK说是最好的😂），过高的因子会降低存储空间但是查找（lookup，包括HashMap中的put与get方法）的时间就会增加。
 
 这里比较奇怪的是问题：容量必须为2的指数倍（默认为16），这是为什么呢？解答这个问题，需要了解HashMap中哈希函数的设计原理。
 
 ### 哈希函数的设计原理
 
-```
+```java
    /**
      * Retrieve object hash code and applies a supplemental hash function to the
      * result hash, which defends against poor quality hash functions.  This is
@@ -207,7 +211,8 @@ public abstract class AbstractMap<K,V> implements Map<K,V>
 ### HashMap.Entry
 
 HashMap中存放的是HashMap.Entry对象，它继承自Map.Entry，其比较重要的是构造函数
-```
+
+```java
     static class Entry<K,V> implements Map.Entry<K,V> {
         final K key;
         V value;
@@ -268,7 +273,7 @@ HashMap中存放的是HashMap.Entry对象，它继承自Map.Entry，其比较重
 
 get操作相比put操作简单，所以先介绍get操作
 
-```
+```java
     public V get(Object key) {
         //单独处理key为null的情况
         if (key == null)
@@ -312,7 +317,7 @@ get操作相比put操作简单，所以先介绍get操作
 ### put操作（含update操作）
 因为put操作有可能需要对HashMap进行resize，所以实现略复杂些
 
-```
+```java
     private void inflateTable(int toSize) {
         //辅助函数，用于填充HashMap到指定的capacity
         // Find a power of 2 >= toSize
@@ -434,7 +439,7 @@ get操作相比put操作简单，所以先介绍get操作
 
 ### remove操作
 
-```
+```java
     public V remove(Object key) {
         Entry<K,V> e = removeEntryForKey(key);
         //可以看到删除的key如果存在，就返回其所对应的value
@@ -485,7 +490,8 @@ get操作相比put操作简单，所以先介绍get操作
 2. 比Enumeration的命名更简短
 
 HashMap中提供的三种集合视角，底层都是用HashIterator实现的。
-```
+
+```java
     private abstract class HashIterator<E> implements Iterator<E> {
         Entry<K,V> next;        // next entry to return
         //在初始化Iterator实例时，纪录下当前的修改次数
@@ -572,7 +578,8 @@ transient Entry<K,V>[] table = (Entry<K,V>[]) EMPTY_TABLE;
 > 所以说，当序列化一个HashMap对象时，保存Entry的table是不需要序列化进来的，因为它在另一台机器上是错误的。
 
 因为这个原因，HashMap重写了`writeObject`与`readObject` 方法
-```
+
+```java
 private void writeObject(java.io.ObjectOutputStream s)
     throws IOException
 {
@@ -665,6 +672,7 @@ private void putForCreate(K key, V value) {
     createEntry(hash, key, value, i);
 }
 ```
+
 简单来说，在序列化时，针对Entry的key与value分别单独序列化，当反序列化时，再单独处理即可。
 
 ## 总结

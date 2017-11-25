@@ -9,6 +9,7 @@ tags: Java
 今天要介绍的[WeakHashMap](http://docs.oracle.com/javase/7/docs/api/java/util/WeakHashMap.html)并没有基于某种特殊的数据结构，它的主要目的是为了优化JVM，使JVM中的垃圾回收器（garbage collector，后面简写为 GC）更智能的回收“无用”的对象。
 
 > 本文源码分析基于[Oracle JDK 1.7.0_71](http://www.oracle.com/technetwork/java/javase/7u71-relnotes-2296187.html)，请知悉。
+
 ```
 $ java -version
 java version "1.7.0_71"
@@ -23,9 +24,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.71-b01, mixed mode)
 ### 强引用
 
 这是最常用的引用类型，在执行下面的语句时，变量 `o` 即为一个强引用。
+
 ```
 Object o = new Object();
 ```
+
 > 强引用指向的对象无论在何时，都不会被GC 清理掉。
 
 一般来说，对于常驻类应用（比如server），随着时间的增加，所占用的内存往往会持续上升，如果程序中全部使用强引用，那么很容易造成内存泄漏，最终导致`Out Of Memory (OOM)`，所以 Java 中提供了除强引用之外的其他三种引用，它们全部位于`java.lang.ref`包中，下面一一介绍。
@@ -40,9 +43,9 @@ Object o = new Object();
 
 下面分析下`Reference`的源码（其他三种引用都是其子类，区分不是很大）。
 
-####构造函数
+#### 构造函数
 
-```
+```java
     //referent 为引用指向的对象
     Reference(T referent) {
         this(referent, null);
@@ -72,33 +75,42 @@ SoftReference<String> ss = new SoftReference<String>("abc" , queue);
 #### 四种状态
 
 每一时刻，`Reference`对象都处于下面四种状态中。这四种状态用`Reference`的成员变量`queue`与`next`（类似于单链表中的next）来标示。
+
 ```
 ReferenceQueue<? super T> queue;
 Reference next;
 ```
 
 - Active。新创建的引用对象都是这个状态，在 GC 检测到引用对象已经到达合适的reachability时，GC 会根据引用对象是否在创建时制定`ReferenceQueue`参数进行状态转移，如果指定了，那么转移到`Pending`，如果没指定，转移到`Inactive`。在这个状态中
-```
-//如果构造参数中没指定queue，那么queue为ReferenceQueue.NULL，否则为构造参数中传递过来的queue
-queue = ReferenceQueue || ReferenceQueue.NULL
-next = null
-```
+
+    ```
+    //如果构造参数中没指定queue，那么queue为ReferenceQueue.NULL，否则为构造参数中传递过来的queue
+    queue = ReferenceQueue || ReferenceQueue.NULL
+    next = null
+    ```
+
 - Pending。pending-Reference列表中的引用都是这个状态，它们等着被内部线程`ReferenceHandler`处理（会调用`ReferenceQueue.enqueue`方法）。没有注册的实例不会进入这个状态。在这个状态中
-```
-//构造参数参数中传递过来的queue
-queue = ReferenceQueue
-next = 该queue中的下一个引用，如果是该队列中的最后一个，那么为this
-```
+
+    ```
+    //构造参数参数中传递过来的queue
+    queue = ReferenceQueue
+    next = 该queue中的下一个引用，如果是该队列中的最后一个，那么为this
+    ```
+
 - Enqueued。调用`ReferenceQueue.enqueued`方法后的引用处于这个状态中。没有注册的实例不会进入这个状态。在这个状态中
-```
-queue = ReferenceQueue.ENQUEUED
-next = 该queue中的下一个引用，如果是该队列中的最后一个，那么为this
-```
+
+    ```
+    queue = ReferenceQueue.ENQUEUED
+    next = 该queue中的下一个引用，如果是该队列中的最后一个，那么为this
+    ```
+
 - Inactive。最终状态，处于这个状态的引用对象，状态不会在改变。在这个状态中
-```
-queue = ReferenceQueue.NULL
-next = this
-```
+
+    ```
+    queue = ReferenceQueue.NULL
+    next = this
+    ```
+
 有了这些约束，GC 只需要检测`next`字段就可以知道是否需要对该引用对象采取特殊处理
 - 如果`next`为`null`，那么说明该引用为`Active`状态
 - 如果`next`不为`null`，那么 GC 应该按其正常逻辑处理该引用。
@@ -137,7 +149,8 @@ next = this
 
 上面介绍了很多引用的知识点，其实`WeakHashMap`本身没什么好说的，只要是把引用的作用与使用场景搞清楚了，再来分析基于这些引用的对象就会很简单了。
 `WeakHashMap`与`HashMap`的签名与构造函数一样，这里就不介绍了，这里重点介绍下`Entry`这个内部对象，因为其保存具体key-value对，所以把它弄清楚了，其他的就问题不大了。
-```
+
+```java
    /**
      * The entries in this hash table extend WeakReference, using its main ref
      * field as the key.
@@ -209,7 +222,8 @@ next = this
 ```
 
 ## WeakHashMap.expungeStaleEntries
-```
+
+```java
     /**
      * Reference queue for cleared WeakEntries
      */
@@ -251,6 +265,7 @@ next = this
         }
     }
 ```
+
 知道了`expungeStaleEntries`方法的作用，下面看看它是何时被调用的
 <center>
     <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2nMe3fFXXXXaFXXXXXXXXXXXX_!!581166664.png" alt="expungeStaleEntries调用链"/>
@@ -261,7 +276,8 @@ next = this
 ## 实战
 
 上面说了，下面来个具体的例子帮助大家消化
-```
+
+```java
 import java.util.WeakHashMap;
 
 class KeyHolder {
