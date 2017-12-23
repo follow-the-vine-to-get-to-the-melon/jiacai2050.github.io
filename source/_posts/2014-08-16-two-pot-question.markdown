@@ -44,7 +44,7 @@ tags: gcd
 把辗转相除法运用到我们的两个水壶a（6升），b（5升）上，就是不断把a的水向b里面倒，具体操作如下：
 1. 查看a，b壶中水的体积是否为目标t（我们这个题目中t=3升），如果是，停止运算，否则到2
 2. 如果a壶空，就装满，否则，到3
-3. 如果a壶满，就把水倒掉，否则到4
+3. 如果b壶满，就把水倒掉，否则到4
 4. 尽可能多的从a壶向b壶倒水
 
 重复递归执行步骤1-4即可得到最终的结果。
@@ -73,21 +73,20 @@ tags: gcd
     a
     (recur b (rem a b))))
 
-(defn pot[t a b] ;t表示目标容量;a，b表示两个壶的容量
-  (defn solve[p q]
-    (let [pour-volumn #(min p (- b q))] ;返回a壶能够向b壶倒入的最大值
-      (println " -> " p " " q)    
-      (cond
-        (or (= p t) (= q t)) (println "------- OK! ------")
-        (= p 0) (do (print "Fill A full") (solve a q))
-        (= q b) (do (print "Empty pot B") (solve p 0))
-        :else (do (print "Pour A to B") (solve (- p (pour-volumn)) (+ q (pour-volumn)))))))
-  (cond
-    (or (< a 1) (< b 1) (< t 0) (> t (max a b))) (print "Arg out of range")
-    (not (= (rem t (gcd a b)) 0)) (print "No solve!")
-    :else
-      (do (print "Start with ") (solve 0 0))))
-
+(defn pot [target a-vol b-vol]
+  (letfn [(solve [a-current-vol b-current-vol]
+            (let [pour-volumn (min a-current-vol (- b-vol b-current-vol))] ;; 返回a壶能够向b壶倒入的最大值
+              (println " -> " a-current-vol " " b-current-vol)
+              (cond
+                (or (= a-current-vol target) (= b-current-vol target)) (println "------- OK! ------")
+                (= a-current-vol 0) (do (print "Fill A full") (solve a-vol b-current-vol))
+                (= b-current-vol b-vol) (do (print "Empty pot B") (solve a-current-vol 0))
+                :else (do (print "Pour A to B") (solve (- a-current-vol pour-volumn) (+ b-current-vol pour-volumn))))))]
+    (cond
+      (or (< a-vol 1) (< b-vol 1) (< target 0) (> target (max a-vol b-vol))) (print "Arg out of range")
+      (not (= (rem target (gcd a-vol b-vol)) 0)) (print "No solve!")
+      :else
+      (do (print "Start with ") (solve 0 0)))))
 ```
 下面是REPL中的调用结果：
 ```

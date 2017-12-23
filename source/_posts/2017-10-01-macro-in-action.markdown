@@ -4,34 +4,24 @@ tags: Clojure
 categories: 编程语言
 ---
 
-在[上一篇文章](/blog/2017/08/31/master-macro-understand-symbol/)中，介绍了宏（macro）的本质：`在编译时期运行的函数`。宏相对于普通函数，还有如下两条特点：
-
-1. 宏的参数不会求值（eval），是 symbol 字面量
-2. 宏的返回值是 code（在运行期执行），不是一般的数据。
-
-这两条特性蕴含着一非常重要的思想： [code as data](https://en.wikipedia.org/wiki/Homoiconicity) ，也被称为同像性（homoiconicity，来自希腊语单词 homo，意为与符号含义表示相同）。同像性使得在 Lisp 中去操作语法树（AST）显得十分自然，而这在非 Lisp 语言只能由编译器（Compiler）去操作。
-
-本文是宏系列的第二篇文章，侧重于实战，对于新手建议先阅读宏系列的[理论篇](/blog/2017/08/31/master-macro-understand-symbol/)，之后再来看本文。当然如果你有一定基础，也可以直接阅读本文。
+本文是宏系列的第二篇文章，侧重于实战，对于新手建议先阅读宏系列的[理论篇](/blog/2017/08/31/master-macro-theory/)，之后再来看本文。当然如果你有一定基础，也可以直接阅读本文。
 其次，希望读者能把本文的 Clojure 代码手动敲到 REPL 里面去运行、调试，直到完全理解。
 
 ## Code as data
 
-首先看一简单的程序片段
+在[理论篇](/blog/2017/08/31/master-macro-theory/)中，介绍了宏（macro）的本质：`在编译时期运行的函数`。宏相对于普通函数，具有如下特点：
 
-```clojure
-(defn hello-world []
-  (println "hello world"))
-```
+1. 宏的参数不会求值（eval），是 symbol 字面量
+2. 宏的返回值是 code（在运行期执行），不是一般的数据。
 
-上面的代码首先是一个大的 list，里面依次包含了2 个 symbol，1 个 vector，1 个 list，这个嵌套的 list 又包含了 1 个 symbol，1 个 string。可以看到，这些都是 Clojure 里面的基本数据类型，这就给我们提供了一个很好的写宏基础：可以像操作数据一样操作 code ，达到自动生成新 code 的目的。
-宏的一主要使用场景是流程控制，比如 Clojure 里面的 `when`：
+这两条特性蕴含着一非常重要的思想： [code as data](https://en.wikipedia.org/wiki/Homoiconicity) ，也被称为同像性（homoiconicity，来自希腊语单词 homo，意为与符号含义表示相同）。同像性使得在 Lisp 中去操作语法树（AST）显得十分自然，而这在非 Lisp 语言只能由编译器（Compiler）去操作。这里举一典型的例子：
 
 ```clojure
 (defmacro when [test & body]
   (list 'if test (cons 'do body)))
 ```
 
-`'`代表 quote，作用是阻止后面的表达式求值，如果不使用`'`的话，在进行`(list 'if test ...)`求值时会报错，因为没发对 special form 单独进行求值，这里需要的仅仅是 `if` 字面量，list 函数执行后的结果（是一个 list）作为 code 插入到调用 when 的地方去执行。
+`'`代表 quote，作用是阻止后面的表达式求值，如果不使用`'`的话，在进行`(list 'if test ...)`求值时会报错，因为对 special form 单独进行求值是非法的，这里需要的仅仅是 `if` 字面量，list 函数执行后的结果（是一个 list）作为 code 插入到调用 when 的地方去执行。
 
 ```clojure
 (when (even? (rand-int 100))
@@ -121,7 +111,7 @@ y
 
 上面是 do-primes 的使用方式，它会遍历 `[start, end)` 范围内的素数，对于具体素数 n，执行 body 里面的内容。
 
-### do-primes
+### 使用 gensym 保证宏 Hygiene
 
 ```clojure
 (defn prime? [n]
@@ -172,10 +162,7 @@ y
          (when (prime? ~variable)
            ~@body)
          (recur (next-prime (inc ~variable)))))))
-```
-上面使用 gensym 机制来生成全局位置的 symbol，保证宏的“卫生”（[hygiene](http://clojure-doc.org/articles/language/macros.html#macro-hygiene-and-gensym)）。如果这里不使用 gensym，而是随便选取变量名，那么很有可能会产生冲突。
 
-```clojure
 (do-primes2 [n 2 (+ 10 (rand-int 30))]
   (println n))
 ;; 展开为
@@ -184,9 +171,59 @@ y
     (when (< n end__17381__auto__)
       (when (prime? n) (println n))
       (recur (next-prime (inc n))))))  
+
+```
+在 syntax-quote 里面，使用了 `name#` 的形式来定义 locals，这是 gensym 机制，用来生成全局唯一的 symbol，保证宏的“卫生”（[hygiene](http://clojure-doc.org/articles/language/macros.html#macro-hygiene-and-gensym)）。如果这里不使用 gensym，在 Common Lisp 里面可能会污染全局里面的同名变量，在 Clojure 里面，为了避免污染全局环境，name 部分会 resolve 成当前命名空间里面的变量，例如
+
+```clojure
+(defmacro do-primes2-danger [[variable start end] & body]
+  `(let [inner-start ~start
+         inner-end ~end]
+     (loop [~variable inner-start]
+       (when (< ~variable inner-end)
+         (when (prime? ~variable)
+           ~@body)
+         (recur (next-prime (inc ~variable)))))))
+
+(do-primes2-danger [n 2 (+ 10 (rand-int 30))]
+                        (println n))
+;; 展开为
+(let [user/inner-start 2
+      user/inner-end (+ 10 (rand-int 30))]
+  (loop [n user/inner-start] 
+    (when (< n user/inner-end) 
+      (when (prime? n) 
+        (println n))
+      (recur (next-prime (inc n))))))                        
+```
+通过宏展开的代码可以看到，这明显不是我们想要的，运行上述代码会直接报错
+```
+java.lang.RuntimeException：Can't let qualified name: user/inner-start
+```
+所以在定义内部 locals 时，一定要用 gensym 机制。如果能确保使用的名字不会造成污染，也可以使用 `~'name` 的形式来避免 resolve 这一过程。`~'name` 其实就是 `~(quote name)` 的简写，它在 syntax-quote 里面求值的结果就是 symbol 字面量 `name`：
+
+```clojure
+(defmacro do-primes2-safe [[variable start end] & body]
+  `(let [~'inner-start ~start
+         ~'inner-end ~end]
+     (loop [~variable ~'inner-start]
+       (when (< ~variable ~'inner-end)
+         (when (prime? ~variable)
+           ~@body)
+         (recur (next-prime (inc ~variable)))))))
+
+(do-primes2-safe [n 2 (+ 10 (rand-int 30))]
+                 (println n))
+;; 展开为
+(let [inner-start 2 inner-end (+ 10 (rand-int 30))]
+  (loop [n inner-start]
+    (when (< n inner-end)
+      (when (prime? n) (println n))
+      (recur (next-prime (inc n))))))
 ```
 
-### only-once
+
+### Macro-writing macro
 
 通过上面的例子，我们知道，gensym 是一种非常实用的技巧，所以我们完全有可能再进行一次抽象，构造 only-once 宏，来保证传入的参数按照顺序只求值一次：
 
@@ -210,15 +247,19 @@ y
   (println n))
 
 ;; 展开为
-
+(let [G__18605 2 G__18606 (+ 10 (rand-int 30))]
+  (loop [n G__18605]
+    (when (< n G__18606)
+      (when (prime? n) (println n))
+      (recur (next-prime (inc n))))))
 ```
 only-once 的核心思想是用 gensym 来替换掉传入的 symbol（即 names），为了达到这种效果，它首先定义出一组与参数数目相同的 gensyms（分别记为#s1 #s2），然后在第二层 let 为这些 gensyms 做 binding，value 也是用 gensym 生成的（分别记为#s3 #s4），这一层的 let 的返回值将内嵌到 do-primes3 内：
 
 ```clojure
 (let [#s1 #s3 #s2 #s4]
-  '(let [#s3 start #s3 end]
+  `(let [#s3 ~start #s3 ~end]
     (let [start #s1 end #s2]
-      ~@body))
+      ~@body)))
 ```
 
 第三层 let 的结果作为 code 内嵌到调用 do-primes3 处，即最终的展开式：
@@ -235,7 +276,7 @@ only-once 的核心思想是用 gensym 来替换掉传入的 symbol（即 names�
 
 only-once 属于 macro-writing macro 的范畴，就是说它使用的对象本身还是个宏，所以有一定的难度，主要是分清不同表达式的求值环境，这一点对于理解这一类宏非常关键。不过这一类宏大家应该很少能见到，更多的时候是使用辅助函数来分解复杂宏。比如我们这里就使用了两个辅助函数 prime? next-prime 来简化宏的写法。下面一个例子会阐述这一点。
 
-### def-watched
+### 使用辅助函数定义简化宏
 
 `def-watched` 可以定义一个受监控的 var，在 root binding 改变时打印前后的值
 
