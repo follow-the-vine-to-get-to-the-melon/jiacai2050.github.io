@@ -56,7 +56,7 @@ API 的具体含义这里不在赘述，可以查看[手册](https://en.wikipedi
 
 - [echo_server.py](https://github.com/jiacai2050/socket.py/blob/master/simple_tcp_echo/echo_server.py)
 
-```
+```python
 
 import socket
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
 - [echo_client.py](https://github.com/jiacai2050/socket.py/blob/master/simple_tcp_echo/echo_client.py)
 
-```
+```python
 
 import socket
 
@@ -114,7 +114,7 @@ UDP 版的 socket server 的代码在进行`bind`后，无需调用`listen`方�
 
 - [udp_echo_server.py](https://github.com/jiacai2050/socket.py/blob/master/simple_udp_echo/echo_server.py)
 
-```
+```python
 
 import socket
 
@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
 - [udp_echo_client.py](https://github.com/jiacai2050/socket.py/blob/master/simple_udp_echo/echo_client.py)
 
-```
+```python
 
 import socket
 
@@ -157,7 +157,7 @@ if __name__ == '__main__':
 
 本文中的 echo server 示例因为篇幅限制，也忽略了返回值。网络通信是个非常复杂的问题，通常无法保障通信双方的网络状态，很有可能在发送/接收数据时失败或部分失败。所以有必要对发送/接收函数的返回值进行检查。本文中的 tcp echo client 发送数据时，正确写法应该如下：
 
-```
+```python
 total_send = 0
 content_length = len(data_to_sent)
 while total_send < content_length:
@@ -169,8 +169,7 @@ while total_send < content_length:
 
 同理，接收数据时也应该检查返回值：
 
-```
-
+```python
 chunks = []
 bytes_recd = 0
 while bytes_recd < MSGLEN:   # MSGLEN 为实际数据大小
@@ -206,7 +205,7 @@ TCP 不提供 framing，这使得其很适合于传输数据流。这是其与 U
 <img width="500px" height="600px" src="https://img.alicdn.com/imgextra/i2/581166664/TB2Us0HbNeK.eBjSZFlXXaywXXa_!!581166664.gif" alt=" tcp_state transition"/>
 </center>
 
-这个状图转移图非常非常关键，也比较复杂，我自己为了方便记忆，对这个图进行了拆解，仔细分析这个图，可以得出这样一个结论：
+这个状图转移图非常非常关键，也比较复杂，总共涉及了 11 种状态。我自己为了方便记忆，对这个图进行了拆解，仔细分析这个图，可以得出这样一个结论：
 > 连接的打开与关闭有被动（passive）与主动（active）两种情况。主动关闭时，涉及到的状态转移最多，包括FIN_WAIT_1、FIN_WAIT_2、CLOSING、TIME_WAIT。（是不是有种 no zuo no die 的感觉）
 
 此外，由于 TCP 是可靠的传输协议，所以每次发送一个数据包后，都需要得到对方的确认（ACK），有了上面这两个知识后，再来看下面的图：（[图片来源](http://coolshell.cn/articles/11564.html)）
@@ -214,12 +213,19 @@ TCP 不提供 framing，这使得其很适合于传输数据流。这是其与 U
 <img width="400px" height="500px" src="https://img.alicdn.com/imgextra/i4/581166664/TB2nwCFbNaK.eBjSZFwXXXjsFXa_!!581166664.jpg" alt=" tcp 关闭时的状态转移时序图"/>
 </center>
 
-1. 在主动关闭连接的 socket 调用 `close`方法的同时，会向被动关闭端发送一个 FIN
-2. 对端收到FIN后，会向主动关闭端发送ACK进行确认，这时被动关闭端处于 CLOSE_WAIT 状态
-3. 当被动关闭端调用`close`方法进行关闭的同时向主动关闭端发送 FIN 信号，接收到 FIN 的主动关闭端这时就处于 TIME_WAIT 状态
-4. 这时主动关闭端不会立刻转为 CLOSED 状态，而是需要等待 2MSL（max segment life，一个数据包在网络传输中最大的生命周期），以确保被动关闭端能够收到最后发出的 ACK。如果被动关闭端没有收到最后的 ACK，那么被动关闭端就会重新发送 FIN，所以处于TIME_WAIT的主动关闭端会再次发送一个 ACK 信号，这么一来（FIN来）一回（ACK），正好是两个 MSL 的时间。如果等待的时间小于 2MSL，那么新的socket就可以收到之前连接的数据。
+我们重点分析上图中链接断开的过程，其中主动关闭端为 Client，被动关闭端为 Server 。
 
-前面 echo server 的示例也说明了，处于 TIME_WAIT 并不是说一定不能使用，可以通过设置 socket 的 `SO_REUSEADDR` 属性以达到不用等待 2MSL 的时间就可以复用socket 的目的，当然，这仅仅适用于测试环境，正常情况下不要修改这个属性。
+1. Client 调用 `close` 方法的同时，会向 Server 发送一个 FIN，然后自己处于 FIN_WAIT_1 状态，过一段时间后自动变化为 FIN_WAIT_2
+2. Server 收到 FIN 后，向 Client 回复 ACK 确认，状态变化为 CLOSE_WAIT，然后开始进行一些清理工作
+3. 在 Server 清理工作完成后，会调用`close`方法，这时向 Client 发送 FIN 信号，状态变化为 LAST_ACK
+4. Client 接收到 FIN 后，状态由 FIN_WAIT_2 变化为 TIME_WAIT，同时向 Server 回复 ACK
+5. Server 收到 ACK 后，状态变化为 CLOSE，表明 Server 端的 socket 已经关闭
+6. 处于 TIME_WAIT 状态的 Client 不会立刻转为 CLOSED 状态，而是需要等待 2MSL（max segment life，一个数据包在网络传输中最大的生命周期），以确保 Server 能够收到最后发出的 ACK。如果 Server 没有收到最后的 ACK，那么 Server 就会重新发送 FIN，所以处于TIME_WAIT的 Client 会再次发送一个 ACK 信号，这么一来（FIN来）一回（ACK），正好是两个 MSL 的时间。如果等待的时间小于 2MSL，那么新的 socket 就可以收到之前连接的数据。
+
+上面是正常逻辑时的关闭顺序，如果任意一步出现问题都会导致 Socket 状态变化出现问题，下面说几种常见的问题：
+
+1. 在上述过程第二步，回复完 ACK 后，如果忘记调用 CLOSE 方法，那么 Server 端在会一直处于 CLOSE_TIME 状态，处于 FIN_WAIT_2 状态的 Client 端会在 60 秒后超时，直接关闭。这个问题的具体案例可参考[《This is strictly a violation of the TCP specification》](https://blog.cloudflare.com/this-is-strictly-a-violation-of-the-tcp-specification)
+2. 前面 echo server 的示例也说明了，处于 TIME_WAIT 并不是说一定不能使用，可以通过设置 socket 的 `SO_REUSEADDR` 属性以达到不用等待 2MSL 的时间就可以复用socket 的目的，当然，这仅仅适用于测试环境，正常情况下不要修改这个属性。
 
 ## 实战
 
@@ -292,8 +298,7 @@ ICMP 消息（messages）通常用于诊断 IP 协议产生的错误，tracerout
 
 ### netstat vs ss
 
-netstat 与 ss 是类 Unix 系统上查看 Socket 信息的命令。
-netstat 是比较老牌的命令，我常用的选择有
+netstat 与 ss 都是类 Unix 系统上查看 Socket 信息的命令。netstat 是比较老牌的命令，常用的选择有
 
 - `-t`，只显示 tcp 连接
 - `-u`，只显示 udp 连接
@@ -330,6 +335,7 @@ Recv-Q Send-Q             Local Address:Port               Peer Address:Port
 ## 参考
 
 - [Socket Programming HOWTO](https://docs.python.org/3/howto/sockets.html)
+- [TCP: About FIN_WAIT_2, TIME_WAIT and CLOSE_WAIT](https://benohead.com/tcp-about-fin_wait_2-time_wait-and-close_wait/)
 - [Five pitfalls of Linux sockets programming](http://www.ibm.com/developerworks/library/l-sockpit/)
 - [Programming Linux sockets, Part 1: Using TCP/IP](http://www.ibm.com/developerworks/linux/tutorials/l-sock/)
 - http://stackoverflow.com/questions/10328675/how-to-know-content-length
