@@ -1,0 +1,120 @@
+title: 2017 年终总结
+date: 2018-01-21 12:18:00
+categories: 热爱生活
+---
+
+2018 年不知不觉已经过了 20 天，从元旦开始就一直在重写之前的 [History Master](https://github.com/jiacai2050/history-master)，其实这个插件一开始就是为了写年终总结，但功能相对较简单，经过这十几天的不断开发，算是脱胎换骨了，现在也可以好好写年终总结了。
+一个词来形容 2017 的话，应该会是：变化。由于换了工作， 那就从工作开始谈起吧。
+
+## 工作
+
+### 再见，有赞
+
+大概是在 17 年 4 月份从有赞毕业的，当时就想写一下在有赞两年的收获，但觉得时机不是很对，就一直到了现在。因为有赞，我来到了杭州，第一年可能去的地方比较少，第二年基本上把西湖周边的山爬遍了，不得不说杭州是我呆过最宜居的城市，互联网氛围也好，我走的时候几个北漂的同学都来杭州买房了。
+
+在有赞一直做的是数据开发，属于后后端的岗位，真正做过数据开发的就会知道，这里的事情会比较杂，从最基础的手动报表，到数据仓库，从日志 ETL 到 mysql 数据同步，最后由于跑的任务比较多了一般还需要个调度平台，为了让其他组使用整理好的数据，还需要提供一个开发平台。用到的技术架构网上也很容易找到，类似下图：（[图片来源](https://tech.youzan.com/you-zan-big-data-practice/)）
+
+![大数据架构](https://img.alicdn.com/imgextra/i1/581166664/TB2pD.6nRDH8KJjSspnXXbNAVXa_!!581166664.png)
+
+现在回想来看，那两年工作的成果差强人意，浑浑噩噩，虽然学到了很多，但你就是感觉不对，于是从其他方面找满足感，这包括写一些科普型文章，刷 SICP，健身，这两天看到 [《2018，从对自己诚实开始》](http://lucida.me/blog/2018-being-honest/) 这位 exGoogler 的总结，深有感触。
+
+很幸运我从大学开始就接触了 SICP，在有赞期间完完整整的把它看完了，一直想找一份与 Lisp 相关的工作，碰巧现在的公司在招聘，我就想试试看吧，然后就来到了 LeanCloud。我至今也还记得我初入职场时一前辈对我说过：
+
+> 不要轻易换工作，不管什么事情，真正坚持的人不多，但是你坚持下来就是赢家。
+
+其实从实习开始一直做的是 Hadoop 相关工作，差不多 3 年。换后端开发，是个挑战，很大的挑战。之所以这次还是这么坚定的换了，一方面是之前的工作有些疲劳了，另一方面确实是想体验真正的后端开发，而且能用 Clojure！我觉得这会是我下一个爆发点！
+
+不过对于离开杭州，我真是非常不舍。离开的前一天，我骑着 ofo 沿着平时上班的路线去西湖转了一圈。对于杭州的小伙伴，我只能说有缘再见 :-)
+
+![有赞 18 楼前台](https://img.alicdn.com/imgextra/i3/581166664/TB2UrQsnJzJ8KJjSspkXXbF7VXa_!!581166664.jpg)
+![公司附近健身房](https://img.alicdn.com/imgextra/i3/581166664/TB2uAZQnJrJ8KJjSspaXXXuKpXa_!!581166664.jpg)
+![数据组聚餐胜地](https://img.alicdn.com/imgextra/i4/581166664/TB2UiIsnTTI8KJjSsphXXcFppXa_!!581166664.jpg)
+![文一路物美超市](https://img.alicdn.com/imgextra/i3/581166664/TB2JFk2nIjI8KJjSsppXXXbyVXa_!!581166664.jpg)
+![西湖风光1](https://img.alicdn.com/imgextra/i4/581166664/TB2av8Nn22H8KJjy1zkXXXr7pXa_!!581166664.jpg)
+![西湖风光2](https://img.alicdn.com/imgextra/i4/581166664/TB2LzFnnZbI8KJjy1zdXXbe1VXa_!!581166664.jpg)
+
+### Hello LeanCloud
+
+我之前看 [dennis](http://blog.fnil.net/) 博客时就对 [LeanCloud](https://leancloud.cn/) 就有所耳闻，是一家重度使用 Clojure 的公司，光这一点我就觉得就足够酷了。对我来说这一切充满挑战，我十分期待这一段新的历程。
+
+![LeanCloud logo](https://leancloud.cn/assets/img/press/Logo%20-%20Blue%20Padding.png)
+
+## 天天向上
+
+### 读书
+
+17 年制定的[读书计划](/blog/2017/01/08/review-2016/#%E8%AF%BB%E4%B9%A6)只完成不到了 50%，从客观上说是 LeanCloud 的工作更充实，以至于没有之前刷 SICP 那么多时间，更重要的是技术栈的改变，当初凭借兴趣想读的书都没进行，当然自己的惰性也是很大一原因。究其原因，应该是反馈不够及时，任何事情都是这样。一个事情一味的去做，没有反馈，大家一般就不想做了，比较典型的例子就是减肥与看书。指定 18 年计划时一定要避免这点。
+
+- [公共问题经济学](http://book.douban.com/subject/25854634/)，计划内完成。这本书比较精悍，里面讲到了很多案例都很具启发性。一些关键词：边际效益；供需关系是影响市场的第一准则，政府的干预只会让市场变糟；没有绝对的安全，安全是需要付出代价的。
+- [Java Concurrency in Practice](http://book.douban.com/subject/1888733/)，计划内完成。
+- [Computer Systems: A Programmer’s Perspective](http://book.douban.com/subject/1230413/)，计划内，但是只完成前3章。这本书非常符合我说的反馈不够及时导致没法继续。首先这本书非常基础，基础到它会告诉你计算浮点数的误差范围的数学公式，另一方面是工作中没有直接应用的场景，所以导致这本经典书一直在我书桌上吃灰。18年要想办法把它啃完，顺带复习 C 语言。
+- [On Lisp](https://book.douban.com/subject/1432683/)、[The Seasoned Schemer](http://book.douban.com/subject/1726083/) 这两本计划内的书基本没进行，18 年是否要重新读还要看情况，由于工作上技术栈的改变，加上还要运动，可能没精力去看。暂定。
+
+计划外读的书有：
+- [HBase in Action](https://book.douban.com/subject/11554138/)，挑有兴趣的章节看完了。
+- [Netty in Action](https://book.douban.com/subject/24700704/)，工作需要，粗略浏览一遍。
+- [硅谷之谜](https://book.douban.com/subject/26665230/)，主要讲述硅谷的成因。关键词：信息论、指控论、系统论是信息时代的三大路标。
+- [刘心武续红楼梦](https://book.douban.com/subject/5988772/)，今年听了不少播客，红楼梦听了几个版本，包括 刘心武 老师百家讲堂的红楼梦，觉得“草蛇灰线，伏延千里”分析方法比较另辟蹊径，于是找来这本书。
+
+### Github
+
+由于 LeanCloud 使用 GitHub 做代码管理，所以 commit 数较去年有了较大变化，但是其实并没有什么较大的贡献，只是把之前的两个插件用 cljs 改写了。
+
+![Github commit](https://img.alicdn.com/imgextra/i4/581166664/TB2t6ZHnJfJ8KJjy0FeXXXKEXXa_!!581166664.png)
+![Github profile](https://img.alicdn.com/imgextra/i3/581166664/TB2qUkZnIrI8KJjy0FhXXbfnpXa_!!581166664.png)
+
+followers 从 147 增加到 224，star 数从 224 增加到 367，repo 数从 42 增加到 59。
+
+再重写插件期间，深入了解使用了 clojurescript，像是发现了“新大陆”一样惊喜。借助于 React，终于可以让我写出实用且不适美感的页面，React 可以让我们用纯函数的方式来写；reframe 又进一步抽象出一般 SPA 的模式，使用起来非常顺畅。
+
+### 博客
+
+17 年博客发了 9 篇文章，其中 [“玩转” 技术面试——链表的函数表示法](http://localhost:4000/blog/2017/03/22/ace-technical-interview/) 是翻译的，[《硅谷之谜》读后感](http://localhost:4000/blog/2017/05/11/review-of-secret-of-silicon-valley/) 是读后感，其他都是介绍 Clojure 的，最满意的应该是介绍 Clojure 宏写法的那两篇，然后是运行原理那两篇，以及最近的 [使用 ClojureScript 开发浏览器插件的过程与收获](http://localhost:4000/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/)，这里面详细介绍了 ClojureScript 的使用经历。
+
+博客这一块我还是比较满意的，18 年我想更多的写一些经验性的文章，一方面更加深入思考工作中遇到的问题，另一方面锻炼自己架构的能力，对于一些科普性质的文章最好也要附带上一两个实际案例。
+为了积累工作中一些繁琐的事情，特地开了 [个人 wiki](http://wiki.liujiacai.net/)，这里主要会记录一些环境的配置，可以 copy paste 的代码段。
+
+![百度统计 2017 年博客访问情况](https://img.alicdn.com/imgextra/i4/581166664/TB27ZEPnL2H8KJjy0FcXXaDlFXa_!!581166664.png)
+
+### 学洋文
+
+17 年在扇贝[打卡 299 天](https://www.shanbay.com/web/annual-plan/award/74548)，差一天就完成了 300 天的计划😭，而且其中有些天打的比较水，文章没怎么看就标为已读了。不管怎么说，这个习惯算是养成了，而且扇贝上的新闻也很及时，更新比较快，可以很方便的了解时事。
+
+![](https://img.alicdn.com/imgextra/i3/581166664/TB2KOlan22H8KJjy0FcXXaDlFXa_!!581166664.png)
+![](https://img.alicdn.com/imgextra/i4/581166664/TB23SBhn8HH8KJjy0FbXXcqlpXa_!!581166664.png)
+![](https://img.alicdn.com/imgextra/i3/581166664/TB2wlOkn_vI8KJjSspjXXcgjXXa_!!581166664.png)
+![扇贝新年计划徽章--Feel the change](https://img.alicdn.com/imgextra/i2/581166664/TB2mNXYn6nD8KJjSspbXXbbEXXa_!!581166664.jpg)
+
+### 视频课程
+
+17 年还录制了一套 [Clojure 学习视频](https://github.com/jiacai2050/learn_clojure.mp4)，一共7讲，算是一个意外的收获。希望能为国内 Clojure 初学者提供另一个选择。
+
+![Learn Clojure 视频课程](https://img.alicdn.com/imgextra/i3/581166664/TB2phveekfb_uJkHFqDXXXVIVXa_!!581166664.png)
+
+## 生活
+
+### 健身
+
+由于换了工作，所以生活也发生了较大改变。首先惭愧的说一点，之前花了将近一年的时间去减肥，最近 8 个月全部还了回来，而且有过之无不及。面对镜子里面的自己，真是觉得羞愧至极。
+
+首先，新办公室人员较少，没有一起去健身的，这是一个很重要的客观因素，而且昆山本身比较安逸，安逸到你怎么样都行的状态。虽然也办了公司附近的健身卡，但是我告诉自己新工作需要去多熟悉代码，也就逐渐减低了去的频率，这应该是 17 年最大的败笔。
+
+不过，我的心态还比较好，科学减肥的方式我非常清楚，只是在实施上了问题，18 年一定会再锻炼起来，重新“做人”。和读书计划一样，这里一定要做到即使反馈，每天做好记录，健身房的每滴汗水都不能白流。
+
+### 播客
+
+17 年听了不少播客，一方面写程序时解闷，另一方面开了不少眼界。主要有下面几个（按收听时间）：
+
+- [极客电台](https://itunes.apple.com/cn/podcast/%E6%9E%81%E5%AE%A2%E7%94%B5%E5%8F%B0/id914427651?mt=2) by [王掌柜](https://geek.wasai.org/)。到目前大概 190 多期，基本全听完了，其中比较有价值的是 「170期-比特币投资教会我的三件事」，「189期 点评 iOS11 和比特币交易所关闭事件」，他让我放心的知道，我不必去了解这些“时髦”的东西，下车容易上车难。而且教会了我一些生活的技巧。
+- [猫哥详说红楼梦](http://www.ximalaya.com/9316189/album/5609461/)，是猫哥陪女儿读书时录制的，有自己的理解。
+- [《白话红楼梦-完》韦岽著](http://www.ximalaya.com/32674504/album/3836293/)，播主精致女王读的韦岽的书，如其名曰，白话讲解。
+- [《红楼梦》女王读原著](http://www.ximalaya.com/32674504/album/11064027/)，播主也是精致女王，对原著的阅读。
+- [三毛全集](https://fm.qq.com/album/rd004IyeGv3gH42A)，三毛的想念汇成了撒哈拉。见证了一对佳人的离合悲欢。
+- [Cognicast](http://blog.cognitect.com/cognicast/)，cognitect 官方的播客，主要谈使用 Clojure 以及软件开发的经验，练习听力。
+
+
+## 总结
+
+17年是毕业后工作的第三个年头，可能有些同学已经深耕在某一领域，但是我却选择了重新开辟一条人迹罕至的道路，我不知道这是对还是错，也许并没有对错之说，有得必有失，尽我所能就好。
+
+希望 18 年能有所突破，遇见不一样的自己。

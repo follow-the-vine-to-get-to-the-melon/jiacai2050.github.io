@@ -263,7 +263,7 @@ sys.setdefaultencoding("utf-8")
 print "你好" == u"你好"
 # True
 ```
-可以看到，设置默认编码之后，程序的逻辑已经发生了改变，最主要的是，如果我们改变了默认编码，我们所引用的所有第三方模块，也都会改变，就想我这里举的例子，程序的逻辑很有可能会改变。关于这个问题的详尽解释，可以参考[Dangers of sys.setdefaultencoding('utf-8')](http://stackoverflow.com/q/28657010/2163429)。
+可以看到，设置默认编码之后，程序的逻辑已经发生了改变，最主要的是，如果我们改变了默认编码，我们所引用的所有第三方模块，也都会改变，就像这里举的例子，程序的逻辑很有可能会改变。关于这个问题的详尽解释，可以参考[Dangers of sys.setdefaultencoding('utf-8')](http://stackoverflow.com/q/28657010/2163429)。
 
 
 ## 总结
