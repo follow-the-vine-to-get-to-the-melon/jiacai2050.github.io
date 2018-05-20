@@ -55,6 +55,7 @@ categories: 热爱生活
 - [Netty in Action](https://book.douban.com/subject/24700704/)，工作需要，粗略浏览一遍。
 - [硅谷之谜](https://book.douban.com/subject/26665230/)，主要讲述硅谷的成因。关键词：信息论、指控论、系统论是信息时代的三大路标。
 - [刘心武续红楼梦](https://book.douban.com/subject/5988772/)，今年听了不少播客，红楼梦听了几个版本，包括 刘心武 老师百家讲堂的红楼梦，觉得“草蛇灰线，伏延千里”分析方法比较另辟蹊径，于是找来这本书。
+- [编程人生（上卷）](https://book.douban.com/subject/26248211/)，编程大家的采访，目前看到第六章。
 
 ### Github
 
@@ -69,7 +70,9 @@ followers 从 147 增加到 224，star 数从 224 增加到 367，repo 数从 42
 
 ### 博客
 
-17 年博客发了 9 篇文章，其中 [“玩转” 技术面试——链表的函数表示法](http://localhost:4000/blog/2017/03/22/ace-technical-interview/) 是翻译的，[《硅谷之谜》读后感](http://localhost:4000/blog/2017/05/11/review-of-secret-of-silicon-valley/) 是读后感，其他都是介绍 Clojure 的，最满意的应该是介绍 Clojure 宏写法的那两篇，然后是运行原理那两篇，以及最近的 [使用 ClojureScript 开发浏览器插件的过程与收获](http://localhost:4000/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/)，这里面详细介绍了 ClojureScript 的使用经历。
+![17 年博客总览](https://img.alicdn.com/imgextra/i4/581166664/TB2GPvln0bJ8KJjy1zjXXaqapXa_!!581166664.png)
+
+17 年博客发了 9 篇文章，其中 [“玩转” 技术面试——链表的函数表示法](/blog/2017/03/22/ace-technical-interview/) 是翻译的，[《硅谷之谜》读后感](/blog/2017/05/11/review-of-secret-of-silicon-valley/) 是读后感，其他都是介绍 Clojure 的，最满意的应该是介绍 Clojure 宏写法的那两篇，然后是运行原理那两篇，以及最近的 [使用 ClojureScript 开发浏览器插件的过程与收获](/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/)，这里面详细介绍了 ClojureScript 的使用经历。
 
 博客这一块我还是比较满意的，18 年我想更多的写一些经验性的文章，一方面更加深入思考工作中遇到的问题，另一方面锻炼自己架构的能力，对于一些科普性质的文章最好也要附带上一两个实际案例。
 为了积累工作中一些繁琐的事情，特地开了 [个人 wiki](http://wiki.liujiacai.net/)，这里主要会记录一些环境的配置，可以 copy paste 的代码段。
@@ -91,6 +94,8 @@ followers 从 147 增加到 224，star 数从 224 增加到 367，repo 数从 42
 
 ![Learn Clojure 视频课程](https://img.alicdn.com/imgextra/i3/581166664/TB2phveekfb_uJkHFqDXXXVIVXa_!!581166664.png)
 
+通过制作这一套视频，我结识了一些志同道合的朋友，我觉得这比单纯获取知识更有意义。互联网就是这么神奇，让素未见面的一群人因共同的爱好聚集起来，感谢你们的支持，希望你们新的一年一切顺利。
+
 ## 生活
 
 ### 健身
@@ -108,10 +113,15 @@ followers 从 147 增加到 224，star 数从 224 增加到 367，repo 数从 42
 - [极客电台](https://itunes.apple.com/cn/podcast/%E6%9E%81%E5%AE%A2%E7%94%B5%E5%8F%B0/id914427651?mt=2) by [王掌柜](https://geek.wasai.org/)。到目前大概 190 多期，基本全听完了，其中比较有价值的是 「170期-比特币投资教会我的三件事」，「189期 点评 iOS11 和比特币交易所关闭事件」，他让我放心的知道，我不必去了解这些“时髦”的东西，下车容易上车难。而且教会了我一些生活的技巧。
 - [猫哥详说红楼梦](http://www.ximalaya.com/9316189/album/5609461/)，是猫哥陪女儿读书时录制的，有自己的理解。
 - [《白话红楼梦-完》韦岽著](http://www.ximalaya.com/32674504/album/3836293/)，播主精致女王读的韦岽的书，如其名曰，白话讲解。
-- [《红楼梦》女王读原著](http://www.ximalaya.com/32674504/album/11064027/)，播主也是精致女王，对原著的阅读。
+- [《红楼梦》女王读原著](http://www.ximalaya.com/32674504/album/11064027/)，播主同精致女王，对原著的阅读。
 - [三毛全集](https://fm.qq.com/album/rd004IyeGv3gH42A)，三毛的想念汇成了撒哈拉。见证了一对佳人的离合悲欢。
 - [Cognicast](http://blog.cognitect.com/cognicast/)，cognitect 官方的播客，主要谈使用 Clojure 以及软件开发的经验，练习听力。
 
+听了各种版本的红楼梦，发现确实是一本奇书，而且由于后四十回遗失，高鹗续写的不尽人意，更是让后人“浮想联翩”，增加了探索书中原型的乐趣。
+
+### 其他
+
+在 6 月最后一天终于拿到了驾照，真是一段[痛快的回忆](https://www.jianshu.com/p/469f63ffd263)；离开了有赞，乒乓球打的也少了；同学介绍了几个朋友，也无疾而终，今年回去估计要相亲了 😴
 
 ## 总结
 

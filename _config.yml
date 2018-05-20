@@ -45,13 +45,14 @@ highlight:
 # Category & Tag
 default_category: uncategorized
 category_map:
-    编程语言: PL
+    编程语言: langs
     算法: algorithm
-    搜索引擎: search_engine
+    搜索引擎: search-engine
     热爱生活: life
-    理解计算机: aha_computer
+    理解计算机: aha-computer
     大数据: bigdata
-    其他: other
+    他山之石: reproduce
+
 tag_map:
     Java: java
     Lambda: lambda

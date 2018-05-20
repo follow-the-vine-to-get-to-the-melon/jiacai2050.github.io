@@ -17,7 +17,26 @@ ClojureScript 是使用 Clojure 编写，最终编译生成 JS 代码的一个[�
 
 ![cljs 编译流程](/images/clojure/cljs_compile.png)
 
-Cljs 还提供 [与原生 JS 的交互](http://cljs.info/cheatsheet/)、[集成](https://clojurescript.org/reference/javascript-module-support)[第三方类库](https://clojurescript.org/news/2017-07-12-clojurescript-is-not-an-island-integrating-node-modules)的支持，所以，只要能用 JS 的地方，都能用 cljs，
+Cljs 还提供 [与原生 JS 的交互](http://cljs.info/cheatsheet/)、[集成](https://clojurescript.org/reference/javascript-module-support)[第三方类库](https://clojurescript.org/news/2017-07-12-clojurescript-is-not-an-island-integrating-node-modules)的支持，所以，只要能用 JS 的地方，都能用 cljs。
+
+### Closure compiler
+
+这里需要着重介绍一下 Google 的这个项目，可以在不运行代码的前提下分析代码逻辑，去掉没有使用到的代码，这对于 cljs 是非常重要的。一个项目中不可能使用到 cljs 中所有的函数，如果不进行代码“减肥”，最终编译出来 JS 文件就会超大，根本没法在浏览器中使用。
+奇怪的是功能这么强大的项目却鲜为人知，不得不说 Google 在“推销”这方面还需要向 Facebook 学习。有一个在线地址，供大家体验 Closure 的强大：
+
+- https://closure-compiler.appspot.com
+
+```js
+function hello(name) {
+  alert('Hello, ' + name);
+}
+hello('New user');
+```
+在优化策略为 advanced 时最终生成：
+
+```js
+alert("Hello, New user");
+```
 
 ## 开发环境准备
 
@@ -271,5 +290,6 @@ JS 社区里面层出不穷的框架每次都让跃跃欲试的我望而却步�
 
 ## 参考
 
+- [The ClojureScript Compilation Pipeline](http://blog.fogus.me/2012/04/25/the-clojurescript-compilation-pipeline/)
 - [Chrome extension in ClojureScript](https://nvbn.github.io/2014/12/07/chrome-extension-clojurescript/)
 - https://github.com/binaryage/chromex-sample

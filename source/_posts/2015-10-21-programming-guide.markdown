@@ -1,6 +1,6 @@
 title: 转载『非科班出身的人学习编程不负责任指南』
 date: 2015-10-21 21:50:18
-categories: 转载
+categories: 他山之石
 tags: sicp
 ---
 

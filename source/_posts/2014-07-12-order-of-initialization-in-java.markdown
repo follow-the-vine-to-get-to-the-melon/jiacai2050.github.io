@@ -5,10 +5,87 @@ categories: 编程语言
 tags: Java
 ---
 
-当你在 Java 程序中`new`对象时，有没有考虑过 JVM 是如何把静态的字节码（byte code）转化为运行时对象的呢，这个问题看似简单，但清楚的同学相信也不会太多，这篇文章首先介绍 JVM 类初始化的机制，然后给出几个易出错的实例来分析，帮助大家更好理解这个知识点。
+
+> 更新日志
+
+- 2014-07-12, 根据校招经验，完成[初稿](https://github.com/jiacai2050/jiacai2050.github.io/blob/c7a3e971d8906841eb2ac8b592ea2453d3ad2533/source/_posts/2014-07-12-order-of-initialization-in-java.markdown)，很多地方没写清楚
+- 2017-01-15，全部重写，[增加 Load、Link、Initialization 过程与三个示例](https://github.com/jiacai2050/jiacai2050.github.io/blob/c9f20af48feec16904c666b87f5cc44b3408b765/source/_posts/2014-07-12-order-of-initialization-in-java.markdown)
+- 2018-03-30，调整示例代码，增加「什么是类的加载」、「双亲委托模式」两小节
+-------
+
+当你在 Java 程序中`new`对象时，有没有考虑过 JVM 是如何把静态的字节码（byte code）转化为运行时对象的呢，这个问题看似简单，但里面的细节很多，而且由于开发者在平时与之打交道较少，很少有同学会去主动探索这块知识，但这个知识点却是面试时常考的地方，而且熟练掌握类加载是实现代码热部署的关键。
+
+本文将结合几个具体案例，来阐述 JVM 类初始化这个问题，希望引起大家对这个知识点的注意。
+
+## 什么是类的加载
+
+通俗来讲，类的加载就是指将 .class 文件中的字节码读入内存，将其放在运行时数据区的方法区（method code）内，最终在堆区（heap）中创建一个 java.lang.Class 对象。
+
+![JVM 内部结构](https://img.alicdn.com/imgextra/i3/581166664/TB2iQhEcYFlpuFjy0FgXXbRBVXa_!!581166664.png)
+
+Class 对象封装了类在方法区内的数据结构，并且向提供了访问方法区内的数据结构的接口。
+
+## 何时进行类加载
+
+一般来说，只有在**第一次** **主动调用** 某个类时才会去进行类加载。如果一个类有父类，会先去加载其父类，然后再加载其自身。
+
+上面这段话有两个关键词：**第一次** 与 **主动调用**。**第一次** 是说只在第一次时才会有初始化过程，以后就不需要了，可以理解为每个类 **有且仅有一次** 初始化的机会。那么什么是 **主动调用** 呢？
+JVM 规定了以下六种情况为 **主动调用**，其余的皆为 **被动调用**：
+
+1. 一个类的实例被创建（`new`操作、反射、`cloning`，反序列化）
+2. 调用类的`static`方法
+3. 使用或对类/接口的`static`属性进行赋值时（这不包括`final`的与在编译期确定的常量表达式）
+4. 当调用 API 中的某些反射方法时
+5. 子类被初始化
+6. 被设定为 JVM 启动时的启动类（具有`main`方法的类）
+
+关于主动加载与被动加载的区别，可以参考下面这个例子：
+
+```
+class NewParent {
+
+    static int hoursOfSleep = (int) (Math.random() * 3.0);
+
+    static {
+        System.out.println("NewParent was initialized.");
+    }
+}
+
+class NewbornBaby extends NewParent {
+
+    static int hoursOfCrying = 6 + (int) (Math.random() * 2.0);
+
+    static {
+        System.out.println("NewbornBaby was initialized.");
+    }
+}
+
+public class ActiveUsageDemo {
+
+    // Invoking main() is an active use of ActiveUsageDemo
+    public static void main(String[] args) {
+
+        // Using hoursOfSleep is an active use of NewParent,
+        // but a passive use of NewbornBaby
+        System.out.println(NewbornBaby.hoursOfSleep);
+    }
+
+    static {
+        System.out.println("ActiveUsageDemo was initialized.");
+    }
+}
+```
+上面的程序最终输出：
+```
+ActiveUsageDemo was initialized.
+NewParent was initialized.
+1
+```
+之所以没有输出`NewbornBaby was initialized.`是因为没有主动去调用`NewbornBaby`，如果把打印的内容改为`NewbornBaby.hoursOfCrying` 那么这时就是主动调用`NewbornBaby`了，相应的语句也会打印出来。
 
 
-## Loading, Linking, and Initialization
+
+## 类加载的生命周期
 
 JVM 将字节码转化为运行时对象分为三个阶段，分别是：loading 、Linking、initialization。
 
@@ -60,6 +137,11 @@ sun.misc.Launcher$AppClassLoader@2a139a55
 [Loaded java.lang.Shutdown$Lock from /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/rt.jar]
 ```
 
+ClassLoader 还具有一重要特性：双亲委派模型。具体来说就是：
+
+> 如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把请求委托给父加载器去完成，依次向上，因此，所有的类加载请求最终都应该被传递到顶层的启动类加载器中，只有当父加载器在它的搜索范围中没有找到所需的类时，即无法完成该加载，子加载器才会尝试自己去加载该类。
+
+
 
 
 ### Linking
@@ -74,7 +156,7 @@ sun.misc.Launcher$AppClassLoader@2a139a55
 
 #### Preparation
 
-在一个类已经被`load`并且通过`verification`后，就进入到`preparation`阶段。在这个阶段，JVM 会为类的成员变量分配内存空间并且赋予默认初始值，需要注意的是这个阶段不会执行任何代码，而只是根据`变量类型`决定初始值。如果不进行默认初始化，分配的空间的值是随机的，有点类型c语言中的[野指针](http://zh.wikipedia.org/zh/%E8%BF%B7%E9%80%94%E6%8C%87%E9%92%88)问题。
+在这个阶段，JVM 会为 **类成员变量**（不包括实例变量）分配内存空间并且赋予默认初始值，需要注意的是这个阶段不会执行任何代码，而只是根据`变量类型`决定初始值。如果不进行默认初始化，分配的空间的值是随机的，有点类型c语言中的[野指针](http://zh.wikipedia.org/zh/%E8%BF%B7%E9%80%94%E6%8C%87%E9%92%88)问题。
 ```
 Type	Initial Value
 int	0
@@ -88,6 +170,7 @@ float	0.0f
 double	0.0d
 ```
 
+另一个需要注意的是实例
 在这个阶段，JVM 也可能会为有助于提高程序性能的数据结构分配内存，常见的一个称为`method table`的数据结构，它包含了指向所有类方法（也包括也从父类继承的方法）的指针，这样再调用父类方法时就不用再去搜索了。
 
 #### Resolution
@@ -98,25 +181,11 @@ double	0.0d
 
 这个过程不是必须的，也可以发生在第一次使用某个符号引用时。
 
-![JVM_Internal_Architecture](https://img.alicdn.com/imgextra/i3/581166664/TB2iQhEcYFlpuFjy0FgXXbRBVXa_!!581166664.png)
-
 ### Initialization
 
-经过了上面的`load`、`link`后，`第一次` `主动调用`某类的最后一步是`Initialization`，这个过程会去按照代码书写顺序进行初始化，这个阶段会去真正执行代码，注意包括：代码块（static与static）、构造函数、变量显式赋值。如果一个类有父类，会先去执行父类的`initialization`阶段，然后在执行自己的。
+经过了上面的`load`、`link`后，就到了 `Initialization`。这个阶段会去真正执行代码，具体包括：代码块（static与static）、构造函数、变量显式赋值。
 
-上面这段话有两个关键词：`第一次`与`主动调用`。`第一次`是说只在第一次时才会有初始化过程，以后就不需要了，可以理解为每个类`有且仅有一次`初始化的机会。那么什么是`主动调用`呢？
-JVM 规定了以下六种情况为`主动调用`，其余的皆为`被动调用`：
-
-1. 一个类的实例被创建（`new`操作、反射、`cloning`，反序列化）
-2. 调用类的`static`方法
-3. 使用或对类/接口的`static`属性进行赋值时（这不包括`final`的与在编译期确定的常量表达式）
-4. 当调用 API 中的某些反射方法时
-5. 子类被初始化
-6. 被设定为 JVM 启动时的启动类（具有`main`方法的类）
-
-本文后面会给出一个示例用于说明`主动调用`的`被动调用`区别。
-
-在这个阶段，执行代码的顺序遵循以下两个原则：
+这些代码执行的顺序遵循以下两个原则：
 
 1. 有static先初始化static，然后是非static的
 2. 显式初始化，构造块初始化，最后调用构造函数进行初始化
@@ -167,50 +236,6 @@ counter2: 1
 ```
 `Singleton`中的三个属性在`Preparation`阶段会根据类型赋予默认值，在`Initialization`阶段会根据显示赋值的表达式再次进行赋值（按顺序自上而下执行）。根据这两点，就不难理解上面的结果了。
 
-### 主动调用 vs. 被动调用
-
-```
-class NewParent {
-
-    static int hoursOfSleep = (int) (Math.random() * 3.0);
-
-    static {
-        System.out.println("NewParent was initialized.");
-    }
-}
-
-class NewbornBaby extends NewParent {
-
-    static int hoursOfCrying = 6 + (int) (Math.random() * 2.0);
-
-    static {
-        System.out.println("NewbornBaby was initialized.");
-    }
-}
-
-public class ActiveUsageDemo {
-
-    // Invoking main() is an active use of ActiveUsageDemo
-    public static void main(String[] args) {
-
-        // Using hoursOfSleep is an active use of NewParent,
-        // but a passive use of NewbornBaby
-        System.out.println(NewbornBaby.hoursOfSleep);
-    }
-
-    static {
-        System.out.println("ActiveUsageDemo was initialized.");
-    }
-}
-```
-上面的程序最终输出：
-```
-ActiveUsageDemo was initialized.
-NewParent was initialized.
-1
-```
-之所以没有输出`NewbornBaby was initialized.`是因为没有主动去调用`NewbornBaby`，如果把打印的内容改为`NewbornBaby.hoursOfCrying` 那么这时就是主动调用`NewbornBaby`了，相应的语句也会打印出来。
-
 ### 首次主动调用才会初始化
 
 ```
@@ -250,18 +275,19 @@ public class Alibaba {
 
 上面这个例子是阿里巴巴在14年的校招附加题，我当时看到这个题，就觉得与阿里无缘了。囧
 
-    1:j   i=0    n=0
-    2:构造块   i=1    n=1
-    3:t1   i=2    n=2
-    4:j   i=3    n=3
-    5:构造块   i=4    n=4
-    6:t2   i=5    n=5
-    7:i   i=6    n=6
-    8:静态块   i=7    n=99
-    9:j   i=8    n=100
-    10:构造块   i=9    n=101
-    11:init   i=10    n=102
-
+```
+1:j   i=0    n=0
+2:构造块   i=1    n=1
+3:t1   i=2    n=2
+4:j   i=3    n=3
+5:构造块   i=4    n=4
+6:t2   i=5    n=5
+7:i   i=6    n=6
+8:静态块   i=7    n=99
+9:j   i=8    n=100
+10:构造块   i=9    n=101
+11:init   i=10    n=102
+```
 
 上面是程序的输出结果，下面我来一行行分析之。
 
@@ -312,8 +338,3 @@ public class Alibaba {
 - [JVM Internals](http://blog.jamesdbloom.com/JVMInternals.html)
 - [What kind of method is Constructor, static or non static?](https://www.quora.com/What-kind-of-method-is-Constructor-static-or-non-static)
 - [Understanding the Java ClassLoader](http://www.ibm.com/developerworks/java/tutorials/j-classloader/j-classloader.html)
-
-## 更新日志
-
-- 2014-07-12, 根据校招经验，完成[初稿](https://github.com/jiacai2050/jiacai2050.github.io/blob/c7a3e971d8906841eb2ac8b592ea2453d3ad2533/source/_posts/2014-07-12-order-of-initialization-in-java.markdown)，很多地方没写清楚
-- 2017-01-15，全部重写，增加 Load、Link、Initialization 过程与三个示例
