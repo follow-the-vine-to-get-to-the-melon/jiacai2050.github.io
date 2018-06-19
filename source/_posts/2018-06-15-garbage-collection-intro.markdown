@@ -4,9 +4,8 @@ tags: [GC]
 categories: 理解计算机
 ---
 
-现如今流程的编程语言，都默认具备垃圾回收（garbage collection，后面简写为 GC）机制。记的在大学期间学 C/C++ 时，就被告诫一定不要忘了调用 free/delete，但仅靠程序员的自我约束是非常不靠谱的，所以先驱们总结了一系列经验、教训，开发了各种自动化工具，这其中当然包括 GC 算法的研究。
-
-GC 算法是计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年[^1]，由 John McCarthy 在 Lisp 中实现来简化手动内存管理，早期的 Lisp 之所以被大众诟病慢，主要原因就是当时的 GC 实现相对简单，对程序的影响（overhead）比较严重。经过几十年的发展，GC 算法已经很成熟了，可以完全摆脱「速度慢」这个让人望而却步的标签。
+现如今流程的编程语言除 C/C++ 外，都默认具备垃圾回收（garbage collection，后面简写为 GC）机制，而且即便是 C/C++ ，也有类似 [Boehm GC](http://www.hboehm.info/gc/) 这样的第三方库来实现内存的自动管理。GC 已经是现代语言的标配了。
+GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年[^1]，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当时的 GC 实现相对简单，对程序的影响（overhead）比较严重。经过几十年的发展，GC 算法已经很成熟了，可以完全摆脱「速度慢」这个让人望而却步的标签。
 单就 JVM 这个平台来说，GC 算法一直在优化、演变，从最初的串行到高吞吐量的并行，为了解决高延迟又演化出了 [CMS（Concurrent Mark Sweep）](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html)，为了解决碎片问题，又开发了 [G1](http://www.oracle.com/technetwork/tutorials/tutorials-1876574.html)，Oracle 内部还在不断尝试新算法，比如 [ZGC](http://openjdk.java.net/projects/zgc/)。
 对于这么一个庞大但有趣的话题，我决定写一系列文章来介绍，首先会介绍 GC 的必要性、常见回收策略，这些是语言无关的；然后会重点介绍 JVM 上的 GC 实现；再之后会对现较为流行的脚本语言（js/python/ruby）所用的 GC 算法做一些探索。每个语言在实现 GC 算法时都有其独特之处，所以最后希望能深入到源代码级别，做到真正的深入浅出（inside out）。我所参考的资料主要来自 wikipedia 以及一些前辈的总结（Google 检索），当然对于能实践的部分我会给上相关测试代码。
 由于我对 GC 也是刚入门，并没有实现过工业级 GC，所以如果文中有相关错误，麻烦指出，我会及时更新，保证不对后面学习者产生误导。好了，进入今天的正题。
@@ -27,9 +26,9 @@ GC 并不适应于 socket/file handler 等资源的回收，究其原因是 GC �
 
 ## GC 常用策略
 
-### 跟踪（Tracing）
+### 追踪（Tracing）
 
-这是目前使用范围最广的技术，一般我们提到 GC 都是指这类，实现这种机制的系统有：JVM。
+这是目前使用范围最广的技术，一般我们提到 GC 都是指这类，实现这种机制的系统有：JVM/.NET/OCaml。
 这类 GC 从某些被称为 root 的对象开始，不断追踪可以被引用到的对象，这些对象被称为**可到达的**（reachable），其他剩余的对象就被称为 garbage，并且会被释放。
 
 #### 对象的可到达行
@@ -59,9 +58,9 @@ System.exit(0);
 
 #### 强引用与弱引用
 
-追踪类 GC 使用引用来决定一个对象的可到达性，但是在程序中有时会希望能以弱引用的方式指向一个对象，弱引用不会保护该对象被 GC 回收，如果该对象被回收了，那么这个弱引用会被赋予一个安全值（一般为NULL）。使用弱引用可以解析很多问题，比如：
-- 解决[循环引用](https://en.wikipedia.org/wiki/Reference_cycle)的问题
-- 在 Map 中，如果运行 key 为弱引用，那么 GC 就可以回收用不到对象，而不会因为 Map 中的引用让其一直留在内存中，适用于做缓存
+追踪类 GC 使用引用来决定一个对象的可到达性，但是在程序中有时会希望能以弱引用的方式指向一个对象，弱引用不会保护该对象被 GC 回收。如果该对象被回收了，那么这个弱引用会被赋予一个安全值（一般为NULL）。使用弱引用可以解决很多问题，比如：
+- [循环引用](https://en.wikipedia.org/wiki/Reference_cycle)
+- 在 Map 中，如果允许 key 为弱引用，那么 GC 就可以回收用不到对象，而不会因为 Map 中的引用让其一直留在内存中，适用于做缓存
 
 在一些实现中，弱引用被分成了几个类别。比如在 JVM 中，提供了三类，soft、phantom、常规的弱引用，其区别可参考我之前的文章[Java WeakHashMap 源码解析](/blog/2015/09/27/java-weakhashmap/#%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B)。
 
@@ -75,20 +74,26 @@ System.exit(0);
 
 该算法的缺点有：
 1. 在进行 GC 期间，整个系统会被挂起（暂停，Stop-the-world），所以在一些实现中，会采用各种措施来减少这个暂停时间
-2. heap 容易出现碎片
+2. heap 容易出现碎片。实现中一般会进行 move 或 compact
 3. 破坏了引用的本地性（locality of reference）
+4. 回收时间与 heap 大小成正比
 
 ### 引用计数（Reference counting）
 
 ![Reference counting 过程图示](https://img.alicdn.com/imgextra/i3/581166664/TB2arI8yv1TBuNjy0FjXXajyXXa_!!581166664.png)
-引用计数类 GC 会记录每个对象的引用次数，当引用次数为0时，就会被回收。与追踪类 GC 有以下两处优势：
-1. 可以保证对象引用为0时立马得到清理
-2. 对程序的影响（overhead）小
 
-其本身有以下缺点：
+引用计数类 GC 会记录每个对象的引用次数，当引用次数为0时，就会被回收，这类 GC 实现起来较为简单。采用这类 GC 的主流语言有：Python/PHP/Perl/TCL/Objective-C。
+与追踪类 GC 相比，有以下两处优势：
+1. 可以保证对象引用为0时立马得到清理，无不确定行
+2. 可以用来优化运行时性能。比如函数式编程中所推崇的「[不可变数据结构](https://en.wikipedia.org/wiki/Immutable_object)」的更新就能收益：运行时知道某个对象的引用为1，这时对这个对象进行修改，类似 `str <- str+"a"`，那么这个修改就可以在本地进行，而不必进行额外的 copy
+
+除了上面介绍的优势，引用计数具有以下几处劣势：
 1. 无法解决循环引用。CPython 使用独特的环检测算法规避[^3]，后面文章再分析该算法；此外也可以用弱引用的方式解决
-2. space overhead，每个对象需要额外的空间来存储其引用次数
-3. speed overhead，在增加/减少对象的引用时，需要修改引用次数，这在多线程环境中要保证其原子性
+2. space overhead，每个对象需要额外的空间来存储其引用次数，在追踪类 GC 中，用以标注对象是否在使用中的flag 位一般放在引用变量里面
+3. speed overhead，在增加/减少对象的引用时，需要修改引用次数。这对于栈上的赋值（on-stack assignment）影响是非常大的，因为之前只需要简单修改寄存器里面的值，现在需要一个原子操作（这涉及到加锁，会浪费几百个 CPU cycles）[^4]
+4. 减少一个对象的引用计数时，会级联减少其引用对象的计数，这就可能造成同时删除过多的对象。在实现中一般会把要回收的对象放入一队列，当程序申请大小为 N 的内存时，从这个队列取出总体积不小于 N 的一个或多个对象将其回收。
+
+引用计数除了用在 GC 领域，还广泛用在管理系统资源上。比如：大多数文件系统会维持特定文件/block的引用数（inode里面的link count），这些引用被称为 hard links。当引用数为0时，这个文件就可以被安全的删除了。
 
 ### 逃逸分析（Escape_analysis）
 
@@ -100,13 +105,22 @@ JVM 中有相关实现，后面文章也会涉及到，感兴趣的朋友可以�
 
 ## 总结
 
-通过上面的介绍，大家应该明确追踪类 GC 是最常用的，其变种也比较多，后面的文章也会重点讲述此类 GC，这里面有趣的内容非常多，比如：semispace（用以提高 sweep 的速度与减少内存碎片）、[Cheney's algorithm](https://en.wikipedia.org/wiki/Cheney%27s_algorithm) / [Baker's Algorithm](https://en.wikipedia.org/wiki/Lamport%27s_bakery_algorithm)（这两算法都是对 semispace 的优化）、generational GC（减少 GC 作用范围）、incremental/concurrent GC（减少 stop-the-world 时间）。
+「追踪」与「引用计数」这两类 GC 各有千秋，真正的工业级实现一般是这两者的结合，不同的语言有所偏重而已。可以参考下面几处提问：
+- [Why doesn't Apple Swift adopt the memory management method of garbage collection like Java uses?](https://www.quora.com/Why-doesnt-Apple-Swift-adopt-the-memory-management-method-of-garbage-collection-like-Java-uses)
+- [How does garbage collection compare to reference counting?](https://softwareengineering.stackexchange.com/questions/285333/how-does-garbage-collection-compare-to-reference-counting)
+- [Why doesn't Java use reference counting based GC?](https://www.quora.com/Why-doesnt-Java-use-reference-counting-based-GC)
 
+总体来说，追踪类 GC 是效率最高的算法[^5]，其变种也比较多，后面的文章也会重点讲述此类 GC，这里面有趣的内容非常多，比如：semispace（用以提高 sweep 的速度与减少内存碎片）、[Cheney's algorithm](https://en.wikipedia.org/wiki/Cheney%27s_algorithm) / [Baker's Algorithm](https://en.wikipedia.org/wiki/Lamport%27s_bakery_algorithm)（这两算法都是对 semispace 的优化）、generational GC（减少 GC 作用范围）、incremental/concurrent GC（减少 stop-the-world 时间）。
+Stay Tuned!
 ## 参考
 
 - https://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29
+- https://en.wikipedia.org/wiki/Reference_counting
+- https://en.wikipedia.org/wiki/Tracing_garbage_collection
 - http://www.goodmath.org/blog/2017/12/22/a-beginners-guide-to-garbage-collection/
 
 [^1]: http://www.informit.com/articles/article.aspx?p=1671639
 [^2]: https://cs.stackexchange.com/questions/52735/why-does-garbage-collection-extend-only-to-memory-and-not-other-resource-types
 [^3]: https://docs.python.org/release/2.5.2/ext/refcounts.html
+[^4]: http://www.informit.com/articles/article.aspx?p=1745749&seqNum=2
+[^5]: http://flyingfrogblog.blogspot.com/2011/01/boosts-sharedptr-up-to-10-slower-than.html
