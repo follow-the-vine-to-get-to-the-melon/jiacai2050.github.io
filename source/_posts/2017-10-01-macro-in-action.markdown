@@ -341,3 +341,4 @@ Happy Lisp！
 - https://clojure.org/reference/reader#syntax-quote
 - http://www.gigamonkeys.com/book/macros-defining-your-own.html
 - https://hubpages.com/technology/Clojure-macro-writing-macros
+- https://xivilization.net/~marek/blog/2013/09/17/clojure-and-hygienic-macros/
