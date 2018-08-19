@@ -8,15 +8,18 @@ categories: 理解计算机
 
 阅读本文需要读者熟悉[前文提及的术语](/blog/2018/07/08/mark-sweep/#术语)。
 
-## 增量式思路
+## 增量式 GC 思路
 
-增量式（incremental）顾名思义，允许 mutator 与 collector 并行执行。
-引用计数类 GC 本身就具有增量式特性，但由于其算法自身的缺陷与效率问题，一般不会采用。而追踪类 GC 实现增量式的难点在于：
+增量式（incremental）GC 顾名思义，允许 collector 分多个小批次执行，每次造成的 mutator 停顿都很小，达到近似实时的效果。
+
+![STW vs 增量式](https://img.alicdn.com/imgextra/i3/581166664/TB2QgDSJASWBuNjSszdXXbeSpXa_!!581166664.png)
+
+引用计数类 GC 本身就具有增量式特性，但由于其算法自身的[缺陷与效率问题](/blog/2018/06/15/garbage-collection-intro/#引用计数（Reference-counting）)，一般不会采用。而追踪类 GC 实现增量式的难点在于：
 
 > 在 collector 遍历引用关系图，mutator 可能会改变对象间的引用关系
 
 这其实是一个并发问题，collector 线程与 mutator 线程同时去读/写一些共享的数据结构（引用关系图），这就要求把它保护起来，使 collecotr 与 mutator 能够感知其改变，并作出相应调整。
-在 GC 期间，对 mutator 改变「引用关系图」的保守度（conservatism）是增量式 GC 大一特性。如果 mutator 在 collector 遍历某对象后将其释放（floating garbage），那么这个对象在本次 GC 不会被回收，但在下一轮 GC 开始时会被回收。
+在 GC 期间，对 mutator 改变「引用关系图」的保守度（conservatism）是增量式 GC 一大特性。如果 mutator 在 collector 遍历某对象后将其释放（floating garbage），那么这个对象在本次 GC 不会被回收，但在下一轮 GC 开始时会被回收。
 这种弱一致性（relaxed consistency）是允许的，因为它不会对程序逻辑造成影响，只是延迟了垃圾对象的回收，而且一致性越弱，遍历算法的实现就可以更灵活。
 
 ## 三色标记
@@ -28,11 +31,11 @@ categories: 理解计算机
 
 对于 MS 来说，设置标记位就是着色的过程：有 mark-bit 的即为黑色。对 Copying GC 来说，把对象从 fromspace 移动到 tospace 就是着色过程：在 fromspace 中不可到达的对象为白色，被移动到 tospace 的对象为黑色。
 对于增量时 GC 来说，需要在黑白之间有个中间状态来记录「那些之前被 collector 标记黑色，后来又被 mutator 改变的对象」，这就是灰色的作用。
-对于 MS 来说，灰色对象是用于协助遍历 queue 里面的对象，即[上文中描述的 worklist 里面](/blog/2018/07/08/mark-sweep/#MS-基本流程)的对象。对于 Copying GC 来说，灰色对象就是那些在 topspace 中还没被 scan 的对象，如果采用 [Cheney 算法](/blog/2018/07/08/mark-sweep/#Cheney-算法) 宽度优先遍历算法，那么就是 scan 与 free 指针之间的对象。
+对于 MS 来说，灰色对象是用于协助遍历 queue 里面的对象，即[上文中描述的 worklist 里面](/blog/2018/07/08/mark-sweep/#MS-基本流程)的对象。对于 Copying GC 来说，灰色对象就是那些在 topspace 中还没被 scan 的对象，如果采用 [Cheney 的宽度优先遍历算法](/blog/2018/07/08/mark-sweep/#Cheney-算法) ，那么就是 scan 与 free 指针之间的对象。
 
 增加的中间状态灰色要求 mutator 不会把黑色对象直接指向白色对象（这称为三色不变性 tri-color invariant），collector 就能够认为黑色对象不需要在 scan，只需要遍历灰色对象即可。
 
-![违法着色不变性的一个例子](https://img.alicdn.com/imgextra/i2/581166664/TB24SYJIVuWBuNjSszbXXcS7FXa_!!581166664.png)
+![违法三色不变性的一个例子](https://img.alicdn.com/imgextra/i2/581166664/TB24SYJIVuWBuNjSszbXXcS7FXa_!!581166664.png)
 
 上图描述了一个违法着色不变性的情况。假设 A 已经被完全地 scan，它本身被标为黑色，字节点被标为灰色，现在假设 mutator 交换了 A-->C 与 B-->D 的指针，现在指向 D 的指针只有 A，而 A 已经被完全地 scan 了，如果继续 scan 过程的话，B 会被置为黑色，C 会被重新访问，而 D 则不会被访问到，在本轮遍历后，D 由于是白色，会被错误的认为是垃圾并被回收掉。
 
@@ -55,13 +58,19 @@ categories: 理解计算机
 
 #### Incremental Update
 
-Incremental Update 算法（后面简写IU）避免条件1的发生。IU 最常用的实现是由 Dijkstra 提出，该算法核心思想阐述如下：
+Incremental Update 算法（后面简写IU）避免条件1的发生。IU 最常用的实现是由 Dijkstra 提出[^1]，该算法核心思想阐述如下：
 
 > 它会启发式（或者说是保守式）保留在 GC 遍历结束时 live 的对象。在遍历期死亡的对象（该对象还没被遍历到），不会再被访问、标记。
 
-为了避免指针被隐藏在黑色对象中，这些指针在存储到黑色对象中时会被捕捉到，这时会把黑色对象重新置为灰色，这个过程会一直迭代下去，直到没有灰色对象为止。
+为了避免指向白色对象的指针被隐藏在黑色对象中，这些指针在存储到黑色对象中时会被捕捉到，这时会把白色对象重新置为灰色，这个过程会一直迭代下去，直到没有灰色对象为止。
 
 新创建的对象在 Dijkstra 算法中会被乐观的认为是白色，这是该算法的一大优势，因为大多数对象的生命周期都比较短。如果在 GC 遍历到它们之前就已经不可到达，这就意味着它们永远不用访问了。
+
+[Guy Steele 提出的算法](https://www.cs.utexas.edu/users/mckinley/395Tmm/talks/Mar-23-CMS.pdf)中建议采用一种启发性方式，部分新对象是白色，部分是黑色，来保证短生命周期的对象尽快被回收的同时，避免遍历长生命周期的对象。但这种方式是否更有效不能很好证明。
+
+在 Steele 算法中，如果指向白色对象的指针被储存在了黑色对象内，会把黑色对象变为灰色。Dijkstra 采用的方式与这种方式相比，显得更保守些，因为那些白色对象很有可能会在再次变为白色。这里举一实际例子进行说明：
+
+> 假设程序使用一由双向链表实现的 stack 来存储数据，GC 遍历到栈顶元素，并将其标为黑色，这时程序进行一些 push/pop 操作，按照 Dijkstra 算法，pop 出来的所有元素会依次被标为灰色，那么就意味着在本次 GC 时不会被回收；而按照 Steele 算法，则有可能回收掉大部分 pop 出来的元素。
 
 #### Snapshot at beginning
 
@@ -82,12 +91,31 @@ Baker's GC 大部分逻辑与 [Copying GC](/blog/2018/07/08/mark-sweep/#Copying-
 
  Barker 算法一个重要特点是：在增量回收时，新分配的对象直接分配在 tospace，当作已遍历对象，也就是三色标记中的黑色。为保证 GC 能在内存耗尽前发现所有可到达对象并复制到 tospace，复制的速率与分配对象的速率息息相关。
 
+#### Non-copying—Treadmill
+
+Baker 在1991年对其增量式算法提出了 [non-copying 版本](http://home.pipeline.com/~hbaker1/NoMotionGC.html)，称为 Treadmill。Treadmill 使用双向链表来区别不同颜色的对象集合，这样就可以通过修改指针来避免移动对象与更新指针的操作。不同集合首尾相连形成环结构，便于对象的转化。如下图：
+
+![Treadmill 示意图](https://img.alicdn.com/imgextra/i1/581166664/TB26SaYnXkoBKNjSZFEXXbrEVXa_!!581166664.png)
+
+该环结构分为四个区域：
+
+1. new 区。在 GC 期间的对象分配在这里，默认为黑色。在 GC 开始时，该区为空
+2. from 区。对应 fromspace，GC 开始前对象分配区域
+3. to 区。对应 tospace。在 GC 开始时，该区为空
+4. free 区。与 new、from 区相连，别于分配新对象
+
+GC 工作过程与之前方式相似，再将 from 区对象连接到 to 区后，遍历 to 区里面的灰色对象，直到全部为黑色时GC结束。然后，new 与 to 合并后形成新 to 区，from 与 free 合并形成新的 free 区。
+
 ### 实现细节
 
 如果没有特殊的硬件支持，写屏障一般来说效率要高于读屏障，主要原因是：
 > heap 指针的读操作要多于写操作
 
-其中比较特别的是 Lisp Machine 有特殊的硬件支持重定向指针（forwording pointer），可以在不进行 forward 检测的前提下，交替使用新旧两个地址。[^1]
+其中比较特别的是 Lisp Machine 有特殊的硬件支持重定向指针（forwording pointer），可以在不进行 forward 检测的前提下，交替使用新旧两个地址。[^2]
+
+关于两类屏障在实现细节上的更多差异这里暂且跳过，感兴趣的读者可以重点参考下面这篇论文
+
+- [《Barrier Methods for Garbage Collection》 Benjamin Zorn 1990](http://www.cs.colorado.edu/department/publications/reports/docs/CU-CS-494-90.pdf)
 
 ## 总结
 
@@ -99,9 +127,11 @@ Baker's GC 大部分逻辑与 [Copying GC](/blog/2018/07/08/mark-sweep/#Copying-
 
 ## 参考
 
+- https://blog.heroku.com/incremental-gc
 - http://xiao-feng.blogspot.com/2007/04/incremental-update-tracing-vs-snapshot.html
 - https://en.wikipedia.org/wiki/Cheney%27s_algorithm
 - http://www.memorymanagement.org/glossary/f.html#glossary-f
 
 
-[^1]: https://www.iecc.com/gclist/GC-algorithms.html forwarding-pointer 词条
+[^1]: https://www.cs.utexas.edu/users/EWD/transcriptions/EWD05xx/EWD520.html
+[^2]: https://www.iecc.com/gclist/GC-algorithms.html forwarding-pointer 词条
