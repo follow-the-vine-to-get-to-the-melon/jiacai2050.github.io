@@ -89,7 +89,7 @@ Baker's GC 大部分逻辑与 [Copying GC](/blog/2018/07/08/mark-sweep/#Copying-
 2. mutator 恢复执行，与 collector 交替执行
 3. 当 mutator 访问到 fromspace 中的对象时，立刻将之拷贝到 topspace 中。这个 copy-on-demand 使用 read-barrier 来保证
 
- Barker 算法一个重要特点是：在增量回收时，新分配的对象直接分配在 tospace，当作已遍历对象，也就是三色标记中的黑色。为保证 GC 能在内存耗尽前发现所有可到达对象并复制到 tospace，复制的速率与分配对象的速率息息相关。
+Barker 算法一个重要特点是：在增量回收时，新分配的对象直接分配在 tospace，当作已遍历对象，也就是三色标记中的黑色。为保证 GC 能在内存耗尽前发现所有可到达对象并复制到 tospace，复制的速率与分配对象的速率息息相关。
 
 #### Non-copying—Treadmill
 

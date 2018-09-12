@@ -4,9 +4,9 @@ tags: [GC]
 categories: 理解计算机
 ---
 
-[上文](/blog/2018/08/04/incremental-gc)介绍的增量式 GC 是对 mark 阶段的一大优化，可以极大避免 STW 的影响。本文将要介绍的分代式 GC 根据对象生命周期（后面成为 age）的特点来优化 GC，降低其性能消耗。
+[上文](/blog/2018/08/04/incremental-gc)介绍的增量式 GC 是对 mark 阶段的一大优化，可以极大避免 STW 的影响。本文将要介绍的分代式 GC 根据对象生命周期（后面称为 age）的特点来优化 GC，降低其性能消耗。
 
-阅读本文需要读者熟悉[之前提及的术语](/blog/2018/07/08/mark-sweep/#术语)。
+阅读本文需要熟悉[之前提及的术语](/blog/2018/07/08/mark-sweep/#术语)。
 
 # 分代的必要性
 
@@ -20,7 +20,7 @@ categories: 理解计算机
 
 # 分代的问题
 
-天下没有免费的午餐，GC 采用分代算法，一个首要的问题是如何在不回收 older 的同时安全的回收 younger 里面的对象。由于引用关系图是全局的属性，older 里面的对象也必须考虑的。比如 younger 里面的一对象只被 older 里面的对象引用了，如何保证 GC 不会错误的回收这个对象呢？
+天下没有免费的午餐，GC 采用分代算法，一个首要的问题是「如何在不回收 older 的同时安全的回收 younger 里面的对象」。由于引用关系图是全局的属性，older 里面的对象也必须考虑的。比如 younger 里面的一对象只被 older 里面的对象引用了，如何保证 GC 不会错误的回收这个对象呢？
 避免上述问题的一个方法是采用写屏障（write barrier），在 mutator 进行指针存储时，进行一些额外的操作（bookkeeping）。写屏障的主要目的是保证所有由 `older-->younger` 的指针在进行 younger 内的 GC 时被考虑在内，并且作为 root set 进行 copy 遍历。需要注意的是，这里的写屏障与增量式 GC 同样具有一定的保守性。这是由于所有由 `older-->younger` 的指针都会被当作 root set，但在 older 内对象的 liveness 在进行下一次 older GC 前是不可知的，这也就造成了一些 floating garbage，不过这在实现中问题不是很大。
 
 为了独立回收 older，通过记录所有由 `younger-->older` 的指针也是可行的，不过这会比较消耗性能。这是因为：
@@ -38,18 +38,18 @@ categories: 理解计算机
 ## 提升策略
 
 最简单的提升策略是在每次 GC 遍历时，把 live 的对象移动到下一代去。这样的优势有：
-1. 实现简单，不需要去区分一个代内不同对象的 age。对于 copying GC 来说，只需要用一块连续的区域表示即可，不需要 semispace，也不需要而外的 header 来保存 age 信息
+1. 实现简单，不需要去区分一个代内不同对象的 age。对于 copying GC 来说，只需要用一块连续的区域表示即可，不需要 semispace，也不需要额外的 header 来保存 age 信息
 2. 可以尽快的把大对象提升的 GC 频率小的下一代中去
 
 当然，这样做的问题也比较明显，可能会把一些 age 较小的对象移动到下一代中去，导致下一代被更快的填满，所以一般会让 younger 里面的对象停留一次，即第二次 GC 时才去提升，当然这时就需要记录对象的 age 了。
 
-至于是不是需要停留两次，这个就不好说了，这个和应用也比较相关。一般来说，如果代分的少，比如就2个，那么会倾向多停留几次，减慢 older 被填满的速度。如果代的数目大于2，那么就倾向于快速提升，因为这些对象很有可能在中间的某个代就会死亡，不会到达最终的 older。
+至于是不是需要停留两次，这个就不好说了，这个和应用也比较相关。一般来说，如果代分的少，比如2个，那么会倾向多停留几次，减慢 older 被填满的速度；如果代的数目大于2，那么就倾向于快速提升，因为这些对象很有可能在中间的某个代就会死亡，不会到达最终的 older。
 
 ## 堆组织
 
 分代式 GC 需要对不同 age 的对象采取不同的处理方式，所以在 GC 遍历时，必须能够判断当前对象属于哪个代，写屏障也需要这个信息来识别 `older-->younger` 指针。
 - 对于 copying GC 来说，一般是把不同 age 的对象放在不同的连续区域内，这样一个对象的代就能够从内存地址推断出来了。也有一些系统不采用连续地址，而是采用由 `page number of object-->generation` 的表来辅助判断。
-- 对于 non-copying GC，一般是在 header 内加一个 age 信息。
+- 对于 non-copying GC，一般是存放在 header 内
 
 ### Subareas in Copying
 
@@ -72,11 +72,13 @@ categories: 理解计算机
 
 ### Generations in Non-copying
 
-上面的讨论主要围绕 copying GC 来说，其实那些技巧也可以用在 non-copying GC 之上，只不过它们更容易发生碎片问题。在增量式 GC 那里使用[三色标记](/blog/2018/08/04/incremental-gc/#三色标记)来抽象，分代算法可以用不同 age 的对象集合来抽象，这个 age 信息保存在对象 header 内。在 GC 遍历时，通过检查 header 里面的 age 来决定是否需要提升。
+上面的讨论主要围绕 copying GC 来说，其实那些技巧也可以用在 non-copying GC 之上，只不过它们更容易发生碎片问题。在增量式 GC 那里使用[三色标记](/blog/2018/08/04/incremental-gc/#三色标记)来抽象，分代算法可以用不同 age 的对象集合来抽象。在 GC 遍历时，通过检查 header 里面的 age 来决定是否需要提升。
 
 ### 其他讨论
 
-对于 copying GC 来说，大对象会被特殊的分配在一特殊区域「large object area」来避免拷贝。对于明确指定不含有指针的对象，最好也能与其他对象分开，来降低检查交叉引用的成本。
+- 对于 copying GC 来说，大对象会被特殊的分配在一特殊区域「large object area」来避免拷贝。
+- 对于明确指定不含有指针的对象，最好也能与其他对象分开，来降低检查交叉引用的成本。
+- 一般情况下，对 younger 代采用 stop-and-copy 方式的 GC；对 older 采用 incremental-and-sweep GC
 
 ## 交叉引用
 
@@ -93,7 +95,12 @@ categories: 理解计算机
 
 ### Ungar's Remembered Sets
 
-Ungar 的 generation scavenging 采用一个称为 Remembered Sets（后面简写 RS） 的结构来记录交叉引用。在每一次指针存储时，写屏障通过检查将要保存的对象是否为指针，指针是否指向 younger，且被保存到 older 内这三个条件，判断是否会创建交叉引用，如果上述三个条件都满足，就会把 older 的对象添加到 RS 中。每个对象的 header 都有一位表示其是否存在于 RS 中，所以可以保证 RS 的内元素的唯一性，这样可以缩短扫描 RS 的时间。
+Ungar 的 generation scavenging 采用一个称为 Remembered Sets（后面简写 RS） 的结构来记录交叉引用。在每一次指针存储时，写屏障通过检查
+1. 将要保存的对象是否为指针
+2. 指针是否指向 younger
+3. 是否被保存到 older 内
+
+这三个条件，判断是否会创建交叉引用，如果上述三个条件都满足，就会把 older 的对象添加到 RS 中。每个对象的 header 都有一位表示其是否存在于 RS 中，所以可以保证 RS 的内元素的唯一性，这样可以缩短扫描 RS 的时间。
 
 这种方式的主要弊端是 RS 里面的所有对象在 GC 时，需要全部扫描一边，这对于下面两种情况来说成本是比较高的：
 
@@ -102,11 +109,11 @@ Ungar 的 generation scavenging 采用一个称为 Remembered Sets（后面简�
 
 ### Page Marking
 
-[Moon](https://en.wikipedia.org/wiki/David_A._Moon) 在为 Symbolics Lisp machine 开发的 [Ephemeral GC](https://news.ycombinator.com/item?id=13225876) 中采用了另一种 pointer-recording 方式。这种方式不去记录哪些对象中含有交叉引用，而是记录哪些「虚拟内存页（virtual memory pages）」里保存了交叉引用。采用页为记录单位避免了扫描特大对象的问题。虽然整个页还需要扫描，但成本对[Symbolics](https://en.wikipedia.org/wiki/Symbolics) 产的机器来说不是很大，这是因为：
+[Moon](https://en.wikipedia.org/wiki/David_A._Moon) 在为 Symbolics Lisp machine 开发的 [Ephemeral GC](https://news.ycombinator.com/item?id=13225876) 中采用了另一种 pointer-recording 方式。这种方式不去记录哪些对象中含有交叉引用，而是记录哪些「虚拟内存页（virtual memory pages）」里保存了交叉引用。采用页为记录单位避免了扫描特大对象的问题。虽然整个页还需要扫描，但成本对 [Symbolics](https://en.wikipedia.org/wiki/Symbolics) 公司生产的机器来说不是很大，这是因为：
 1. 有特殊的 tag 支持，可以让检查代的操作非常快的完成
 2. page 相对来说比较小
 
-但这种方式对于普通机器来说就要慢很多了，除了普通机器的 page 较大（一般4K）以及没有特殊的 tag 支持外，还需要能够「从头扫描任意页」，这也是比较困难的，Symbolics 机器时因为每个 machine word 都有一额外标志位，所有这个扫描才比较快。
+但这种方式对于普通机器来说就要慢很多了，除了普通机器的 page 较大（一般4K）以及没有特殊的 tag 支持外，还需要能够「从头扫描任意页」，这也是比较困难的，Symbolics 机器是因为每个 machine word 都有一额外标志位，所有这个扫描才比较快。
 
 ### Word Marking
 
@@ -130,7 +137,11 @@ card marking 的一个问题是，即使 card 的开端不是一个对象的开�
 - [Mono Generational GC](https://www.mono-project.com/docs/advanced/garbage-collector/sgen/)
 - [JVM Generations](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/generations.html)
 
-截止到这篇文章，GC 的理论知识就告一段落，主要参考了 Wilson 的论文 [Uniprocessor Garbage Collection Techniques](https://www.cs.cmu.edu/~fp/courses/15411-f08/misc/wilson94-gc.pdf)。有很多细节点都没有涉及到，比如 locality 在不同策略下的影响、如何探测一个内存单元存储的是 pointer 等问题，可能是 C 语言已经离我比较久远，需要重新拾起来才能更好理解不同 GC实现上的取舍，谁让现如今大多数编译器、运行时都是由 C/C++ 编写的呢？
+截止到这篇文章，[GC 的理论知识](/tags/gc/)就告一段落，主要参考了 Wilson 的论文 [Uniprocessor Garbage Collection Techniques](https://www.cs.cmu.edu/~fp/courses/15411-f08/misc/wilson94-gc.pdf)。有很多细节点都没有涉及到，比如
+1. locality 在不同策略下的影响
+2. 一个对象包含数据部分与指针部分，如何识别出指针
+
+可能是 C 语言已经离我比较久远，需要重新拾起来才能更好理解不同 GC实现上的取舍，谁让现如今大多数编译器、运行时都是由 C/C++ 编写的呢？
 不过我觉得最重要的一点就是意识到 GC 的技术是通过一代又一代大师的努力不断进化的，像 Cheney、Baker、Guy Steele。即便站在巨人肩膀上的我们，GC 这个话题也还有很多问题需要解决。
 后面的文章会主要集中在 JVM 的 GC，包括原理、调优、实现细节，做到理论与实践相结合。
 

@@ -4,13 +4,15 @@ date: 2014-08-08 07:48:37
 
 ```
 (def 刘家财
-  (doto (SuperMan.)
-    (.alias "写代码的西瓜🍉")
+  (doto (Programmer.)
+    (.alias ["jiacai2050" "Jiacai Liu" "写代码的西瓜"])
+    (.email "base64 -d <<< aGVsbG9AbGl1amlhY2FpLm5ldAo=")
+    (.gpg-key-id "D3026E5C08A0BAB4")
+    (.gpg-key-fingerprint "6F73 4AE4 297C 7F62 B605  4F91 D302 6E5C 08A0 BAB4")
     (.hometown "LinYi Shandong")
     (.university ^{:homepage "http://www.ytu.edu.cn/"} "Yantai University")
-    (.skill {:language [:Python :Java :Clojure :Node.js :Ruby]
+    (.skill {:language [:Clojure :Java :Python :Node.js :Ruby]
              :framework [:Flask :Hadoop :Ring :Express]})
-    (.email "base64 -d <<< amlhY2FpMjA1MEBnbWFpbC5jb20K")
     (.daydream "Make my codes run around the World, so keep writing")
     (.favorites
       {:sport ["Running" "Climbing" "Pingpang"]
