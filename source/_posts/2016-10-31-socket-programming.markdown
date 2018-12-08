@@ -215,7 +215,7 @@ TCP 不提供 framing，这使得其很适合于传输数据流。这是其与 U
 
 我们重点分析上图中链接断开的过程，其中主动关闭端为 Client，被动关闭端为 Server 。
 
-1. Client 调用 `close` 方法的同时，会向 Server 发送一个 FIN，然后自己处于 FIN_WAIT_1 状态，过一段时间后自动变化为 FIN_WAIT_2
+1. Client 调用 `close` 方法的同时，会向 Server 发送一个 FIN，然后自己处于 FIN_WAIT_1 状态，在收到 server ACK 回应后变为 FIN_WAIT_2
 2. Server 收到 FIN 后，向 Client 回复 ACK 确认，状态变化为 CLOSE_WAIT，然后开始进行一些清理工作
 3. 在 Server 清理工作完成后，会调用`close`方法，这时向 Client 发送 FIN 信号，状态变化为 LAST_ACK
 4. Client 接收到 FIN 后，状态由 FIN_WAIT_2 变化为 TIME_WAIT，同时向 Server 回复 ACK

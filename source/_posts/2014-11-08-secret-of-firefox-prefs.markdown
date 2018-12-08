@@ -14,39 +14,45 @@ firefox的配置我们一般可以在”工具 -> 选项“菜单中找到，但
 <img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2L8ImaVXXXXcqXpXXXXXXXXXX_!!581166664.png" alt=" about-config截图"/>
 
 这些配置项定义了很多浏览器的的默认参数，但不是全部，我们可以根据实际情况自己添加。使用上方的搜索输入框我们能够很容易地找到感兴趣的配置项。这里的配置项类型分三种：integer、boolean、string。这些配置项保存在本地一个叫prefs.js的文件中，prefs.js根据操作系统不同位置不同：
-- Linxu下，在`~/.mozilla/firefox/<profile ID>.default/`中
-- WinXP下，在`C:\Documents and Settings\<username>\Application Data\Mozilla\Firefox\Profiles\<profile ID>.default\`中
+
+```
+# Linxu
+~/.mozilla/firefox/<profile ID>.default/
+# WinXP
+C:\Documents and Settings\<username>\Application Data\Mozilla\Firefox\Profiles\<profile ID>.default\
+```
 
 需要说明一点的是，我们最好不要直接修改这个文件，如果非修改不可，**最好事先备份一份**。
 如果你想找到你机器上prefs.js文件在哪里，使用操作系统自带的搜索功能就好了。linux上可以使用这个命令：
-
-    find ~/.mozilla/firefox | grep prefs.js
+```bash
+find ~/.mozilla/firefox | grep prefs.js
+```
 
 下面重点说一些能够改善用户体验的配置项。
 事先说明一下，我这里只介绍了很小一部分配置项，更多的配置项以及每个配置项的含义大家可以在[mozillazine](http://kb.mozillazine.org/Category:Preferences)中找到。
 
-##渲染(render)相关
+## 渲染(render)相关
 
-###减少渲染延迟
+### 减少渲染延迟
 创建一个整型配置项`nglayout.initialpaint.delay`，这个配置定义了firefox在下载完HTML、CSS等资源后，到真正开始渲染的时间间隔，如果不设置，默认为250毫秒。如果设置为0,就能在使浏览器立即渲染了。
 
 后面有细心的读者疑问为什么要有这个延迟，去看[官方解释](http://kb.mozillazine.org/Nglayout.initialpaint.delay)就很清楚了:
 > Since the start of a web page normally doesn't have much useful information to display, Mozilla applications will wait a short interval before first rendering a page.
 
-###减少reflow次数
+### 减少reflow次数
 当firefox加载一个网页时，它会在加载过程中，根据加载的数据，不间断的对页面进行[reflow](http://www.blueidea.com/tech/web/2007/4950.asp)。创建一个整型配置项`content.notify.interval`，它能够控制两次reflow的间隔，它的单位是微秒，如果不设置，默认为120000（即0.12秒）。如果reflow次数过多，就会使得浏览器反应迟钝了，所以我们应该把这个值设的大些，500000（即0.5秒）或1000000（即1秒）都可以。
 需要注意一点的是，如果要是`content.notify.interval`这个配置项生效，需要先创建一个布尔型的配置项`content.notify.ontimer`，并且设为true。
 其次可以通过设置一个整型配置项`content.notify.backoffcount`控制reflow执行的最大次数，我这里设为5。
 
-###控制”不响应“时间
+### 控制”不响应“时间
 在渲染一个网页时，firefox会间歇性地加速渲染过程，mozilla称之为tokenizing。但是这个加速是有代价的，在tokenizing过程中，浏览器不能响应用户的输入，tokenizing的时间长度是由一个整型配置项`content.max.tokenizing.time`控制的。一般来说，把这个配置项的值设为`content.notify.interval`值或者它的倍数。如果`content.max.tokenizing.time`的值小于`content.notify.interval`的值，浏览器就会因为过多响应用户输入而导致整个加载过程变慢。
 需要注意一点的是，如果要是`content.max.tokenizing.time`这个配置项生效，需要先创建两个个布尔型的配置项`content.notify.ontimer`与`content.interrupt.parsing`，并且都设为true。
 
-###控制”高响应“时间
+### 控制”高响应“时间
 在渲染一个页面时，用户如果进行了某些操作（比如向下滚动）时，firefox会预留更多的时间来响应用户的输入，这里的时间间隔是由一个整型配置项`content.switch.threshold`设置的。它的值一般是`content.notify.interval`的三倍，  但是如果我们把这个值调小些，这时firefox虽然对用户的响应不会那么及时，但是会明显加速页面的渲染过程。
 如果你倾向于在网页加载完成后在进行操作（比如向下滚动），可以把`content.max.tokenizing.time`值设的大些，`content.switch.threshold`值设的小些；
 
-##网络(network)相关
+## 网络(network)相关
 
 与网络相关的参数一样要慎重设置，否则你的CPU会飙升到90%以上。。。
 
@@ -59,11 +65,11 @@ firefox的配置我们一般可以在”工具 -> 选项“菜单中找到，但
 `network.dnsCacheEntries`，这个设置firefox最多保存dns的数目，可根据个人情况设置，我电脑上chrome大约缓存了1500多个，这是chrome快的原因之一。
 `network.dnsCacheExpiration`，dns的有限期限，单位为秒，可根据个人情况设置。
 
-###其他
+### 其他
 
 与网络相关的配置项还有很多都是以`network.http.`，大家可自行修改之。
 
-##内存（memory）相关
+## 内存（memory）相关
 
 ### 增大缓存空间
 

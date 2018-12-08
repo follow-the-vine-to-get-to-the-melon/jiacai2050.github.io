@@ -62,6 +62,7 @@ tag_map:
     算法: algorithm
     最佳实践: best-practice
     JavaScript: javascript
+    Linux: linux
     GC: gc
 
 # Date / Time format
