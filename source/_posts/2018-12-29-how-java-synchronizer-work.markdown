@@ -153,7 +153,8 @@ class PlatformParker : public CHeapObj<mtInternal> {
 - V(s) 将 s+1，如果有线程堵塞在 P 操作等待 s 变成非零，那么 V 操作会重启这些线程中的任意一个
 
 注：Dijkstra 为荷兰人，名字 P 和 V 来源于荷兰单词 Proberen（测试）和Verhogen（增加），为方便理解，后文会用 Wait 与 Signal 来表示。
-```
+
+```cpp
 struct semaphore {
      int val;
      thread_list waiting;  // List of threads waiting for semaphore
@@ -175,6 +176,7 @@ signal(semaphore Sem):// Increment value and wake up next thread
          wakeup(T);
      }
 ```
+
 有两点注意事项：
 1. wait 中的「测试和减 1 操作」，signal 中的「加 1 操作」需要保证原子性。一般来说是使用硬件支持的 [read-modify-write 原语](https://en.wikipedia.org/wiki/Read-modify-write)，比如 test-and-set/fetch-and-add/compare-and-swap，除了硬件支持外，还可以用 [busy wait](https://en.wikipedia.org/wiki/Mutual_exclusion#Software_solutions) 的软件方式来模拟。
 2. signal 中没有定义重新启动的线程顺序，也即多个线程在等待同一信号量时，无法预测重启哪一个线程
@@ -196,7 +198,8 @@ signal(semaphore Sem):// Increment value and wake up next thread
 ##### 调度共享资源
 
 除了互斥外，信号量的另一个重要作用是调度对共享资源的访问，比较经典的案例是生产者消费者，伪代码如下：
-```
+
+```cpp
 emptySem = N
 fullSem = 0
 // Producer
@@ -247,15 +250,10 @@ process1 . . . processN
 
 #### Condition variables
 
-上面提到监控器通过条件变量（简写 cv）来协调线程间的通信，那么条件变量是什么呢？它其实是一个 FIFO 的队列，用来保存那些因等待某些条件成立而被堵塞的线程，对于一个条件变量 c 来说，会关联一个断言（assertion） P。当线程在等待 P 成立时，该线程不会占据该监控器，这样其他线程就能够进入监控器，修改监控器状态；在 P 成立时，其他线程会通知堵塞的线程，因此条件变量上主要有三个操作：
+上面提到监控器通过条件变量（简写 cv）来协调线程间的通信，那么条件变量是什么呢？它其实是一个 FIFO 的队列，用来保存那些因等待某些条件成立而被堵塞的线程，对于一个条件变量 c 来说，会关联一个断言（assertion） P。线程在等待 P 成立的过程中，该线程不会锁住该监控器，这样其他线程就能够进入监控器，修改监控器状态；在 P 成立时，其他线程会通知堵塞的线程，因此条件变量上主要有三个操作：
 1. `wait(cv, m)` 等待 cv 成立，m 表示与监控器关联的一 mutex 锁
-2. `signal(cv)` 也称为 `notify(cv)` 用来通知 cv 成立，这时会唤醒等待的线程中的一个执行。根据唤醒策略，监控器分为两类：Hoare vs. Mesa，后面会介绍区别
+2. `signal(cv)` 也称为 `notify(cv)` 用来通知 cv 成立，这时会唤醒等待的线程中的一个执行。根据唤醒策略，监控器分为两类：Hoare vs. Mesa，后面会介绍
 3. `broadcast(cv)` 也称为 `notifyAll(cv)` 唤醒所有等待 cv 成立的线程
-
-是一个备具以下特点的对象：
-1. 数据封装，可认为属性均为 private
-2. 能够提供互斥
-3. 能通知其他线程它们在等待的条件已经成立的对象
 
 ##### POSIX 实现
 
@@ -304,7 +302,7 @@ pthread_mutex_unlock(&myLock);
 
 #### Hoare vs. Mesa 监控器语义
 
-在上面条件变量中，我们提到 signal 在调用时，回去唤醒等待同一 cv 的线程，根据唤醒策略的不同，监控器也分为两类：
+在上面条件变量中，我们提到 signal 在调用时，会去唤醒等待同一 cv 的线程，根据唤醒策略的不同，监控器也分为两类：
 
 - Hoare 监控器（1974），最早的监控器实现，在调用 signal 后，会立刻运行等待的线程，这时调用 signal 的线程会被堵塞（因为锁被等待线程占有了）
 - Mesa 监控器（Xerox PARC, 1980），signal 会把等待的线程重新放回到监控的 ready 队列中，同时调用 signal 的线程继续执行。这种方式是现如今 pthreads/Java/C# 采用的
@@ -360,9 +358,9 @@ for (;;) {
 }
 ```
 
-在 JUC 提供的高级同步类中，acquire 对于 park，release 对应 unpark，interrupt 其实就是个布尔的 flag 位，在 unpark 被唤醒时，检查该 flag 是否为 true，则会抛出我们熟悉的 InterruptedException。
+在 JUC 提供的高级同步类中，acquire 对应 park，release 对应 unpark，interrupt 其实就是个布尔的 flag 位，在 unpark 被唤醒时，检查该 flag ，如果为 true，则会抛出我们熟悉的 InterruptedException。
 
-`Selector.select()` 相应中断异常的逻辑有些特别，因为对于这类堵塞 IO 操作来说，没有条件变量的堵塞唤醒机制，我们可以再看下 Thread.interrupt 的实现
+`Selector.select()` 响应中断异常的逻辑有些特别，因为对于这类堵塞 IO 操作来说，没有条件变量的堵塞唤醒机制，我们可以再看下 Thread.interrupt 的实现
 
 ```java
     public void interrupt() {
@@ -380,7 +378,7 @@ for (;;) {
         interrupt0();
     }
 ```
-OpenJDK 使用了这么一个技巧来实现堵塞 IO 的中断唤醒，在一个线程被堵塞时，会关联一个 Interruptible 对象。
+OpenJDK 使用了这么一个技巧来实现堵塞 IO 的中断唤醒：在一个线程被堵塞时，会关联一个 Interruptible 对象。
 对于 Selector 来说，在开始时，会关联这么一个[Interruptible 对象](http://hg.openjdk.java.net/jdk/jdk/file/1871c5d07caf/src/java.base/share/classes/java/nio/channels/spi/AbstractInterruptibleChannel.java#l154)：
 
 ```java
