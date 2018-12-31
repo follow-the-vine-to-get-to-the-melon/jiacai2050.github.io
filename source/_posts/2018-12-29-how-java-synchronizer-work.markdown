@@ -7,11 +7,21 @@ tags: Java
 现如今，服务器性能日益增长，并发（concurrency）编程已经“深入人心”，但由于冯诺依式计算机“指令存储，顺序执行”的特性，使得编写跨越时间维度的并发程序异常困难，所以现代编程语言都对并发编程提供了一定程度的支持，像 Golang 里面的 [Goroutines](https://tour.golang.org/concurrency/1)、Clojure 里面的 [STM（Software Transactional Memory）](https://clojure.org/reference/refs)、Erlang 里面的 [Actor](https://en.wikipedia.org/wiki/Actor_model)。
 
 Java 对于并发编程的解决方案是多线程（Multi-threaded programming），而且 Java 中的线程 与 native 线程一一对应，多线程也是早期操作系统支持并发的方案之一（其他方案：多进程、IO多路复用）。
-在 Java 1.5 版本中，引入 [JUC](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html) 并发编程辅助包，很大程度上降低了并发编程的门槛，JUC 里面主要包括：线程调度的 Executors、缓冲任务的 Queues、时间相关的 TimeUnit、并发集合（如 ConcurrentHashMap） 与线程同步类（Synchronizers，如 CountDownLatch ），其中最重要也是最核心的是线程同步机制，因为并发编程的难点就在于如何保证「共享区域（专业术语：临界区，Critical Section）的访问时序问题」。
 
-本文着重介绍 Java 中线程同步的原理、实现机制，通过了解这些原理，可以让大家更好使用 JUC 提供的同步类，部分原理参考 [openjdk8 源码](https://download.java.net/openjdk/jdk8/)。阅读本文需要对 CyclicBarrier、CountDownLatch 有基本的使用经验。
+本文着重介绍 Java 中线程同步的原理、实现机制，更侧重操作系统层面，部分原理参考 [openjdk 源码](http://hg.openjdk.java.net/jdk/jdk/file/cfceb4df2499)。阅读本文需要对 CyclicBarrier、CountDownLatch 有基本的使用经验。
 
-## AbstractQueuedSynchronizer
+## JUC
+
+在 Java 1.5 版本中，引入 [JUC](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html) 并发编程辅助包，很大程度上降低了并发编程的门槛，JUC 里面主要包括：
+- 线程调度的 Executors
+- 缓冲任务的 Queues
+- 超时相关的 TimeUnit
+- 并发集合（如 ConcurrentHashMap）
+- 线程同步类（Synchronizers，如 CountDownLatch ）
+
+个人认为其中最重要也是最核心的是线程同步这一块，因为并发编程的难点就在于如何保证「共享区域（专业术语：临界区，Critical Section）的访问时序问题」。
+
+### AbstractQueuedSynchronizer
 
 JUC 提供的同步类主要有如下几种：
 
@@ -27,9 +37,9 @@ JUC 提供的同步类主要有如下几种：
 
 也就是说，AQS 通过维护内部的 FIFO 队列和具备原子更新的整型 state 这两个属性来实现各种锁机制，包括：是否公平，是否可重入，是否共享，是否可中断（interrupt），并在这基础上，提供了更方便实用的同步类，也就是一开始提及的 Latch、Barrier 等。
 
-这里暂时不去介绍 AQS 实现细节（挖个坑），感兴趣的可以移步美团的一篇文章[《不可不说的Java“锁”事》](https://tech.meituan.com/Java_Lock.html) 第六部分“独享锁 VS 共享锁”。
+这里暂时不去介绍 AQS 实现细节与如何基于 AQS 实现各种同步类（挖个坑），感兴趣的可以移步美团的一篇文章[《不可不说的Java“锁”事》](https://tech.meituan.com/Java_Lock.html) 第六部分“独享锁 VS 共享锁”。
 
-在学习 Java 线程同步这一块时，对我来说困扰最大的是「线程唤醒」，试想一个已经“睡着的”线程，是如何响应 interrupt 的呢？当调用 Object.wait() 或 lock.lock() 时，JVM 究竟做了什么事情能够在调用 Object.notify 或 lock.unlock 时重新激活相应线程？
+在学习 Java 线程同步这一块时，对我来说困扰最大的是「线程唤醒」，试想一个已经 wait/sleep/block 的线程，是如何响应 interrupt 的呢？当调用 Object.wait() 或 lock.lock() 时，JVM 究竟做了什么事情能够在调用 Object.notify 或 lock.unlock 时重新激活相应线程？
 
 带着上面的问题，我们从源码中寻找答案。
 
@@ -379,7 +389,7 @@ for (;;) {
     }
 ```
 OpenJDK 使用了这么一个技巧来实现堵塞 IO 的中断唤醒：在一个线程被堵塞时，会关联一个 Interruptible 对象。
-对于 Selector 来说，在开始时，会关联这么一个[Interruptible 对象](http://hg.openjdk.java.net/jdk/jdk/file/1871c5d07caf/src/java.base/share/classes/java/nio/channels/spi/AbstractInterruptibleChannel.java#l154)：
+对于 Selector 来说，在开始时，会关联这么一个[Interruptible 对象](http://hg.openjdk.java.net/jdk/jdk/file/cfceb4df2499/src/java.base/share/classes/java/nio/channels/spi/AbstractInterruptibleChannel.java#l154)：
 
 ```java
     protected final void begin() {
