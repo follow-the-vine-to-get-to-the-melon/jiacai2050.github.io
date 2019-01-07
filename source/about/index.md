@@ -48,8 +48,7 @@ date: 2014-08-08 07:48:37
 我的专栏
 ====
 
-- [豆瓣](https://www.douban.com/people/liujiacai/)，读书
-- [简书](http://www.jianshu.com/u/8a5466e37198)，纪录精彩生活
+- 读书：[豆瓣](https://www.douban.com/people/liujiacai/)、[Goodreads](https://www.goodreads.com/user/show/79743745-jiacai-liu)
 - [掘金](https://gold.xitu.io/user/57c2431b165abd00665ee39f)
 - [KeepWritingCodes 公众号](http://weixin.sogou.com/weixin?query=keepwritingcodes)
 - [CSDN](http://blog.csdn.net/jiacai2050)，大学期间写作的地方
@@ -58,8 +57,8 @@ date: 2014-08-08 07:48:37
 互联网纪录片
 ====
 
-* [《互联网之子》](http://www.tudou.com/programs/view/jefojo_-HjQ/&lvt=76) 他是RSS、Reddit等创始人
-* [《Code Rush》](http://v.youku.com/v_show/id_XNjA2NDI2MTUy.html) 见证 [Mozilla](http://liujiacai.net/blog/2014/09/14/mozilla-history/) 的诞生，见证互联网史上惊心动魄的一幕
+* [《互联网之子》](http://www.tudou.com/programs/view/jefojo_-HjQ/&lvt=76) RSS、Reddit 创始人传记
+* [《Code Rush》](http://v.youku.com/v_show/id_XNjA2NDI2MTUy.html) 见证 [Mozilla](/blog/2014/09/14/mozilla-history/) 的诞生，见证互联网史上惊心动魄的一幕
 * [《Revolution OS 操作系统革命》](http://www.tudou.com/programs/view/lCsZxfWXJ0k/)，一群改变世界的hacker
 
 更新日志

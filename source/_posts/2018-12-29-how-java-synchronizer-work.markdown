@@ -158,7 +158,7 @@ class PlatformParker : public CHeapObj<mtInternal> {
 
 ### Semaphore
 
-并发编程领域的先锋人物 Edsger Dijkstra（没错，也是最短路径算法的作者）在 1965 年首次提出了信号量（ Semaphores） 这一概念来解决线程同步的问题。信号量是一种特殊的变量类型，为非负整数，只有两个特殊操作PV：
+并发编程领域的先锋人物 [Edsger Dijkstra](https://en.wikipedia.org/wiki/Edsger_W._Dijkstra)（也是最短路径算法的作者）在 1965 年首次提出了信号量（ Semaphores） 这一概念来解决线程同步的问题。信号量是一种特殊的变量类型，为非负整数，只有两个特殊操作PV：
 - P(s) 如果 s!=0，将 s-1；否则将当前线程挂起，直到 s 变为非零
 - V(s) 将 s+1，如果有线程堵塞在 P 操作等待 s 变成非零，那么 V 操作会重启这些线程中的任意一个
 
@@ -249,7 +249,7 @@ sem_getvalue(&theSem, &result);
 
 ### Monitors
 
-[C. A. R. Hoare](https://en.wikipedia.org/wiki/C._A._R._Hoare) 在 1974 年的论文 [Monitors: an operating system structuring concept](https://dl.acm.org/citation.cfm?doid=355620.361161) 首次提出了「监控器」概念，它提供了对信号量互斥和调度能力的更高级别的抽象，使用起来更加方便，一般形式如下：
+[C. A. R. Hoare](https://en.wikipedia.org/wiki/C._A._R._Hoare)（也是 Quicksort 的作者） 在 1974 年的论文 [Monitors: an operating system structuring concept](https://dl.acm.org/citation.cfm?doid=355620.361161) 首次提出了「监控器」概念，它提供了对信号量互斥和调度能力的更高级别的抽象，使用起来更加方便，一般形式如下：
 ```
 monitor1 . . . monitorM
 process1 . . . processN
