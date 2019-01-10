@@ -334,7 +334,7 @@ UseCMSCompactAtFullCollection默认为true，CMSFullGCsBeforeCompaction默认是
 上述关于 CMF 解释主要参考
 - [R 大的这个帖子](https://hllvm-group.iteye.com/group/topic/42365)
 - http://blog.ragozin.info/2011/10/java-cg-hotspots-cms-and-heap.html
-- 自己的消耗吸收，如果有误肯定是我的（请留言指出），与 [R 大](https://www.zhihu.com/question/48973999)无关
+- 自己的消化吸收，如果有误肯定是我的（请留言指出），与 [R 大](https://www.zhihu.com/question/48973999)无关
 
 #### 内存碎片
 Promotion failure 一般是由于 heap 内存碎片过多导致检测空间足够，但是真正晋级时却没有足够连续的空间，监控 old 代碎片可以用下面的选项
@@ -517,11 +517,11 @@ Tree      Height: 22
 1. 根据 card marking 状态，重新 mark 在 concurrent mark 阶段，mutator 又有访问的对象
 ![preclean 执行前 card mark 以及对象 live mark 状态](https://img.alicdn.com/imgextra/i1/581166664/O1CN012DBLER1z69sHf5zR6_!!581166664.png)
 ![preclean 执行后 card mark 以及对象 live mark 状态](https://img.alicdn.com/imgextra/i3/581166664/O1CN01Rdi6pg1z69sIciHq8_!!581166664.png)
-2. 对 eden 进行抽样（sample），把 eden 划分成相近大小的 chunk ，且每个 chunk 的起始地址都是对象的起始地址。
+2. 对 eden 进行抽样（sample），把 eden 划分成大小相近的 chunk ，且每个 chunk 的起始地址都是对象的起始地址。
 
-把 eden 划分成不同 chunk 主要是为了方便后面的 remark 阶段并发执行。试想一下，如果 remark 阶段以多线程的方式重新 mark 被 mutator 访问的对象，势必要将 eden 划分为不同区域，然后不同区域由不同的线程去 mark，这里的区域就是 chunk。这个抽象过程主要是保证不同 chunk 大小一致，这样不同线程的工作量就均匀了。根据[这个功能作者测试](http://hiroshiyamauchi.blogspot.com/2013/08/parallel-initial-mark-and-more-parallel.html)，这个抽样使得 remark 阶段的 STW 由 500ms 减到 100ms
+把 eden 划分成不同 chunk 主要是为了方便后面的 remark 阶段并发执行。试想一下，如果 remark 阶段以多线程的方式重新 mark 被 mutator 访问的对象，势必要将 eden 划分为不同区域，然后不同区域由不同的线程去 mark，这里的区域就是 chunk。这个抽样过程主要是保证不同 chunk 大小一致，这样不同线程的工作量就均匀了。根据[这个功能作者测试](http://hiroshiyamauchi.blogspot.com/2013/08/parallel-initial-mark-and-more-parallel.html)，这个抽样使得 remark 阶段的 STW 由 500ms 减到 100ms
 
-不过这个抽样阶段，也可能发生在 ParNew 过程中，是由 CMSEdenChunksRecordAlways 这个选项控制的，而且默认是 true，就是说 preclean 阶段其实默认没有对 eden 进行抽样，而是在 ParNew 运行时抽样的，相关代码：
+不过这个抽样阶段，也可能发生在 ParNew 过程中，是由 CMSEdenChunksRecordAlways 这个选项控制的，而且默认是 true，表示 preclean 阶段不对 eden 进行抽样，而是在 ParNew 运行时抽样，相关代码：
 
 ```cpp
 // concurrentMarkSweepGeneration.cpp 
