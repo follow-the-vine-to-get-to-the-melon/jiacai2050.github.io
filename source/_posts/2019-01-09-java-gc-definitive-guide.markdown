@@ -175,7 +175,7 @@ SerialGC 采用的收集方式十分简单，没有并行、并发，一般用�
 - 多个GC线程如何实现同步，需要注意一点，ParallelGC 运行时会 STW，因此不存在与 mutator 同步问题
 - 回收时，并行度如何选择（也就是 GC 对应用本身的 overhead）
 
-不过比较可惜，cpp 在大二写完几个 console 应用后，就一直没怎么用过了，因为也就没发去探究多个 GC 线程如何实现同步，大略扫一下 `parNewGeneration.cpp` 这个文件，大概是这样的：
+凭借仅有的 cpp 知识，大略扫一下 `parNewGeneration.cpp` 这个文件，大概是这样实现多个 GC 线程同步的：
 
 > 每个 GC 线程对应一个 queue（叫 ObjToScanQueue），然后还支持不同 GC 线程间 steal，保证充分利用 cpu
 
@@ -297,11 +297,14 @@ CMS 相比于 ParallelGC，支持并发式的回收，虽然个别环节还是�
 
 ![CMS 工作流程示意图](https://img.alicdn.com/imgextra/i4/581166664/O1CN01eiAx891z69sKEdsdy_!!581166664.jpg)
 
-之前在有赞的同事阿杜写过一篇[《不可错过的CMS学习笔记》](https://www.jianshu.com/p/78017c8b8e0f) 推荐大家看看，主要是文章的思路比较欣赏，带着问题去探索。重申下 CMS 的特点：
+之前在有赞的同事阿杜写过一篇[《不可错过的CMS学习笔记》](https://www.jianshu.com/p/78017c8b8e0f) 推荐大家看看，主要是文章的思路比较欣赏，带着问题去探索。这里重申下 CMS 的特点：
 
 - CMS 作用于 old 区，与 mutator 并发执行（因为是多线程的，所以也是并行的）；默认与 young 代 ParNew 算法一起工作
 
-下面重点说一下 CMS 中误传最广的 CMF 与内存碎片问题。
+下面重点介绍以下三点：
+- 误传最广的 CMF
+- 影响最为严重的内存碎片问题
+- 最被忽视的 Abortable Preclean
 
 #### Concurrent mode failure
 
@@ -362,9 +365,195 @@ Tree      Height: 22
 4. 应用尽量不要去分配巨型对象
 
 
+
+#### Abortable Preclean
+
+根据 CMS 工作流程示意图，我们知道 CMS 流程依次是：initial marking->concurrent marking->concurrent preclean->final remark->concurrent sweeping，openjdk 内部通过 `_collectorState` 这个变量实现不同状态的转变，其实就是个状态机，在 `collect_in_background` 方法内有个大 switch 进行转化，对应的 case 顺序即为状态机转化顺序。
+
+```cpp
+  // concurrentMarkSweepGeneration.cpp#collect_in_background
+  while (_collectorState != Idling) {
+     ....
+    switch (_collectorState) {
+      case InitialMarking:
+        {
+          ReleaseForegroundGC x(this);
+          stats().record_cms_begin();
+          VM_CMS_Initial_Mark initial_mark_op(this);
+          VMThread::execute(&initial_mark_op);
+        }
+        // The collector state may be any legal state at this point
+        // since the background collector may have yielded to the
+        // foreground collector.
+        break;
+      case Marking:
+        // initial marking in checkpointRootsInitialWork has been completed
+        if (markFromRoots(true)) { // we were successful
+          assert(_collectorState == Precleaning, "Collector state should "
+            "have changed");
+        } else {
+          assert(_foregroundGCIsActive, "Internal state inconsistency");
+        }
+        break;
+      case Precleaning:
+        if (UseAdaptiveSizePolicy) {
+          size_policy()->concurrent_precleaning_begin();
+        }
+        // marking from roots in markFromRoots has been completed
+        preclean();
+        if (UseAdaptiveSizePolicy) {
+          size_policy()->concurrent_precleaning_end();
+        }
+        assert(_collectorState == AbortablePreclean ||
+               _collectorState == FinalMarking,
+               "Collector state should have changed");
+        break;
+      case AbortablePreclean:
+        if (UseAdaptiveSizePolicy) {
+        size_policy()->concurrent_phases_resume();
+        }
+        abortable_preclean();
+        if (UseAdaptiveSizePolicy) {
+          size_policy()->concurrent_precleaning_end();
+        }
+        assert(_collectorState == FinalMarking, "Collector state should "
+          "have changed");
+        break;
+      case FinalMarking:
+        {
+          ReleaseForegroundGC x(this);
+
+          VM_CMS_Final_Remark final_remark_op(this);
+          VMThread::execute(&final_remark_op);
+        }
+        assert(_foregroundGCShouldWait, "block post-condition");
+        break;
+      case Sweeping:
+        if (UseAdaptiveSizePolicy) {
+          size_policy()->concurrent_sweeping_begin();
+        }
+        // final marking in checkpointRootsFinal has been completed
+        sweep(true);
+        assert(_collectorState == Resizing, "Collector state change "
+          "to Resizing must be done under the free_list_lock");
+        _full_gcs_since_conc_gc = 0;
+
+        // Stop the timers for adaptive size policy for the concurrent phases
+        if (UseAdaptiveSizePolicy) {
+          size_policy()->concurrent_sweeping_end();
+          size_policy()->concurrent_phases_end(gch->gc_cause(),
+                                             gch->prev_gen(_cmsGen)->capacity(),
+                                             _cmsGen->free());
+        }
+
+      case Resizing: {
+        ....
+        break;
+      }
+      case Resetting:
+        ......
+        break;
+      case Idling:
+      default:
+        ShouldNotReachHere();
+        break;
+    }
+    .......
+  }
+
+```
+可以看到里面有 Precleaning 与 AbortablePreclean 两个状态，他们底层都是调用 `preclean_work` 进行具体工作，区别只是 
+- precleaning 阶段只执行一次，而 AbortablePreclean 是个迭代执行的过程，直到某个条件不成立。先看看 AbortablePreclean 阶段受哪些条件限制，再来介绍 preclean_work 里面做的具体事情。
+
+```cpp
+  // concurrentMarkSweepGeneration.cpp#abortable_preclean()
+  
+  if (get_eden_used() > CMSScheduleRemarkEdenSizeThreshold) {
+    size_t loops = 0, workdone = 0, cumworkdone = 0, waited = 0;
+    while (!(should_abort_preclean() ||
+             ConcurrentMarkSweepThread::should_terminate())) {
+      workdone = preclean_work(CMSPrecleanRefLists2, CMSPrecleanSurvivors2);
+      cumworkdone += workdone;
+      loops++;
+      // Voluntarily terminate abortable preclean phase if we have
+      // been at it for too long.
+      if ((CMSMaxAbortablePrecleanLoops != 0) &&
+          loops >= CMSMaxAbortablePrecleanLoops) {
+        if (PrintGCDetails) {
+          gclog_or_tty->print(" CMS: abort preclean due to loops ");
+        }
+        break;
+      }
+      if (pa.wallclock_millis() > CMSMaxAbortablePrecleanTime) {
+        if (PrintGCDetails) {
+          gclog_or_tty->print(" CMS: abort preclean due to time ");
+        }
+        break;
+      }
+      // If we are doing little work each iteration, we should
+      // take a short break.
+      if (workdone < CMSAbortablePrecleanMinWorkPerIteration) {
+        // Sleep for some time, waiting for work to accumulate
+        stopTimer();
+        cmsThread()->wait_on_cms_lock(CMSAbortablePrecleanWaitMillis);
+        startTimer();
+        waited++;
+      }
+    }
+    if (PrintCMSStatistics > 0) {
+      gclog_or_tty->print(" [%d iterations, %d waits, %d cards)] ",
+                          loops, waited, cumworkdone);
+    }
+  }
+```
+条件包括下面几个：
+1. 首先要 eden 大于 CMSScheduleRemarkEdenSizeThreshold（默认 2M）时才继续
+2. 下面的 while 里面条件主要是为了与 foregroundGC 做同步用的，这里可以先忽略
+3. while 后面的第一个 if 表示这个阶段执行的次数小于 CMSMaxAbortablePrecleanLoops 时才继续，由于这个值默认为 0，所以默认不会进入这个分支
+4. 紧接着的那个 if 表示这个阶段的运行时间不能大于 CMSMaxAbortablePrecleanTime，默认是 5s
+
+好了，上面就是 abortable preclean 迭代执行的条件，任意一个不满足即会转到下一个状态。
+下面介绍 `preclean_work` 里做的事情，主要包含两个：
+1. 根据 card marking 状态，重新 mark 在 concurrent mark 阶段，mutator 又有访问的对象
+![preclean 执行前 card mark 以及对象 live mark 状态](https://img.alicdn.com/imgextra/i1/581166664/O1CN012DBLER1z69sHf5zR6_!!581166664.png)
+![preclean 执行后 card mark 以及对象 live mark 状态](https://img.alicdn.com/imgextra/i3/581166664/O1CN01Rdi6pg1z69sIciHq8_!!581166664.png)
+2. 对 eden 进行抽样（sample），把 eden 划分成相近大小的 chunk ，且每个 chunk 的起始地址都是对象的起始地址。
+
+把 eden 划分成不同 chunk 主要是为了方便后面的 remark 阶段并发执行。试想一下，如果 remark 阶段以多线程的方式重新 mark 被 mutator 访问的对象，势必要将 eden 划分为不同区域，然后不同区域由不同的线程去 mark，这里的区域就是 chunk。这个抽象过程主要是保证不同 chunk 大小一致，这样不同线程的工作量就均匀了。根据[这个功能作者测试](http://hiroshiyamauchi.blogspot.com/2013/08/parallel-initial-mark-and-more-parallel.html)，这个抽样使得 remark 阶段的 STW 由 500ms 减到 100ms
+
+不过这个抽样阶段，也可能发生在 ParNew 过程中，是由 CMSEdenChunksRecordAlways 这个选项控制的，而且默认是 true，就是说 preclean 阶段其实默认没有对 eden 进行抽样，而是在 ParNew 运行时抽样的，相关代码：
+
+```cpp
+// concurrentMarkSweepGeneration.cpp 
+// preclean_work 会调用 sample_eden，但是这里的 !CMSEdenChunksRecordAlways 默认为 false
+// 所以这里不会进行抽样
+void CMSCollector::sample_eden() {
+  if (_eden_chunk_array != NULL && !CMSEdenChunksRecordAlways) {
+    ...... do sample
+  }
+
+}
+// defNewGeneration.cpp#allocate() 
+  HeapWord* result = eden()->par_allocate(word_size);
+  if (result != NULL) {
+    if (CMSEdenChunksRecordAlways && _next_gen != NULL) {
+      // 这里会调用 concurrentMarkSweepGeneration 里的 sample_eden_chunk
+      _next_gen->sample_eden_chunk();
+    }
+    return result;
+  }
+// concurrentMarkSweepGeneration.cpp 
+void CMSCollector::sample_eden_chunk() {
+  // 默认会在这里进行抽样
+  if (CMSEdenChunksRecordAlways && _eden_chunk_array != NULL) {
+     ..... do sample
+  }
+}
+```
+
 ## 调优
 
-说到优化，让很多人望而却步，一方便有人不断在说“不要过早优化”，另一方面在真正有问题时，不知道如何入手。这里说个人的一些经验供大家参考。
+说到优化，让很多人望而却步，一方便有人不断在说“不要过早优化”，另一方面在真正有问题时，不知道如何入手。这里介绍我自己的一些经验供大家参考。
 
 既然提到 GC 优化，首先要明确衡量 GC 的几个指标，LinkedIn 在这方面值得借鉴，在 [Tuning Java Garbage Collection for Web Services
 ](https://engineering.linkedin.com/26/tuning-java-garbage-collection-web-services) 提出了从 gc 日志中可以获知的 5 个指标：
@@ -384,9 +573,11 @@ the promotion rate*the maximum Old Gen collection time*(1 + a little bit)
 docker run -d -p 8080:80 gcplot/gcplot
 ```
 
+如果发现 gcplot 里面的指标不符合你的预期，那就可以根据所使用 GC 算法的特点进行优化了。
+
 ### 实战
 
-利用 gcplot，我对公司内部 API 服务进行了一次优化，效果较为明显：
+利用 gcplot，我对公司内部 API 服务（使用 CMS）进行了一次优化，效果较为明显：
 
 优化前的配置：Xmx/Xms 均为 4G，CMSInitiatingOccupancyFraction=60，下面是使用 gcplot 得到的一些数据
 
@@ -415,7 +606,7 @@ docker run -d -p 8080:80 gcplot/gcplot
 | 50%         | 19.75         |
 | 90%         | 30.334        |
 | 95%         | 35.441        |
-| 99%         | 53.5          |
+ 99%         | 53.5          |
 | 99.9%       | 120.008       |
 
 - STW Pause per Minute: 826.607 ms
