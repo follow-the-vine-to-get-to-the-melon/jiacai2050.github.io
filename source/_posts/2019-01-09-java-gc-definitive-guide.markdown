@@ -365,10 +365,10 @@ Tree      Height: 22
 4. 应用尽量不要去分配巨型对象
 
 
-
 #### Abortable Preclean
 
-根据 CMS 工作流程示意图，我们知道 CMS 流程依次是：initial marking->concurrent marking->concurrent preclean->final remark->concurrent sweeping，openjdk 内部通过 `_collectorState` 这个变量实现不同状态的转变，其实就是个状态机，在 `collect_in_background` 方法内有个大 switch 进行转化，对应的 case 顺序即为状态机转化顺序。
+![ParallelGC vs CMS 工作流程](https://img.alicdn.com/imgextra/i3/581166664/O1CN01iVE4uz1z69sCiXptB_!!581166664.png)
+根据上图重新回顾下 CMS 工作流程。Openjdk 内部通过 `_collectorState` 这个变量实现不同状态的转变（采用状态机设计模式），在 `collect_in_background` 方法内有个大 switch 进行转化，对应的 case 顺序即为状态机转化顺序。
 
 ```cpp
   // concurrentMarkSweepGeneration.cpp#collect_in_background
