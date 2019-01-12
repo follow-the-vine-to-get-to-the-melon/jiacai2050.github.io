@@ -323,6 +323,10 @@ UseCMSCompactAtFullCollection默认为true，CMSFullGCsBeforeCompaction默认是
 1. Serial Old GC的算法是mark-compact（也可以叫做mark-sweep-compact，但要注意它不是“mark-sweep”）。具体算法名是LISP2。它收集的范围是整个GC堆，包括Java heap的young generation和old generation，以及non-Java heap的permanent generation。因而其名 Full GC
 2. CMS的foreground collector的算法就是普通的mark-sweep。它收集的范围只是CMS的old generation，而不包括其它generation。因而它在HotSpot VM里不叫做Full GC
 
+这里大家可能会有疑问，既然能够用多线程方式去进行 Full GC（比如 ParallelGC），那么 CMS 在降级时却采用了 Serial 的方式呢？从 [JDK-8130200](https://bugs.openjdk.java.net/browse/JDK-8130200) 里可以略知端倪，大概是这样的：
+
+> Google 的开发人员实现了多线程版本的 Full GC，然后在 2015 年给 openjdk 提了个 PR，但是这个 PR 一直没人理，根据[邮件列表](http://mail.openjdk.java.net/pipermail/hotspot-gc-dev/2015-June/thread.html#13649)来看，主要是 CMS 没有 leader maintainer 了，其他 maintainer 又怕这个改动太大，带来今后巨大的维护成本，就一直没合这个 PR，再后来 G1 出来了，这个 PR 就更不受人待见了
+
 解决 CMF 的方式，一般是尽早执行 CMS，可以通过下面两个参数设置：
 
 ```sh
@@ -331,11 +335,13 @@ UseCMSCompactAtFullCollection默认为true，CMSFullGCsBeforeCompaction默认是
 ```
 上述两个参数缺一不可，第一个表示 old 区占用量超过 60% 时开始执行 CMS，第二个参数禁用掉 JVM 的自适应策略，如果不设置这个 JVM 可能会忽略第一个参数。
 
+此外，除了 CMF 能触发 Full GC 外，`System.gc()` 的方式也能触发，不过 CMS 有个选项，可以将这个单线程的 Full GC 转化为 CMS 并发收集过程，一般建议打开：`-XX:+ExplicitGCInvokesConcurrent`。
+
 上述关于 CMF 解释主要参考
 - [R 大的这个帖子](https://hllvm-group.iteye.com/group/topic/42365)
 - http://blog.ragozin.info/2011/10/java-cg-hotspots-cms-and-heap.html
 - 自己的消化吸收，如果有误肯定是我的（请留言指出），与 [R 大](https://www.zhihu.com/question/48973999)无关
-
+  
 #### 内存碎片
 Promotion failure 一般是由于 heap 内存碎片过多导致检测空间足够，但是真正晋级时却没有足够连续的空间，监控 old 代碎片可以用下面的选项
 
