@@ -99,7 +99,7 @@ tcp    ESTAB      0      0              127.0.0.1:11111         127.0.0.1:11111 
 
 这看上去有些不可思议，为了弄清问题，可以通过 tcpdump 来分析连接是怎么建立的。
 
-```
+```sh
 $ sudo tcpdump -i any port 11111 -Snw /tmp/debug.pcap -vvv
 
 # 新开另一个窗口，输入
@@ -131,11 +131,11 @@ Connection to localhost 11111 port [tcp/*] succeeded!
 
 看完本文的一点“实用”干货可能是解释为什么不要去 LISTEN 比较高的端口，但是更希望大家能多去动手，发现隐藏在表象下的根源，这其实和脱单是一个道理 -:)
 
-最后，留两个“动手”问题给大家思考：
+最后，留个“动手”问题给大家思考：
 
 > 如何找出一个已经 ESTABLISHED 的 TCP 连接建立时间与最后一次通讯（即有数据传输）的时间？
 
-可以在我的公众号 [KeepWritingCodes](https://weixin.sogou.com/weixin?query=keepwritingcodes) 回复 `1111` 查看一种解决思路。
+[在这里](https://github.com/jiacai2050/jiacai2050.github.io/issues/3) 提供一种解决思路。
 
 ## 参考
 

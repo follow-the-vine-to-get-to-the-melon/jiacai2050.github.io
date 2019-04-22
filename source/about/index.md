@@ -30,11 +30,24 @@ date: 2014-08-08 07:48:37
 
 是的，生活的乐趣就在于此。
 
-![KeepWritingCodes 微信公众号](/images/wx_qrcode.jpg)
-
 > 本博客使用 disqus 评论系统不幸被墙，不会翻墙的同学可以通过关注上面的公众号与我交流。
 希望我们的交流能给你我带来些许启发。
 
+工作经历
+====
+- 2019/4-至今   杭州 [蚂蚁金服](https://www.antfin.com)
+- 2017/4-2019/3 昆山 [LeanCloud](https://leancloud.cn/)
+- 2016/4-2017/4 杭州 [有赞](https://www.youzan.com/)
+
+我的专栏
+====
+
+- 读书：[豆瓣](https://www.douban.com/people/liujiacai/)、[Goodreads](https://www.goodreads.com/user/show/79743745-jiacai-liu)
+- [From SICP to Lisp 豆瓣小组](https://www.douban.com/group/660788)
+- [掘金](https://gold.xitu.io/user/57c2431b165abd00665ee39f)，已停止维护
+- [KeepWritingCodes 公众号](http://weixin.sogou.com/weixin?query=keepwritingcodes)，已停止维护
+- [CSDN](http://blog.csdn.net/jiacai2050)，大学期间写作的地方，已停止维护
+- [ImportNew](http://www.importnew.com/author/liujiacai)，技术文档翻译，已停止维护
 
 我的作品
 ====
@@ -44,15 +57,6 @@ date: 2014-08-08 07:48:37
 - [gooreplacer](http://liujiacai.net/gooreplacer) 一个用于替换网页中Google Fonts/APIS等的 [Firefox](https://addons.mozilla.org/zh-CN/firefox/addon/gooreplacer/) / [Chrome](https://chrome.google.com/webstore/detail/jnlkjeecojckkigmchmfoigphmgkgbip) 插件
 - [history-master](https://github.com/jiacai2050/history-master) 一个用于分析浏览记录的  [Firefox](https://addons.mozilla.org/firefox/addon/advanced-history/) / [Chrome](https://chrome.google.com/webstore/detail/advanced-history/mkfgjjeggnmkbobjmelbjhdchcoadnin) 插件
 - [SICP 读书笔记](https://github.com/jiacai2050/sicp)：读书笔记与习题解答
-
-我的专栏
-====
-
-- 读书：[豆瓣](https://www.douban.com/people/liujiacai/)、[Goodreads](https://www.goodreads.com/user/show/79743745-jiacai-liu)
-- [掘金](https://gold.xitu.io/user/57c2431b165abd00665ee39f)
-- [KeepWritingCodes 公众号](http://weixin.sogou.com/weixin?query=keepwritingcodes)
-- [CSDN](http://blog.csdn.net/jiacai2050)，大学期间写作的地方
-- [ImportNew](http://www.importnew.com/author/liujiacai)，技术文档翻译
 
 互联网纪录片
 ====

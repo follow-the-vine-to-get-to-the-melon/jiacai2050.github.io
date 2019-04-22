@@ -15,9 +15,7 @@ date: 2017-01-06 16:01:36
 ====
 
 ### Java
-
-- [子木](http://bysocket.com)，专注 Java 好多年
-- [JavaChen](http://blog.javachen.com)，大数据
+- [阿杜](https://www.jianshu.com/u/28d7875c78df)
 
 ### Frontend
 - [江小湖](http://laker.me/blog)，进击的程序媛

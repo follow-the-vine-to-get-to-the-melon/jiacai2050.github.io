@@ -5,7 +5,7 @@ tags: [Clojure]
 
 ---
 
-大概在两年半前，我开始陆陆续续写了[一系列文章](/tags/Clojure/)，来介绍如何上手、深入 Clojure，后来有幸加入 LeanCloud 写了两年的 Clojure，期间制作了一套[七集的教学视频](https://segmentfault.com/ls/1650000012581084)，算是对这门语言有了较为全面的认识。
+大概在两年半前，我开始陆陆续续写了[一系列文章](/tags/Clojure/)，来介绍如何上手、深入 Clojure，后来有幸加入 LeanCloud 写了两年的 Clojure，期间制作了一套[七集的教学视频](https://github.com/jiacai2050/learn_clojure.mp4)，算是对这门语言有了较为全面的认识。
 鉴于国内 Clojure 普及程度很低，我觉得有必要把这些年的经验整理出来，可能会有些片面，但贵在真实，希望我的这些实战经验能帮助到后面 Clojure 的学习者。
 
 工欲善其事，必先利其器。首先，会介绍如何打造高效实用的集成开发环境（IDE）；接着会介绍 Clojure 语言特性隐藏的一些坑；之后就如何长期维护 Clojure 项目提供一些思路；然后会介绍 Clojure 社区中一些重量级的人物，通过阅读他们的代码可以极大增强自己的内功；最后想谈下对国内 Clojure 找工作的个人见解。
@@ -70,7 +70,7 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
 [惰性](https://clojure.org/reference/lazy)是 Clojure 语言的一重要特性，按需求值，看起来很美好，但是用起来坑缺很多。
 首先就是官方文档里介绍的 [Don’t hang (onto) your head](https://clojure.org/reference/lazy#_dont_hang_onto_your_head)，类似的变种还有 [lazy-seq + concat](https://stuartsierra.com/2015/04/26/clojure-donts-concat) 的组合，非常容易写出看似优雅、实则暗藏 bug 的代码，到现在我都必须非常小心的使用它们，并且不能完全保证没有错误。
 
-另一个是与 binding 结合时，比如
+另一个是与动态变量结合时，比如
 
 ```clojure
 (def *some-predict* true)
@@ -82,9 +82,9 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
 ```
 由于 map 是惰性求值的，导致 do-somework 在返回后还没有真正求值（realize），导致没有用到函数内 binding 的值。
 
-### binding
+### 动态变量
 
-binding 解决的问题就是在不改变函数签名（主要是参数）的情况下，改变函数的行为，但需要注意的是，其 binding 的值是不能跨线程的，为了解决这个问题，Clojure 1.3 版本提出了 [binding conveyance](https://github.com/clojure/clojure/blob/master/changes.md#234-binding-conveyance)，但仅仅对 Clojure 自身的线程池有效，然后又增加了 [bound-fn](https://clojuredocs.org/clojure.core/bound-fn) 来解决这个问题。可以参考下面的例子：
+动态变量解决的问题就是在不改变函数签名（主要是参数）的情况下，改变函数的行为。但用好它并不容易，除了上面提及的与 lazy 整合的问题，还要注意，其 binding 的值是不能跨线程的，为了解决这个问题，Clojure 1.3 版本提出了 [binding conveyance](https://github.com/clojure/clojure/blob/master/changes.md#234-binding-conveyance)，但仅仅对 Clojure 自身的线程池有效，然后又增加了 [bound-fn](https://clojuredocs.org/clojure.core/bound-fn) 来解决这个问题。可以参考下面的例子：
 
 ```java
 (def ^:dynamic *num* 1)
@@ -105,13 +105,14 @@ binding 解决的问题就是在不改变函数签名（主要是参数）的情
 ;; 对于 bound-fn ，这里打印 "2"
     
 ```
-
+更多可参考：
+- https://stuartsierra.com/2013/03/29/perils-of-dynamic-scope
 
 ### nil 
 
 nil 表示无，在不同场景下有不同含义，而且 Clojure 想尽量屏蔽掉这种差异性，比如：
 
-```
+```clojure
 user> (str nil "abc")
 "abc"
 user> (conj nil "abc")
