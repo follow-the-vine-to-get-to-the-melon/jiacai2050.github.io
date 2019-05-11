@@ -20,7 +20,7 @@ categories: 编程语言
 
 Clojure 作为一门 Lisp 方言，其语言的基本单元是表达式（expression），通过不同表达式的组合形成最终的程序。非 Lisp 语言中除了「表达式」外，还有「声明（statement）」，声明没有返回值，只会产生一些副作用，比如`int a = 1`；而每个表达式都有一个返回值，极少数表达式具有副作用。Clojure 语言中有以下表达式字面量（literals）：
 
-```clojure
+```clj
 ;; Numeric types
 42              ; Long - 64-bit integer (from -2^63 to 2^63-1)
 6.022e23        ; Double - double-precision 64-bit floating point

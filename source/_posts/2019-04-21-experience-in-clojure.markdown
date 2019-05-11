@@ -41,7 +41,7 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
 2. [lein](https://github.com/technomancy/leiningen) 作为 Clojure 默认的项目管理工具，已够用，不需要再去折腾 [boot-clj](https://github.com/boot-clj/boot)
    - [Checkout Dependencies](https://github.com/technomancy/leiningen/blob/master/doc/TUTORIAL.md#checkout-dependencies) 多项目开发时必备的技巧。项目目录大概是这样子的：
    ```
-   .
+.
 |-- project.clj
 |-- README.md
 |-- checkouts
@@ -72,7 +72,7 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
 
 另一个是与动态变量结合时，比如
 
-```clojure
+```clj
 (def *some-predict* true)
 
 (def do-somework [exercises]
@@ -112,7 +112,7 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
 
 nil 表示无，在不同场景下有不同含义，而且 Clojure 想尽量屏蔽掉这种差异性，比如：
 
-```clojure
+```clj
 user> (str nil "abc")
 "abc"
 user> (conj nil "abc")
@@ -122,13 +122,13 @@ user> (assoc nil :a 1)
 ```
 但时不时 nil 就会出来咬你一口。记得之前有这么一个需求，需要对消息的格式做了升级，之前可能是 map/string，升级后只能是 string 并且用 v2 标示，处理的代码需要找出这两类消息，分别处理，代码大致如下
 
-```clojure
+```clj
 (let [{v1-msgs false v2-msgs true}
       (group-by #(when (string? %)
                    (.startsWith ^String % "v2:")) msgs)])
 ```
 可以看到，代码很简单，就是判断 msg 是不是字符串，如果是，再看看版本是不是 v2，由于 nil 与 false 是不同的值，导致会丢失一部分数据，正确的写法是这样的：
-```clojure
+```clj
 (let [{v1-msgs false v2-msgs true}
       (group-by #(boolean (when (string? %)
                    (.startsWith ^String % "v2:"))) msgs)])

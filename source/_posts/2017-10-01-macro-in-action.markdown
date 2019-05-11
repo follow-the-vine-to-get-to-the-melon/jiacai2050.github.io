@@ -16,14 +16,14 @@ categories: 编程语言
 
 这两条特性蕴含着一非常重要的思想： [code as data](https://en.wikipedia.org/wiki/Homoiconicity) ，也被称为同像性（homoiconicity，来自希腊语单词 homo，意为与符号含义表示相同）。同像性使得在 Lisp 中去操作语法树（AST）显得十分自然，而这在非 Lisp 语言只能由编译器（Compiler）去操作。这里举一典型的例子：
 
-```clojure
+```clj
 (defmacro when [test & body]
   (list 'if test (cons 'do body)))
 ```
 
 `'`代表 quote，作用是阻止后面的表达式求值，如果不使用`'`的话，在进行`(list 'if test ...)`求值时会报错，因为对 special form 单独进行求值是非法的，这里需要的仅仅是 `if` 字面量，list 函数执行后的结果（是一个 list）作为 code 插入到调用 when 的地方去执行。
 
-```clojure
+```clj
 (when (even? (rand-int 100))
   (println "good luck!")
   (println "lisp rocks!"))
@@ -38,7 +38,7 @@ categories: 编程语言
 
 对于一些简单的宏，可以采用像 when 那样的方式，使用 list 函数来形成要返回的 code，但对于复杂的宏，使用 list 函数来表示，会显得十分麻烦，看下 when-let 的实现：
 
-```clojure
+```clj
 (defmacro when-let [bindings & body]
   (let [form (bindings 0) tst (bindings 1)]
     `(let [temp# ~tst]
@@ -54,7 +54,7 @@ categories: 编程语言
 
 可以通过下面一个例子来了解它们之间的区别：
 
-```clojure
+```clj
 (let [x '(* 2 3) y x]
   (println `y)
   (println ``y)
@@ -76,7 +76,7 @@ user/y
 这里尤其要注意理解嵌套 syntax-quote 的情况，为了得到正确的值，需要 unquote 相应的次数（上例中的第四个println），这在 macro-writing macro 中十分有用，后面会介绍的。
 最后需要注意一点，在整个 Clojure 程序生命周期中，`(syntax-)quote`, `(slicing-)unquote` 是 [Reader](https://clojure.org/reference/reader) 来解析的，详见 [编译器工作流程](/blog/2017/02/05/clojure-compiler-analyze/#编译器工作流程)。可以通过`read-string`来验证：
 
-```clojure
+```clj
 user> (read-string "`y")
 (quote user/y)
 user> (read-string "``y")
@@ -104,7 +104,7 @@ y
 
 前面介绍过，宏的一大应用场景是流程控制，比如上面介绍的 when、when-let，以及各种 do 的衍生品 dotimes、doseq，所以实战也从这里入手，构造一系列 do-primes，通过对它不断的完善修改，介绍写宏的技巧与注意事项。
 
-```clojure
+```clj
 (do-primes [n start end]
   body)
 ```
@@ -113,7 +113,7 @@ y
 
 ### 使用 gensym 保证宏 Hygiene
 
-```clojure
+```clj
 (defn prime? [n]
   (let [guard (int (Math/ceil (Math/sqrt n)))]
     (loop [i 2]
@@ -137,7 +137,7 @@ y
 ```
 上面的实现比较直接，首先定义了两个辅助函数，然后通过返回由 loop 构成的 code 来达到遍历的效果。简单测试下：
 
-```clojure
+```clj
 (do-primes [n 2 13]
   (println n))
 
@@ -153,7 +153,7 @@ y
 达到预期。但上述实现有些问题：end 在循环中进行比较时多次进行了求值，如果传入的 end 不是固定的数字，而是一个函数，而我们又无法确定这个函数有无副作用，这就可能产生问题。
 也许你会说，这个解决也很简单，在进行 loop 之前，用一个 let 先把 end 的值先算出来就可以了。这个确实能解决多次执行的问题，但是又引入另一个隐患：**end 先于 start 执行**。这会不会产生不良后果，我们同样无法预知，我们能做到的就是**尽量不用暴露宏的实现细节**，具体表现就是**保证宏参数的求值顺序**。所以有了下面的修改：
 
-```clojure
+```clj
 (defmacro do-primes2 [[variable start end] & body]
   `(let [start# ~start
          end# ~end]
@@ -175,7 +175,7 @@ y
 ```
 在 syntax-quote 里面，使用了 `name#` 的形式来定义 locals，这是 gensym 机制，用来生成全局唯一的 symbol，保证宏的“卫生”（[hygiene](http://clojure-doc.org/articles/language/macros.html#macro-hygiene-and-gensym)）。如果这里不使用 gensym，在 Common Lisp 里面可能会污染全局里面的同名变量，在 Clojure 里面，为了避免污染全局环境，name 部分会 resolve 成当前命名空间里面的变量，例如
 
-```clojure
+```clj
 (defmacro do-primes2-danger [[variable start end] & body]
   `(let [inner-start ~start
          inner-end ~end]
@@ -202,7 +202,7 @@ java.lang.RuntimeException：Can't let qualified name: user/inner-start
 ```
 所以在定义内部 locals 时，一定要用 gensym 机制。如果能确保使用的名字不会造成污染，也可以使用 `~'name` 的形式来避免 resolve 这一过程。`~'name` 其实就是 `~(quote name)` 的简写，它在 syntax-quote 里面求值的结果就是 symbol 字面量 `name`：
 
-```clojure
+```clj
 (defmacro do-primes2-safe [[variable start end] & body]
   `(let [~'inner-start ~start
          ~'inner-end ~end]
@@ -227,7 +227,7 @@ java.lang.RuntimeException：Can't let qualified name: user/inner-start
 
 通过上面的例子，我们知道，gensym 是一种非常实用的技巧，所以我们完全有可能再进行一次抽象，构造 only-once 宏，来保证传入的参数按照顺序只求值一次：
 
-```clojure
+```clj
 (defmacro only-once [names & body]
   (let [gensyms (repeatedly (count names) gensym)]
     `(let [~@(interleave gensyms (repeat '(gensym)))]
@@ -255,7 +255,7 @@ java.lang.RuntimeException：Can't let qualified name: user/inner-start
 ```
 only-once 的核心思想是用 gensym 来替换掉传入的 symbol（即 names），为了达到这种效果，它首先定义出一组与参数数目相同的 gensyms（分别记为#s1 #s2），然后在第二层 let 为这些 gensyms 做 binding，value 也是用 gensym 生成的（分别记为#s3 #s4），这一层的 let 的返回值将内嵌到 do-primes3 内：
 
-```clojure
+```clj
 (let [#s1 #s3 #s2 #s4]
   `(let [#s3 ~start #s3 ~end]
     (let [start #s1 end #s2]
@@ -264,7 +264,7 @@ only-once 的核心思想是用 gensym 来替换掉传入的 symbol（即 names�
 
 第三层 let 的结果作为 code 内嵌到调用 do-primes3 处，即最终的展开式：
 
-```clojure
+```clj
 (let [#s3 2 #s4 (+ 10 (rand-int 30))]
   (loop [n #s3]
     (when (< n #s4)
@@ -280,7 +280,7 @@ only-once 属于 macro-writing macro 的范畴，就是说它使用的对象本�
 
 `def-watched` 可以定义一个受监控的 var，在 root binding 改变时打印前后的值
 
-```clojure
+```clj
 (defmacro def-watched [name & value]
   `(do
      (def ~name ~@value)
@@ -296,7 +296,7 @@ only-once 属于 macro-writing macro 的范畴，就是说它使用的对象本�
 
 为了简化 def-watched，可能会想把里面的函数提取出来：
 
-```clojure
+```clj
 (defn gen-watch-fn [name]
   (fn [k r o n]
     (println name ":" o " -> " n)))
@@ -312,7 +312,7 @@ only-once 属于 macro-writing macro 的范畴，就是说它使用的对象本�
 (do (def bar 1) (add-watch #'bar :re-bind (gen-watch-fn 'bar)))
 ```
 这时的效果和上面是一样的，请注意这里是把 gen-watch-fn 实现为了函数，如果用宏的话，会有什么效果呢？
-```
+```clj
 ;; 将 gen-watch-fn 改为 defmacro，其他均不变 
 ;; (def-watched2 bar 1) 展开后变成了
 (do
