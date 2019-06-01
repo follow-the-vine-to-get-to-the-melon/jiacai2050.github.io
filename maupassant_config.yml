@@ -70,6 +70,9 @@ menu:
   - page: blogroll
     directory: blogrolls/
     icon: fa-group
+  - page: Podcast
+    directory: podcast/
+    icon: fa-podcast
   - page: about
     directory: about/
     icon: fa-user
