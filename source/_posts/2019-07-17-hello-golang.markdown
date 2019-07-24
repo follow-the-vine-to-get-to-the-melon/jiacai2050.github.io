@@ -5,7 +5,7 @@ tags: [Go]
 ---
 
 转眼加入蚂蚁已经三个多月，这期间主要维护一 Go 写的服务器。虽然用的时间不算长，但还是积累了一些心得体会，这里总结归纳一下，供想尝试 Go 的同学参考。
-本文首先会介绍 Go 设计理念，然后是开发环境，最后是语言特性。
+本文会依次介绍 Go 的设计理念、开发环境、语言特性。尽量给读者提供一个全面的视角。
 
 ## 简介
 
@@ -37,7 +37,7 @@ func main() {
     if err != nil {
         panic(err)
     }
-    defer resp.Body.Close()
+    defer r.Body.Close()
 
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
@@ -182,11 +182,15 @@ ch := make(chan int, 2)
 
 // blocking read
 v := <-ch
-// nonblocking read 当 ch 内没有数据或已经被关闭时，ok 为 false
-v, ok := <-ch
+// nonblocking read, 需要注意 default 分支不能省略，否则会堵塞住
+select {
+    case v:=<-ch:
+    default:
+} 
+
 // blocking write
 ch <- v
-// nonblocking write, 需要注意 default 分支不能省略，否则会堵塞住
+// nonblocking write
 select {
     case ch<-v:
     default:
@@ -200,6 +204,17 @@ chan 作为 Go 内一重要数据类型，看似简单，实则暗藏玄妙，�
 ## 语言特性
 
 Go 相比 Java 来说，语言特性真的是少太多。推荐 [Learn X in Y minutes](https://learnxinyminutes.com/docs/go/) 这个网站，快速浏览一遍即可掌握 Go 的语法。Go 的简洁程度觉得和 JavaScript 差不多，但却是一门静态语言，具有强类型，这两点又让它区别于一般的脚本语言。
+
+### 代码风格
+
+Go 遵循约定大于配置（convention over configuratio）的设计理念，比如在构建一个项目时，直接 `go build` 一个命令就搞定了，不需要什么 Makefile、pom.xml 等配置文件。下面介绍几个常用的约定：
+
+- 一个包内函数、变量的可见性是通过首字母大小写确定的。大写表示可见。
+- 一般 `{` 放在行末，否则 Go 编辑器会[自动插入一个逗号](https://golang.org/doc/effective_go.html#semicolons)，导致编译错误
+- 一个文件夹内，只能定义一个包
+- 变量、函数命名[尽量简短](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_identifier_length)，标准库里面经常可以看到一个字母的变量
+
+由于以上种种约定，在看别人代码时很舒服，有种 Python 的感觉。另外建议在编辑器中配置 [goimports](https://godoc.org/golang.org/x/tools/cmd/goimports) 来自动化格式代码。
 
 ### 错误处理
 
@@ -259,3 +274,7 @@ Go 最初由 Google 在 2007 为解决软件复杂度、提升开发效率的一
 ## 扩展阅读
 
 - [03-包与依赖管理.md](https://github.com/overnote/golang/blob/master/01-Go初识/03-包与依赖管理.md)
+- [I Love Go; I Hate Go](http://dtrace.org/blogs/ahl/2016/08/02/i-love-go-i-hate-go/)
+- [The Go Programming Language Specification#Receive operator](https://golang.org/ref/spec#Receive_operator)
+- [王垠：对 Go 语言的综合评价](http://www.yinwang.org/blog-cn/2014/04/18/golang)
+- https://github.com/golang/go/wiki/CodeReviewComments
