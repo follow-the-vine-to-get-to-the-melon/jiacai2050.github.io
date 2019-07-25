@@ -5,7 +5,7 @@ tags: [Go]
 ---
 
 转眼加入蚂蚁已经三个多月，这期间主要维护一 Go 写的服务器。虽然用的时间不算长，但还是积累了一些心得体会，这里总结归纳一下，供想尝试 Go 的同学参考。
-本文会依次介绍 Go 的设计理念、开发环境、语言特性。尽量给读者提供一个全面的视角。
+本文会依次介绍 Go 的设计理念、开发环境、语言特性。本文在谈及语言特性的时也会讨论一些 Go 的不足之处，旨在给读者提供一个全面的视角。
 
 ## 简介
 
@@ -103,7 +103,7 @@ BenchmarkByValue-8      50000000                31.9 ns/op
 
 这样的好处也很明显，作为类库的设计者，对其要求的参数尽量宽松，方便使用，返回具体值方便后续的操作处理。一个极端的情况，可以用 `interface{}` 表示任意类型的参数，因为这个接口里面没有任何行为，所以所有类型都是符合的。又由于 Go 里面不支持[范型](https://dev.to/deanveloper/go-2-draft-generics-3333)，所以`interface{}`是唯一的解决手段。
 
-相比较 Java 这类面向对象的语言，接口需要显式（explicit）继承（使用 implements 关键字），而在 Go 里面是隐式的（implicit），新手往往需要一段时间来体会这一做法的巧妙，这里举一例子来说明：
+相比较 Java 这类面向对象的语言，接口需要显式（explicit）继承（使用 implements 关键字），而在 Go 里面是[隐式的（implicit）](https://golang.org/doc/faq#implements_interface)，新手往往需要一段时间来体会这一做法的巧妙，这里举一例子来说明：
 
 Go 的 IO 操作涉及到两个基础类型：Writer/Reader ，其定义如下：
 
@@ -130,12 +130,20 @@ func (e *Example) Read(p byte[]) (n int, err error) {
 ```go
 var _ blob.Fetcher = (*CachingFetcher)(nil)
 ```
-这是通过将 nil 强转为 `*CachingFetcher`，然后在赋值时，指定 `blob.Fetcher` 类型，保证 `*CachingFetcher` 实现了 `blob.Fetcher` 接口。这在重构项目代码时非常有用。
+这是通过将 nil 强转为 `*CachingFetcher`，然后在赋值时，指定 `blob.Fetcher` 类型，保证 `*CachingFetcher` 实现了 `blob.Fetcher` 接口。
+作为接口的设计者，如果想实现者显式继承一个接口，可以在接口中[额外加一个方法](https://golang.org/doc/faq#guarantee_satisfies_interface)。比如：
+```go
+type Fooer interface {
+    Foo()
+    ImplementsFooer()
+}
+```
+这样，实现者必须实现 `ImplementsFooer` 方法才能说是继承了 `Fooer` 接口。所以说隐式继承有利有弊，需要开发者自己去把握。
 
 ### map/slice
 
-Map/Slice 是 Go 里面最常用的两类数据结构，属于引用类型。
-slice 是长度不固定的数组，类似于 Java 里面的 [List](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)。
+Map/Slice 是 Go 里面最常用的两类数据结构，属于引用类型。在语言 runtime 层面实现，仅有的两个支持范型的结构。
+Slice 是长度不固定的数组，类似于 Java 里面的 [List](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)。
 
 ```go
 // map 通过 make 进行初始化
@@ -167,7 +175,7 @@ s = append(s, 1)
 
 ### chan/goroutine
 
-作为一门新语言，Goroutine 是 Go 提出的并发解决方案，相比传统OS 级别的线程，它有以下[特点](https://stackoverflow.com/a/27794268/2163429)：
+作为一门新语言，Goroutine 是 Go [借鉴 CSP 模型](https://golang.org/doc/faq#csp)提供的并发解决方案，相比传统 OS 级别的线程，它有以下[特点](https://stackoverflow.com/a/27794268/2163429)：
 1. 轻量，完全在用户态调度（不涉及OS状态直接的转化）
 2. 资源占用少，启动快
 3. 目前，Goroutine 调度器不保证公平（fairness），抢占（pre-emption）也支持的非常有限，一个空的 `for{}` 可能会一直不被调度出去。
@@ -278,3 +286,4 @@ Go 最初由 Google 在 2007 为解决软件复杂度、提升开发效率的一
 - [The Go Programming Language Specification#Receive operator](https://golang.org/ref/spec#Receive_operator)
 - [王垠：对 Go 语言的综合评价](http://www.yinwang.org/blog-cn/2014/04/18/golang)
 - https://github.com/golang/go/wiki/CodeReviewComments
+- https://golang.org/doc/faq
