@@ -87,7 +87,8 @@ go get -u github.com/lukehoban/go-outline # for go-imenu
 下面将重点介绍 Go 里特有或用途最广的数据类型。
 
 ### struct/interface
-Go 里面的 struct 类似于 Java 里面的 Object，但是并没有继承，仅仅是对数据的一层包装（抽象）。相对于其他复杂类型，struct 是**值类型**，也就是说作为函数参数或返回值时，会拷贝一份值，值类型分配在 stack 上，与之相对的引用类型，分配在 heap 上。
+Go 里面的 struct 类似于 Java 里面的 Object，但是并没有继承，仅仅是对数据的一层包装（抽象）。相对于其他复杂类型，struct 是**值类型**，也就是说作为函数参数或返回值时，会拷贝一份值。
+一般来说，值类型分配在 stack 上，与之相对的引用类型，分配在 heap 上。
 初学者一般会有这样的误区，认为传值比传引用要慢，实则不然，具体涉及到 Go [如何管理内存](https://www.ardanlabs.com/blog/2017/05/language-mechanics-on-stacks-and-pointers.html)，这里暂不详述，感兴趣到可以阅读：
 - [The Top 10 Most Common Mistakes I’ve Seen in Go Projects](https://itnext.io/the-top-10-most-common-mistakes-ive-seen-in-go-projects-4b79d4f6cd65)
 - [pointer_test.go](https://gist.github.com/teivah/a32a8e9039314a48f03538f3f9535537) 这个测试在笔者机器上运行结果：
@@ -240,7 +241,7 @@ Go 的函数一般通过返回多值的方式来传递 error（且一般是第�
 
 Go 的依赖管理，相比其他语言较弱。
 在 Go 1.11 正式引入的 [modules](https://blog.golang.org/using-go-modules) 之前，项目必须放在 $GOPATH/src/xxx.com/username/project 内，这样 Go 才能去正确解析项目依赖，而且 Go 社区没有统一的包托管平台，不像 Java 中 maven 一样有中央仓库的概念，而是直接引用 Git 的库地址，所以在 Go 里，一般会使用 `github.com/username/package` 的方式来表示。
-`go get` 是下载依赖但命令，但一个个去 get 库不仅仅繁碎，而且无法固化依赖版本信息，所以 [dep](https://github.com/golang/dep) 应运而生，添加新依赖后，直接运行 `dep ensure` 就可以全部下下来，而且会把当前依赖的 commit id 记录到 Gopkg.lock 里面，这就能解决版本不固定的问题。
+`go get` 是下载依赖的命令，但一个个去 get 库不仅仅繁碎，而且无法固化依赖版本信息，所以 [dep](https://github.com/golang/dep) 应运而生，添加新依赖后，直接运行 `dep ensure` 就可以全部下下来，而且会把当前依赖的 commit id 记录到 Gopkg.lock 里面，这就能解决版本不固定的问题。
 
 但 modules 才是正路，且在 1.13 版本会默认开启，所以这里只介绍它的用法。
 
@@ -254,10 +255,10 @@ go mod init hello
 module hello
 
 go 1.12
-# 之后就可以编写 Go 文件，添加依赖后，执行 go run/
+# 之后就可以编写 Go 文件，添加依赖后，执行 go run/test/build...
 # 依赖会自动下载，并记录在 go.mod 内，版本信息记录在 go.sum
 ```
-更多用法可以参考官方示例，这里只是想说明目前 Go 内的工具链大部分已经支持，但是 [godoc 还不支持](https://github.com/golang/go/issues/26827)。
+更多用法可以参考官方示例，这里只是想说明 [go tools](https://github.com/golang/tools) 大部分已经支持，但是 [godoc 还不支持](https://github.com/golang/go/issues/26827)，更多可参考 [#24661](https://github.com/golang/go/issues/24661)。
 
 ### GC 
 
@@ -268,7 +269,11 @@ Go 也是具有[垃圾回收](https://blog.golang.org/ismmkeynote)的语言，�
 
 > 新分配对象 / 上次 GC 后剩余对象
 
-默认 100，表示新分配对象达到之前剩余对象大小时，进行 GC。`GOGC=off` 可以关闭 GC，[SetGCPercent](https://golang.org/pkg/runtime/debug/#SetGCPercent) 可以动态修改这个比率。
+默认 100，表示新分配对象达到上次 GC 后剩余对象的两倍时，进行 GC。
+- 调大 GOGC，可以减少 GC 的总体耗时
+- 减小 GOGC，意味着用更多的 GC 来换取更少的内存使用
+
+`GOGC=off` 可以关闭 GC，[SetGCPercent](https://golang.org/pkg/runtime/debug/#SetGCPercent) 可以动态修改这个比率。
 
 在启动一个 Go 程序时，可以设置 `GODEBUG=gctrace=1` 来打印 GC 日志，日志具体含义可参考 [pkg/runtime](https://golang.org/pkg/runtime/#hdr-Environment_Variables)，这里不再赘述。对调试感兴趣的可以阅读：
 - https://new.blog.cloudflare.com/go-dont-collect-my-garbage/
@@ -287,3 +292,4 @@ Go 最初由 Google 在 2007 为解决软件复杂度、提升开发效率的一
 - [王垠：对 Go 语言的综合评价](http://www.yinwang.org/blog-cn/2014/04/18/golang)
 - https://github.com/golang/go/wiki/CodeReviewComments
 - https://golang.org/doc/faq
+- https://blog.golang.org/go15gc
