@@ -5,7 +5,7 @@ tags: [Go]
 ---
 
 用了近半年的 Go，真是有种相见恨晚的感觉。简洁的语法、完善并强大的开发工具链，省去新手不少折腾的时间，可以专注写代码。
-这期间也掌握了不少技巧与惯用法（idioms），比如 [prosumer](https://github.com/jiacai2050/prosumer)，是一个基于 chan 实现生产者/消费者模式。但今天不去谈 chan 的使用方式，而是来谈一个最基本的问题，Go 代码应该放在哪里，其实也就是 Go 的包管理机制。这看似简单，却让不少 Gopher [吃了不少苦头](https://stackoverflow.com/questions/tagged/go-modules)。
+这期间也掌握了不少技巧与惯用法（idioms），比如 [prosumer](https://github.com/jiacai2050/prosumer)，就是一个踩了 chan/timer 一些坑后实现生产者/消费者模式框架。但今天不去谈 chan 的使用方式，而是来谈一个最基本的问题，Go 代码应该放在哪里，其实也就是 Go 的包管理机制，有时也称为版本化，其实是一个意思。这看似简单，却让不少 Gopher [吃了不少苦头](https://stackoverflow.com/questions/tagged/go-modules)。
 
 本文大致顺序：包管理的历史；新的包管理方式 module；最后加上一个问题排查，彻底解决如何放置 Go 代码的问题。
 
@@ -74,17 +74,27 @@ import "github.com/my/repo/bar"
 - require 声明所依赖的 module，版本信息使用形如 `v(major).(minor).(patch)` 的语义化版本 [semver](https://semver.org/)，比如：v0.1.0
 - replace/exclude 用于替换、排查指定 module path
 
+下面重点介绍 modules 中最实用的两个方面：semantic version 与 replace 指令。
+
 ### Semantic Version
+
+![语义化版本](https://img.alicdn.com/imgextra/i4/581166664/O1CN01bk1zqT1z69wz301hZ_!!581166664.png_620x10000.jpg)
 
 语义化版本要求 v1 及以上的版本保证向后兼容，v2 及以上的版本需要体现在 module path 中，比如
 
 ```
 module github.com/my/mod/v2
+
 require github.com/my/mod/v2 v2.0.1
 import "github.com/my/mod/v2/mypkg"
 
 go get github.com/my/mod/v2@v2.0.1
 ```
+之所以要求把版本号放在 module path，是为了解决不同大版本之间的 breaking changes。举一个场景：
+
+![dependency hell](https://img.alicdn.com/imgextra/i3/581166664/O1CN01ZyOLHg1z69wz3Le3i_!!581166664.png_310x310.jpg)
+
+从上图可以看的，A 通过直接或间接依赖 D 的三个不同版本，如果不把版本号放在 module path 中，如何去加载正确的版本的？当然，这里有个前提，同一个大版本内必须保证向后兼容！
 
 下面截取 prometheus 的部分 [go.mod](https://github.com/prometheus/prometheus/blob/master/go.mod)，来进一步探索 go.mod 的用法
 
@@ -123,7 +133,7 @@ replace github.com/user/lib => /some/path/on/your/disk
 ```
 代码里面的 import path 不用变。
 
-类似的原理，项目的 module 名字，也不必加上托管平台前缀了。我在 github 创建了项目 [strutil](https://github.com/jiacai2050/strutil)，其 go.mod 如下：
+类似的原理，项目的 module 名字，也不必加上托管平台前缀了。我创建了一个示例项目 [strutil](https://github.com/jiacai2050/strutil)，其 go.mod 如下：
 
 ```
 module strutil
@@ -148,6 +158,20 @@ func TestModule(t *testing.T) {
 
 ### 常用命令
 
+对于使用 module 开发的项目，使用 `go mod init {moduleName}` 初始化后，直接在源文件中 import 所需包名，go test/build 之类的命令会自动分析，将其加到 go.mod 中的 require 里面，不需要自己去修改。除此之外，一般还需配置如下相关变量：
+
+```bash
+# 1.13 默认开启
+export GO111MODULE=on
+# 1.13 之后才支持多个地址，之前版本只支持一个
+export GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy,direct
+# 1.13 开始支持，配置私有 module，不去校验 checksum
+export GOPRIVATE=*.corp.example.com,rsc.io/private
+```
+关于 module 校验的更多内容，可参考：
+- https://golang.org/cmd/go/#hdr-Module_configuration_for_non_public_modules
+
+其它常用命令有：
 - `go list -m all` 查看当前项目最终所使用的 module 版本
 - `go mod download -json` 查看 module 详细信息
 ```
@@ -166,8 +190,6 @@ func TestModule(t *testing.T) {
 - `go get -u=patch ./...` 更新所有 module 到最新到 patch 版本
 - `go mod tidy` 清理 go.mod/go.sum 中不在需要的 module
 - `go mod vendor` 创建 vendor 依赖目录，这时为了与之前做兼容，后面在执行 go test/build 之类的命令时，可以加上 `-mod=vendor` 这个 build flag 声明使用 vendor 里面的依赖，这样 go mod 就不会再去 `$GOPATH/pkg/mod` 里面去找。
-
-对于使用 module 开发的项目，使用 `go mod init {moduleName}` 初始化后，直接在源文件中 import 所需包名，go test/build 之类的命令会自动分析，将其加到 go.mod 中的 require 里面，不需要自己去修改。
 
 ## 问题排查
 
@@ -197,7 +219,7 @@ require ( ... )
 import "github.com/user/ceresdb-go-sdk/ceresdb"
 c := ceresdb.NewClient(...)
 ```
-当然也可以去掉 ceresdb 目录，将源码放在项目根目录下，可以 import 就变为 
+当然也可以去掉 ceresdb 目录，将源码放在项目根目录下，这样 import 就变为 
 ```
 import "github.com/user/ceresdb-go-sdk"
 c := ceresdb.NewClient(...)
@@ -211,7 +233,7 @@ import ceresdb "github.com/user/ceresdb-go-sdk"
 但现在还是假设采用子目录的方式，执行 `go test ./...`
 
 ```
-time go test -v -x  .
+time go test -v -x  ./...
 can't load package: package github.com/user/ceresdb-go-sdk: unknown import path "github.com/user/ceresdb-go-sdk": cannot find module providing package github.com/user/ceresdb-go-sdk
 
 # 注意花的时间，这期间没有任何输出，即使加了 -x flag
@@ -237,7 +259,7 @@ go command [command_args] [build flags] [packages]
 
 上面的错误就出错在最后一个参数上，我们知道包的 import path 需要加上 module path，上面的错误也证明了这一点。
 特殊的，对于 `./xxx` 会去找对应目录下面的包，不用写 module path 了，`./...` 则意味着递归地找当前目录下的所有包，且包括当前目录。
-问题就在于项目根目录下没有任何 go 源文件，所以就找不到当前目录下的包就找不到了！解决方法也很简单：
+问题就在于项目根目录下没有任何 go 源文件，所以就找不到当前目录下的包了！解决方法也很简单：
 
 ```
 go test  ./ceresdb
@@ -256,9 +278,17 @@ $ go test .
 ```
 这样也不会报错了。
 
+## vgo
+[vgo](https://github.com/golang/vgo) 是 Go 的核心开发者 [Russ Cox](https://swtch.com/~rsc/) 尝试给 Go 增加包管理的原型，是个单独的命令，相当于自动加上 `GO111MODULE=on` 的 go 命令，在把包管理功能集成到 go 命令时，才叫 modules。
+> The reference implementation was named vgo, but support for modules is being integrated into the go command itself. The feature within the go command is called “versioned Go modules” (or “modules” for short), not “vgo”.
+
+关于 Go 的包管理，Russ Cox 有一系列 [vgo](https://github.com/golang/go/wiki/vgo) 的文章介绍[来龙去脉](https://research.swtch.com/vgo)，感兴趣的读者可以去看看。
+
 ## 总结
 
-关于 module，其实还有些内容可以讲（比如如何解决版本冲突，中间人攻击），但在一般开发中基本不会遇到，这里也就不去过多涉及，感兴趣的读者可以自行查阅资料。
+通过本文的介绍，希望让大家更清楚了解 modules 的设计初衷以及如何排查问题，做到语义化版本，大版本向后兼容。如果你的项目比较复杂，项目的结构可以参考：
+- https://github.com/golang-standards/project-layout
+
 Clojure 作者 Rich Hickey 有个有名的演讲 [Simple Made Easy](https://github.com/matthiasn/talk-transcripts/blob/master/Hickey_Rich/SimpleMadeEasy.md)，主要讲述了可以通过简单的工具来降低软件开发的复杂度，我相信 Go 也是属于这一阵营。
 
 ![Simplicity](https://img.alicdn.com/imgextra/i1/581166664/O1CN012w8eQ11z69x0Nk2xz_!!581166664.jpg)
@@ -268,4 +298,4 @@ Clojure 作者 Rich Hickey 有个有名的演讲 [Simple Made Easy](https://gith
 - https://golang.org/doc/code.html
 - https://blog.golang.org/modules2019
 - https://research.swtch.com/vgo-intro
-
+- https://medium.com/@sdboyer/so-you-want-to-write-a-package-manager-4ae9c17d9527
