@@ -158,7 +158,11 @@ func TestModule(t *testing.T) {
 
 ### 常用命令
 
-对于使用 module 开发的项目，使用 `go mod init {moduleName}` 初始化后，直接在源文件中 import 所需包名，go test/build 之类的命令会自动分析，将其加到 go.mod 中的 require 里面，不需要自己去修改。除此之外，一般还需配置如下相关变量：
+对于使用 module 开发的项目，使用 `go mod init {moduleName}` 初始化后，直接在源文件中 import 所需包名，go test/build 之类的命令会自动分析，将其加到 go.mod 中的 require 里面，不需要自己去修改。开发测试完成后，需要打 tag 才能让其它用户使用。
+项目的版本号一般从 v0.1.0 开始，表示开始第一个 feature，当有 bugfix 时，变更第三个版本号，如 v0.1.1；当有新 feature 时，变更中间版本号，如 v0.2.0；有 breaking changes 时，变更第一个版本号，比如 v1.0.0。
+
+
+除此之外，一般还需配置如下相关变量：
 
 ```bash
 # 1.13 默认开启
@@ -172,7 +176,6 @@ export GOPRIVATE=*.corp.example.com,rsc.io/private
 - https://golang.org/cmd/go/#hdr-Module_configuration_for_non_public_modules
 
 其它常用命令有：
-- `go list -m all` 查看当前项目最终所使用的 module 版本
 - `go mod download -json` 查看 module 详细信息
 ```
     type Module struct {
@@ -187,7 +190,10 @@ export GOPRIVATE=*.corp.example.com,rsc.io/private
         GoModSum string // checksum for go.mod (as in go.sum)
     }
 ```
-- `go get -u=patch ./...` 更新所有 module 到最新到 patch 版本
+- `go list -m all` 查看当前项目最终所使用的 module 版本
+- `go list -u -m all` 查看依赖的新版本
+- `go get -u ./...` 更新所有依赖到最新版
+- `go get -u=patch ./...` 更新所有依赖到最新的 patch 版本
 - `go mod tidy` 清理 go.mod/go.sum 中不在需要的 module
 - `go mod vendor` 创建 vendor 依赖目录，这时为了与之前做兼容，后面在执行 go test/build 之类的命令时，可以加上 `-mod=vendor` 这个 build flag 声明使用 vendor 里面的依赖，这样 go mod 就不会再去 `$GOPATH/pkg/mod` 里面去找。
 

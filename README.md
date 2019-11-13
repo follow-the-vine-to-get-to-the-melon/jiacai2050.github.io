@@ -12,7 +12,7 @@
 
 ### Hexo
 ```
-# 需要确保 node 版本为 6.10.3
+# 需要确保 node 版本为 6.10.3/12.13.0
 npm install hexo-cli -g
 ```
 
