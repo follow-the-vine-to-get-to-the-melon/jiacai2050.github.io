@@ -295,7 +295,7 @@ $ go test .
 通过本文的介绍，希望让大家更清楚了解 modules 的设计初衷以及如何排查问题，做到语义化版本，大版本向后兼容。如果你的项目比较复杂，项目的结构可以参考：
 - https://github.com/golang-standards/project-layout
 
-Clojure 作者 Rich Hickey 有个有名的演讲 [Simple Made Easy](https://github.com/matthiasn/talk-transcripts/blob/master/Hickey_Rich/SimpleMadeEasy.md)，主要讲述了可以通过简单的工具来降低软件开发的复杂度，我相信 Go 也是属于这一阵营。
+Clojure 作者 Rich Hickey 有个有名的演讲 [Simple Made Easy](https://github.com/matthiasn/talk-transcripts/blob/master/Hickey_Rich/SimpleMadeEasy.md)，主要讲述了可以通过简单的工具来降低软件开发的复杂度，Go 作者 Rob Pike 在 2015 年的一个 talk [Simplicity is Complicated](https://talks.golang.org/2015/simplicity-is-complicated.slide#1) 中也指出，Go 成功的一大原因源自其简单易用的特性。
 
 ![Simplicity](https://img.alicdn.com/imgextra/i1/581166664/O1CN012w8eQ11z69x0Nk2xz_!!581166664.jpg)
 
