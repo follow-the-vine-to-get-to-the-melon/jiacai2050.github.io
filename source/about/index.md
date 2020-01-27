@@ -7,15 +7,15 @@ date: 2014-08-08 07:48:37
   (doto (Programmer.)
     (.alias ["jiacai2050" "Jiacai Liu" "写代码的西瓜"])
     (.email "base64 -d <<< aGVsbG9AbGl1amlhY2FpLm5ldAo=")
-    (.gpg-key-id "D3026E5C08A0BAB4")
+    (.gpg-key "https://keybase.io/liujiacai/pgp_keys.asc")
     (.gpg-key-fingerprint "6F73 4AE4 297C 7F62 B605  4F91 D302 6E5C 08A0 BAB4")
     (.hometown "LinYi Shandong")
     (.university ^{:homepage "http://www.ytu.edu.cn/"} "Yantai University")
-    (.skill {:language [:Clojure :Java :Python :Node.js :Ruby]
-             :framework [:Flask :Hadoop :Ring :Express]})
+    (.skill {:language [:Go :Clojure :Java :Python :Node.js]
+             :framework [:Netty :Flask :Hadoop :Ring :Express]})
     (.daydream "Make my codes run around the World, so keep writing")
     (.favorites
-      {:sport ["Running" "Climbing" "Pingpang"]
+      {:sport ["Running" "Climbing" "Pingpong"]
        :study ["Reading" "Writing" "Coding"]
        :misc  ["Translation"]})))
 ```
