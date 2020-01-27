@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>Java集合框架综述 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-50745138-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java集合框架综述</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java集合框架综述</h1><div class="post-meta">Sep 1, 2015<span> | </span><span class="category"><a href="/categories/langs/">编程语言</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.2k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 4</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2015/09/01/java-collection-overview/" href="/blog/2015/09/01/java-collection-overview/#disqus_thread"></a><div class="post-content"><p>最近被陆陆续续问了几遍HashMap的实现，回答的不好，打算复习复习JDK中的<a href="http://docs.oracle.com/javase/7/docs/technotes/guides/collections/overview.html" target="_blank" rel="noopener">集合框架</a>，并尝试分析其源码，这么做一方面是这些类非常实用，掌握其实现能更好的优化我们的程序；另一方面是学习借鉴JDK是如何实现了这么一套优雅高效的类库，提升编程能力。</p>
+<p>在介绍具体适合类之前，本篇文章对Java中的集合框架做一个大致描述，从一个高的角度俯视这个框架，了解了这个框架的一些理念与约定，会大大帮助后面分析某个具体类，让我们开始吧。</p>
+<h2 id="集合框架（collections-framework）"><a href="#集合框架（collections-framework）" class="headerlink" title="集合框架（collections framework）"></a>集合框架（collections framework）</h2><p>首先要明确，集合代表了一组对象（和数组一样，但数组长度不能变，而集合能）。Java中的集合框架定义了一套规范，用来表示、操作集合，使具体操作与实现细节解耦。</p>
+<p>其实说白了，可以把一个集合看成一个微型数据库，操作不外乎“增删改查”四种操作，我们在学习使用一个具体的集合类时，需要把这四个操作的<code>时空复杂度</code>弄清楚了，基本上就可以说掌握这个类了。</p>
+<h2 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h2><p>主要理念用一句话概括就是：提供一套“小而美”的API。API需要对程序员友好，增加新功能时能让程序员们快速上手。<br>为了保证核心接口足够小，最顶层的接口（也就是Collection与Map接口）并不会区分该集合是否可变（mutability）,是否可更改（modifiability）,是否可改变大小（resizability）这些细微的差别。相反，一些操作是可选的，在实现时抛出<code>UnsupportedOperationException</code>即可表示集合不支持该操作。集合的实现者必须在文档中声明那些操作是不支持的。</p>
+<p>为了保证最顶层的核心接口足够小，它们只能包含下面情况下的方法：</p>
+<ol>
+<li>基本操作，像之前说的“增删改查”</li>
+<li>There is a compelling performance reason why an important implementation would want to override it.</li>
+</ol>
+<p>此外，所有的集合类都必须能提供友好的交互操作，这包括没有继承<code>Collection</code>类的数组对象。因此，框架提供一套方法，让集合类与数组可以相互转化，并且可以把<code>Map</code>看作成集合。</p>
+<h2 id="两大基类Collection与Map"><a href="#两大基类Collection与Map" class="headerlink" title="两大基类Collection与Map"></a>两大基类Collection与Map</h2><p>在集合框架的类继承体系中，最顶层有两个接口：</p>
+<ul>
+<li><code>Collection</code>表示一组纯数据</li>
+<li><code>Map</code>表示一组key-value对</li>
+</ul>
+<p>一般继承自<code>Collection</code>或<code>Map</code>的集合类，会提供两个“标准”的构造函数：</p>
+<ul>
+<li>没有参数的构造函数，创建一个空的集合类</li>
+<li>有一个类型与基类（<code>Collection</code>或<code>Map</code>）相同的构造函数，创建一个与给定参数具有相同元素的新集合类</li>
+</ul>
+<p>因为接口中不能包含构造函数，所以上面这两个构造函数的约定并不是强制性的，但是在目前的集合框架中，所有继承自<code>Collection</code>或<code>Map</code>的子类都遵循这一约定。</p>
+<h3 id="Collection"><a href="#Collection" class="headerlink" title="Collection"></a>Collection</h3><p><img src="https://img.alicdn.com/imgextra/i4/581166664/TB21HYoeVXXXXaLXXXXXXXXXXXX_!!581166664.jpeg" alt="java-collection-hierarchy"></p>
+<p>如上图所示，<a href="http://docs.oracle.com/javase/7/docs/api/java/util/Collection.html" target="_blank" rel="noopener">Collection</a>类主要有三个接口：</p>
+<ul>
+<li><code>Set</code>表示不允许有重复元素的集合（A collection that contains no duplicate elements）</li>
+<li><code>List</code>表示允许有重复元素的集合（An ordered collection (also known as a sequence)）</li>
+<li><code>Queue</code> JDK1.5新增，与上面两个集合类主要是的区分在于<code>Queue</code>主要用于存储数据，而不是处理数据。（A collection designed for holding elements prior to processing.）</li>
+</ul>
+<h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><p><img src="https://img.alicdn.com/imgextra/i4/581166664/TB2JzW7eVXXXXbRXpXXXXXXXXXX_!!581166664.jpg" alt="MapClassHierarchy"></p>
+<p><a href="http://docs.oracle.com/javase/7/docs/api/java/util/Map.html" target="_blank" rel="noopener">Map</a>并不是一个真正意义上的集合（are not true collections），但是这个接口提供了三种“集合视角”（collection views ），使得可以像操作集合一样操作它们，具体如下：</p>
+<ul>
+<li>把map的内容看作key的集合（map’s contents to be viewed as a set of keys）</li>
+<li>把map的内容看作value的集合（map’s contents to be viewed as a collection of values）</li>
+<li>把map的内容看作key-value映射的集合（map’s contents to be viewed as a set of key-value mappings）</li>
+</ul>
+<h2 id="集合的实现（Collection-Implementations）"><a href="#集合的实现（Collection-Implementations）" class="headerlink" title="集合的实现（Collection Implementations）"></a>集合的实现（Collection Implementations）</h2><p>实现集合接口的类一般遵循<code>&lt;实现方式&gt;+&lt;接口&gt;</code>的命名方式，通用的集合实现类如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Interface</th>
+<th style="text-align:center">Hash Table</th>
+<th style="text-align:center">Resizable Array</th>
+<th style="text-align:center">Balanced Tree</th>
+<th style="text-align:center">Linked List</th>
+<th style="text-align:center">Hash Table + Linked List</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Set</td>
+<td style="text-align:center">HashSet</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">TreeSet</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">LinkedHashSet</td>
+</tr>
+<tr>
+<td style="text-align:center">List</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">ArrayList</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">LinkedList</td>
+<td style="text-align:center">&nbsp;</td>
+</tr>
+<tr>
+<td style="text-align:center">Deque</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">ArrayDeque</td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center">LinkedList</td>
+<td style="text-align:center">&nbsp;</td>
+</tr>
+<tr>
+<td style="text-align:center">Map</td>
+<td style="text-align:center"><a href="/blog/2015/09/03/java-hashmap/">HashMap</a></td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center"><a href="/blog/2015/09/04/java-treemap/">TreeMap</a></td>
+<td style="text-align:center">&nbsp;</td>
+<td style="text-align:center"><a href="/blog/2015/09/12/java-linkedhashmap/">LinkedHashMap</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>今天先开个头，后面会陆陆续续来一系列干货，Stay Tuned。</p>
+<p>需要说明一点，今后所有源码分析都将基于<a href="http://www.oracle.com/technetwork/java/javase/7u71-relnotes-2296187.html" target="_blank" rel="noopener">Oracle JDK 1.7.0_71</a>，请知悉。</p>
+<pre><code>$ java -version
+java version &quot;1.7.0_71&quot;
+Java(TM) SE Runtime Environment (build 1.7.0_71-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 24.71-b01, mixed mode)
+</code></pre><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/collections/overview.html" target="_blank" rel="noopener">http://docs.oracle.com/javase/7/docs/technotes/guides/collections/overview.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Java_collections_framework" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Java_collections_framework</a></li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2015/09/01/java-collection-overview/" data-id="ck5w7gy2l001zmalj29zexmuw" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJ0lEQVR42u3aS46DMBAFwNz/0sxmFpFmcF63IRJ2sYqiYFwsnP69XvF1/Lnevz/7/P7NeM38rqkLAwPjsYxjeI0fkDzybM38NY33hoGBsQ/jbOnkMB0jc8D4uR/2jIGBgREwqqvlISYGBgZGj5EEl+PfV3kYGBgY1a1ESxdrYl/KxTEwMB7IyKvu3/98S38DAwPjUYyjeI2DuUIYd9F+flfGwMBYmtEL6fKyfl5umwkxMTAw9mRUj9feEZy0QgtDHhgYGIsyrmpG5qlvPpaRvywMDIwdGPeFeklBv/r9P3vAwMDYgFFtClYDu5yUj4CchoYYGBhLM8YJbXXMK8qeg0Az+gPAwMBYmpFsq3f45r+pHvqnJAwMjKUZvcNupqw/0y79sDIGBsY2jGrhrBca5uFmoQyHgYGxAaPXGOiNXMwnwBgYGDsw5tuK82W4CwJTDAyMjRnVEK062tUsqGFgYGBMpJ152HfVsAUGBsYOjF6Idi0yby0U1sfAwFiOkT8+T1+rpbS85XD6KjEwMLZhXBXeVe/KD9/owMXAwFiUUQ3mqiNfvQZnntxiYGCsyjiKV5Lo9spqU/k3BgbG0ozqMdebO6sik3Cwd1hjYGA8l3H3IdsLIps9DQwMjKUZeRugOpaRHJe9ZBgDAwNjpkmZNy9nXg0GBgZGLw9O7pppKnxIYjEwMJZmVBPR6narY2HV4BIDA2NtxlTqGJfyq6W0fHQMAwNjacYPvaCdO2k4x6AAAAAASUVORK5CYII=">分享</a><div class="tags"><a href="/tags/java/">Java</a></div><div class="post-nav"><a class="pre" href="/blog/2015/09/03/java-hashmap/">Java HashMap 源码解析</a><a class="next" href="/blog/2015/07/18/sicp-chapter1-summary/">SICP 第一章总结</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
+    this.page.url = 'http://liujiacai.net/blog/2015/09/01/java-collection-overview/';
+    this.page.identifier = 'blog/2015/09/01/java-collection-overview/';
+    this.page.title = 'Java集合框架综述';
+  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
+url: 'https://disqus.com/next/config.json',
+timeout: 2500,
+type: 'GET',
+success: function(){
+  var d = document;
+  var s = d.createElement('script');
+  s.src = '//jiacai2050.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', + new Date());
+  (d.head || d.body).appendChild(s);
+  $('.disqus_click_btn').css('display', 'none');
+},
+error: function() {
+  $('.disqus_click_btn').css('display', 'block');
+}
+});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
+    (() => { // DON'T EDIT BELOW THIS LINE
+        var d = document;
+        var s = d.createElement('script');
+        s.src = '//jiacai2050.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', + new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    $('.disqus_click_btn').css('display','none');
+});</script><script type="text/javascript" id="disqus-count-script">$(function() {
+     var xhr = new XMLHttpRequest();
+     xhr.open('GET', '//disqus.com/next/config.json', true);
+     xhr.timeout = 2500;
+     xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+         $('.post-meta .post-comments-count').show();
+         var s = document.createElement('script');
+         s.id = 'dsq-count-scr';
+         s.src = 'https://jiacai2050.disqus.com/count.js';
+         s.async = true;
+         (document.head || document.body).appendChild(s);
+       }
+     };
+     xhr.ontimeout = function () { xhr.abort(); };
+     xhr.send(null);
+   });
+</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">24</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/08/18/generational-gc/">深入浅出垃圾回收（四）分代式 GC</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/08/04/incremental-gc/">深入浅出垃圾回收（三）增量式 GC</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/07/08/mark-sweep/">深入浅出垃圾回收（二）Mark-Sweep 详析及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/06/15/garbage-collection-intro/">深入浅出垃圾回收（一）简介篇</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

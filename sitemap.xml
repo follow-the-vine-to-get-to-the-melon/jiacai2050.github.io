@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://liujiacai.net/about/index.html</loc>
+    
+    <lastmod>2020-01-27T08:43:20.586Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/podcast/index.html</loc>
+    
+    <lastmod>2019-12-24T10:59:14.620Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blogrolls/index.html</loc>
+    
+    <lastmod>2019-12-24T10:59:14.616Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2019/10/24/go-modules/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.615Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.614Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2019/04/21/experience-in-clojure/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.614Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2019/07/17/hello-golang/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.614Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2018/11/10/damn-single-socket/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.613Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2018/12/29/how-java-synchronizer-work/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.613Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2018/08/04/incremental-gc/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.612Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2018/07/08/mark-sweep/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.612Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2018/08/18/generational-gc/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.612Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2018/06/15/garbage-collection-intro/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.611Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2018/01/21/review-2017/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.611Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/10/01/macro-in-action/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.610Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.610Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/03/22/ace-technical-interview/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.609Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.609Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/05/11/review-of-secret-of-silicon-valley/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.609Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/08/31/master-macro-theory/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.609Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/01/08/review-2016/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/11/07/run-2-marathon-in-a-week/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.607Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/12/07/hello-jeju/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.607Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/12/31/dev-in-clojure/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.607Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/05/28/scope-closure/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.606Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/10/31/socket-programming/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.606Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/06/30/python2-encoding/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.606Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/02/22/recursion-without-name/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.605Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.605Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/04/23/sicp-chapter4-summary/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.605Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.605Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/01/08/review-2015/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.604Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.604Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/11/20/strings/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.604Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/10/03/first-toy-scheme/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.603Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/10/27/sf-hackathon/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.603Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/10/21/programming-guide/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.603Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/09/12/java-linkedhashmap/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.602Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/09/20/sicp-chapter2-summary/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.602Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/09/27/java-weakhashmap/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.602Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/09/01/java-collection-overview/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.601Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/09/03/java-hashmap/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.601Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/09/04/java-treemap/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.601Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/07/11/review-3-month-life-in-youzan/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.600Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/04/03/leave-ucloud-to-youzan/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.600Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/07/18/sicp-chapter1-summary/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.600Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/12/07/regexp-favors/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/12/29/review-2014/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/02/01/javascript-oop/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2015/02/24/javascript-datatype/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.598Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/11/08/secret-of-firefox-prefs/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.598Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.598Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/08/09/inter-intra-cept-ee-er/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.597Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/09/07/yarn-intro/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.597Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/09/14/mozilla-history/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.597Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/08/16/two-pot-question/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.597Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.596Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/07/17/cdh-ha-installation/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.596Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/08/06/cdh-yarn-ha-kerberos/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.596Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/06/06/computational-thinking-3/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.595Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.595Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/06/06/computational-thinking-2/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.594Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/06/06/computational-thinking-1/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.594Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/05/09/understand-serious-music/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.593Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/05/07/hello-weblog/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.593Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/05/19/go-into-java-world/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.593Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/05/22/search-engine-overview/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.593Z</lastmod>
+    
+  </url>
+  
+</urlset>

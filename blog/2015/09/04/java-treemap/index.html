@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>Java TreeMap 源码解析 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-50745138-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java TreeMap 源码解析</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java TreeMap 源码解析</h1><div class="post-meta">Sep 4, 2015<span> | </span><span class="category"><a href="/categories/langs/">编程语言</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.3k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 8</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2015/09/04/java-treemap/" href="/blog/2015/09/04/java-treemap/#disqus_thread"></a><div class="post-content"><p>继<a href="/blog/2015/09/03/java-hashmap/">上篇文章</a>介绍完了HashMap，这篇文章开始介绍Map系列另一个比较重要的类<a href="http://docs.oracle.com/javase/7/docs/api/index.html?java/util/TreeMap.html" target="_blank" rel="noopener">TreeMap</a>。<br>大家也许能感觉到，网络上介绍HashMap的文章比较多，但是介绍TreeMap反而不那么多，这里面是有原因：一方面HashMap的使用场景比较多；二是相对于HashMap来说，TreeMap所用到的数据结构更为复杂。</p>
+<blockquote>
+<p>本文源码分析基于<a href="http://www.oracle.com/technetwork/java/javase/7u71-relnotes-2296187.html" target="_blank" rel="noopener">Oracle JDK 1.7.0_71</a>，请知悉。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java -version</span><br><span class="line">java version <span class="string">"1.7.0_71"</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.7.0_71-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit<span class="built_in"> Server </span>VM (build 24.71-b01, mixed mode)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="签名（signature）"><a href="#签名（signature）" class="headerlink" title="签名（signature）"></a>签名（signature）</h2><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeMap</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt;</span></span><br><span class="line"><span class="class">       <span class="keyword">extends</span> <span class="title">AbstractMap</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt;</span></span><br><span class="line"><span class="class">       <span class="keyword">implements</span> <span class="title">NavigableMap</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt;, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span></span><br></pre></td></tr></table></figure>
+<p>可以看到，相比HashMap来说，TreeMap多继承了一个接口<a href="http://docs.oracle.com/javase/7/docs/api/java/util/NavigableMap.html" target="_blank" rel="noopener">NavigableMap</a>，也就是这个接口，决定了TreeMap与HashMap的不同：</p>
+<blockquote>
+<p>HashMap的key是无序的，TreeMap的key是有序的</p>
+</blockquote>
+<h3 id="接口NavigableMap"><a href="#接口NavigableMap" class="headerlink" title="接口NavigableMap"></a>接口NavigableMap</h3><p>首先看下NavigableMap的签名<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public<span class="built_in"> interface </span>NavigableMap&lt;K,V&gt; extends SortedMap&lt;K,V&gt;</span><br></pre></td></tr></table></figure></p>
+<p>发现NavigableMap继承了SortedMap，再看SortedMap的签名</p>
+<h4 id="SortedMap"><a href="#SortedMap" class="headerlink" title="SortedMap"></a><code>SortedMap</code></h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public<span class="built_in"> interface </span>SortedMap&lt;K,V&gt; extends Map&lt;K,V&gt;</span><br></pre></td></tr></table></figure>
+<p><code>SortedMap</code>就像其名字那样，说明这个Map是有序的。这个顺序一般是指由<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html" target="_blank" rel="noopener">Comparable接口</a>提供的keys的自然序（natural ordering），或者也可以在创建SortedMap实例时，指定一个<a href="http://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html" target="_blank" rel="noopener">Comparator</a>来决定。<br>当我们在用集合视角（collection views，与HashMap一样，也是由entrySet、keySet与values方法提供）来迭代（iterate）一个SortedMap实例时会体现出key的顺序。</p>
+<p>这里引申下关于Comparable与Comparator的区别（参考<a href="http://stackoverflow.com/a/4108616/2163429" target="_blank" rel="noopener">这里</a>）：</p>
+<ul>
+<li>Comparable一般表示类的自然序，比如定义一个Student类，学号为默认排序</li>
+<li>Comparator一般表示类在某种场合下的特殊分类，需要定制化排序。比如现在想按照Student类的age来排序</li>
+</ul>
+<p>插入SortedMap中的key的类类都必须继承Comparable类（或指定一个comparator），这样才能确定如何比较（通过<code>k1.compareTo(k2)</code>或<code>comparator.compare(k1, k2)</code>）两个key，否则，在插入时，会报<code>ClassCastException</code>的异常。</p>
+<p>此为，SortedMap中key的顺序性应该与<code>equals</code>方法保持一致。也就是说<code>k1.compareTo(k2)</code>或<code>comparator.compare(k1, k2)</code>为true时，<code>k1.equals(k2)</code>也应该为true。</p>
+<p>介绍完了SortedMap，再来回到我们的NavigableMap上面来。<br>NavigableMap是JDK1.6新增的，在SortedMap的基础上，增加了一些“导航方法”（navigation methods）来返回与搜索目标最近的元素。例如下面这些方法：</p>
+<ul>
+<li>lowerEntry，返回所有比给定Map.Entry小的元素</li>
+<li>floorEntry，返回所有比给定Map.Entry小或相等的元素</li>
+<li>ceilingEntry，返回所有比给定Map.Entry大或相等的元素</li>
+<li>higherEntry，返回所有比给定Map.Entry大的元素</li>
+</ul>
+<h2 id="设计理念（design-concept）"><a href="#设计理念（design-concept）" class="headerlink" title="设计理念（design concept）"></a>设计理念（design concept）</h2><h3 id="红黑树（Red–black-tree）"><a href="#红黑树（Red–black-tree）" class="headerlink" title="红黑树（Red–black tree）"></a><a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree" target="_blank" rel="noopener">红黑树（Red–black tree）</a></h3><p>TreeMap是用红黑树作为基础实现的，红黑树是一种<a href="https://en.wikipedia.org/wiki/Binary_search_tree" target="_blank" rel="noopener">二叉搜索树</a>，让我们在一起回忆下二叉搜索树的一些性质</p>
+<h4 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h4><p>先看看二叉搜索树（binary search tree，BST）长什么样呢？</p>
+<p><center><br><img src="https://img.alicdn.com/imgextra/i3/581166664/TB2R1QoeVXXXXaBXpXXXXXXXXXX_!!581166664.png" alt="二叉搜索树"><br></center><br>相信大家对这个图都不陌生，关键点是：</p>
+<blockquote>
+<p>左子树的值小于根节点，右子树的值大于根节点。</p>
+</blockquote>
+<p>二叉搜索树的优势在于每进行一次判断就是能将问题的规模减少一半，所以如果二叉搜索树是平衡的话，查找元素的时间复杂度为<code>log(n)</code>，也就是树的高度。</p>
+<p>我这里想到一个比较严肃的问题，如果说二叉搜索树将问题规模减少了一半，那么三叉搜索树不就将问题规模减少了三分之二，这不是更好嘛，以此类推，我们还可以有四叉搜索树，五叉搜索树……对于更一般的情况：</p>
+<blockquote>
+<p>n个元素，K叉树搜索树的K为多少时效率是最好的？K＝2时吗？</p>
+</blockquote>
+<h4 id="K-叉搜索树"><a href="#K-叉搜索树" class="headerlink" title="K 叉搜索树"></a>K 叉搜索树</h4><p>如果大家按照我上面分析，很可能也陷入一个误区，就是</p>
+<blockquote>
+<p>三叉搜索树在将问题规模减少三分之二时，所需比较操作的次数是两次（二叉搜索树再将问题规模减少一半时，只需要一次比较操作）</p>
+</blockquote>
+<p>我们不能把这两次给忽略了，对于更一般的情况：</p>
+<blockquote>
+<p>n个元素，K叉树搜索树需要的平均比较次数为<code>k*log(n/k)</code>。</p>
+</blockquote>
+<p>对于极端情况k＝n时，K叉树就转化为了线性表了，复杂度也就是<code>O(n)</code>了，如果用数学角度来解这个问题，相当于：</p>
+<blockquote>
+<p>n为固定值时，k取何值时，<code>k*log(n/k)</code>的取值最小？</p>
+</blockquote>
+<p><code>k*log(n/k)</code>根据对数的运算规则可以转化为<code>ln(n)*k/ln(k)</code>，<code>ln(n)</code>为常数，所以相当于取<code>k/ln(k)</code>的极小值。这个问题对于大一刚学高数的人来说再简单不过了，我们这里直接看结果😊</p>
+<blockquote>
+<p>当k＝e时，<code>k/ln(k)</code>取最小值。</p>
+</blockquote>
+<p>自然数e的取值大约为2.718左右，可以看到二叉树基本上就是这样最优解了。在Nodejs的REPL中进行下面的操作<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function foo(k) &#123;return k/Math.log(k);&#125;</span><br><span class="line">&gt; foo(<span class="number">2</span>)</span><br><span class="line"><span class="number">2.8853900817779268</span></span><br><span class="line">&gt; foo(<span class="number">3</span>)</span><br><span class="line"><span class="number">2.730717679880512</span></span><br><span class="line">&gt; foo(<span class="number">4</span>)</span><br><span class="line"><span class="number">2.8853900817779268</span></span><br><span class="line">&gt; foo(<span class="number">5</span>)</span><br><span class="line"><span class="number">3.1066746727980594</span></span><br></pre></td></tr></table></figure></p>
+<p>貌似k＝3时比k＝2时得到的结果还要小，那也就是说三叉搜索树应该比二叉搜索树更好些呀，但是为什么二叉树更流行呢？后来在万能的stackoverflow上找到了<a href="http://stackoverflow.com/questions/3498382/why-use-binary-search-if-theres-ternary-search/3525695#3525695" target="_blank" rel="noopener">答案</a>，主旨如下：</p>
+<blockquote>
+<p>现在的CPU可以针对二重逻辑（binary logic）的代码做优化，三重逻辑会被分解为多个二重逻辑。</p>
+</blockquote>
+<p>这样也就大概能理解为什么二叉树这么流行了，就是因为进行一次比较操作，我们最多可以将问题规模减少一半。</p>
+<p>好了这里扯的有点远了😊，我们再回到红黑树上来。</p>
+<h4 id="红黑树性质"><a href="#红黑树性质" class="headerlink" title="红黑树性质"></a>红黑树性质</h4><p>先看看红黑树的样子：</p>
+<p><center><br>    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2HIUMeVXXXXXzXXXXXXXXXXXX_!!581166664.png" alt="红黑树示例"><br></center><br>上图是从wiki截来的，需要说明的一点是：</p>
+<blockquote>
+<p>叶子节点为上图中的NIL节点，国内一些教材中没有这个NIL节点，我们在画图时有时也会省略这些NIL节点，但是我们需要明确，当我们说叶子节点时，指的就是这些NIL节点。</p>
+</blockquote>
+<p>红黑树通过下面5条规则，保证了树是平衡的：</p>
+<ol>
+<li>树的节点只有红与黑两种颜色</li>
+<li>根节点为黑色的</li>
+<li>叶子节点为黑色的</li>
+<li>红色节点的字节点必定是黑色的</li>
+<li>从任意一节点出发，到其后继的叶子节点的路径中，黑色节点的数目相同</li>
+</ol>
+<p>满足了上面5个条件后，就能够保证：<code>根节点到叶子节点的最长路径不会大于根节点到叶子最短路径的2倍</code>。<br>其实这个很好理解，主要是用了性质4与5，这里简单说下：</p>
+<blockquote>
+<p>假设根节点到叶子节点最短的路径中，黑色节点数目为B，那么根据性质5，根节点到叶子节点的最长路径中，黑色节点数目也是B，最长的情况就是每两个黑色节点中间有个红色节点（也就是红黑相间的情况），所以红色节点最多为B－1个。这样就能证明上面的结论了。</p>
+</blockquote>
+<h4 id="红黑树操作"><a href="#红黑树操作" class="headerlink" title="红黑树操作"></a>红黑树操作</h4><p><center><br>    <img src="https://img.alicdn.com/imgextra/i1/581166664/TB2AkEOeVXXXXXvXXXXXXXXXXXX_!!581166664.png" alt="红黑树旋转示例（没有画出NIL节点）"><br></center><br>关于红黑树的插入、删除、左旋、右旋这些操作，我觉得最好可以做到可视化，文字表达比较繁琐，我这里就不在献丑了，网上能找到的也比较多，像<a href="http://blog.csdn.net/v_JULY_v/article/details/6105630" target="_blank" rel="noopener">v_July_v的《教你透彻了解红黑树》</a>。我这里推荐个<a href="http://www.csanimated.com/animation.php?t=Red-black_tree" target="_blank" rel="noopener">swf教学视频</a>（视频为英文，大家不要害怕，重点是看图😊），7分钟左右，大家可以参考。</p>
+<p>这里还有个交互式<a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html" target="_blank" rel="noopener">红黑树的可视化</a>网页，大家可以上去自己操作操作，插入几个节点，删除几个节点玩玩，看看左旋右旋是怎么玩的。</p>
+<h2 id="源码剖析"><a href="#源码剖析" class="headerlink" title="源码剖析"></a>源码剖析</h2><p>由于红黑树的操作我这里不说了，所以这里基本上也就没什么源码可以讲了，因为这里面重要的算法都是<code>From CLR</code>，这里的CLR是指Cormen, Leiserson, Rivest，他们是算法导论的作者，也就是说TreeMap里面算法都是参照算法导论的伪代码。</p>
+<p>因为红黑树是平衡的二叉搜索树，所以其put（包含update操作）、get、remove的时间复杂度都为<code>log(n)</code>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>到目前为止，TreeMap与HashMap的的实现算是都介绍完了，可以看到它们实现的不同，决定了它们应用场景的不同：</p>
+<ul>
+<li>TreeMap的key是有序的，增删改查操作的时间复杂度为<code>O(log(n))</code>，为了保证红黑树平衡，在必要时会进行旋转</li>
+<li>HashMap的key是无序的，增删改查操作的时间复杂度为<code>O(1)</code>，为了做到动态扩容，在必要时会进行resize。</li>
+</ul>
+<p>另外，我这里没有解释具体代码，难免有些标题党了，请大家见谅，后面理解的更深刻了再来填坑。😂</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://stackoverflow.com/questions/21329662/explanation-of-red-black-tree-based-implementation-of-treemap-in-java" target="_blank" rel="noopener">http://stackoverflow.com/questions/21329662/explanation-of-red-black-tree-based-implementation-of-treemap-in-java</a></li>
+<li><a href="http://javahungry.blogspot.com/2014/04/fail-fast-iterator-vs-fail-safe-iterator-difference-with-example-in-java.html" target="_blank" rel="noopener">http://javahungry.blogspot.com/2014/04/fail-fast-iterator-vs-fail-safe-iterator-difference-with-example-in-java.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Binary_search_tree" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_search_tree</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Red%E2%80%93black_tree</a></li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2015/09/04/java-treemap/" data-id="ck5w7gy2p002amaljvq3w6h3q" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aSxKCQAwFQO9/aTyABb4ksGCmWVkKSrOI+X0+8XH8HL/vn52ffHP1quaBgYHxWsZxedx7u2dnJr97dg4GBsY+jCQU5kEzuWryDRgYGBjJV+cp3XWwxsDAwHgu4PYSyrN3kk8xMDAwkhuat8muC9TknBtqcQwMjBcy7ioyn3j9yHwDAwPjVYyjeFyXpvk5SfOucFcYGBhLM/IAVx1q5jfXC7gYGBi7MXrl4mQxYj5yOKViYGAsx8iba/nPT26rGpRPM1wMDIzlGL0yMhkr3nXtnyYgBgbGBoxeYTlftshTxqgKx8DA2IZxb7GaBNDeaOHP/wMGBsZCjF45WoUVytHB2gcGBsZujDwo5+lgb7MriagYGBi7Marts14KmD++8poFBgbGcoyjeFRLzWpZW94QwcDA2IAxacrnvARWbbRF/x4YGBgLMfIBZK8o7V172yATAwNjCUb+M9UEsTry7AV9DAyMfRhJ0lZN/nJSvthRWLnAwMBYiJGvduVNumqymK9lnD56DAyMDRjztlpv5Nlb2oiSQgwMjEUZ80Z/nmLmIT56NBgYGIsyJssWvWurobZQf2NgYCzK6IW5wihx0JJLXpdhGBgYr2XkQbYHqz65ZsDFwMDYgDFfraguVfTSvkdmsBgYGIsyorHiIAQ3s1cMDAyMuCjNw3GvhP4z38DAwFiUUR0GTBr9k4QSAwNjT8aodMx3OoqttHtLXwwMjNcyvmFF0T/cZp++AAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/java/">Java</a></div><div class="post-nav"><a class="pre" href="/blog/2015/09/12/java-linkedhashmap/">Java LinkedHashMap源码解析</a><a class="next" href="/blog/2015/09/03/java-hashmap/">Java HashMap 源码解析</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
+    this.page.url = 'http://liujiacai.net/blog/2015/09/04/java-treemap/';
+    this.page.identifier = 'blog/2015/09/04/java-treemap/';
+    this.page.title = 'Java TreeMap 源码解析';
+  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
+url: 'https://disqus.com/next/config.json',
+timeout: 2500,
+type: 'GET',
+success: function(){
+  var d = document;
+  var s = d.createElement('script');
+  s.src = '//jiacai2050.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', + new Date());
+  (d.head || d.body).appendChild(s);
+  $('.disqus_click_btn').css('display', 'none');
+},
+error: function() {
+  $('.disqus_click_btn').css('display', 'block');
+}
+});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
+    (() => { // DON'T EDIT BELOW THIS LINE
+        var d = document;
+        var s = d.createElement('script');
+        s.src = '//jiacai2050.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', + new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    $('.disqus_click_btn').css('display','none');
+});</script><script type="text/javascript" id="disqus-count-script">$(function() {
+     var xhr = new XMLHttpRequest();
+     xhr.open('GET', '//disqus.com/next/config.json', true);
+     xhr.timeout = 2500;
+     xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+         $('.post-meta .post-comments-count').show();
+         var s = document.createElement('script');
+         s.id = 'dsq-count-scr';
+         s.src = 'https://jiacai2050.disqus.com/count.js';
+         s.async = true;
+         (document.head || document.body).appendChild(s);
+       }
+     };
+     xhr.ontimeout = function () { xhr.abort(); };
+     xhr.send(null);
+   });
+</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">24</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/08/18/generational-gc/">深入浅出垃圾回收（四）分代式 GC</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/08/04/incremental-gc/">深入浅出垃圾回收（三）增量式 GC</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/07/08/mark-sweep/">深入浅出垃圾回收（二）Mark-Sweep 详析及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/06/15/garbage-collection-intro/">深入浅出垃圾回收（一）简介篇</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

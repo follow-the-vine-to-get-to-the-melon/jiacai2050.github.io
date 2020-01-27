@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>SICP 第五章总结 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-50745138-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">SICP 第五章总结</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">SICP 第五章总结</h1><div class="post-meta">May 21, 2016<span> | </span><span class="category"><a href="/categories/研习经典/">研习经典</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.2k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 8</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2016/05/21/sicp-chapter5-summary/" href="/blog/2016/05/21/sicp-chapter5-summary/#disqus_thread"></a><div class="post-content"><p>经过第四章元语言抽象的洗礼，我们已经能够深谙编译器内部的原理，核心就是<code>eval-apply</code>循环，只是说基于这个核心可以有各种延伸，像延迟求值、amb 不定选择求值、逻辑求值等等，有了这层的理解，我们应该能够透过各种花哨的<a href="https://en.wikipedia.org/wiki/Syntactic_sugar" target="_blank" rel="noopener">语法糖</a>，看出其本质来，像 Node.js 中的 Promise、 Python 中的 coroutine，都是 <a href="https://en.wikipedia.org/wiki/Continuation" target="_blank" rel="noopener">continuation</a> 的一种应用而已。</p>
+<p>但是，我们还无法解释子表达式的求值怎样返回一个值，以便送给使用这个值的表达式，也无法解释为什么有些递归过程能产生迭代型的计算过程，而另一些递归过程却生产递归型的计算。就其原因，是因为我们所实现的求值器是 Scheme 程序，它继承并利用了基础系统的控制结构。要想进一步理解 Scheme 的控制结构，必须转到更低的层面，研究更多细节，而这些，就是第五章的主要内容。</p>
+<h2 id="寄存器机器的设计"><a href="#寄存器机器的设计" class="headerlink" title="寄存器机器的设计"></a>寄存器机器的设计</h2><p>为了探讨底层的控制结构，本章基于传统计算机的一步一步操作，描述一些计算过程，这类计算机称为寄存器机器，它的主要功能就是<code>顺序的</code>执行一条条指令，操作一组存储单元。本章不涉及具体机器，还是研究一些 Scheme 过程，并考虑为每个过程设计一个特殊的寄存器机器。</p>
+<p>第一步工作像是设计一种硬件体系结构，其中将：</p>
+<ol>
+<li>开发一些机制支持重要程序结构，如递归，过程调用等</li>
+<li>设计一种描述寄存器机器的语言</li>
+<li>做一个 Scheme 程序来解释用这种语言描述的机器</li>
+</ol>
+<p>寄存器机器包含<code>数据通路(寄存器和操作)</code>和确定操作顺序的<code>控制器</code>。书中以 gcd 算法为例介绍：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name"><span class="builtin-name">gcd</span></span> a b)</span><br><span class="line">  (<span class="name"><span class="builtin-name">if</span></span> (<span class="name"><span class="builtin-name">=</span></span> b <span class="number">0</span>)</span><br><span class="line">    a</span><br><span class="line">    (<span class="name"><span class="builtin-name">gcd</span></span> b (<span class="name">remainer</span> a b))))</span><br></pre></td></tr></table></figure>
+<center><br><img src="https://img.alicdn.com/imgextra/i4/581166664/TB280XDppXXXXXWXXXXXXXXXXXX_!!581166664.png" alt="GCD 数据通路"><br><img src="https://img.alicdn.com/imgextra/i3/581166664/TB2S63.pXXXXXXXXpXXXXXXXXXX_!!581166664.png" alt=" GCD 控制器"><br></center>
+
+<p>为了描述复杂的过程，书中采用如下的语言来描述寄存器机器：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">controller</span></span><br><span class="line">  test-b</span><br><span class="line">    (<span class="name">test</span> (<span class="name">op</span> =) (<span class="name">reg</span> a) (<span class="name">const</span> <span class="number">0</span>))</span><br><span class="line">    (<span class="name">branch</span> (<span class="name">label</span> gcd-done))</span><br><span class="line">    (<span class="name">assign</span> <span class="literal">t</span> (<span class="name">op</span> rem) (<span class="name">reg</span> a) (<span class="name">reg</span> b))</span><br><span class="line">    (<span class="name">assign</span> a (<span class="name">reg</span> b))</span><br><span class="line">    (<span class="name">assign</span> b (<span class="name">reg</span> <span class="literal">t</span>))</span><br><span class="line">    (<span class="name">goto</span> (<span class="name">label</span> test-b))</span><br><span class="line">  gcd-done)</span><br></pre></td></tr></table></figure></p>
+<h3 id="子程序"><a href="#子程序" class="headerlink" title="子程序"></a>子程序</h3><p>直接带入更基本操作的结构，可能使控制器变得非常复杂，希望能够作出某种安排，维持机器的简单性，而且避免重复的结构，比如如果机器两次用GCD，最好公用一个 GCD 部件，这是可行的，因为任一时刻，只能进行一个 GCD 操作，只是输入输出的寄存器不一样而已。思路：</p>
+<blockquote>
+<p>调用 GCD 代码前把一个寄存器(如 continue)设置为不同的值,在 GCD 代码的出口根据该寄存器跳到正确位置</p>
+</blockquote>
+<p>具体代码与图示可参考：<a href="https://github.com/jiacai2050/sicp/blob/master/2016-05/2015-05-12_subroutes.md" target="_blank" rel="noopener">2015-05-12_subroutes.md</a></p>
+<h3 id="采用堆栈实现递归"><a href="#采用堆栈实现递归" class="headerlink" title="采用堆栈实现递归"></a>采用堆栈实现递归</h3><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(define (factorial <span class="built_in">n</span>)</span><br><span class="line">  (<span class="built_in">if</span> (= <span class="built_in">n</span> <span class="number">1</span>)</span><br><span class="line">    <span class="number">1</span></span><br><span class="line">    (* <span class="built_in">n</span> (factorial (- <span class="built_in">n</span> <span class="number">1</span>)))))</span><br><span class="line">```    </span><br><span class="line">表面看计算阶乘需要嵌套的无穷多部机器,但任何时刻只用一部。要想 用同一机器完成所有计算,需要做好安排,在遇到子问题时中断当前计算,解决子问题后回到中断的原计算。注意<span class="symbol">:</span></span><br><span class="line"></span><br><span class="line">- 进入子问题时的状态与处理原问题时不同(如 <span class="built_in">n</span> 变成 <span class="built_in">n</span>-<span class="number">1</span>)</span><br><span class="line">- 为了将来能继续中断的计算,必须保存当时状态(当时 <span class="built_in">n</span> 的值)</span><br><span class="line"></span><br><span class="line">控制问题<span class="symbol">:</span>子程序结束后应该返回哪里？</span><br><span class="line"></span><br><span class="line">- continue 里保存返回位置,递归使用同一机器时也要用这个寄存 器,给它赋了新值就会丢掉当时保存其中准备返回的位置</span><br><span class="line">- 为了能正确返回,调用前也需要把 continue 的值入栈</span><br><span class="line"></span><br><span class="line">阶乘算法的具体解释与图示可参考：[<span class="number">2016</span>-<span class="number">05</span>-<span class="number">16</span>_recursion_stack.md](htt<span class="symbol">ps:</span>//github.com/jiacai2050/sicp/blob/master/<span class="number">2016</span>-<span class="number">05</span>/<span class="number">2016</span>-<span class="number">05</span>-<span class="number">16</span>_recursion_stack.md)</span><br><span class="line"></span><br><span class="line">这里比较难理解的是 fib 算法，因为这里涉及到两次递归调用：</span><br></pre></td></tr></table></figure>
+<p>(define (fib n)<br>  (if (&lt; n 2)<br>    n<br>    (+ (fib (- n 1))<br>       (fib (- n 2)))))</p>
+<p>(controller<br>  (assign continue (label fib-done))<br>fib-loop<br>  (test (op &lt;) (reg n) (const 2))<br>  (branch (label immediate-answer))<br>  ;; set up to compute Fib(n-1)<br>  (save continue)<br>  (assign (continue (label afterfib-n-1))<br>  (save n)                                ; save old value of n<br>  (assign n (op -) (reg n) (const 1)))    ; clobber n to n-1<br>  (goto (label fib-loop))                 ; perform recursive call<br>afterfib-n-1                              ; upon return, val contains Fib(n-1)<br>  (restore n)<br>  (restore continue)<br>  ;; set up to compute Fib(n-2)<br>  (assign n (op -) (reg n) (const 2))<br>  (save continue)<br>  (assign continue (label afterfib-n-2))<br>  (save val)                               ; save Fib(n-1)<br>  (goto (label fib-loop))<br>afterfib-n-2                               ; upon return, val contains Fib(n-2)<br>  (assign n (reg val))                     ; n now contains Fib(n-2)<br>  (restore val)                            ; val now contains Fib(n-1)<br>  (restore continue)<br>  (assign val (op +) (reg val) (reg n))    ; return to caller, answer is in val<br>  (goto (reg continue))<br>immediate-answer<br>  (assign val (reg n))                     ; base case: Fib(n) = n<br>  (goto (reg continue))<br>fib-done)</p>
+<p>;; afterfib-n-1 中先把 continue 释放，然后又保存起来，中间什么操作也没有<br><code>`</code></p>
+<p><a href="https://github.com/jiacai2050/sicp/blob/master/exercises/05/5.6.scm" target="_blank" rel="noopener">习题5.6</a>、<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/05/5.11.md" target="_blank" rel="noopener">习题5.11</a> 对这一算法进行了分析与修改，建议大家看看。</p>
+<h2 id="一个寄存器机器模拟器"><a href="#一个寄存器机器模拟器" class="headerlink" title="一个寄存器机器模拟器"></a>一个寄存器机器模拟器</h2><p>这是5.2小节的内容，主要是用一种寄存器机器语言（即上面描述 gcd、fib 的语言）描述的机器构造一个模拟器。这一模拟器是一个 Scheme 程序，采用第三章介绍的消息传递的编程风格，将模拟器封装为一个对象，通过给它发送消息来模拟运行。</p>
+<p>这一模拟器的代码主要可以分为两部分：<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/05/lib/assemble.scm" target="_blank" rel="noopener">assemble.scm</a>、<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/05/lib/machine.scm" target="_blank" rel="noopener">machine.scm</a>，有需要的可以结合书中解释看看。</p>
+<p>这里让我为之惊叹的一点是，本书作者采用之前一贯的风格，用 Scheme 实现了一台寄存器机器，和第四章中各种解释器一样，通过层层数据抽象，让你觉得计算机也没那么深不可测，也是可以通过基本过程构造出来的。</p>
+<h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><p>为了实现 Scheme 解释器,还需要考虑表结构的表示和处理（5.3节内容）：</p>
+<ul>
+<li>需要实现基本的表操作</li>
+<li>实现作为运行基础的巧妙的存储管理机制 后面讨论有关的基础技术(可能简单介绍)</li>
+</ul>
+<p>有了基本语言和存储管理机制之后,就可以做出一部机器（5.4节内容）,它能</p>
+<ul>
+<li>实现第四章介绍的元循环解释器</li>
+<li>而且为解释器的细节提供了清晰的模型</li>
+</ul>
+<p>这一章的最后（5.5节内容）讨论和实现了一个编译器</p>
+<ul>
+<li>把 Scheme 语言程序翻译到这里的寄存器机器语言</li>
+<li>还支持解释代码和编译代码之间的连接,支持动态编译等</li>
+</ul>
+<p>这里由于时间与精力的缘故，最后三小节没有进行细致的阅读，在将来需要时再回来阅读。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>终于到了这一天，历时一年多，终于还是把这本书看完了，算是了了一个心结，大概在大三的时候就知道了这本书，算算到现在完整的看完，有四年时间了。在最近这一年中，这本书带给我了无数的灵感与启发，这种感觉真的无法描述，只有你亲自体会。</p>
+<p>此时此刻印象最深的有两点：</p>
+<ul>
+<li>对现实世界中时间与空间的模拟，没有最优解，不管是延时求值的流还是封装属性的对象，都有其局限性。也可能是我们人类对世界的认识还不够。摘抄书中P219一段话：</li>
+</ul>
+<blockquote>
+<p>从本质上看，在并发控制中，任何时间概念都必然与通信有内在的密切联系。有意思的是，时间与通信之间的这种联系也出现在相对论里，在那里的光速（可能用于同步事件的最快信号）是与时间和空间有关的基本常量。在处理时间和状态时，我们在计算模型领域所遭遇的复杂性，事实上，可能就是物理世界中最基本的复杂性的一种反映。</p>
+</blockquote>
+<ul>
+<li>深刻认识了<code>计算</code>二字的含义，明白了计算机的局限性（<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/04/4.15.md" target="_blank" rel="noopener">停机问题</a>），并不是所有问题都有解的；</li>
+</ul>
+<p>当然，并不是说看完这本书就是“武林高手”了，今后还是要在不断实践中总结、积累，成为一位真正的 hacker。</p>
+<p>好了，今天写到这里，作为万里长城的一个终点。😊</p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/" data-id="ck5w7gy36003fmaljcro5ikxm" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aQW7DMAwEwPz/0+kD2ri7VF3A0vgUJI7p0YEQSb1e8fX+dn36Nbn/+38/PeePLwwMjMcy3pfXdYD8nvzX6+X4SMXAwDiAkaTCPPx62s3fDQMDA+P6nmSDeL0QGBgYGHcw/iDkaCEwMDAwkmLyOmTya9KSu70Wx8DAeCAjT4X///mW+QYGBsajGO/yygeWefnaJtkfomBgYGzNmLXS2oMX+SBhpbWHgYGxKyNPpuulab7RbCNiYGDszcgPRrRbvbaRl7fefmn2YWBgbMrID2zNGnDrW8no3TAwMA5gtGlxlqbzAUB9WA0DA+MARnsYIkmR7TCyLarryhgDA+OBjFkSLJpfcVLOn/zD22JgYGzNWGmQXYfJ719JuxgYGOcwZo3+NgXfMWx4tSExMDAeyJgFG54+C9pqs60nBgbGaYy8KdZuE9uDYsUBNQwMjK0ZK6Vj22JbadXV+1wMDIyNGHlbbTY2aI+I5UMIDAyMcxht+HYLmKTL9snDIxcYGBhbMGYjgZV0nCTiYkExMDAOYFw/qD06Nmu3rcTFwMA4hzErR/PhaFvK3tIvxMDAeBTjXV45fqWtVhSuGBgYBzBmaW4l+eaw5HMNw8DAeCwjSZR5aZp8s7JkdS2OgYGxEWOW+PIZ4vU3LRIDAwOjDXNHCm5HpBgYGBjJSyQpdTYSSJp9GBgYJzDypNm2+2clcb4oGBgYJzDalDc7Ipa30tqhKQYGxtaML8q9IuCRz9E1AAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/sicp/">sicp</a></div><div class="post-nav"><a class="pre" href="/blog/2016/05/28/scope-closure/">编程语言中的变量作用域与闭包</a><a class="next" href="/blog/2016/04/23/sicp-chapter4-summary/">SICP 第四章总结</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
+    this.page.url = 'http://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/';
+    this.page.identifier = 'blog/2016/05/21/sicp-chapter5-summary/';
+    this.page.title = 'SICP 第五章总结';
+  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
+url: 'https://disqus.com/next/config.json',
+timeout: 2500,
+type: 'GET',
+success: function(){
+  var d = document;
+  var s = d.createElement('script');
+  s.src = '//jiacai2050.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', + new Date());
+  (d.head || d.body).appendChild(s);
+  $('.disqus_click_btn').css('display', 'none');
+},
+error: function() {
+  $('.disqus_click_btn').css('display', 'block');
+}
+});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
+    (() => { // DON'T EDIT BELOW THIS LINE
+        var d = document;
+        var s = d.createElement('script');
+        s.src = '//jiacai2050.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', + new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    $('.disqus_click_btn').css('display','none');
+});</script><script type="text/javascript" id="disqus-count-script">$(function() {
+     var xhr = new XMLHttpRequest();
+     xhr.open('GET', '//disqus.com/next/config.json', true);
+     xhr.timeout = 2500;
+     xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+         $('.post-meta .post-comments-count').show();
+         var s = document.createElement('script');
+         s.id = 'dsq-count-scr';
+         s.src = 'https://jiacai2050.disqus.com/count.js';
+         s.async = true;
+         (document.head || document.body).appendChild(s);
+       }
+     };
+     xhr.ontimeout = function () { xhr.abort(); };
+     xhr.send(null);
+   });
+</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">24</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/08/18/generational-gc/">深入浅出垃圾回收（四）分代式 GC</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/08/04/incremental-gc/">深入浅出垃圾回收（三）增量式 GC</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/07/08/mark-sweep/">深入浅出垃圾回收（二）Mark-Sweep 详析及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/06/15/garbage-collection-intro/">深入浅出垃圾回收（一）简介篇</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
