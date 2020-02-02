@@ -25,7 +25,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.71-b01, mixed mode)
 
 这是最常用的引用类型，在执行下面的语句时，变量 `o` 即为一个强引用。
 
-```
+```java
 Object o = new Object();
 ```
 
@@ -63,11 +63,13 @@ Object o = new Object();
 > 引用对象指向的对象 GC 会自动清理，但是引用对象本身也是对象（是对象就占用一定资源），所以需要我们自己清理。
 
 举个例子：
-```
-SoftReference<String> ss = new SoftReference<String>("abc" , queue);
+
+```java
+Object o = new Object();
+SoftReference<Object> sr = new SoftReference<>(o , queue);
 ```
 
-`ss` 为软引用，指向`abc`这个对象，`abc` 会在一定时机被 GC 自动清理，但是`ss`对象本身的清理工作依赖于`queue`，当`ss`出现在`queue`中时，说明其指向的对象已经无效，可以放心清理`ss`了。
+`sr` 为软引用，指向 `o` 这个对象，`o` 会在一定时机被 GC 自动清理，但是 `sr` 对象本身的清理工作依赖于 `queue`，当 `sr` 出现在`queue`中时，说明其指向的对象已经无效，可以放心清理了。
 
 从上面的分析大家应该对`Reference`类有了基本的认识，但是上面也提到了，不同的引用，添加到`ReferenceQueue`的时机是不一样。下面介绍具体引用时再进行说明。
 这里有个问题，如果创建引用对象是没有指定`ReferenceQueue`，引用对象会怎么样呢？这里需要了解`Reference`类内部的四种状态。

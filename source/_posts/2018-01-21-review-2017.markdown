@@ -12,7 +12,7 @@ categories: 热爱生活
 
 大概是在 17 年 4 月份从有赞毕业的，当时就想写一下在有赞两年的收获，但觉得时机不是很对，就一直到了现在。因为有赞，我来到了杭州，第一年可能去的地方比较少，第二年基本上把西湖周边的山爬遍了，不得不说杭州是我呆过最宜居的城市，互联网氛围也好，我走的时候几个北漂的同学都来杭州买房了。
 
-在有赞一直做的是数据开发，属于后后端的岗位，真正做过数据开发的就会知道，这里的事情会比较杂，从最基础的手动报表，到数据仓库，从日志 ETL 到 mysql 数据同步，最后由于跑的任务比较多了一般还需要个调度平台，为了让其他组使用整理好的数据，还需要提供一个开发平台。用到的技术架构网上也很容易找到，类似下图：（[图片来源](https://tech.youzan.com/you-zan-big-data-practice/)）
+在有赞一直做的是数据开发，属于后后端的岗位，真正做过数据开发的就会知道，这里的事情会比较杂，从最基础的手动报表，到数据仓库，从日志 ETL 到 mysql 数据同步，最后由于跑的任务比较多了一般还需要个调度平台，为了让其他组使用整理好的数据，还需要提供一个开发平台。用到的技术架构网上也很容易找到，类似下图：[图片来源](https://tech.youzan.com/you-zan-big-data-practice/)
 
 ![大数据架构](https://img.alicdn.com/imgextra/i1/581166664/TB2pD.6nRDH8KJjSspnXXbNAVXa_!!581166664.png)
 
@@ -37,7 +37,7 @@ categories: 热爱生活
 
 我之前看 [dennis](http://blog.fnil.net/) 博客时就对 [LeanCloud](https://leancloud.cn/) 就有所耳闻，是一家重度使用 Clojure 的公司，光这一点我就觉得就足够酷了。对我来说这一切充满挑战，我十分期待这一段新的历程。
 
-![LeanCloud logo](https://leancloud.cn/assets/img/press/Logo%20-%20Blue%20Padding.png)
+<img src="https://img.alicdn.com/imgextra/i2/581166664/O1CN01UYKgNF1z69y0poBMj_!!581166664.jpg" alt="leancloud-logo.jpg"/>
 
 ## 天天向上
 

@@ -6,11 +6,8 @@ date: 2014-08-08 07:48:37
 (def 刘家财
   (doto (Programmer.)
     (.alias ["jiacai2050" "Jiacai Liu" "写代码的西瓜"])
-    (.email "base64 -d <<< aGVsbG9AbGl1amlhY2FpLm5ldAo=")
-    (.gpg-key "https://keybase.io/liujiacai/pgp_keys.asc")
-    (.gpg-key-fingerprint "6F73 4AE4 297C 7F62 B605  4F91 D302 6E5C 08A0 BAB4")
-    (.hometown "LinYi Shandong")
-    (.university ^{:homepage "http://www.ytu.edu.cn/"} "Yantai University")
+      (.hometown "LinYi Shandong")
+        (.university ^{:homepage "http://www.ytu.edu.cn/"} "Yantai University")
     (.skill {:language [:Go :Clojure :Java :Python :Node.js]
              :framework [:Netty :Flask :Hadoop :Ring :Express]})
     (.daydream "Make my codes run around the World, so keep writing")
@@ -20,9 +17,11 @@ date: 2014-08-08 07:48:37
        :misc  ["Translation"]})))
 ```
 
-本博客的目的就是记录自己学习过程中的所得所想，我觉得所有事情都可以用感性的直觉去理解。如果自己在两三句话向一个陌生人讲不清楚某个知识点，说明我也是没懂。
+本博客主要目的记录个人学习过程中的所得所想，不代表所在公司观点。
 
-我喜欢 Matrix67 所著[思维的乐趣](http://book.douban.com/subject/10779597/)一书中序言的一个小段子：
+个人觉得所有事情都可以用感性的直觉去理解。如果自己在两三句话向一个陌生人讲不清楚某个知识点，说明我也是没懂。
+
+喜欢 Matrix67 所著[思维的乐趣](http://book.douban.com/subject/10779597/)一书中序言的一个小段子：
 
 > 学生：“咱家有的是钱，画图仪都买得起，为啥做图只能用直尺和圆规，有时还只让用一个？”
 > 老师：“上世纪有个中国将军观看学生篮球赛。比赛很激烈，将军却慷慨地说，娃们这么多人抢一个球？发给他们每人一个球开心地玩多好。”
@@ -30,8 +29,14 @@ date: 2014-08-08 07:48:37
 
 是的，生活的乐趣就在于此。
 
-> 本博客使用 disqus 评论系统不幸被墙，不会翻墙的同学可以通过关注上面的公众号与我交流。
-希望我们的交流能给你我带来些许启发。
+与我交流
+====
+- Email: `base64 -d <<< aGVsbG9AbGl1amlhY2FpLm5ldAo=`
+- Telegram 群组：https://t.me/clojurists
+- GPG key ID: `D3026E5C08A0BAB4`
+  - Fingerprint: `6F734AE4297C7F62B6054F91D3026E5C08A0BAB4`
+  - `curl https://keybase.io/liujiacai/pgp_keys.asc | gpg --import`
+
 
 工作经历
 ====
@@ -65,7 +70,7 @@ date: 2014-08-08 07:48:37
 * [《Code Rush》](http://v.youku.com/v_show/id_XNjA2NDI2MTUy.html) 见证 [Mozilla](/blog/2014/09/14/mozilla-history/) 的诞生，见证互联网史上惊心动魄的一幕
 * [《Revolution OS 操作系统革命》](http://www.tudou.com/programs/view/lCsZxfWXJ0k/)，一群改变世界的hacker
 
-更新日志
+站点更新日志
 ====
 
 - 2017-03-06，hexo2 --> hexo3，主题 jacman --> maupassant
