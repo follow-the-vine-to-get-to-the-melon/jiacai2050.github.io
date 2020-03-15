@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://liujiacai.net/blog/2020/03/14/go-struct-interface/</loc>
+    
+    <lastmod>2020-03-15T09:45:20.726Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2019/07/17/hello-golang/</loc>
+    
+    <lastmod>2020-03-15T08:02:49.159Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://liujiacai.net/about/index.html</loc>
     
     <lastmod>2020-02-02T11:41:21.365Z</lastmod>
@@ -51,7 +65,7 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2019/07/17/hello-golang/</loc>
+    <loc>http://liujiacai.net/blog/2019/04/21/experience-in-clojure/</loc>
     
     <lastmod>2019-12-24T10:59:14.614Z</lastmod>
     
@@ -59,13 +73,6 @@
   
   <url>
     <loc>http://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.614Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://liujiacai.net/blog/2019/04/21/experience-in-clojure/</loc>
     
     <lastmod>2019-12-24T10:59:14.614Z</lastmod>
     
@@ -86,14 +93,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/07/08/mark-sweep/</loc>
+    <loc>http://liujiacai.net/blog/2018/08/04/incremental-gc/</loc>
     
     <lastmod>2019-12-24T10:59:14.612Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/08/04/incremental-gc/</loc>
+    <loc>http://liujiacai.net/blog/2018/07/08/mark-sweep/</loc>
     
     <lastmod>2019-12-24T10:59:14.612Z</lastmod>
     
@@ -170,13 +177,6 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</loc>
     
     <lastmod>2019-12-24T10:59:14.608Z</lastmod>
@@ -184,9 +184,9 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/11/07/run-2-marathon-in-a-week/</loc>
+    <loc>http://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</loc>
     
-    <lastmod>2019-12-24T10:59:14.607Z</lastmod>
+    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
     
   </url>
   
@@ -205,9 +205,9 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/10/31/socket-programming/</loc>
+    <loc>http://liujiacai.net/blog/2016/11/07/run-2-marathon-in-a-week/</loc>
     
-    <lastmod>2019-12-24T10:59:14.606Z</lastmod>
+    <lastmod>2019-12-24T10:59:14.607Z</lastmod>
     
   </url>
   
@@ -226,14 +226,21 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/02/22/recursion-without-name/</loc>
+    <loc>http://liujiacai.net/blog/2016/10/31/socket-programming/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.606Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</loc>
     
     <lastmod>2019-12-24T10:59:14.605Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</loc>
+    <loc>http://liujiacai.net/blog/2016/02/22/recursion-without-name/</loc>
     
     <lastmod>2019-12-24T10:59:14.605Z</lastmod>
     
@@ -275,14 +282,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/10/27/sf-hackathon/</loc>
+    <loc>http://liujiacai.net/blog/2015/10/03/first-toy-scheme/</loc>
     
     <lastmod>2019-12-24T10:59:14.603Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/10/03/first-toy-scheme/</loc>
+    <loc>http://liujiacai.net/blog/2015/10/27/sf-hackathon/</loc>
     
     <lastmod>2019-12-24T10:59:14.603Z</lastmod>
     
@@ -317,14 +324,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/04/java-treemap/</loc>
+    <loc>http://liujiacai.net/blog/2015/09/03/java-hashmap/</loc>
     
     <lastmod>2019-12-24T10:59:14.601Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/03/java-hashmap/</loc>
+    <loc>http://liujiacai.net/blog/2015/09/04/java-treemap/</loc>
     
     <lastmod>2019-12-24T10:59:14.601Z</lastmod>
     
@@ -359,6 +366,13 @@
   </url>
   
   <url>
+    <loc>http://liujiacai.net/blog/2014/12/29/review-2014/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://liujiacai.net/blog/2015/02/01/javascript-oop/</loc>
     
     <lastmod>2019-12-24T10:59:14.599Z</lastmod>
@@ -367,13 +381,6 @@
   
   <url>
     <loc>http://liujiacai.net/blog/2015/02/24/javascript-datatype/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://liujiacai.net/blog/2014/12/29/review-2014/</loc>
     
     <lastmod>2019-12-24T10:59:14.599Z</lastmod>
     
@@ -401,6 +408,13 @@
   </url>
   
   <url>
+    <loc>http://liujiacai.net/blog/2014/08/16/two-pot-question/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.597Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://liujiacai.net/blog/2014/09/07/yarn-intro/</loc>
     
     <lastmod>2019-12-24T10:59:14.597Z</lastmod>
@@ -415,13 +429,6 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/08/16/two-pot-question/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.597Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://liujiacai.net/blog/2014/09/14/mozilla-history/</loc>
     
     <lastmod>2019-12-24T10:59:14.597Z</lastmod>
@@ -429,7 +436,7 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/</loc>
+    <loc>http://liujiacai.net/blog/2014/08/06/cdh-yarn-ha-kerberos/</loc>
     
     <lastmod>2019-12-24T10:59:14.596Z</lastmod>
     
@@ -443,7 +450,7 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/08/06/cdh-yarn-ha-kerberos/</loc>
+    <loc>http://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/</loc>
     
     <lastmod>2019-12-24T10:59:14.596Z</lastmod>
     
@@ -485,7 +492,7 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/05/22/search-engine-overview/</loc>
+    <loc>http://liujiacai.net/blog/2014/05/09/understand-serious-music/</loc>
     
     <lastmod>2019-12-24T10:59:14.593Z</lastmod>
     
@@ -499,7 +506,7 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/05/09/understand-serious-music/</loc>
+    <loc>http://liujiacai.net/blog/2014/05/22/search-engine-overview/</loc>
     
     <lastmod>2019-12-24T10:59:14.593Z</lastmod>
     
