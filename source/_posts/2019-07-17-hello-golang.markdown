@@ -39,11 +39,11 @@ func main() {
     }
     defer r.Body.Close()
 
-    body, err := ioutil.ReadAll(r.Body)
+    bs, err := ioutil.ReadAll(r.Body)
     if err != nil {
         panic(err)
     }
-    fmt.Printf("body = %s\n", string(body))
+    fmt.Printf("body = %s\n", bs)
 }
 
 ```
@@ -82,7 +82,7 @@ go get -u github.com/lukehoban/go-outline # for go-imenu
 - slice 动态的数组
 - map 哈希表
 - chan 用于在多个 goroutine 内通信
-- interface 类似于 Java 里面的接口，但是与 Java 里的用法不一样
+- interface 类似于 Java 里面的接口，一组方法的封装
 
 下面将重点介绍 Go 里特有或用途最广的数据类型。
 
@@ -96,7 +96,7 @@ Go 里面的 struct 类似于 Java 里面的 Object，但是并没有继承，�
 BenchmarkByPointer-8    20000000                86.7 ns/op
 BenchmarkByValue-8      50000000                31.9 ns/op
 ```
-所以一般推荐直接使用值类型的 struct，如果确认这是瓶颈了，可以再尝试改为引用类型（&struct）
+所以一般情况下推荐直接使用值类型的 struct，如果需要改变状态，再考虑改为指针类型（&struct）
 
 如果说 struct 是对状态的封装，那么 interface 就是对行为的封装，相当于对外的契约（contract）。而且 Go 里面有这么一条[最佳实践](https://www.reddit.com/r/golang/comments/cf1lda/having_trouble_understanding_how_to_properly_use/eu7r4f3)
 
