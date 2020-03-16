@@ -47,7 +47,7 @@ Go 的设计目标是取代 C/C++，所以 Go 里面的 struct 和 C 的类似�
 ```go
 // 1. 使用临时变量
 m := map[int]student{1: {name: "1"}}
-tmp := m[0]
+tmp := m[1]
 tmp.name = "2"
 m[1] = tmp
 
@@ -192,7 +192,7 @@ type StringHeader struct {
 2. 如果 `unsafe.Sizeof(struct)` 大于一定阈值时，拷贝 value 的时间大于在 heap 上分配的时间，考虑用 pointer
 3. 除此之外，struct 即可
 
-为了确定出 2 中的阈值，可以在 struct 中添加一数组元素，之后再来跑上述测试即可，在笔者机器中，这个阈值大概为 72K，很少有 struct 会达到这个量级，这是由于 Go 中常用的 slice/map/string 均为复合类型（可认为由 header+data 两部分组成），在 struct 的结构中，只保存 header 部分，所以大小是固定的，而 array 有的地方也不是很多，所以读者可认为只要 struct 状态不需要改变，value 则是最佳选择。
+为了确定出 2 中的阈值，可以在 struct 中添加一数组元素，之后再来跑上述测试即可，在笔者机器中，这个阈值大概为 72K，很少有 struct 会达到这个量级，这是由于 Go 中常用的 slice/map/string 均为复合类型（可认为由 header+data 两部分组成），在 struct 的结构中，只保存 header 部分，所以大小是固定的，而 array 用的地方也不是很多，所以读者可认为只要 struct 状态不需要改变，value 则是最佳选择。
 
 ```go
 type student struct {
@@ -319,7 +319,7 @@ func viewRecord(w http.ResponseWriter, r *http.Request) {
 
 这时便可通过自定义新类型来解决这个问题：
 
-```
+```go
 type appError struct {
     Error   error
     Message string
