@@ -80,7 +80,7 @@ import "github.com/my/repo/bar"
 
 ![语义化版本](https://img.alicdn.com/imgextra/i4/581166664/O1CN01bk1zqT1z69wz301hZ_!!581166664.png_620x10000.jpg)
 
-语义化版本要求 v1 及以上的版本保证向后兼容，v2 及以上的版本需要体现在 module path 中，比如
+语义化版本要求 v1 及以上的版本保证向后兼容，对于有 breaking change 的 v2 及以上的版本，需要把版本信息体现在 module path 中，比如
 
 ```
 module github.com/my/mod/v2
@@ -90,7 +90,7 @@ import "github.com/my/mod/v2/mypkg"
 
 go get github.com/my/mod/v2@v2.0.1
 ```
-之所以要求把版本号放在 module path，是为了解决不同大版本之间的 breaking changes。举一个场景：
+举一个场景：
 
 ![dependency hell](https://img.alicdn.com/imgextra/i3/581166664/O1CN01ZyOLHg1z69wz3Le3i_!!581166664.png_310x310.jpg)
 
@@ -159,8 +159,19 @@ func TestModule(t *testing.T) {
 ### 常用命令
 
 对于使用 module 开发的项目，使用 `go mod init {moduleName}` 初始化后，直接在源文件中 import 所需包名，go test/build 之类的命令会自动分析，将其加到 go.mod 中的 require 里面，不需要自己去修改。开发测试完成后，需要打 tag 才能让其它用户使用。
-项目的版本号一般从 v0.1.0 开始，表示开始第一个 feature，当有 bugfix 时，变更第三个版本号，如 v0.1.1；当有新 feature 时，变更中间版本号，如 v0.2.0；有 breaking changes 时，变更第一个版本号，比如 v1.0.0。
+项目的版本号一般从 v0.1.0 开始，表示开始第一个 feature，当有 bugfix 时，变更第三个版本号，如 v0.1.1；当有新 feature 时，变更中间版本号，如 v0.2.0；有 breaking changes 时，变更第一个版本号，比如 v2.0.0。
 
+对于 v2 及以上版本，一般有[两种目录组织方式](https://github.com/golang/go/wiki/Modules#releasing-modules-v2-or-higher)，一是直接在项目根目录的 go.mod 中的 module path 中增加 `v2` 后缀，例如：`github.com/my/module/v2`；二是建一个子目录 `v2`，把相关代码拷贝过来，在这个目录下创建 go.mod，module path 与第一种相同。这两种方式同样都需要打 `v2.x.x` 的 tag 表示版本信息。参考[示例](https://github.com/jiacai2050/strutil/tree/57d66f5d6b980e4a4966013f87b0c770c458e0ea)
+```
+.
+├── go.mod          // module github.com/jiacai2050/strutil
+├── string.go
+├── string_test.go
+└── v2
+    ├── go.mod      // module github.com/jiacai2050/strutil/v2
+    └── string.go
+```
+很明显，第二种目录方式方便同时维护多个版本。
 
 除此之外，一般还需配置如下相关变量：
 
@@ -169,8 +180,11 @@ func TestModule(t *testing.T) {
 export GO111MODULE=on
 # 1.13 之后才支持多个地址，之前版本只支持一个
 export GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy,direct
-# 1.13 开始支持，配置私有 module，不去校验 checksum
+# 1.13 开始支持，配置私有 module，相当于同时设置 GONOPROXY GONOSUMDB ，表示不走代理，不检查 checksum
 export GOPRIVATE=*.corp.example.com,rsc.io/private
+# 关闭 checksum 校验，一般不需要设置，通过 GOPRIVATE 进行细粒度控制
+# go get -insecure .. 是也不会检查 checksum
+GOSUMDB=off
 ```
 关于 module 校验的更多内容，可参考：
 - https://golang.org/cmd/go/#hdr-Module_configuration_for_non_public_modules
