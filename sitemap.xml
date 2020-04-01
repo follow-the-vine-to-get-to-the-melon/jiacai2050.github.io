@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://liujiacai.net/blog/2019/10/24/go-modules/</loc>
+    
+    <lastmod>2020-04-01T13:46:47.483Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://liujiacai.net/blog/2020/03/14/go-struct-interface/</loc>
     
-    <lastmod>2020-03-16T02:20:14.802Z</lastmod>
+    <lastmod>2020-03-16T04:01:56.910Z</lastmod>
     
   </url>
   
@@ -54,13 +61,6 @@
     <loc>http://liujiacai.net/blogrolls/index.html</loc>
     
     <lastmod>2019-12-24T10:59:14.616Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://liujiacai.net/blog/2019/10/24/go-modules/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.615Z</lastmod>
     
   </url>
   
