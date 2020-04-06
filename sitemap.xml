@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://liujiacai.net/about/index.html</loc>
+    
+    <lastmod>2020-04-06T04:19:25.394Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://liujiacai.net/blog/2019/10/24/go-modules/</loc>
     
     <lastmod>2020-04-01T13:46:47.483Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://liujiacai.net/blog/2019/07/17/hello-golang/</loc>
     
     <lastmod>2020-03-15T08:02:49.159Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://liujiacai.net/about/index.html</loc>
-    
-    <lastmod>2020-02-02T11:41:21.365Z</lastmod>
     
   </url>
   
