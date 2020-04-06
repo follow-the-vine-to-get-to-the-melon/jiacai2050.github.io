@@ -8,7 +8,7 @@ date: 2014-08-08 07:48:37
     (.alias ["jiacai2050" "Jiacai Liu" "写代码的西瓜"])
       (.hometown "LinYi Shandong")
         (.university ^{:homepage "http://www.ytu.edu.cn/"} "Yantai University")
-    (.skill {:language [:Go :Clojure :Java :Python :Node.js]
+    (.skill {:language [:Go :Clojure :Java :Python :Rust]
              :framework [:Netty :Flask :Hadoop :Ring :Express]})
     (.daydream "Make my codes run around the World, so keep writing")
     (.favorites
@@ -31,7 +31,8 @@ date: 2014-08-08 07:48:37
 
 与我交流
 ====
-- Email: `base64 -d <<< aGVsbG9AbGl1amlhY2FpLm5ldAo=`
+- Email: jiacai2050+blog@gmail.com
+- [Twitter](https://twitter.com/liujiacai) / [微博](https://weibo.com/liujiacai/)
 - Telegram 群组：https://t.me/clojurists
 - GPG key ID: `D3026E5C08A0BAB4`
   - Fingerprint: `6F734AE4297C7F62B6054F91D3026E5C08A0BAB4`
@@ -48,11 +49,12 @@ date: 2014-08-08 07:48:37
 ====
 
 - 读书：[豆瓣](https://www.douban.com/people/liujiacai/)、[Goodreads](https://www.goodreads.com/user/show/79743745-jiacai-liu)
+- [Segmentfault](https://segmentfault.com/u/liujiacai)
 - [From SICP to Lisp 豆瓣小组](https://www.douban.com/group/660788)
-- [掘金](https://gold.xitu.io/user/57c2431b165abd00665ee39f)，已停止维护
-- [KeepWritingCodes 公众号](http://weixin.sogou.com/weixin?query=keepwritingcodes)，已停止维护
-- [CSDN](http://blog.csdn.net/jiacai2050)，大学期间写作的地方，已停止维护
-- [ImportNew](http://www.importnew.com/author/liujiacai)，技术文档翻译，已停止维护
+- [掘金](https://gold.xitu.io/user/57c2431b165abd00665ee39f)，已停止更新
+- [KeepWritingCodes 公众号](http://weixin.sogou.com/weixin?query=keepwritingcodes)，已停止更新
+- [CSDN](http://blog.csdn.net/jiacai2050)，大学期间写作的地方，已停止更新
+- [ImportNew](http://www.importnew.com/author/liujiacai)，技术文档翻译，已停止更新
 
 我的作品
 ====
