@@ -143,7 +143,20 @@ resources/
 4. [ReturnByteSliceDemo.java](https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/ReturnByteSliceDemo.java) 本示例演示如何返回 slice，以及如何在 Java 中处理 Go 中的多个返回值
 5. [ReturnInterfaceDemo.java](https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/ReturnInterfaceDemo.java) 本示例演示返回具有 Go Pointer 的结构时的报错行为
 
-上述示例均使用 [direct mapping](https://github.com/java-native-access/jna/blob/master/www/DirectMapping.md) 的方式做 JNA，这种方式性能更好，但是支持的参数类型有限，读者可参考 [vladimirvivien/go-cshared-examples](https://github.com/vladimirvivien/go-cshared-examples) 学习 interface mapping 的使用方式。
+上述示例均使用 [direct mapping](https://github.com/java-native-access/jna/blob/master/www/DirectMapping.md) 的方式做 JNA，读者可参考 [vladimirvivien/go-cshared-examples](https://github.com/vladimirvivien/go-cshared-examples) 学习 interface mapping 的使用方式。
+这里对两种映射方式做了简单的[性能测试]( https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/README.org#benchmark)，压测数据如下
+
+| Method | input              | output         | which is better   | rate   |
+|------ |------------------ |-------------- |----------------- |------ |
+| Add    | two primitive ints | int            | direct-mapping    | 1.38   |
+| Hello  | string             | FreeableString | interface-mapping | 1.169  |
+| Hello2 | string             | Pointer        | direct-mapping    | 1.0083 |
+
+
+结论就是
+> direct-mapping 对于基本类型（包括 Pointer）性能更好，interface-mapping 在复杂类型上略优。
+
+原因可参考：https://stackoverflow.com/a/38081251
 
 # 总结
 
