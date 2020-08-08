@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>在 Java 中调用 Go 代码 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-50745138-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">在 Java 中调用 Go 代码</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">在 Java 中调用 Go 代码</h1><div class="post-meta">Aug 8, 2020<span> | </span><span class="category"><a href="/categories/langs/">编程语言</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.5k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 6</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2020/08/08/go-meet-java/" href="/blog/2020/08/08/go-meet-java/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go-gt-Cgo"><span class="toc-number">1.</span> <span class="toc-text">Go -&gt; Cgo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cgo-gt-JNA"><span class="toc-number">2.</span> <span class="toc-text">Cgo -&gt; JNA</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JNA-gt-Java"><span class="toc-number">3.</span> <span class="toc-text">JNA -&gt; Java</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="post-content"><p>在 Java 中调用 Go 的大致过程如下<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">go</span> --&gt;</span> <span class="function"><span class="title">cgo</span> --&gt;</span> <span class="function"><span class="title">jna</span> --&gt;</span> java</span><br></pre></td></tr></table></figure></p>
+<p>整个过程要解决的问题主要两个：</p>
+<ol>
+<li>数据类型在两种语言中如何转化</li>
+<li>何时清理无用的数据</li>
+</ol>
+<p>下面就围绕上述调用过程来阐述，本文涉及代码完整版可以下面链接找到：</p>
+<ul>
+<li><a href="https://github.com/jiacai2050/blog-snippets/tree/master/cgo-jna-demo" target="_blank" rel="noopener">https://github.com/jiacai2050/blog-snippets/tree/master/cgo-jna-demo</a></li>
+</ul>
+<h1 id="Go-gt-Cgo"><a href="#Go-gt-Cgo" class="headerlink" title="Go -&gt; Cgo"></a>Go -&gt; Cgo</h1><p>这是跨语言调用的第一步，主要是借助 cgo，把 Go 代码编译 C 共享库。<br><a href="https://golang.org/cmd/cgo/" target="_blank" rel="noopener">cgo</a> 是 Go 语言提供与 C 语言互调的一工具。提供一个名为 <code>C</code> 的伪 package，供 Go 访问 C 中的变量与函数，如 <code>C.size_t</code> <code>C.stdout</code> 等；同时提供 5 个特殊函数，用于两种语言间类型的转化：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Go string to C string</span></span><br><span class="line"><span class="comment">// The C string is allocated in the C heap using malloc.</span></span><br><span class="line"><span class="comment">// It is the caller's responsibility to arrange for it to be</span></span><br><span class="line"><span class="comment">// freed, such as by calling C.free (be sure to include stdlib.h</span></span><br><span class="line"><span class="comment">// if C.free is needed).</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">C</span>.<span class="title">CString</span><span class="params">(<span class="keyword">string</span>)</span> *<span class="title">C</span>.<span class="title">char</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Go []byte slice to C array</span></span><br><span class="line"><span class="comment">// The C array is allocated in the C heap using malloc.</span></span><br><span class="line"><span class="comment">// It is the caller's responsibility to arrange for it to be</span></span><br><span class="line"><span class="comment">// freed, such as by calling C.free (be sure to include stdlib.h</span></span><br><span class="line"><span class="comment">// if C.free is needed).</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">C</span>.<span class="title">CBytes</span><span class="params">([]<span class="keyword">byte</span>)</span> <span class="title">unsafe</span>.<span class="title">Pointer</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// C string to Go string</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">C</span>.<span class="title">GoString</span><span class="params">(*C.char)</span> <span class="title">string</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// C data with explicit length to Go string</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">C</span>.<span class="title">GoStringN</span><span class="params">(*C.char, C.<span class="keyword">int</span>)</span> <span class="title">string</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// C data with explicit length to Go []byte</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">C</span>.<span class="title">GoBytes</span><span class="params">(unsafe.Pointer, C.<span class="keyword">int</span>)</span> []<span class="title">byte</span></span></span><br></pre></td></tr></table></figure>
+<p>需要注意一点，cgo 中函数不能直接返回 slice/map 等具有 go pointer （区别与 C pointer，由 go runtime 管理生命周期）的数据类型，否则会报下面的 panic 信息：<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">panic: runtime <span class="keyword">error</span>: cgo <span class="literal">result</span> has Go pointer</span><br></pre></td></tr></table></figure></p>
+<p>原因也很简单，go 是有 gc 的，假如允许返回具有 go pointer 的数据，那么 C 代码中得到的数据无法保证合法性，很有可能已经被 gc 了，即悬挂指针问题。解决的方式也很简单，就是采用 go 提供的特殊转化函数，将数据转为 <code>unsafe.Pointer</code>，在 C 中用 <code>void *</code> 的方式去使用。</p>
+<p>可以想象，这些特殊转化函数一定对数据进行了深拷贝，来保证数据的合法性，可参考 <a href="https://github.com/golang/go/blob/ba9e10889976025ee1d027db6b1cad383ec56de8/src/cmd/cgo/out.go#L1718" target="_blank" rel="noopener">C.CBytes 的定义</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cBytesDef = <span class="string">`</span></span><br><span class="line"><span class="string">func _Cfunc_CBytes(b []byte) unsafe.Pointer &#123;</span></span><br><span class="line"><span class="string">    p := _cgo_cmalloc(uint64(len(b)))</span></span><br><span class="line"><span class="string">    pp := (*[1&lt;&lt;30]byte)(p)</span></span><br><span class="line"><span class="string">    copy(pp[:], b)</span></span><br><span class="line"><span class="string">    return p</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure>
+<p>但这也意味着，C 代码中需要负责 free 掉无用的数据。这里用下面的代码来做示范：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//export Hello</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Hello</span><span class="params">(msg <span class="keyword">string</span>)</span> *<span class="title">C</span>.<span class="title">char</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> C.CString(<span class="string">"hello "</span> + strings.ToUpper(msg))</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用下面的 build 命令即可得到与 C 互调的共享库<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># linux 下可输出到 libawesome.so，这里以 Mac 下的动态库为例</span></span><br><span class="line">go build -v -o libawesome.dylib -buildmode=c-shared ./main.go</span><br></pre></td></tr></table></figure></p>
+<p>同时会生产一个头文件，里面有 Hello 函数的相关签名<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ptrdiff_t is the signed integer type of the result of subtracting two pointers.</span></span><br><span class="line"><span class="comment">// n 这里表示字符串的长度</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span> <span class="keyword">const</span> <span class="keyword">char</span> *p; <span class="keyword">ptrdiff_t</span> n; &#125; _GoString_;</span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">char</span>* <span class="title">Hello</span><span class="params">(GoString p0)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Cgo-gt-JNA"><a href="#Cgo-gt-JNA" class="headerlink" title="Cgo -&gt; JNA"></a>Cgo -&gt; JNA</h1><p>这一步主要是 Java 中如何调用 C 代码，目前主要有两种方式，</p>
+<ul>
+<li><a href="https://github.com/java-native-access/jna" target="_blank" rel="noopener">JNA</a>，优势是调用方便，只需要编写 Java 代码，JNA 框架负责在 C/Java 中进行数据类型转化</li>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/jniTOC.html" target="_blank" rel="noopener">JNI</a>，优势是性能好，缺点是调用繁琐</li>
+</ul>
+<p>详细区别这里不展开叙述，感兴趣的读者可参考下面文章：</p>
+<ul>
+<li><a href="https://blog.caplin.com/2014/12/01/jnajni/" target="_blank" rel="noopener">https://blog.caplin.com/2014/12/01/jnajni/</a></li>
+</ul>
+<h1 id="JNA-gt-Java"><a href="#JNA-gt-Java" class="headerlink" title="JNA -&gt; Java"></a>JNA -&gt; Java</h1><p>这一步主要是在 Java 代码中如何调用 JNA 框架提供的库进行跨语言调用，也是本文的重点。<br>JNA 将 Java 基本类型直接映射为 C 中同等大小的类型，这里<a href="https://github.com/java-native-access/jna/blob/master/www/Mappings.md" target="_blank" rel="noopener">摘抄</a>如下</p>
+<table>
+<thead>
+<tr>
+<th>Native Type</th>
+<th>Size</th>
+<th>Java Type</th>
+<th>Common Windows Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td>8-bit integer</td>
+<td>byte</td>
+<td>BYTE, TCHAR</td>
+</tr>
+<tr>
+<td>short</td>
+<td>16-bit integer</td>
+<td>short</td>
+<td>WORD</td>
+</tr>
+<tr>
+<td>wchar_t</td>
+<td>16/32-bit character</td>
+<td>char</td>
+<td>TCHAR</td>
+</tr>
+<tr>
+<td>int</td>
+<td>32-bit integer</td>
+<td>int</td>
+<td>DWORD</td>
+</tr>
+<tr>
+<td>int</td>
+<td>boolean value</td>
+<td>boolean</td>
+<td>BOOL</td>
+</tr>
+<tr>
+<td>long</td>
+<td>32/64-bit integer</td>
+<td>NativeLong</td>
+<td>LONG</td>
+</tr>
+<tr>
+<td>long long</td>
+<td>64-bit integer</td>
+<td>long</td>
+<td>__int64</td>
+</tr>
+<tr>
+<td>float</td>
+<td>32-bit FP</td>
+<td>float</td>
+<td></td>
+</tr>
+<tr>
+<td>double</td>
+<td>64-bit FP</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>char*</td>
+<td>C string</td>
+<td>String</td>
+<td>LPCSTR</td>
+</tr>
+<tr>
+<td>void*</td>
+<td>pointer</td>
+<td>Pointer</td>
+<td>LPVOID, HANDLE, LPXXX</td>
+</tr>
+</tbody>
+</table>
+<p>对于 C 中的 struct/pointer，JNA 中也提供了 <a href="http://java-native-access.github.io/jna/5.6.0/javadoc/com/sun/jna/Structure.html" target="_blank" rel="noopener">Structure</a>/<a href="http://java-native-access.github.io/jna/5.6.0/javadoc/com/sun/jna/Pointer.html" target="_blank" rel="noopener">Pointer</a> 类来对应。JNA 的具体使用过程可参考：</p>
+<ul>
+<li><a href="https://github.com/java-native-access/jna/blob/master/www/GettingStarted.md" target="_blank" rel="noopener">https://github.com/java-native-access/jna/blob/master/www/GettingStarted.md</a></li>
+<li><a href="http://java-native-access.github.io/jna/5.6.0/javadoc/overview-summary.html" target="_blank" rel="noopener">http://java-native-access.github.io/jna/5.6.0/javadoc/overview-summary.html</a></li>
+</ul>
+<p>上述 GettingStarted 中第三种加载动态库的方式（即 resources 下的 <code>{OS}-{ARCH}/{LIBRARY}</code> 目录内）可以把动态库一起打包到 jar 中，这对于提供基础类库时比较方便，用户不需要再额外配置。<br><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resources/</span><br><span class="line">├── darwin</span><br><span class="line">│   └── libawesome.dylib</span><br><span class="line">├── linux-<span class="keyword">x</span><span class="number">86</span><span class="number">-64</span></span><br><span class="line">│   └── libawesome.so</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://github.com/vladimirvivien/go-cshared-examples" target="_blank" rel="noopener">vladimirvivien/go-cshared-examples</a> 这个仓库演示了四个函数 Add/Cosine/Sort/Log 的 JNA 调用，但这四个函数的返回类型都是基本类型（int/float64），没有 string/slice 等复杂类型，因此这里通过五个示例讲述复杂类型的返回问题：</p>
+<ol>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/BadStringDemo.java" target="_blank" rel="noopener">BadStringDemo.java</a> 本示例演示了网络上一种常见，但有内存泄露问题的返回 string 的方式</li>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/GoodStringDemo.java" target="_blank" rel="noopener">GoodStringDemo.java</a> 这个示例演示了如何正确的返回 string</li>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/AutoClosableStringDemo.java" target="_blank" rel="noopener">AutoClosableStringDemo.java</a>  本示例在 GoodStringDemo 的基础上，利用 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html" target="_blank" rel="noopener">AutoCloseable</a> 与 <a href="https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html" target="_blank" rel="noopener">try-with-resource</a> 特性来释放内存</li>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/ReturnByteSliceDemo.java" target="_blank" rel="noopener">ReturnByteSliceDemo.java</a> 本示例演示如何返回 slice，以及如何在 Java 中处理 Go 中的多个返回值</li>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/ReturnInterfaceDemo.java" target="_blank" rel="noopener">ReturnInterfaceDemo.java</a> 本示例演示返回具有 Go Pointer 的结构时的报错行为</li>
+</ol>
+<p>上述示例均使用 <a href="https://github.com/java-native-access/jna/blob/master/www/DirectMapping.md" target="_blank" rel="noopener">direct mapping</a> 的方式做 JNA，这种方式性能更好，但是支持的参数类型有限，读者可参考 <a href="https://github.com/vladimirvivien/go-cshared-examples" target="_blank" rel="noopener">vladimirvivien/go-cshared-examples</a> 学习 interface mapping 的使用方式。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>C 语言作为连接不同高级语言的胶水语言，不具备垃圾回收功能，所以开发者在做 JNA 时要注意回收无用的内存结构。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://stackoverflow.com/questions/58759399/does-jna-free-memory-of-go-cstring-return-value" target="_blank" rel="noopener">https://stackoverflow.com/questions/58759399/does-jna-free-memory-of-go-cstring-return-value</a></li>
+<li><a href="https://stackoverflow.com/questions/48267403/returning-const-char-from-native-code-and-getting-string-in-java/48270500" target="_blank" rel="noopener">https://stackoverflow.com/questions/48267403/returning-const-char-from-native-code-and-getting-string-in-java/48270500</a></li>
+<li><a href="https://github.com/java-native-access/jna/blob/master/www/DirectMapping.md" target="_blank" rel="noopener">https://github.com/java-native-access/jna/blob/master/www/DirectMapping.md</a></li>
+<li><a href="https://documentation.help/Golang/cgo.html" target="_blank" rel="noopener">https://documentation.help/Golang/cgo.html</a></li>
+<li><a href="https://docs.yottadb.com/Presentations/DragonsofCGO.pdf" target="_blank" rel="noopener">https://docs.yottadb.com/Presentations/DragonsofCGO.pdf</a></li>
+<li><a href="https://stackoverflow.com/questions/48686763/cgo-result-has-go-pointer" target="_blank" rel="noopener">https://stackoverflow.com/questions/48686763/cgo-result-has-go-pointer</a></li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2020/08/08/go-meet-java/" data-id="ckdkzpg1l007o6yljvoi18bea" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKklEQVR42u3aQXKDMAwF0N7/0nTbLoAviXSK/VhlMiT4ZfFjS/r6iq/jx3X2zvX98+984MLAwHgt47i8rh+ZfHOVffaps3swMDD2YSSLSEg3D4vB+dowMDAwzu6ZbxOTpWNgYGBMAjcP4uoWEwMDA2NyiE0CNCmxJQfXD57FMTAwXsh46pD5idcf6W9gYGC8inEUr2rpP29SHoMLAwNjbUa1Gdk8Xl4utBe4GBgY+zCSYM0PjXlYV0c6rktyGBgYOzCqBbVqKOfls2qb81fgYmBgLMqYHCDzgYxJoBcGODAwMJZmzKNzErjJlrG3VcXAwFiJUd2cJZvI/PG9HyI6Q2NgYCzH6L2THDKrd+YruelvYGBgLMGYHDKrQxhPTXY93MLEwMD494xegFYHKcr/AJNCGwYGxqKMXnmrGpHXUTtpnWJgYKzNyB9ZbV5Wl1jdYt7scDEwMJZm9EYuem2Gx/4GMDAwlmY0A24QqdWIb+4DMTAwlmNUi+95maw6+HW9hpvNKAYGxjaMBzK7NRaWj2WchjIGBsYGjGqJrRrZvXJeocCHgYGxASP/2KQMlw9nlPuVGBgYizJ6bYAkWJ+K2iTuMTAw1mb0jqDVgn51s1gNfQwMjB0Yech+4pfLmwc3vz0GBsYGjHyJvXJ/r5CXrxYDAwPjb0Yo8iDGwMDA6DHydmYvZKNDLAYGxtKMXjOgB5sMZGBgYOzJ6B0d883isw2GUVMTAwPjfYxvvoCoduYoij4AAAAASUVORK5CYII=">分享</a><div class="tags"><a href="/tags/java/">Java</a><a href="/tags/Go/">Go</a></div><div class="post-nav"><a class="next" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
+    this.page.url = 'http://liujiacai.net/blog/2020/08/08/go-meet-java/';
+    this.page.identifier = 'blog/2020/08/08/go-meet-java/';
+    this.page.title = '在 Java 中调用 Go 代码';
+  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
+url: 'https://disqus.com/next/config.json',
+timeout: 2500,
+type: 'GET',
+success: function(){
+  var d = document;
+  var s = d.createElement('script');
+  s.src = '//jiacai2050.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', + new Date());
+  (d.head || d.body).appendChild(s);
+  $('.disqus_click_btn').css('display', 'none');
+},
+error: function() {
+  $('.disqus_click_btn').css('display', 'block');
+}
+});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
+    (() => { // DON'T EDIT BELOW THIS LINE
+        var d = document;
+        var s = d.createElement('script');
+        s.src = '//jiacai2050.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', + new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    $('.disqus_click_btn').css('display','none');
+});</script><script type="text/javascript" id="disqus-count-script">$(function() {
+     var xhr = new XMLHttpRequest();
+     xhr.open('GET', '//disqus.com/next/config.json', true);
+     xhr.timeout = 2500;
+     xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+         $('.post-meta .post-comments-count').show();
+         var s = document.createElement('script');
+         s.id = 'dsq-count-scr';
+         s.src = 'https://jiacai2050.disqus.com/count.js';
+         s.async = true;
+         (document.head || document.body).appendChild(s);
+       }
+     };
+     xhr.ontimeout = function () { xhr.abort(); };
+     xhr.send(null);
+   });
+</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/08/18/generational-gc/">深入浅出垃圾回收（四）分代式 GC</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

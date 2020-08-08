@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://liujiacai.net/blog/2020/08/08/go-meet-java/</loc>
+    
+    <lastmod>2020-08-08T06:36:56.368Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://liujiacai.net/blog/2014/09/14/mozilla-history/</loc>
     
     <lastmod>2020-07-18T13:19:47.609Z</lastmod>
@@ -86,14 +93,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/12/29/how-java-synchronizer-work/</loc>
+    <loc>http://liujiacai.net/blog/2018/11/10/damn-single-socket/</loc>
     
     <lastmod>2019-12-24T10:59:14.613Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/11/10/damn-single-socket/</loc>
+    <loc>http://liujiacai.net/blog/2018/12/29/how-java-synchronizer-work/</loc>
     
     <lastmod>2019-12-24T10:59:14.613Z</lastmod>
     
@@ -107,14 +114,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/08/18/generational-gc/</loc>
+    <loc>http://liujiacai.net/blog/2018/08/04/incremental-gc/</loc>
     
     <lastmod>2019-12-24T10:59:14.612Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/08/04/incremental-gc/</loc>
+    <loc>http://liujiacai.net/blog/2018/08/18/generational-gc/</loc>
     
     <lastmod>2019-12-24T10:59:14.612Z</lastmod>
     
@@ -128,13 +135,6 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/10/01/macro-in-action/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.610Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</loc>
     
     <lastmod>2019-12-24T10:59:14.610Z</lastmod>
@@ -142,7 +142,21 @@
   </url>
   
   <url>
+    <loc>http://liujiacai.net/blog/2017/10/01/macro-in-action/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.610Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://liujiacai.net/blog/2017/03/22/ace-technical-interview/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.609Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2017/05/11/review-of-secret-of-silicon-valley/</loc>
     
     <lastmod>2019-12-24T10:59:14.609Z</lastmod>
     
@@ -163,28 +177,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/05/11/review-of-secret-of-silicon-valley/</loc>
+    <loc>http://liujiacai.net/blog/2017/01/08/review-2016/</loc>
     
-    <lastmod>2019-12-24T10:59:14.609Z</lastmod>
+    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://liujiacai.net/blog/2017/01/08/review-2016/</loc>
     
     <lastmod>2019-12-24T10:59:14.608Z</lastmod>
     
@@ -198,14 +198,21 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/12/07/hello-jeju/</loc>
+    <loc>http://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2016/11/07/run-2-marathon-in-a-week/</loc>
     
     <lastmod>2019-12-24T10:59:14.607Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/11/07/run-2-marathon-in-a-week/</loc>
+    <loc>http://liujiacai.net/blog/2016/12/07/hello-jeju/</loc>
     
     <lastmod>2019-12-24T10:59:14.607Z</lastmod>
     
@@ -226,14 +233,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/06/30/python2-encoding/</loc>
+    <loc>http://liujiacai.net/blog/2016/10/31/socket-programming/</loc>
     
     <lastmod>2019-12-24T10:59:14.606Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/10/31/socket-programming/</loc>
+    <loc>http://liujiacai.net/blog/2016/06/30/python2-encoding/</loc>
     
     <lastmod>2019-12-24T10:59:14.606Z</lastmod>
     
@@ -247,14 +254,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/</loc>
+    <loc>http://liujiacai.net/blog/2016/04/23/sicp-chapter4-summary/</loc>
     
     <lastmod>2019-12-24T10:59:14.605Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/04/23/sicp-chapter4-summary/</loc>
+    <loc>http://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/</loc>
     
     <lastmod>2019-12-24T10:59:14.605Z</lastmod>
     
@@ -289,14 +296,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/10/03/first-toy-scheme/</loc>
+    <loc>http://liujiacai.net/blog/2015/10/27/sf-hackathon/</loc>
     
     <lastmod>2019-12-24T10:59:14.603Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/10/27/sf-hackathon/</loc>
+    <loc>http://liujiacai.net/blog/2015/10/03/first-toy-scheme/</loc>
     
     <lastmod>2019-12-24T10:59:14.603Z</lastmod>
     
@@ -310,14 +317,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/20/sicp-chapter2-summary/</loc>
+    <loc>http://liujiacai.net/blog/2015/09/12/java-linkedhashmap/</loc>
     
     <lastmod>2019-12-24T10:59:14.602Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/12/java-linkedhashmap/</loc>
+    <loc>http://liujiacai.net/blog/2015/09/20/sicp-chapter2-summary/</loc>
     
     <lastmod>2019-12-24T10:59:14.602Z</lastmod>
     
@@ -331,14 +338,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/03/java-hashmap/</loc>
+    <loc>http://liujiacai.net/blog/2015/09/04/java-treemap/</loc>
     
     <lastmod>2019-12-24T10:59:14.601Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/04/java-treemap/</loc>
+    <loc>http://liujiacai.net/blog/2015/09/03/java-hashmap/</loc>
     
     <lastmod>2019-12-24T10:59:14.601Z</lastmod>
     
@@ -352,14 +359,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/07/18/sicp-chapter1-summary/</loc>
+    <loc>http://liujiacai.net/blog/2015/04/03/leave-ucloud-to-youzan/</loc>
     
     <lastmod>2019-12-24T10:59:14.600Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/04/03/leave-ucloud-to-youzan/</loc>
+    <loc>http://liujiacai.net/blog/2015/07/18/sicp-chapter1-summary/</loc>
     
     <lastmod>2019-12-24T10:59:14.600Z</lastmod>
     
@@ -373,14 +380,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/12/29/review-2014/</loc>
+    <loc>http://liujiacai.net/blog/2015/02/01/javascript-oop/</loc>
     
     <lastmod>2019-12-24T10:59:14.599Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/02/01/javascript-oop/</loc>
+    <loc>http://liujiacai.net/blog/2014/12/29/review-2014/</loc>
     
     <lastmod>2019-12-24T10:59:14.599Z</lastmod>
     
@@ -390,13 +397,6 @@
     <loc>http://liujiacai.net/blog/2015/02/24/javascript-datatype/</loc>
     
     <lastmod>2019-12-24T10:59:14.599Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.598Z</lastmod>
     
   </url>
   
@@ -415,14 +415,21 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/08/16/two-pot-question/</loc>
+    <loc>http://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</loc>
+    
+    <lastmod>2019-12-24T10:59:14.598Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://liujiacai.net/blog/2014/08/09/inter-intra-cept-ee-er/</loc>
     
     <lastmod>2019-12-24T10:59:14.597Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/08/09/inter-intra-cept-ee-er/</loc>
+    <loc>http://liujiacai.net/blog/2014/08/16/two-pot-question/</loc>
     
     <lastmod>2019-12-24T10:59:14.597Z</lastmod>
     
@@ -457,14 +464,14 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</loc>
+    <loc>http://liujiacai.net/blog/2014/06/06/computational-thinking-3/</loc>
     
     <lastmod>2019-12-24T10:59:14.595Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/06/06/computational-thinking-3/</loc>
+    <loc>http://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</loc>
     
     <lastmod>2019-12-24T10:59:14.595Z</lastmod>
     
@@ -492,7 +499,7 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/05/22/search-engine-overview/</loc>
+    <loc>http://liujiacai.net/blog/2014/05/19/go-into-java-world/</loc>
     
     <lastmod>2019-12-24T10:59:14.593Z</lastmod>
     
@@ -506,7 +513,7 @@
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/05/19/go-into-java-world/</loc>
+    <loc>http://liujiacai.net/blog/2014/05/22/search-engine-overview/</loc>
     
     <lastmod>2019-12-24T10:59:14.593Z</lastmod>
     
