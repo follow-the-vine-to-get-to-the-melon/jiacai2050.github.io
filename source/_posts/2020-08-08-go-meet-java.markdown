@@ -64,7 +64,21 @@ func _Cfunc_CBytes(b []byte) unsafe.Pointer {
 }
 `
 ```
-但这也意味着，C 代码中需要负责 free 掉无用的数据。这里用下面的代码来做示范：
+但这也意味着，Go/C 代码中需要负责 free 掉无用的数据（至于哪边 free，要看实际情况）。示例：
+
+```go
+func main() {
+    cs := C.CString("Hello from stdio")
+    C.myprint(cs)
+    C.free(unsafe.Pointer(cs))
+}
+```
+将 Go 函数导出供 C 调用，需要用 `//export` 标示相关函数，并且 Go 文件需要在 `package main`下。然后用类似下面的 build 命令，即可得到与 C 互调的动态库，同时会生产一个头文件，里面有 export 函数的相关签名。
+
+```bash
+# linux 下可输出到 libawesome.so，这里以 Mac 下的动态库为例
+go build -v -o libawesome.dylib -buildmode=c-shared ./main.go
+```
 
 ```go
 //export Hello
@@ -72,19 +86,14 @@ func Hello(msg string) *C.char {
     return C.CString("hello " + strings.ToUpper(msg))
 
 }
-```
-调用下面的 build 命令即可得到与 C 互调的共享库
-```bash
-# linux 下可输出到 libawesome.so，这里以 Mac 下的动态库为例
-go build -v -o libawesome.dylib -buildmode=c-shared ./main.go
-```
-同时会生产一个头文件，里面有 Hello 函数的相关签名
-```c
+
+// 头文件中 Hello 的定义
 // ptrdiff_t is the signed integer type of the result of subtracting two pointers.
 // n 这里表示字符串的长度
 typedef struct { const char *p; ptrdiff_t n; } _GoString_;
 extern char* Hello(GoString p0);
 ```
+完整代码可参考 [main.go]( https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/resources/main.go) 、对应的头文件 [libawesome.h](https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/libawesome.h)。
 
 # Cgo -> JNA
 
