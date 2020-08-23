@@ -6,12 +6,12 @@ tags: [Go]
 
 使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的：
 
-> Go is expressive, concise, clean, and efficient. It's a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language. 
+> Go is expressive, concise, clean, and efficient. It's a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language.
 
 Rob Pike 在 [Simplicity is Complicated](https://talks.golang.org/2015/simplicity-is-complicated.slide) 中也提到 Go 的简洁是其流行的重要原因。简洁并不意味着简单，Go 有着诸多设计确保了把复杂性隐藏在背后。本文就结合笔者自身经验，来讨论 Go 中 struct/interface 的设计理念与最佳实践，帮助读者写出健壮、高效的 Go 程序。
 
 
-## 值类型的 struct 
+## 值类型的 struct
 
 Go 的设计目标是取代 C/C++，所以 Go 里面的 struct 和 C 的类似，与 int/float 一样属于**值类型**，值类型最重要的特点是在进行赋值时，新变量会得到一份拷贝后的值，这和 Java 中以引用赋值的 Object 有着本质区别。
 
@@ -51,7 +51,7 @@ tmp := m[1]
 tmp.name = "2"
 m[1] = tmp
 
-// 2. 使用指针类型 
+// 2. 使用指针类型
 m := map[int]*student{1: {name: "1"}}
 m[1].name = "2"
 ```
@@ -73,104 +73,19 @@ func returnByPointer(name string) *student {
 
 ./snippet.go:6:18: &student literal escapes to heap
 ```
-可以看到，`returnByPointer` 方法的返回值会逃逸，最终分配在 heap 上，关于变量分配在 stack / heap 上的性能差距，可参考：[github gist](https://gist.github.com/jiacai2050/7354648a5cae59762640cd20e5022db4)、[gitee](https://gitee.com/liujiacai/codes/8jironvkfzay04ue31wmc36/widget)
+可以看到，`returnByPointer` 方法的返回值会逃逸，最终分配在 heap 上，关于变量分配在 stack / heap 上的性能差距，可参考：[bench_test.go](https://github.com/jiacai2050/blog-snippets/blob/master/go-struct-interface/bench_test.go)
 
-```go
-// snippet.go
-package main
-
-import (
-    "fmt"
-)
-
-type student struct {
-    name string
-}
-
-//go:noinline
-func (s student) getNameByValue() string {
-    return s.name
-}
-
-//go:noinline
-func (s *student) getNameByPointer() string {
-    return s.name
-}
-
-const randStr = "a very long string,a very long string,a very long string,a very long string"
-
-//go:noinline
-func returnByValue() student {
-    return student{randStr}
-}
-
-//go:noinline
-func returnByPointer() *student {
-    return &student{randStr}
-}
-
-// bench_test.go
-package main
-
-import "testing"
-
-var blackholeStr = ""
-var blackholeValue student
-var blackholePointer *student
-
-func BenchmarkPointerVSStruct(b *testing.B) {
-
-    b.Run("return pointer", func(b *testing.B) {
-        b.ReportAllocs()
-        b.ResetTimer()
-        for i := 0; i < b.N; i++ {
-            blackholePointer = returnByPointer()
-        }
-    })
-
-    b.Run("return  value", func(b *testing.B) {
-        b.ReportAllocs()
-        b.ResetTimer()
-        for i := 0; i < b.N; i++ {
-            blackholeValue = returnByValue()
-        }
-    })
-
-    b.Run("value receiver", func(b *testing.B) {
-        b.ReportAllocs()
-        b.ResetTimer()
-        for i := 0; i < b.N; i++ {
-            r := student{
-                name: randStr,
-            }
-            blackholeStr = r.getNameByValue()
-        }
-    })
-    b.Run("pointer receiver", func(b *testing.B) {
-        b.ReportAllocs()
-        b.ResetTimer()
-        for i := 0; i < b.N; i++ {
-            r := &student{
-                name: randStr,
-            }
-            blackholeStr = r.getNameByPointer()
-        }
-    })
-
-}
-```
 测试结果：
-```
-go test -run ^NOTHING -bench Struct bench_test.go  snippet.go
+```bash
+go test -run ^NOTHING -bench Struct *.go
 goos: darwin
 goarch: amd64
-BenchmarkPointerVSStruct/return_pointer-8               34476903                32.4 ns/op            16 B/op          1 allocs/op
-BenchmarkPointerVSStruct/return__value-8                530538498                2.27 ns/op            0 B/op          0 allocs/op
-BenchmarkPointerVSStruct/value_receiver-8               415309486                2.86 ns/op            0 B/op          0 allocs/op
-BenchmarkPointerVSStruct/pointer_receiver-8             348904872                3.23 ns/op            0 B/op          0 allocs/op
+BenchmarkPointerVSStruct/return_pointer-8               33634951                34.3 ns/op            16 B/op          1 allocs/op
+BenchmarkPointerVSStruct/return__value-8                530202802                2.23 ns/op            0 B/op          0 allocs/op
+BenchmarkPointerVSStruct/value_receiver-8               433067940                2.77 ns/op            0 B/op          0 allocs/op
+BenchmarkPointerVSStruct/pointer_receiver-8             431380804                2.72 ns/op            0 B/op          0 allocs/op
 PASS
-ok      command-line-arguments  5.699s
-
+ok      command-line-arguments  5.889s
 ```
 
 可以看到，方法返回 pointer 时，会有一次 heap 分配，占 16 个字节，这正好是 name 字段（string 类型）的大小，8 个字节表示指向数据的指针，8 个字节表示长度（笔者为 64 位系统），类似下面的结构
@@ -183,17 +98,18 @@ type StringHeader struct {
 ```
 
 方法返回 value 时，则没有 heap 分配，说明所有变量都分配在 stack 上。
-对于 receiver 为 pointer 或 value 性能则无差别，这是因为 s 在两种情况下均无逃逸，所以都分配在了 stack 上，这也说明变量分配在那里与是否为指针无关。
+对于 receiver 为 pointer 或 value 性能差别不大，这是因为 s 在两种情况下均无逃逸，并且拷贝 struct value 本身与拷贝指针（8 字节）的代价差不多；如果增加 struct 的大小，拷贝指针的代价就会小于 value 本身了。
+这个测试也说明变量分配在内存中的位置，与是否为指针无关。
 
 ### value vs pointer
 
 结合上面的实验，可以按照下述流程确定选用 value/pointer：
 1. 如果 struct 需要改变状态（比如包含 waitgroup/sync.Poll/sync.Mutex 等），则需要 pointer
-2. 如果 `unsafe.Sizeof(struct)` 大于一定阈值时，拷贝 value 的时间大于在 heap 上分配的时间，考虑用 pointer
+2. 作为函数返回值，`unsafe.Sizeof(struct)` 大于一定阈值时，拷贝 value 的时间大于在 heap 上分配的时间，考虑用 pointer
+3. 作为函数参数，可以把指针看成 8 字节的 value，如果 struct 大小远大于 8 字节，考虑用 pointer
 3. 除此之外，struct 即可
 
-为了确定出 2 中的阈值，可以在 struct 中添加一数组元素，之后再来跑上述测试即可，在笔者机器中，这个阈值大概为 72K，很少有 struct 会达到这个量级，这是由于 Go 中常用的 slice/map/string 均为复合类型（可认为由 header+data 两部分组成），在 struct 的结构中，只保存 header 部分，所以大小是固定的，而 array 用的地方也不是很多，所以读者可认为只要 struct 状态不需要改变，value 则是最佳选择。
-
+为了确定出 2 中的阈值，可以在 struct 中添加一数组元素，之后再来跑上述测试即可，在笔者机器中，这个阈值大概为 72K。
 ```go
 type student struct {
     name string
@@ -203,6 +119,8 @@ type student struct {
 BenchmarkPointerVSStruct/return_pointer-8                 150147              8147 ns/op           73728 B/op          1 allocs/op
 BenchmarkPointerVSStruct/return__value-8                  138591              8146 ns/op               0 B/op          0 allocs/op
 ```
+
+很少有 struct 会达到这个量级，这是由于 Go 中常用的 slice/map/string 均为复合类型（可认为由 header+data 两部分组成），类似上面的 StringHeader，header 部分是固定的，header 里面有指向数据的指针。
 
 | 简单类型        | 复合类型  |
 |--------------- |--------- |
@@ -214,17 +132,17 @@ BenchmarkPointerVSStruct/return__value-8                  138591              81
 |                 | string    |
 
 ```go
-map[string]uint64{
-"ptr":       uint64(unsafe.Sizeof(&struct{}{})),
-"map":       uint64(unsafe.Sizeof(map[bool]bool{})),
-"slice":     uint64(unsafe.Sizeof([]struct{}{})),
-"chan":      uint64(unsafe.Sizeof(make(chan struct{}))),
-"func":      uint64(unsafe.Sizeof(func() {})),
-"interface": uint64(unsafe.Sizeof(interface{}(0))),
-}
+    fmt.Println(map[string]uint64{
+        "ptr":       uint64(unsafe.Sizeof(&struct{}{})),
+        "map":       uint64(unsafe.Sizeof(map[bool]bool{})),
+        "slice":     uint64(unsafe.Sizeof([]struct{}{})),
+        "chan":      uint64(unsafe.Sizeof(make(chan struct{}))),
+        "func":      uint64(unsafe.Sizeof(func() {})),
+        "interface": uint64(unsafe.Sizeof(interface{}(0))),
+    })
 
-// 输出
-map[chan:8 func:8 interface:16 map:8 ptr:8 slice:24]
+    // 输出
+    map[chan:8 func:8 interface:16 map:8 ptr:8 slice:24]
 ```
 可以看到，
 - chan/func/map/ptr 均为 8 个字节，即一个指向具体数据的指针
@@ -248,12 +166,12 @@ struct 中的字段会按照机器字长进行对齐，所以在性能要求比�
         unsafe.Sizeof(struct {
             a bool
             b string
-            c bool            
+            c bool
         }{}),
         unsafe.Sizeof(struct {
             a bool
             c bool
-            b string            
+            b string
         }{}),
     )
 ```
