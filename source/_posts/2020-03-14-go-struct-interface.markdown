@@ -283,3 +283,4 @@ Go 的精妙设计保证了其简洁的特性，而且这些特性可能和传�
 - https://go101.org/article/value-part.html
 - https://github.com/tyranron/golang-sizeof.tips/blob/master/internal/parser/types.go
 - https://blog.golang.org/error-handling-and-go
+- https://medium.com/a-journey-with-go/go-should-i-use-a-pointer-instead-of-a-copy-of-my-struct-44b43b104963
