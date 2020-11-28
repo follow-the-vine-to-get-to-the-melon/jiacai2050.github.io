@@ -146,15 +146,14 @@ GNU Emacs 官方网站是这么介绍的：
 
 初次接触 Emacs 中的撤销与恢复，十分容易让人迷惑，我时常也被这个搞得晕头转向，不过幸好有 [Undo Tree](https://www.emacswiki.org/emacs/UndoTree) 这个插件来可视化撤销状态，上面的状态图就取自 UndoTree 代码中的注释，感谢其作者的贡献。
 
-
-
 ### 扩展、定制
 
 上面一小节介绍了文本编辑中两个非常实用的基本功能，其实这只是冰山一角，Emacs 可扩展、可定制的特性营造了一个富有创造力的社区，拥有无数功能强大的插件。也许读者会疑问，VSCode 也有丰富的[插件市场](https://marketplace.visualstudio.com/vscode)，那 Emacs 与它们有什么不同呢？这与 Emacs [设计架构](https://www.gnu.org/software/emacs/emacs-paper.html#SEC14)有关。
 
-Emacs 本身可以看作是一个虚拟机（Lisp Machine），除了与操作系统打交道的 IO 操作使用 C 语言来实现外，其余部分均由 ELisp 实现，并且提供一个解释器来运行这些 ELisp 代码。每一次的字符输入都相当于在解释器的 REPL 中调用 [self-insert-command](https://www.gnu.org/software/emacs/manual/html_node/elisp/Commands-for-Insertion.html) 命令，这意味着用户自己定义的代码与 Emacs 的源码（ELisp 部分）是平等的。如果读者对 Lisp 不熟悉，可以这么类比，打开 Emacs 的界面对应着在终端输入 `python` 进入的解释器，键盘输入、鼠标点击均对应一个函数调用。
+Emacs 本身可以看作是一个虚拟机（Lisp Machine），除了与操作系统打交道的 IO 操作使用 C 语言来实现外，其余部分均由 ELisp 实现，并且提供一个解释器来运行这些 ELisp 代码。
+每一次的字符输入都相当于在解释器的 REPL 中调用 [self-insert-command](https://www.gnu.org/software/emacs/manual/html_node/elisp/Commands-for-Insertion.html) 命令，这意味着用户自己定义的代码与 Emacs 的源码（ELisp 部分）是平等的。如果读者对 Lisp 不熟悉，可以这么类比，打开 Emacs 的界面对应着在终端输入 `python` 进入的解释器，键盘输入、鼠标点击均对应一个个函数调用。
 
-Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 源码里面定义了 foo 这么一个变量，那么用户自己编写的函数可以直接修改它，对于不了解 Lisp 的人来说，这是十分不可思议的事情。这一优势的体现就是 Emacs 的扩展十分简单（熟悉 ELisp 的前提下），比如在 `init.el` 中定义下面几行函数即可实现在 Emacs 中打开浏览器，进行 Google 搜索。
+Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 源码里面定义了 foo 这么一个变量，那么用户自己编写的函数可以直接修改它，对于不了解 Lisp 的人来说，这是十分不可思议的事情。这一优势的体现就是 Emacs 的扩展十分简单（熟悉 ELisp 的前提下），比如在 `init.el` 中定义下面几行函数即可实现在 Emacs 中打开浏览器，对指定关键词进行 Google 搜索。
 
 ```lisp
 (defun my/google-search ()
@@ -171,15 +170,17 @@ Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 
 而 VSCode，即使是个 Hello World 级别的扩展，步骤也复杂的多，可参考：
 - https://code.visualstudio.com/api/get-started/your-first-extension
 
-
 除了扩展编写简单外，基于 ELisp REPL 的另一优势是定制性强，除了 C 语言部分实现外，其余 ELisp 实现的地方都可以修改。比如下图是 Emacs 标准界面
 ![](https://www.gnu.org/software/emacs/images/teaser.png)
 
-而大多数的 Emacs 用户都通过`(menu-bar-mode -1)` 这么一行代码来将菜单栏隐藏掉，因为基本用不到，而且还占地方。除此之外，Emacs 还能用来[听音乐](https://www.emacswiki.org/emacs/MusicPlayers)、[玩游戏](https://www.emacswiki.org/emacs/CategoryGames)、看 [Epub 电子书](https://depp.brause.cc/nov.el/)、甚至[任何应用](https://github.com/manateelazycat/emacs-application-framework)都能运行在 Emacs 里！
+而大多数的 Emacs 用户都通过`(menu-bar-mode -1)` 这么一行代码来将菜单栏隐藏掉，因为基本用不到，而且还占地方。除此之外，Emacs 还能用来[听音乐](https://www.emacswiki.org/emacs/MusicPlayers)、[玩游戏](https://www.emacswiki.org/emacs/CategoryGames)、[看 EPUB 电子书](https://depp.brause.cc/nov.el/)、[聊 Telegram](https://github.com/zevlg/telega.el)、甚至[任何应用](https://github.com/manateelazycat/emacs-application-framework)都能运行在 Emacs 里！
 
 >  Emacs, "a great operating system, lacking only a decent editor"
 
-![俄罗斯方块](https://img.alicdn.com/imgextra/i2/581166664/O1CN012SFAW41z6A1WeRU9M_!!581166664.png)
+![在 Emacs 玩俄罗斯方块](https://img.alicdn.com/imgextra/i2/581166664/O1CN012SFAW41z6A1WeRU9M_!!581166664.png)
+![在 Emacs 阅读 EPUB 电子书](https://img.alicdn.com/imgextra/i4/581166664/O1CN01hJslQh1z6A1VLFP7y_!!581166664.png)
+![在 Emacs 进行 Telegram 聊天](https://img.alicdn.com/imgextra/i4/581166664/O1CN01DWl21B1z6A1UNsI4U_!!581166664.jpg)
+![在 Emacs 使用 EAF 运行 aria2](https://img.alicdn.com/imgextra/i1/581166664/O1CN01vpjexS1z6A1PICqIh_!!581166664.gif)
 
 ### 自由
 
@@ -225,14 +226,31 @@ Emacs 可扩展的理念诞生了许多优化的插件，很多用户选择 Emac
 #### Org-mode
 
 ![org-mode logo](https://orgmode.org/resources/img/org-mode-unicorn.svg)
-[Org-mode](https://orgmode.org/) 这是很多非程序员选择 Emacs 的主要原因，简单来说它是一种类似 markdown 的标记语言，很多用户用它来记笔记、管理 GTD，借助于 Emacs 强大的扩展能力，程序员用它来进行[文学编程（literate programming）](http://www.howardism.org/Technical/Emacs/literate-devops.html)。当之无愧的排在插件榜的第一名。🥇
+[Org-mode](https://orgmode.org/) 这是很多非程序员选择 Emacs 的主要原因，简单来说它是一种类似 markdown 的标记语言，很多用户用它来记笔记、管理 GTD，借助于 Emacs 强大的扩展能力，程序员用它来进行[文学编程（literate programming）](http://www.howardism.org/Technical/Emacs/literate-devops.html**。当之无愧的排在插件榜的第一名。🥇
 
-目前我对 org-mode 使用比较简单，只是把它当时 markdown 来用，单就这一点，配合上 Emacs 的快捷键，就已经甩各种 md 编辑器好几条街了。
+目前我对 org-mode 使用比较简单，只是把它当时 markdown 来用，单就这一点，配合上 Emacs 的快捷键，就已经甩各种 md 编辑器好几条街了，org-mode 对表格的支持也非常棒，比如可以使用 `org-table-transpose-table-at-point` 命令进行**行列转换**：
+
+![表格行列转换](https://img.alicdn.com/imgextra/i1/581166664/O1CN01VDVZEM1z6A1UOtSm0_!!581166664.gif)
 
 #### Magit
 
 ![magit status](https://img.alicdn.com/imgextra/i1/581166664/O1CN01GeC6rw1z6A1VdWuEW_!!581166664.png)
 [Magit](https://magit.vc/) 为 Emacs 用户提供操作 git 的接口，是我第一个重度依赖的 Emacs 插件，也是社区内排行第二的插件。Magit 深度整合到 Emacs 的快捷键中，一切 git 操作都如流水行云般，没有它的话，我连 [rebase](http://www.howardism.org/Technical/Emacs/magit-squashing.html) 都不会。
+
+#### Evil
+
+![Evil Emacs steal my heart](https://img.alicdn.com/imgextra/i3/581166664/O1CN01TjEFRp1z6A1U4MagS_!!581166664.png)
+上面在个人经验里面以及提到过 [evil](https://github.com/emacs-evil/evil)，它并不是“邪恶”，而是 Extensible VI Layer for Emacs。Evil 除了把 vi 的 normal/insert/visual state（mode 在 Emacs 中另有所指） 移植过来外，还增加了 emacs state，用于禁用所有的 vi 功能。由于是在 Emacs 里面，我们完全可以自定义快捷键来覆盖 vi 的默认快捷键，达到 Emacs/Vi 的最佳融合，可以同时拥有 `h j k l` 与 `C-a, C-e, M-s, M-f, M-b`。
+拷贝 7 行的文本，在 evil 的 normal state 下，只需要
+```
+7 yy
+```
+而原生 Emacs 则需要
+```
+C-a C-SPC C-u 6 C-n C-e M-w
+```
+
+> The best editor is neither Emacs nor Vim, it's Emacs with Vim binding! ----[出处](https://spin.atomicobject.com/2013/02/28/emacs-or-vim-evil/)
 
 #### Dired
 
@@ -261,6 +279,7 @@ Emacs 可扩展的理念诞生了许多优化的插件，很多用户选择 Emac
 
 #### Lsp-mode
 
+![lsp-mode](https://img.alicdn.com/imgextra/i1/581166664/O1CN01EeQOpy1z6A1U5lWzk_!!581166664.png)
 在 [LSP](https://microsoft.github.io/language-server-protocol/) 出现之前，没有统一的框架来解决不同语言的高亮、补全等现代 IDE 的基本功能，微软推出的 LSP 无疑已经成为业界标准，无需使用正则这种既不准又耗自由的方式了。Emacs 中有两个扩展支持 LSP，分别是
 - [Lsp-mode](https://github.com/emacs-lsp/lsp-mode)，主打开箱即用，默认提供传统 IDE 的所有体验
 - [EGlot](https://github.com/joaotavora/eglot)，主打小巧精致
@@ -271,7 +290,8 @@ Emacs 可扩展的理念诞生了许多优化的插件，很多用户选择 Emac
 
 #### More
 
-除了上面介绍的几个扩展外，重度使用的还有下面几个
+除了上面介绍的几个扩展外，日常使用的扩展还有如下几个，当然还有很多有趣的扩展等着读者自己去发现。
+
 - [company](https://company-mode.github.io/) 补全框架，可配合 lsp-mode 使用
 ![](https://img.alicdn.com/imgextra/i3/581166664/O1CN01F3lxtC1z6A1RlueN7_!!581166664.png)
 
@@ -294,15 +314,14 @@ Emacs 可扩展的理念诞生了许多优化的插件，很多用户选择 Emac
 ![](https://img.alicdn.com/imgextra/i3/581166664/O1CN01yHD9GD1z6A1Tmi66V_!!581166664.gif)
 上面图示展示了如何在一个项目中查找文件、在实现与测试中切换、切换不同的项目
 
-上面的介绍只是我日常使用的扩展，还有很多有趣的扩展等着读者自己去发现。
-
 ## 总结
 
-
-也许 Emacs 的普及程度远远比不上 VSCode 岁了，但这也并不是件坏事，比如那些伸手党们就不符合 Emacs 的精神，而且 Emacs 是个开放的系统，也会借鉴 VSCode 中优秀的设计，它们直接并不是互斥的。之前论坛就有[台湾的 Emacs Twitter 账户维护者“叛逃”到 VSCode ](https://emacs-china.org/t/emacs-twitter-vscode/9174) 的讨论，这类话题毫无疑问会引起大家的关注，但是别忘了 Emacs 自由的精神，符合自己的才是最好的，没必要一味沉迷在某个事物中，说到底，Emacs/VSCode 只是些工具而已，解决实际问题才是最重要的，当然一个舒心的编辑器，会让这个枯燥的过程变得乐趣无穷。
+也许 Emacs 的普及程度远远比不上 VSCode，但这也并不是件坏事，比如那些伸手党们就不符合用 Emacs，而且 Emacs 是个开放的系统，会借鉴 VSCode 中优秀的设计，并不是互斥的。之前论坛就有[台湾的 Emacs Twitter 账户维护者“叛逃”到 VSCode ](https://emacs-china.org/t/emacs-twitter-vscode/9174) 的讨论，这类具有争议话题毫无疑问会引起大家的关注，但是别忘了 Emacs 自由的精神，符合自己的才是最好的，没必要一味沉迷在某个事物中，说到底，Emacs/VSCode 只是些工具而已，解决实际问题才是最重要的，当然一个舒心的<del>操作系统</del>编辑器，会让这个枯燥的过程变得乐趣无穷。
 最后，借 [Mastering Emacs](https://www.masteringemacs.org/article/the-emacs-27-edition-of-mastering-emacs-out-now) 中的一句话结束本文
 
 > Your patient mastery of Emacs is well-rewarded. I assure you.
+
+![](https://img.alicdn.com/imgextra/i1/581166664/O1CN01bolPgY1z6A1VNlxl8_!!581166664.jpg)
 
 ## 参考资料
 
