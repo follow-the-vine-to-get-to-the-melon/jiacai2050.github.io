@@ -1,0 +1,316 @@
+title: Emacs 入门指南
+date: 2020-11-25 23:25:09
+categories: [效率工具]
+tags: [Emacs]
+
+---
+
+提到 Emacs，每个程序员应该或多或少听过其大名，毕竟 Emacs 已经有将近四十多年的[悠久历史](https://www.zdnet.com/article/the-10-oldest-significant-open-source-programs/)。不过由于 Emacs “入道”门槛较高，导致很多初学者还没领略其精髓就弃之而去。作为入道 [4 年](https://github.com/jiacai2050/dotfiles/commit/43e9b4a314cd6b5607b675edac7f5e8a3b29a80b) 的道友，在“熟练”使用 Emacs 之前，也被其虐的体无完肤，不过幸好坚持了下来，给自己的编程道路增加了不少乐趣。
+
+本文分两部分来介绍 Emacs，第一部分是核心理念，我觉得很多初学者在简单尝试 Emacs 之后就放弃的原因是没了解其设计理念，Emacs 是如此独特，以至于从其他编辑器转过来时有很多不适，相信通过了解其理念，初学者可以更容易的跨过这个门槛。
+第二部分介绍如何入门，主要从自己的使用心得出发，给出一些入门指南，之后介绍些功能强大的插件，让初学者意识到 Emacs 的强大。
+
+虽然本文会用 ELisp 来举例，但读者并不需要学习 ELisp，具备基本编程技能即可。其次本文以现在较为流行的 VSCode 编辑器来对比 Emacs 的特点，换做其他编辑器也是成立的。
+
+> Emacs is Emacs. VSCode/Vim/Sublime... is yet just another editor.  ----- [出处](https://news.ycombinator.com/item?id=18400204)
+
+![常用编辑器的学习曲线](https://img.alicdn.com/imgextra/i4/581166664/O1CN0156nQHc1z6A1VldH2x_!!581166664.png)
+
+## 核心理念
+
+GNU Emacs 官方网站是这么介绍的：
+
+> An extensible, customizable, free/libre text editor — and more.
+
+前一部还算直接，“可扩展、可定制、[自由的](https://www.gnu.org/philosophy/free-sw.html)文本编辑器”，至于后面的 more 部分，则仁者见仁，智者见智。坊间一度传闻，Emacs 是[伪装成编辑器的操作系统](https://wiki.c2.com/?EmacsStandsFor)。这一节就来揭开 Emacs 的神秘面纱。
+
+### 文本编辑
+
+不论 Emacs 的追捧者再怎么神化它，首先 Emacs 是一个文本编辑器，与 VSCode 不同的是，Emacs 是为纯键盘操作为设计导向的，与之类似的编辑器只有 VI。纯键盘的操作保证了用户可以最高效的完成工作，同时，这一点也成了新手入门的一道拦路虎，需要花一些时间来适应。
+但就文本编辑而言，Emacs 就提供了很多贴心的功能，这里列举两处：
+
+#### 备份
+
+作为一名成熟的程序员，每时每刻都需要有备份的意识，毕竟错误在所难免。在 Emacs 中主要提供两种备份方式，这里称为[静态备份](https://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html)与[自动备份](https://www.gnu.org/software/emacs/manual/html_node/elisp/Auto_002dSaving.html#Auto_002dSaving)（auto saving）。
+- 静态备份发生在第一次打开文件时，备份的文件名结尾有 `~` 标示；而且支持[多版本](https://www.gnu.org/software/emacs/manual/html_node/elisp/Numbered-Backups.html#Numbered-Backups)备份
+- 自动备份顾名思义，周期性保存当前正在编辑的文件，文件名头尾有 `#` 标示。在保存时，自动备份的文件会被删掉，而当以意外原因（如死机）导致 Emacs 崩溃时，文件则会保留，可以通过 [recover-this-file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html) 命令来回复。
+
+```
+静态备份的文件
+!Users!liujiacai!.emacs.d!README.org.~1~
+!Users!liujiacai!.emacs.d!README.org.~2~
+!Users!liujiacai!.emacs.d!customizations!editing.el.~1~*
+!Users!liujiacai!.emacs.d!customizations!editing.el.~44~*
+!Users!liujiacai!.emacs.d!customizations!editing.el.~45~*
+!Users!liujiacai!.emacs.d!customizations!editing.el.~46~*
+!Users!liujiacai!.emacs.d!customizations!editing.el.~47~*
+!Users!liujiacai!.emacs.d!customizations!editing.el.~48~*
+
+自动备份的文件
+#!Users!liujiacai!.emacs.d!customizations!misc.org#
+#!Users!liujiacai!.emacs.d!customizations!navigation.el#*
+#!Users!liujiacai!.emacs.d!elpa!lsp-java-20201105.1758!lsp-java.el#
+#!Users!liujiacai!.emacs.d!init.el#
+```
+上面是我电脑中部分的备份文件，得益于这两个功能，好多次把我从崩溃的边缘救回来。据我了解，还没有那个编辑器有这么贴心的功能。
+
+#### Undo/Redo
+
+在编辑文件时，[撤销](https://www.gnu.org/software/emacs/manual/html_node/emacs/Undo.html)（Undo）和恢复（Redo）是很重要的功能，传统编辑器这两个操作都是线性的，而在 Emacs 中，则是树状的，这里通过一组文本编辑时的状态图来说明这两者的区别。
+
+- 依次输入 a b c 三个字符，进入到下图中的 current 状态
+
+```
+;;                                o  (initial buffer state)
+;;                                |
+;;                                |
+;;                                o  (first edit)
+;;                                |
+;;                                |
+;;                                o  (second edit)
+;;                                |
+;;                                |
+;;                                x  (current buffer state)
+```
+
+- 此时，撤销两步，回到 `first edit` 状态（即只输入了字符 `a`），传统编辑器的此时的状态为
+
+```
+;;                                o  (initial buffer state)
+;;                                |
+;;                                |
+;;                                x  (current buffer state)
+;;                                |
+;;                                |
+;;                                o
+;;                                |
+;;                                |
+;;                                o
+```
+而 Emacs 则不然，其状态为
+
+```
+;;                                o  (initial buffer state)
+;;                                |
+;;                                |
+;;                                o  (first edit)
+;;                                |
+;;                                |
+;;                                o  (second edit)
+;;                                |
+;;                                |
+;;                                x  (buffer state before undo)
+;;                                |
+;;                                |
+;;                                o  (first undo)
+;;                                |
+;;                                |
+;;                                x  (second undo)
+```
+其状态是追加的，一次撤销意味着返回上次的状态，所以下面的状态图可能更合适些：
+
+```
+;;        (initial buffer state)  o
+;;                                |
+;;                                |
+;;                  (first edit)  o  x  (second undo)
+;;                                |  |
+;;                                |  |
+;;                 (second edit)  o  o  (first undo)
+;;                                | /
+;;                                |/
+;;                                o  (buffer state before undo)
+```
+
+- 此时，如果进行一次新的插入（比如字符 `d`），此时文本上的字符虽然都为 `a d`，但编辑器的状态图是不同的，如下所示：
+
+```
+;;            Undo/Redo:                      Emacs' undo
+;;
+;;               o                                o
+;;               |                                |
+;;               |                                |
+;;               o                                o  o
+;;               .\                               |  |\
+;;               . \                              |  | \
+;;               .  x  (new edit)                 o  o  |
+;;   (discarded  .                                | /   |
+;;     branch)   .                                |/    |
+;;               .                                o     |
+;;                                                      |
+;;                                                      |
+;;                                                      x  (new edit)
+```
+
+- 此时，如果再进行两次撤销，传统编辑器返回到 initial 状态（无任何字符），而 Emacs 则回到 second 状态（有 `a b`两个字符）。
+
+初次接触 Emacs 中的撤销与恢复，十分容易让人迷惑，我时常也被这个搞得晕头转向，不过幸好有 [Undo Tree](https://www.emacswiki.org/emacs/UndoTree) 这个插件来可视化撤销状态，上面的状态图就取自 UndoTree 代码中的注释，感谢其作者的贡献。
+
+
+
+### 扩展、定制
+
+上面一小节介绍了文本编辑中两个非常实用的基本功能，其实这只是冰山一角，Emacs 可扩展、可定制的特性营造了一个富有创造力的社区，拥有无数功能强大的插件。也许读者会疑问，VSCode 也有丰富的[插件市场](https://marketplace.visualstudio.com/vscode)，那 Emacs 与它们有什么不同呢？这与 Emacs [设计架构](https://www.gnu.org/software/emacs/emacs-paper.html#SEC14)有关。
+
+Emacs 本身可以看作是一个虚拟机（Lisp Machine），除了与操作系统打交道的 IO 操作使用 C 语言来实现外，其余部分均由 ELisp 实现，并且提供一个解释器来运行这些 ELisp 代码。每一次的字符输入都相当于在解释器的 REPL 中调用 [self-insert-command](https://www.gnu.org/software/emacs/manual/html_node/elisp/Commands-for-Insertion.html) 命令，这意味着用户自己定义的代码与 Emacs 的源码（ELisp 部分）是平等的。如果读者对 Lisp 不熟悉，可以这么类比，打开 Emacs 的界面对应着在终端输入 `python` 进入的解释器，键盘输入、鼠标点击均对应一个函数调用。
+
+Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 源码里面定义了 foo 这么一个变量，那么用户自己编写的函数可以直接修改它，对于不了解 Lisp 的人来说，这是十分不可思议的事情。这一优势的体现就是 Emacs 的扩展十分简单（熟悉 ELisp 的前提下），比如在 `init.el` 中定义下面几行函数即可实现在 Emacs 中打开浏览器，进行 Google 搜索。
+
+```lisp
+(defun my/google-search ()
+  "Googles a query or region if any."
+  (interactive)
+  (browse-url
+   (concat
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
+    (if mark-active
+        (buffer-substring (region-beginning) (region-end))
+      (read-string "Google: ")))))
+```
+
+而 VSCode，即使是个 Hello World 级别的扩展，步骤也复杂的多，可参考：
+- https://code.visualstudio.com/api/get-started/your-first-extension
+
+
+除了扩展编写简单外，基于 ELisp REPL 的另一优势是定制性强，除了 C 语言部分实现外，其余 ELisp 实现的地方都可以修改。比如下图是 Emacs 标准界面
+![](https://www.gnu.org/software/emacs/images/teaser.png)
+
+而大多数的 Emacs 用户都通过`(menu-bar-mode -1)` 这么一行代码来将菜单栏隐藏掉，因为基本用不到，而且还占地方。除此之外，Emacs 还能用来[听音乐](https://www.emacswiki.org/emacs/MusicPlayers)、[玩游戏](https://www.emacswiki.org/emacs/CategoryGames)、看 [Epub 电子书](https://depp.brause.cc/nov.el/)、甚至[任何应用](https://github.com/manateelazycat/emacs-application-framework)都能运行在 Emacs 里！
+
+>  Emacs, "a great operating system, lacking only a decent editor"
+
+![俄罗斯方块](https://img.alicdn.com/imgextra/i2/581166664/O1CN012SFAW41z6A1WeRU9M_!!581166664.png)
+
+### 自由
+
+提到 Emacs，不得不提的人是 [Richard Stallman](https://stallman.org/)，江湖人称“教主”。早期的 Emacs 有很多版本，而现在 GNU Emacs 基本上已经统一江湖了。
+
+![Richard Stallman](https://img.alicdn.com/imgextra/i2/581166664/O1CN01VH3Txp1z6A1WcQQ05_!!581166664.jpg)
+
+教主极力推崇自由软件，关于自由软件的定义，可以在 [GNU 官方网站](https://www.gnu.org/philosophy/free-sw.html) 上找到，这里不再赘述。读者需要明确的是 GNU 社区中的 free 代表但是自由，而非免费。
+自由软件毫无疑问极大促进了软件行业的发展，它让程序员有机会了解所用软件的实现机制，而 Emacs 作为教主早期的作品之一，毫无疑问继承这种思想。每一个操作都可以追根溯源，喜欢这种感觉。
+更多 Emacs Hackers 可参考：
+- [Famous Emacs Users](http://ergoemacs.org/misc/famous_emacs_users.html) by Xah Lee
+- [Ruby Creator Matz on How Emacs Changed My Life](http://ergoemacs.org/emacs/Matz_Ruby_how_emacs_changed_my_life.html) by Xah Lee
+- [Emacs黑客列表](https://manateelazycat.github.io/emacs/2019/05/12/emacs-hackers.html) by manateelazycat
+- [Famous Emacs Users (that are not famous for using Emacs)](http://wenshanren.org/?p=418)
+
+## 入门指南
+
+通过上小节的介绍，相信很多读者已经跃跃欲试了。这一节我先谈谈自己的入门经历，之后再介绍些功能强大的插件，再次领略 Emacs 的强大。
+
+### 入门经历
+
+我接触 Emacs 是因为学习 Clojure，作为一门 Lisp，Emacs 毫无疑问是最佳的编辑器。不过由于原生 Emacs 功能“简陋”，多次尝试不得要领，直到遇到 [braveclojure](https://www.braveclojure.com/basic-emacs/) 上 Emacs 教程，把 [emacs-for-clojure](https://github.com/flyingmachine/emacs-for-clojure) 的配置 clone 到本地，这才觉得 Emacs 也没那么“难用”。
+出于对 Lisp 的热爱，强迫自己尽量在 Emacs 中去编码，大概花了一两个月，度过了最艰难的适应期，以后就离不开它了。到如今，我的[配置文件](https://github.com/jiacai2050/dotfiles/tree/master/.emacs.d)已经丰富了许多，也有很多自己编写的函数。学习一门新语言之前，会先把相关 Emacs 扩展先配置上，让一切都在 Emacs 中运行。
+
+> 论单个功能来说，Emacs 可能不是最好的，但如何有机的把各个功能组合起来，减少切换，Emacs 可能是最优的。
+
+这里结合自己的踩坑、使用经验，给出下面几条建议：
+- 找个成熟的配置先把 Emacs 用起来，一开始不用去纠结细节，等有感觉后再去尝试自己定制。[Spacemacs](https://www.spacemacs.org/)、[Doom Emacs](https://github.com/hlissner/doom-emacs) 是社区内最流行的两个，建议初学者两个都去尝试下，找最合适自己
+- 找一个月重点突击，不要断断续续的使用 Emacs，否则很难适应它，一但过了这一个月，后面就是无限的“春风得意”
+- 在各种插件满足不了自己的需求、有 BUG 时（我大概是在两到三年后），学习 ELisp，毕竟这才是它的精髓。我自己是参考了 [Learn X in Y minutes](https://learnxinyminutes.com/docs/elisp/)、Xah Lee 的 [Practical Emacs Tutorial](http://ergoemacs.org/emacs/emacs.html)
+- 善用 `C-h i`，Emacs 自带的文档，以及 [How do I find out how to do something in Emacs?](https://www.gnu.org/software/emacs/manual/html_node/efaq/Learning-how-to-do-something.html)
+- 接触社区，[Emacs China](https://emacs-china.org/) 是我见过的质量最高的中文论坛，里面有很多资深的 Emacs Hacker 来解决初学者遇到的各种问题。
+- 截止到 2020/11 月初，我使用 Emacs 比较追求“原汁原味”，尽量用 Emacs 自己的快捷键（`C-x C-s`之类），虽然一年前小指就开始疼痛了，当时是把 CAPS 键映射为 Ctrl，这样用了一年左右，问题不能根治。虽然社区有推荐使用 [evil](https://github.com/emacs-evil/evil)（具有 Vim 的操作模式）来解决这个问题，但之前我觉得这不够“忠贞”，就一直没去用，直到最近发现了 [viper mode](https://www.gnu.org/software/emacs/manual/html_mono/viper.html) 才意识到这种想法的幼稚，Emacs 的理念就是可以自己根据自身需求来定制，没有所谓的标准答案。对于其他编辑器的优点，Emacs 会吸收过来。于是立刻把 [evil](https://github.com/jiacai2050/dotfiles/commit/db5c7c28a355e21250e6dba8e13c56c71f00c81e) 配置上，从此彻底解放了我的小指。用了四年多的时间了，还是能从 Emacs 中学到些人生经验，估计这是其他软件做不到的。这点也促使我写这篇文章，防止初学者陷入这种思维定势。
+
+当然每个人的学习道路都不一样，读者可根据自身情况来调整，尽读书不如不读书。一些中文学习资料：
+- [一年成为Emacs高手 (像神一样使用编辑器)](https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/guide-zh.org) by [陈斌](http://blog.binchen.org/index.html)
+- [21 天掌握 Emacs](http://book.emacs-china.org/) by [子龙山人](https://zilongshanren.com/)
+
+### 插件推荐
+
+Emacs 可扩展的理念诞生了许多优化的插件，很多用户选择 Emacs 就是因为其中的某个插件，我时常也会因为发现某些插件的高级用法而感叹 Emacs 的威力，下面就来介绍一些流行度高且非常实用的扩展，供初学者参考。
+
+#### Org-mode
+
+![org-mode logo](https://orgmode.org/resources/img/org-mode-unicorn.svg)
+[Org-mode](https://orgmode.org/) 这是很多非程序员选择 Emacs 的主要原因，简单来说它是一种类似 markdown 的标记语言，很多用户用它来记笔记、管理 GTD，借助于 Emacs 强大的扩展能力，程序员用它来进行[文学编程（literate programming）](http://www.howardism.org/Technical/Emacs/literate-devops.html)。当之无愧的排在插件榜的第一名。🥇
+
+目前我对 org-mode 使用比较简单，只是把它当时 markdown 来用，单就这一点，配合上 Emacs 的快捷键，就已经甩各种 md 编辑器好几条街了。
+
+#### Magit
+
+![magit status](https://img.alicdn.com/imgextra/i1/581166664/O1CN01GeC6rw1z6A1VdWuEW_!!581166664.png)
+[Magit](https://magit.vc/) 为 Emacs 用户提供操作 git 的接口，是我第一个重度依赖的 Emacs 插件，也是社区内排行第二的插件。Magit 深度整合到 Emacs 的快捷键中，一切 git 操作都如流水行云般，没有它的话，我连 [rebase](http://www.howardism.org/Technical/Emacs/magit-squashing.html) 都不会。
+
+#### Dired
+
+[Dired](https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired.html) 是 directory editor 的缩写，是 Emacs 内置的插件，类似 macOS 上的文件管理器 Finder。在 Dired 界面中，可以很方便的移动/删除/创建文件，更强大是可以直接批量修改文件，下图展示了如何批量把 `test_foo_*.dat` 重命名为 `test_bar_*.dat`，操作文件就像操作文本一样流畅。（[图片来源](http://pragmaticemacs.com/emacs/dired-rename-multiple-files/)）
+
+![dired 批量重命名文件](https://img.alicdn.com/imgextra/i2/581166664/O1CN01QIzFM91z6A1TiEdB0_!!581166664.gif)
+
+#### Ivy/Counsel/Swiper
+
+[Ivy/Counsel/Swiper](https://github.com/abo-abo/swiper) 三件套是补全框架，它可以很方便的把当前操作的候选项以交互的方式展示出来，类似 VSCode 中的 [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)、Intellj 中的 [Double Shift](https://blog.jetbrains.com/idea/2020/05/when-the-shift-hits-the-fan-search-everywhere/)。
+![](https://img.alicdn.com/imgextra/i1/581166664/O1CN01BnQ5pp1z6A1NIcJrL_!!581166664.png)
+
+虽然其他编辑器也有类似的功能，但是其功能不是局限，就是与其他功能分割，没有统一的体验。Emacs 则不同，再多的插件也能够有统一的体验，这一点是非常影响用户体验的。这里通过 ivy-occur + wgrep + evil [批量修改多个文件](https://sam217pa.github.io/2016/09/13/from-helm-to-ivy/)中的内容来说明 ivy 套件的强大功能。
+
+演示的目录有 `1.txt` `2.txt` 两个文件，内容都是 hello world，这里批量修改为 hello emacs。
+![ivy-occur 批量修改多个文件中的内容](https://img.alicdn.com/imgextra/i1/581166664/O1CN01dS73W31z6A1Tk5UwK_!!581166664.gif)
+
+操作步骤：
+1. `counsel-ag` world 搜索当前目录下搜索含 world 的文件
+2. `C-c C-o ivy-occur` 打开 occur 界面
+3. `C-x C-q ivy-wgrep-change-to-wgrep-mode` 进入编辑模式
+4. `:%s/world/emacs/g` 借助 evil 修改内容
+5. `C-c C-c wgrep-finish-edit` 保存内容
+
+当然，上面操作可以根据自己的习惯定义快捷键，上述五个步骤一气呵成，“挥一挥衣袖，不带走一片云彩”。
+
+#### Lsp-mode
+
+在 [LSP](https://microsoft.github.io/language-server-protocol/) 出现之前，没有统一的框架来解决不同语言的高亮、补全等现代 IDE 的基本功能，微软推出的 LSP 无疑已经成为业界标准，无需使用正则这种既不准又耗自由的方式了。Emacs 中有两个扩展支持 LSP，分别是
+- [Lsp-mode](https://github.com/emacs-lsp/lsp-mode)，主打开箱即用，默认提供传统 IDE 的所有体验
+- [EGlot](https://github.com/joaotavora/eglot)，主打小巧精致
+
+目前我使用的是 lsp-mode，初学者可以都去尝试下，然后选择符合自己品味的那一款。
+
+![](https://img.alicdn.com/imgextra/i4/581166664/O1CN01gjdchA1z6A1T3EaUP_!!581166664.png)
+
+#### More
+
+除了上面介绍的几个扩展外，重度使用的还有下面几个
+- [company](https://company-mode.github.io/) 补全框架，可配合 lsp-mode 使用
+![](https://img.alicdn.com/imgextra/i3/581166664/O1CN01F3lxtC1z6A1RlueN7_!!581166664.png)
+
+- [multiple-cursors](https://github.com/magnars/multiple-cursors.el) 多光标点操作
+![](https://img.alicdn.com/imgextra/i4/581166664/O1CN01ceUOar1z6A1OW1MMp_!!581166664.gif)
+
+- [ace-jump-mode](https://github.com/winterTTr/ace-jump-mode) 根据字符，快速移动光标。下图为根据 p 进行快速跳转的示例
+![](https://img.alicdn.com/imgextra/i1/581166664/O1CN019sHvUm1z6A1R9QtHn_!!581166664.gif)
+
+- [yasnippet](https://github.com/joaotavora/yasnippet) 模板系统，通过定义代码片段的缩写来简化输入
+![](https://img.alicdn.com/imgextra/i2/581166664/O1CN01lQVIpx1z6A1Wz6Th3_!!581166664.png)
+
+- [flycheck](https://www.flycheck.org/en/latest/) 语法实时检查
+![](https://img.alicdn.com/imgextra/i4/581166664/O1CN01gL8IST1z6A1WZt3Dk_!!581166664.png)
+
+- [treemacs](https://github.com/Alexander-Miller/treemacs) 文件目录树导航
+![](https://img.alicdn.com/imgextra/i3/581166664/O1CN01oTtvbz1z6A1RykfJ8_!!581166664.png)
+
+- [projectile](https://github.com/bbatsov/projectile) 项目工作空间管理
+![](https://img.alicdn.com/imgextra/i3/581166664/O1CN01yHD9GD1z6A1Tmi66V_!!581166664.gif)
+上面图示展示了如何在一个项目中查找文件、在实现与测试中切换、切换不同的项目
+
+上面的介绍只是我日常使用的扩展，还有很多有趣的扩展等着读者自己去发现。
+
+## 总结
+
+
+也许 Emacs 的普及程度远远比不上 VSCode 岁了，但这也并不是件坏事，比如那些伸手党们就不符合 Emacs 的精神，而且 Emacs 是个开放的系统，也会借鉴 VSCode 中优秀的设计，它们直接并不是互斥的。之前论坛就有[台湾的 Emacs Twitter 账户维护者“叛逃”到 VSCode ](https://emacs-china.org/t/emacs-twitter-vscode/9174) 的讨论，这类话题毫无疑问会引起大家的关注，但是别忘了 Emacs 自由的精神，符合自己的才是最好的，没必要一味沉迷在某个事物中，说到底，Emacs/VSCode 只是些工具而已，解决实际问题才是最重要的，当然一个舒心的编辑器，会让这个枯燥的过程变得乐趣无穷。
+最后，借 [Mastering Emacs](https://www.masteringemacs.org/article/the-emacs-27-edition-of-mastering-emacs-out-now) 中的一句话结束本文
+
+> Your patient mastery of Emacs is well-rewarded. I assure you.
+
+## 参考资料
+
+- [Emacs As A Lisp Machine](https://irreal.org/blog/?p=279)
+- [Ask HN: Is Visual Studio Code the Emacs of 21st century?](https://news.ycombinator.com/item?id=18398324)
+[What benefits does emacs offer over vs code](https://www.reddit.com/r/emacs/comments/flpzft/what_benefits_does_emacs_offer_over_vs_code/)
+- https://unix.stackexchange.com/questions/986/what-are-the-pros-and-cons-of-vim-and-emacs
+- [Making Emacs popular again](https://lwn.net/Articles/819452/)
+- [Buttery Smooth Emacs](https://web.archive.org/web/20190430192029/https://m.facebook.com/notes/daniel-colascione/buttery-smooth-emacs/10155313440066102/)
+- https://batsov.com/articles/2011/11/19/why-emacs/
+- https://github.com/remacs/remacs#why-emacs
