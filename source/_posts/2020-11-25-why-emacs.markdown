@@ -5,10 +5,10 @@ tags: [Emacs]
 
 ---
 
-提到 Emacs，每个程序员应该或多或少听过其大名，毕竟 Emacs 已经有将近四十多年的[悠久历史](https://www.zdnet.com/article/the-10-oldest-significant-open-source-programs/)。不过由于 Emacs “入道”门槛较高，导致很多初学者还没领略其精髓就弃之而去。作为入道 [4 年](https://github.com/jiacai2050/dotfiles/commit/43e9b4a314cd6b5607b675edac7f5e8a3b29a80b) 的道友，在“熟练”使用 Emacs 之前，也被其虐的体无完肤，不过幸好坚持了下来，给自己的编程道路增加了不少乐趣。
+提到 Emacs，每个程序员应该或多或少听过其大名，毕竟 Emacs 已经有将近四十多年的[悠久历史](https://www.zdnet.com/article/the-10-oldest-significant-open-source-programs/)。不过由于 Emacs “入道”门槛较高，导致很多初学者还没领略其精髓就弃之而去。在“熟练”使用 Emacs 之前，我也被其虐的体无完肤，不过幸好坚持了下来，给自己的编程生涯增加了不少乐趣。
 
-本文分两部分来介绍 Emacs，第一部分是核心理念，我觉得很多初学者在简单尝试 Emacs 之后就放弃的原因是没了解其设计理念，Emacs 是如此独特，以至于从其他编辑器转过来时有很多不适，相信通过了解其理念，初学者可以更容易的跨过这个门槛。
-第二部分介绍如何入门，主要从自己的使用心得出发，给出一些入门指南，之后介绍些功能强大的插件，让初学者意识到 Emacs 的强大。
+本文将分两部分来介绍如何入门 Emacs，第一部分是核心理念，我觉得很多初学者在简单尝试 Emacs 之后就放弃的原因是没了解其设计理念，Emacs 是如此独特，以至于从其他编辑器转过来时有很多不适，通过了解其理念，读者可以判断 Emacs 是否符合自己的品味，是否值得花精力去掌握它。
+第二部分将基于我[四年多](https://github.com/jiacai2050/dotfiles/commit/43e9b4a314cd6b5607b675edac7f5e8a3b29a80b)的使用经验，对想入门 Emacs 初学者给出些具体建议，之后会介绍些我日常使用的扩展，很多用户选择 Emacs 就是因为其中的某个插件的某个功能，我时常也会因为发现某些插件的高级用法而感叹 Emacs 的威力。
 
 虽然本文会用 ELisp 来举例，但读者并不需要学习 ELisp，具备基本编程技能即可。其次本文以现在较为流行的 VSCode 编辑器来对比 Emacs 的特点，换做其他编辑器也是成立的。
 
@@ -18,7 +18,7 @@ tags: [Emacs]
 
 ## 核心理念
 
-GNU Emacs 官方网站是这么介绍的：
+GNU Emacs [官方网站](https://www.gnu.org/software/emacs/)是这么介绍的：
 
 > An extensible, customizable, free/libre text editor — and more.
 
@@ -26,14 +26,14 @@ GNU Emacs 官方网站是这么介绍的：
 
 ### 文本编辑
 
-不论 Emacs 的追捧者再怎么神化它，首先 Emacs 是一个文本编辑器，与 VSCode 不同的是，Emacs 是为纯键盘操作为设计导向的，与之类似的编辑器只有 VI。纯键盘的操作保证了用户可以最高效的完成工作，同时，这一点也成了新手入门的一道拦路虎，需要花一些时间来适应。
-但就文本编辑而言，Emacs 就提供了很多贴心的功能，这里列举两处：
+不论 Emacs 的追捧者再怎么神化它，首先 Emacs 是一个文本编辑器，然后才是其他。与 VSCode 不同的是，Emacs 是为纯键盘操作而设计的，与之类似的编辑器只有 Vi。纯键盘的操作保证了用户可以最高效的完成工作，同时，这一点也成了新手入门的一道拦路虎，需要花一些时间来适应。
+单就文本编辑而言，Emacs 就提供了很多贴心的功能，这里列举两处：
 
 #### 备份
 
 作为一名成熟的程序员，每时每刻都需要有备份的意识，毕竟错误在所难免。在 Emacs 中主要提供两种备份方式，这里称为[静态备份](https://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html)与[自动备份](https://www.gnu.org/software/emacs/manual/html_node/elisp/Auto_002dSaving.html#Auto_002dSaving)（auto saving）。
 - 静态备份发生在第一次打开文件时，备份的文件名结尾有 `~` 标示；而且支持[多版本](https://www.gnu.org/software/emacs/manual/html_node/elisp/Numbered-Backups.html#Numbered-Backups)备份
-- 自动备份顾名思义，周期性保存当前正在编辑的文件，文件名头尾有 `#` 标示。在保存时，自动备份的文件会被删掉，而当以意外原因（如死机）导致 Emacs 崩溃时，文件则会保留，可以通过 [recover-this-file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html) 命令来回复。
+- 自动备份顾名思义，周期性保存当前正在编辑的文件，文件名头尾有 `#` 标示。在保存时，自动备份的文件会被删掉，而当因意外原因（如死机）导致 Emacs 崩溃时，文件则会保留，此时可通过 [recover-this-file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Recover.html) 命令来恢复。
 
 ```
 静态备份的文件
@@ -52,7 +52,7 @@ GNU Emacs 官方网站是这么介绍的：
 #!Users!liujiacai!.emacs.d!elpa!lsp-java-20201105.1758!lsp-java.el#
 #!Users!liujiacai!.emacs.d!init.el#
 ```
-上面是我电脑中部分的备份文件，得益于这两个功能，好多次把我从崩溃的边缘救回来。据我了解，还没有那个编辑器有这么贴心的功能。
+上面是我电脑中部分的备份文件，得益于这两个功能，好多次把我从崩溃的边缘救回来。据我了解，还没有哪个编辑器有这么贴心的功能。
 
 #### Undo/Redo
 
@@ -148,12 +148,14 @@ GNU Emacs 官方网站是这么介绍的：
 
 ### 扩展、定制
 
+>  At its core is an interpreter for Emacs Lisp, a dialect of the Lisp programming language with extensions to support text editing.
+
 上面一小节介绍了文本编辑中两个非常实用的基本功能，其实这只是冰山一角，Emacs 可扩展、可定制的特性营造了一个富有创造力的社区，拥有无数功能强大的插件。也许读者会疑问，VSCode 也有丰富的[插件市场](https://marketplace.visualstudio.com/vscode)，那 Emacs 与它们有什么不同呢？这与 Emacs [设计架构](https://www.gnu.org/software/emacs/emacs-paper.html#SEC14)有关。
 
 Emacs 本身可以看作是一个虚拟机（Lisp Machine），除了与操作系统打交道的 IO 操作使用 C 语言来实现外，其余部分均由 ELisp 实现，并且提供一个解释器来运行这些 ELisp 代码。
 每一次的字符输入都相当于在解释器的 REPL 中调用 [self-insert-command](https://www.gnu.org/software/emacs/manual/html_node/elisp/Commands-for-Insertion.html) 命令，这意味着用户自己定义的代码与 Emacs 的源码（ELisp 部分）是平等的。如果读者对 Lisp 不熟悉，可以这么类比，打开 Emacs 的界面对应着在终端输入 `python` 进入的解释器，键盘输入、鼠标点击均对应一个个函数调用。
 
-Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 源码里面定义了 foo 这么一个变量，那么用户自己编写的函数可以直接修改它，对于不了解 Lisp 的人来说，这是十分不可思议的事情。这一优势的体现就是 Emacs 的扩展十分简单（熟悉 ELisp 的前提下），比如在 `init.el` 中定义下面几行函数即可实现在 Emacs 中打开浏览器，对指定关键词进行 Google 搜索。
+Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 源码里面定义了 foo 这么一个变量，那么用户自己编写的函数可以直接修改它，对于不了解 Lisp 的人来说，这是十分不可思议的事情。这一优势的体现就是 Emacs 的扩展十分简单（熟悉 ELisp 的前提下），比如在 `init.el` 中定义下面几行代码即可实现在 Emacs 中打开浏览器，对指定关键词进行 Google 搜索。
 
 ```lisp
 (defun my/google-search ()
@@ -173,10 +175,11 @@ Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 
 除了扩展编写简单外，基于 ELisp REPL 的另一优势是定制性强，除了 C 语言部分实现外，其余 ELisp 实现的地方都可以修改。比如下图是 Emacs 标准界面
 ![](https://www.gnu.org/software/emacs/images/teaser.png)
 
-而大多数的 Emacs 用户都通过`(menu-bar-mode -1)` 这么一行代码来将菜单栏隐藏掉，因为基本用不到，而且还占地方。除此之外，Emacs 还能用来[听音乐](https://www.emacswiki.org/emacs/MusicPlayers)、[玩游戏](https://www.emacswiki.org/emacs/CategoryGames)、[看 EPUB 电子书](https://depp.brause.cc/nov.el/)、[聊 Telegram](https://github.com/zevlg/telega.el)、甚至[任何应用](https://github.com/manateelazycat/emacs-application-framework)都能运行在 Emacs 里！
+而大多数的 Emacs 用户通过`(menu-bar-mode -1)` 这么一行代码来将菜单栏隐藏掉，因为基本用不到，而且还占地方。除此之外，Emacs 还能用来[听音乐](https://www.emacswiki.org/emacs/MusicPlayers)、[玩游戏](https://www.emacswiki.org/emacs/CategoryGames)、[看 EPUB 电子书](https://depp.brause.cc/nov.el/)、[聊 Telegram](https://github.com/zevlg/telega.el)、甚至[任何应用](https://github.com/manateelazycat/emacs-application-framework)都能运行在 Emacs 里！
 
 >  Emacs, "a great operating system, lacking only a decent editor"
 
+![在 Emacs 听网易云音乐](https://img.alicdn.com/imgextra/i2/581166664/O1CN01ePMFmU1z6A1W5J6a4_!!581166664.png)
 ![在 Emacs 玩俄罗斯方块](https://img.alicdn.com/imgextra/i2/581166664/O1CN012SFAW41z6A1WeRU9M_!!581166664.png)
 ![在 Emacs 阅读 EPUB 电子书](https://img.alicdn.com/imgextra/i4/581166664/O1CN01hJslQh1z6A1VLFP7y_!!581166664.png)
 ![在 Emacs 进行 Telegram 聊天](https://img.alicdn.com/imgextra/i4/581166664/O1CN01DWl21B1z6A1UNsI4U_!!581166664.jpg)
@@ -188,8 +191,8 @@ Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 
 
 ![Richard Stallman](https://img.alicdn.com/imgextra/i2/581166664/O1CN01VH3Txp1z6A1WcQQ05_!!581166664.jpg)
 
-教主极力推崇自由软件，关于自由软件的定义，可以在 [GNU 官方网站](https://www.gnu.org/philosophy/free-sw.html) 上找到，这里不再赘述。读者需要明确的是 GNU 社区中的 free 代表但是自由，而非免费。
-自由软件毫无疑问极大促进了软件行业的发展，它让程序员有机会了解所用软件的实现机制，而 Emacs 作为教主早期的作品之一，毫无疑问继承这种思想。每一个操作都可以追根溯源，喜欢这种感觉。
+教主极力推崇自由软件，关于自由软件的定义，可以在 [GNU 官方网站](https://www.gnu.org/philosophy/free-sw.html) 上找到，这里不再赘述。读者需要明确的是，GNU 社区中的 free 代表但是自由，而非免费。
+自由软件毫无疑问极大促进了软件行业的发展，它让程序员有机会了解所用软件的实现机制，而 Emacs 作为教主早期的作品之一，毫无疑问继承这种思想。每一个操作都可以追根溯源，喜欢这种自由感觉。
 更多 Emacs Hackers 可参考：
 - [Famous Emacs Users](http://ergoemacs.org/misc/famous_emacs_users.html) by Xah Lee
 - [Ruby Creator Matz on How Emacs Changed My Life](http://ergoemacs.org/emacs/Matz_Ruby_how_emacs_changed_my_life.html) by Xah Lee
@@ -198,12 +201,10 @@ Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 
 
 ## 入门指南
 
-通过上小节的介绍，相信很多读者已经跃跃欲试了。这一节我先谈谈自己的入门经历，之后再介绍些功能强大的插件，再次领略 Emacs 的强大。
-
-### 入门经历
+### 入门建议
 
 我接触 Emacs 是因为学习 Clojure，作为一门 Lisp，Emacs 毫无疑问是最佳的编辑器。不过由于原生 Emacs 功能“简陋”，多次尝试不得要领，直到遇到 [braveclojure](https://www.braveclojure.com/basic-emacs/) 上 Emacs 教程，把 [emacs-for-clojure](https://github.com/flyingmachine/emacs-for-clojure) 的配置 clone 到本地，这才觉得 Emacs 也没那么“难用”。
-出于对 Lisp 的热爱，强迫自己尽量在 Emacs 中去编码，大概花了一两个月，度过了最艰难的适应期，以后就离不开它了。到如今，我的[配置文件](https://github.com/jiacai2050/dotfiles/tree/master/.emacs.d)已经丰富了许多，也有很多自己编写的函数。学习一门新语言之前，会先把相关 Emacs 扩展先配置上，让一切都在 Emacs 中运行。
+出于对 Lisp 的热爱，强迫自己尽量在 Emacs 中去编码，大概花了一两个月，度过了最艰难的适应期，以后就离不开它了。到如今，我的[配置文件](https://github.com/jiacai2050/dotfiles/tree/master/.emacs.d)已经丰富了许多，也有很多自己编写的函数。学习一门新语言之前，会把相关 Emacs 扩展先配置上，让一切都在 Emacs 中运行。这里我想着重强调一点：
 
 > 论单个功能来说，Emacs 可能不是最好的，但如何有机的把各个功能组合起来，减少切换，Emacs 可能是最优的。
 
@@ -221,14 +222,12 @@ Lisp REPL 的一优势是可以动态改变程序的内部状态，比如 Emacs 
 
 ### 插件推荐
 
-Emacs 可扩展的理念诞生了许多优化的插件，很多用户选择 Emacs 就是因为其中的某个插件，我时常也会因为发现某些插件的高级用法而感叹 Emacs 的威力，下面就来介绍一些流行度高且非常实用的扩展，供初学者参考。
-
 #### Org-mode
 
 ![org-mode logo](https://orgmode.org/resources/img/org-mode-unicorn.svg)
-[Org-mode](https://orgmode.org/) 这是很多非程序员选择 Emacs 的主要原因，简单来说它是一种类似 markdown 的标记语言，很多用户用它来记笔记、管理 GTD，借助于 Emacs 强大的扩展能力，程序员用它来进行[文学编程（literate programming）](http://www.howardism.org/Technical/Emacs/literate-devops.html**。当之无愧的排在插件榜的第一名。🥇
+[Org-mode](https://orgmode.org/) 这是很多非程序员选择 Emacs 的主要原因，简单来说它是一种类似 markdown 的标记语言，很多用户用它来记笔记、管理 GTD，借助于 Emacs 强大的扩展能力，程序员用它来进行[文学编程（literate programming）](http://www.howardism.org/Technical/Emacs/literate-devops.html)，当之无愧的排在插件榜的第一名。🥇
 
-目前我对 org-mode 使用比较简单，只是把它当时 markdown 来用，单就这一点，配合上 Emacs 的快捷键，就已经甩各种 md 编辑器好几条街了，org-mode 对表格的支持也非常棒，比如可以使用 `org-table-transpose-table-at-point` 命令进行**行列转换**：
+目前我对 org-mode 使用比较简单，只是把它当时 markdown 来用，单就这一点，配合上 Emacs 的快捷键，就已经甩各种 md 编辑器好几条街了，org-mode 对表格的支持也非常棒，比如可以使用 `org-table-transpose-table-at-point` 命令将表格的行列调换过来。
 
 ![表格行列转换](https://img.alicdn.com/imgextra/i1/581166664/O1CN01VDVZEM1z6A1UOtSm0_!!581166664.gif)
 
@@ -316,7 +315,8 @@ C-a C-SPC C-u 6 C-n C-e M-w
 
 ## 总结
 
-也许 Emacs 的普及程度远远比不上 VSCode，但这也并不是件坏事，比如那些伸手党们就不符合用 Emacs，而且 Emacs 是个开放的系统，会借鉴 VSCode 中优秀的设计，并不是互斥的。之前论坛就有[台湾的 Emacs Twitter 账户维护者“叛逃”到 VSCode ](https://emacs-china.org/t/emacs-twitter-vscode/9174) 的讨论，这类具有争议话题毫无疑问会引起大家的关注，但是别忘了 Emacs 自由的精神，符合自己的才是最好的，没必要一味沉迷在某个事物中，说到底，Emacs/VSCode 只是些工具而已，解决实际问题才是最重要的，当然一个舒心的<del>操作系统</del>编辑器，会让这个枯燥的过程变得乐趣无穷。
+也许 Emacs 的普及程度远远比不上 VSCode，但这也并不算件坏事，比如那些伸手党们就不适合使用 Emacs，让他们进来只会拉低社区的整体水平；而且 Emacs 是个开放的系统，会借鉴 VSCode 中优秀的设计，Emacs 与其他编辑器并不是互斥的。
+之前论坛就有[台湾的 Emacs Twitter 账户维护者“叛逃”到 VSCode ](https://emacs-china.org/t/emacs-twitter-vscode/9174) 的讨论，这类具有争议话题毫无疑问会引起大家的关注，但是别忘了 Emacs 自由的精神，符合自己的才是最好的，没必要一味沉迷在某个事物中，说到底，Emacs/VSCode 只是些工具而已，解决实际问题才是最重要的，当然一个舒心的<del>操作系统</del>编辑器，会让这个枯燥的过程变得乐趣无穷。
 最后，借 [Mastering Emacs](https://www.masteringemacs.org/article/the-emacs-27-edition-of-mastering-emacs-out-now) 中的一句话结束本文
 
 > Your patient mastery of Emacs is well-rewarded. I assure you.
