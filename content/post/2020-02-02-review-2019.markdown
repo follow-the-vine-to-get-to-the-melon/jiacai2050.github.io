@@ -1,0 +1,119 @@
+title: 2019 年终总结
+date: 2020-02-02 11:42:59
+categories: 热爱生活
+---
+
+因起源于武汉的[新型冠状病毒](https://baike.baidu.com/medicine/disease/%E6%96%B0%E5%9E%8B%E5%86%A0%E7%8A%B6%E7%97%85%E6%AF%92%E6%84%9F%E6%9F%93%E7%9A%84%E8%82%BA%E7%82%8E/24282048?tab=%E6%A6%82%E8%BF%B0)（2019 novel Coronavirus，2019-nCoV），让 2020 开年之初就与众不同，全国人民纷纷戴上了口罩，这也是我记事以来第一次在大年初一没去村里长辈家拜年。是时候回顾下 19 年了，其实 18 年的总结也迟迟没能写出来，这里一并总结下。
+
+## 2018
+
+18 年与我个人而言最重要的就是认识了现在的女朋友，生活、心态上变化了不少，把重心从工作转移到生活上，周末有空都会坐动车去苏州找她聚聚，苏州大大小小的景点都转遍了。昆山的工作没有现在所谓的 996，每天下班有空都能去健身房打打乒乓球，周末也能去周边的南京、黄山，度过了着实悠闲的一段时间。
+
+<img src="https://img.alicdn.com/imgextra/i1/581166664/O1CN01LlMsPx1z69xoy9ZXk_!!581166664.jpg" alt="健身一角.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i1/581166664/O1CN011EsFek1z69xysMBCE_!!581166664.jpg" alt="有轨电车.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i1/581166664/O1CN01m8Cp9b1z69xzfRv5B_!!581166664.jpg" alt="遇见你.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i2/581166664/O1CN01zMqMGm1z69xyger1k_!!581166664.jpg" alt="昆山南站.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i2/581166664/O1CN01pVmO9P1z69xub8NkJ_!!581166664.jpg" alt="夜泊秦淮.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i3/581166664/O1CN01MGmwWg1z69xxCCho0_!!581166664.jpg" alt="朱元璋.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i2/581166664/O1CN01XQF9ZM1z69y0rC2uL_!!581166664.jpg" alt="黄山脚下.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i4/581166664/O1CN01A3YHPB1z69xwrPmUi_!!581166664.jpg" alt="迎客松.jpg"/>
+
+
+在 18 年底就有些厌烦这样“无所事事”的状态，考虑再回杭州去发展。于是乎在 19 年春节前后开始复习基础知识，并在 19 年四月入职了现在公司。
+在 LeanCloud “服役”两年左右，从之前的数据开发转到了后台开发，并且过了一把 Clojure 的瘾，除了工作中重度使用外，还录制了一套[教学视频](https://github.com/jiacai2050/learn_clojure.mp4)。
+
+<img src="https://img.alicdn.com/imgextra/i4/581166664/O1CN01iPSaRY1z69xtdlGfp_!!581166664.png" alt="2018_github.png"/>
+
+由于工作中使用 Github 似有仓库，所以上面的[提交记录](https://github.com/jiacai2050?tab=overview&from=2018-01-01&to=2018-12-31)比较多。去掉 Private contributions 后的提交记录如下：
+
+<img src="https://img.alicdn.com/imgextra/i1/581166664/O1CN01X4Y7gk1z69xygxvD7_!!581166664.png" alt="2018_github_public.png"/>
+
+
+<img src="https://img.alicdn.com/imgextra/i1/581166664/O1CN01aYIYG81z69xwNdnHC_!!581166664.png" alt="2018_blog.png"/>
+18 年共写了 6 篇文章，GC 相关占 4 篇，这是个大坑，后面还需要继续添。[《Java 线程同步原理探析》](/blog/2018/12/29/how-java-synchronizer-work/) 着重从操作系统层面讲述同步原理。
+
+## 2019
+
+### Bye LeanCloud, Hello Alibaba
+在 19 年 3 月底正式离开 LeanCloud，4 月 1 入职杭州蚂蚁金服。凑巧的是工作地点还是在黄龙万科中心，离有赞很近。
+
+<img src="https://img.alicdn.com/imgextra/i1/581166664/O1CN018mF0mj1z69xzltdZa_!!581166664.jpg" alt="leancloud_cup.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i3/581166664/O1CN01gfBFmL1z69y1OIt97_!!581166664.jpg" alt="LeanCloud_nearby.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i2/581166664/O1CN01RCZz2D1z69xp4LiKy_!!581166664.jpg" alt="科技广场.jpg"/>
+
+杭州的工作强度相比昆山不是一个量级，竞争也更激烈。阿里有“一年香三年醇五年陈”的说法，我目前还不到一年，还不敢说对这家公司有多深的认识，只能说好的坏的都有，没有完美的公司。杭州这个城市也是，之前想的是来杭州后打听打听房价，看看能否尽快“安居乐业”，没想到政府要求“外地户口须缴满近两年社保才有购房资格”，我 2 年前在有赞缴的不算，先不说买不买得起，这下连资格都没有了。
+
+### 天天向上
+
+新的工作接触了 Golang/Rust，方向是时序数据库，产品是 CeresDB，整体架构和 [tidb](https://github.com/pingcap/tidb) 类型，底层的存储层用 Rust，上层的交互层用 Golang。这大半年我主要负责 Golang 这部分，把 prometheus 协议加了进来。对于监控，从使用者变为了开发者，考虑的东西自然多了，比如 push/pull 收集方式的区别；不同机器的同一指标在聚合时，如何对齐；如何展示收集的 metrics。
+
+#### 读书
+
+这里列举 18/19 两年内看完的书，一些还在看的这里就先不列出来了。
+
+- [Programming Concurrency on the JVM](https://book.douban.com/subject/6039359/)，介绍了 JVM 语言中并发的模式与利弊，这对开拓眼界是非常有用的，书中给出的算文件夹大小的例子也不错，由浅入深，逐步完善。
+- [High Performance Browser Networking](https://book.douban.com/subject/21866396/)，网络开发必备书籍，让我进一步清楚 [tcp/udp 的区别](https://book.douban.com/review/9653382/)
+- [软件随想录](https://book.douban.com/subject/4163938/)，Joel on Software 的文集，涉及软件开发的方方面面，包括不限于如何管理项目周期、如何与程序员相处、如何写出好代码。[Making Wrong Code Look Wrong](https://www.joelonsoftware.com/2005/05/11/making-wrong-code-look-wrong/)，让我意识到之前一直[误解了匈牙利命名法](https://www.zhihu.com/question/34526639/answer/59135532)。
+- [公共问题经济学](https://book.douban.com/subject/25854634/)，大略看了下，只能说很多问题没有表面上那么简单，可能会有意想不到的连锁反应。
+- [Designing Data-Intensive Applications](https://book.douban.com/subject/26197294/)，涵盖后端开发的方方面面，了解现有基础软件的优劣势，不同数据库的一致性实现，分布式公式算法的来龙去脉。兼具实用性与学术性，不可多得的一本好书。
+
+#### 博客
+
+<img src="https://img.alicdn.com/imgextra/i4/581166664/O1CN01EsIWdY1z69xtjtuyq_!!581166664.png" alt="2019_blog.png"/>
+
+19 年产出也比较少，博客一共写了 4 篇。现在来看，是非常失败的，不管工作多么繁重，抽出时间来总结还是有必要的，2020 年要多去总结。
+
+#### Github
+
+<img src="https://img.alicdn.com/imgextra/i3/581166664/O1CN01WaQSHM1z69xwU2QJA_!!581166664.png" alt="2019_github.png"/>
+
+[提交记录](https://github.com/jiacai2050?tab=overview&from=2019-01-01&to=2019-12-31) 更少了，证明周末时间都出去玩了 :-)
+
+### 生活
+
+仿佛每换一个地方，我的身材都会发福一次，囧，到现在体重又回到锻炼之前的基数了！果断办了个卡开始练起来。
+
+<img src="https://img.alicdn.com/imgextra/i4/581166664/O1CN01jNE8av1z69xymp35m_!!581166664.jpg" alt="健身房.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i1/581166664/O1CN01UyMgCB1z69xtjmGRB_!!581166664.jpg" alt="浙大乒乓球.jpg"/>
+
+
+身边的朋友有 2 个出国工作，到了年底也开始考虑自己是否有必要出去看看，这可能也是每个在大城市奋斗的同学都会面临的问题，与其在国内 996 的环境下生活，为何不选择 Work Life Balance 的国外？！当然每个人都会有不同的羁绊，出去不一定好，还要慎重考虑。
+
+#### 旅行
+
+3 月底在换工作之际，去[泰国玩了一圈](https://www.jianshu.com/p/d078714d358b)，算是领略了一番异国风光，中秋节去千岛湖溜了一圈，其他时间就都在杭州市内溜达了。
+
+<img src="https://img.alicdn.com/imgextra/i4/581166664/O1CN01fLMIs91z69xv28ql9_!!581166664.jpg" alt="西湖一角.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i4/581166664/O1CN01ceQUTB1z69xxK6rSJ_!!581166664.jpg" alt="千岛湖.jpg"/>
+
+<img src="https://img.alicdn.com/imgextra/i2/581166664/O1CN01FyLI8z1z69xymsbem_!!581166664.jpg" alt="IMG_1652.jpg"/>
+
+#### 播客
+
+这两年有听了不少好播客，这里给大家推荐一下：
+- [ggtalk](https://talk.swift.gg/)，程序员的闲聊节目，还挺喜欢主播梁杰的采访风格，出国那几期听了收获颇多；[《23. 区块链到底能干嘛？》](https://talk.swift.gg/22) 这一期让我了解到区块链的本质
+- [软件那些事儿](https://www.ximalaya.com/zhubo/46905980/)，喜欢栋哥的八卦能力
+- [新闻酸菜馆](https://podcasts.apple.com/cn/podcast/%E6%96%B0%E9%97%BB%E9%85%B8%E8%8F%9C%E9%A6%86/id473501583)，生活中已经不能没有王掌柜和叮叮，已经听了 2 年多，2020 年是不是要买会员了呢？新听众可参考知乎[如何评价《新闻酸菜馆》？](https://www.zhihu.com/question/22412028/answer/435223672)
+- [俊玮谈新-新加坡](https://www.ximalaya.com/toutiao/5218657/)，作者移居新加坡十多年，每一期内容都干货满满，对于了解新加坡非常有帮助
+- [藏海花](https://www.ximalaya.com/youshengshu/19606439/) 盗墓笔记五年之后，吴邪在雪山寻找张起灵的印记。主播九月声音细腻，不同于周建龙，但也是我喜欢但风格。找一个阳光明媚的中午，闭目收听盗墓或鬼吹灯，惬意的很。
+
+## 总结
+
+通过上面的总结，感觉这两年过的还是有些自我了，技术的积累也不够深，如果后面两个人生活在一起了，自己的时间必定更少，所以后面还是要“集中精力”，不要过多分散精力，首先做好本职工作，再有找一两个可以长久从事的方向、项目。
+
+最近也一直在思考，编程到底难在哪里？对于如今的开发，各种组件都已经很齐全了，对于有界面的前端，有 Vue/React；对于后端技术，更是层出不穷，各式各样的数据库、消息队列、RPC 框架，仿佛如今的开发者需要的技能是组装，而非创造。是否能有一种系统/框架，来统一掉这些组件呢？serverless 要解决的问题正是组装（主要包括：分配 cpu/memory 资源，调度 http/rpc 流量），所以 k8s 会是软件开发的终极嘛？
+
+春节期间宅在家中，开始刷 leetcode/hackerrank，一方面锻炼自己的编程能力，另一方面为今后可能的出国做好准备。算法也是很多同学的痛，基本原理（空间/时间互补）都了解，但是遇到一个题目就是无法想到最优解，有种高三疯狂做试卷的感觉，基本定理都知道，但是题目就是解不出来。刘未鹏的[《知其所以然（以算法学习为例）》](http://mindhacks.cn/2008/07/07/the-importance-of-knowing-why/)阐述了其原因，就编程来说，知道算法的流程是远远不够的，因为编程相比其他技能，更注重细节，一个循环的中止条件到底是 `i<n` 还是 `i<n-1`，其差别是非常大的，而人的记忆是不可能记住这么细微的差别的，所以必须具备推导能力。今年希望能在这方面多写些总结。
+
+病毒还在蔓延，希望大家都能平稳度过。2020，加油。
