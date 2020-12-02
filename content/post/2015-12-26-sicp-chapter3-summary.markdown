@@ -1,6 +1,6 @@
 title: SICP 第三章总结
 date: 2015-12-26 12:53:33
-categories: 研习经典
+categories: [研习经典]
 tags: [sicp]
 ---
 

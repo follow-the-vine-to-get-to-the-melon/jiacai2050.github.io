@@ -1,6 +1,6 @@
 title: 何处安放我们的 Go 代码
 date: 2019-10-24 21:30:55
-categories: 编程语言
+categories: [编程语言]
 tags: [Go]
 ---
 

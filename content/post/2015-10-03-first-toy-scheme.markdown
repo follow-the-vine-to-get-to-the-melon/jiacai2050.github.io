@@ -1,6 +1,6 @@
 title: 我的第一个玩具语言 JCScheme 问世了
 date: 2015-10-03 17:13:49
-categories: 编程语言
+categories: [编程语言]
 tags: [Scheme]
 ---
 

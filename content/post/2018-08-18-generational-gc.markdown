@@ -1,7 +1,7 @@
 title: 深入浅出垃圾回收（四）分代式 GC
 date: 2018-08-18 12:12:30
 tags: [GC]
-categories: 理解计算机
+categories: [理解计算机]
 ---
 
 [上文](/blog/2018/08/04/incremental-gc)介绍的增量式 GC 是对 mark 阶段的一大优化，可以极大避免 STW 的影响。本文将要介绍的分代式 GC 根据对象生命周期（后面称为 age）的特点来优化 GC，降低其性能消耗。

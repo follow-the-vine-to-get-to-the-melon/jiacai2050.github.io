@@ -1,6 +1,6 @@
 title: Clojure 开发经验总结
 date: 2019-04-21 13:10:52
-categories: 编程语言
+categories: [编程语言]
 tags: [Clojure]
 
 ---

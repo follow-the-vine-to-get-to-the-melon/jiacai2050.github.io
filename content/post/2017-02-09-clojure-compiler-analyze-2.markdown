@@ -1,6 +1,6 @@
 title: Clojure 运行原理之字节码生成篇
 date: 2017-02-09 21:51:29
-categories: 编程语言
+categories: [编程语言]
 tags: [Clojure]
 ---
 

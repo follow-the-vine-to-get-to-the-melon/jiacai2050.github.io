@@ -1,7 +1,7 @@
 title: 由浅入深学习 Lisp 宏之理论篇
 date: 2017-08-31 22:17:52
 tags: [Clojure]
-categories: 编程语言
+categories: [编程语言]
 ---
 
 宏（macro）是 Lisp 语言中最重要的武器，它可以自动生成运行时的代码。宏也是编写领域特定语言（DSL）的利器，可以在不改动语言本身的基础上，增加新的程序构造体，这在其他语言中是不可能。比如，现在比较流行的同步方式写异步代码的 async/await，在非 Lisp 语言需要语言本身支持，但是在 Lisp 里面可以通过几个宏来解决，可以参考：[core.async](https://github.com/clojure/core.async)。

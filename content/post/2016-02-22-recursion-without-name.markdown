@@ -1,6 +1,6 @@
 title: 如何实现一个没有名字的递归函数
 date: 2016-02-22 21:31:11
-categories: 理解计算机
+categories: [理解计算机]
 tags: [Lambda, Lisp]
 ---
 

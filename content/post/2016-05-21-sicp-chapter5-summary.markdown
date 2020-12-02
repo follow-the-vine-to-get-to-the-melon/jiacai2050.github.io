@@ -1,6 +1,6 @@
 title: SICP 第五章总结
 date: 2016-05-21 16:04:15
-categories: 研习经典
+categories: [研习经典]
 tags: [sicp]
 ---
 

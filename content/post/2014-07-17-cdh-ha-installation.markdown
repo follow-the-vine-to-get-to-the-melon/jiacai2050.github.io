@@ -2,7 +2,7 @@ layout: post
 title: "hadoop1.0 高可靠性(HA)安装与总结"
 date: 2014-07-17 23:07:34 +0800
 comments: true
-categories: 大数据
+categories: [大数据]
 tags: [hadoop]
 ---
 

@@ -1,6 +1,6 @@
 title: 正则表达式“派别”简述
 date: 2014-12-07 19:07:48
-categories: 理解计算机
+categories: [理解计算机]
 tags: [Linux]
 
 ---

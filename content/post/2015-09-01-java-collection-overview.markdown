@@ -1,6 +1,6 @@
 title: Java集合框架综述
 date: 2015-09-01 21:18:05
-categories: 编程语言
+categories: [编程语言]
 tags: [Java]
 ---
 

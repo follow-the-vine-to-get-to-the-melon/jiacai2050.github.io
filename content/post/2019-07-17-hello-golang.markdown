@@ -1,6 +1,6 @@
 title: 写给新手的 Go 开发指南
 date: 2019-07-17 21:52:33
-categories: 编程语言
+categories: [编程语言]
 tags: [Go]
 ---
 

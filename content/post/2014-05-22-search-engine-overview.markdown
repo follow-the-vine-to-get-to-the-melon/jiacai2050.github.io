@@ -3,7 +3,7 @@ layout: post
 title: "搜索引擎概貌"
 date: 2014-05-22 15:28:26 +0800
 comments: true
-categories: 搜索引擎
+categories: [搜索引擎]
 tags: [lucene]
 list_number: false
 ---

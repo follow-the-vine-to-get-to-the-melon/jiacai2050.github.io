@@ -1,6 +1,6 @@
 title: 2017 年终总结
 date: 2018-01-21 12:18:00
-categories: 热爱生活
+categories: [热爱生活]
 ---
 
 2018 年不知不觉已经过了 20 天，从元旦开始就一直在重写之前的 [History Master](https://github.com/jiacai2050/history-master)，其实这个插件一开始就是为了写年终总结，但功能相对较简单，经过这十几天的不断开发，算是脱胎换骨了，现在也可以好好写年终总结了。

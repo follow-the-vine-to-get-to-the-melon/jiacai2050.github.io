@@ -1,7 +1,7 @@
 title: 编程语言中的变量作用域与闭包
 date: 2016-05-28 20:44:34
 tags: [Python, JavaScript]
-categories: 编程语言
+categories: [编程语言]
 ---
 
 如果你写过 javascript，应该听说过[变量提升](https://en.wikipedia.org/wiki/JavaScript_syntax#hoisting)（hoisting），如果你自诩“Life is short, I use Python”，那么多多少少会用过`global`、`nonlocal`这两个关键字。无论新手还是老手，遇到这些时都会觉得很别扭，稍不留神就会出现意想不到的 bug，如果你仔细观察就会发现，它们其实是一个问题：变量作用域的问题。

@@ -3,7 +3,7 @@ layout: post
 title: "深入Java世界"
 date: 2014-05-19 08:18:39 +0800
 comments: true
-categories: 编程语言
+categories: [编程语言]
 tags: [Java]
 ---
 

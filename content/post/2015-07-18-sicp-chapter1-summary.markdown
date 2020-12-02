@@ -1,6 +1,6 @@
 title: SICP 第一章总结
 date: 2015-07-18 12:51:44
-categories: 研习经典
+categories: [研习经典]
 tags: [sicp]
 ---
 

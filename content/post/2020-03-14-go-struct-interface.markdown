@@ -1,6 +1,6 @@
 title: Go struct/interface 最佳实践
 date: 2020-03-14 22:52:26
-categories: 编程语言
+categories: [编程语言]
 tags: [Go]
 ---
 
