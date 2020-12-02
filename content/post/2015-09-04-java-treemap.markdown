@@ -1,7 +1,7 @@
 title: Java TreeMap 源码解析
 date: 2015-09-04 19:54:55
 categories: 编程语言
-tags: Java
+tags: [Java]
 ---
 
 继[上篇文章](/blog/2015/09/03/java-hashmap/)介绍完了HashMap，这篇文章开始介绍Map系列另一个比较重要的类[TreeMap](http://docs.oracle.com/javase/7/docs/api/index.html?java/util/TreeMap.html)。

@@ -1,7 +1,7 @@
 title: SICP 第一章总结
 date: 2015-07-18 12:51:44
 categories: 研习经典
-tags: sicp
+tags: [sicp]
 ---
 
 最近两个月除了工作之外，业余时间一直在研习sicp这本经典书。关于这本书的讨论有[很多](https://www.google.com/?gws_rd=ssl#newwindow=1&safe=active&q=must+read+book+sicp)，像老赵写过SICP的[书托](http://blog.zhaojie.me/2009/07/recommended-reading-2-sicp.html)，我觉得与其讨论这本书有没有读的价值，不如花上些，随手翻翻，如果感兴趣，就读下去；否则直接忽略即可。计算机理论发展到了现在，有[太多太多经典](http://stackoverflow.com/questions/1711/what-is-the-single-most-influential-book-every-programmer-should-read)需要我们去读了，恐怕我们这一辈子都无法读完，为什么不找你感兴趣的来读呢？

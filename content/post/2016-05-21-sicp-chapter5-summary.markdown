@@ -1,7 +1,7 @@
 title: SICP 第五章总结
 date: 2016-05-21 16:04:15
 categories: 研习经典
-tags: sicp
+tags: [sicp]
 ---
 
 经过第四章元语言抽象的洗礼，我们已经能够深谙编译器内部的原理，核心就是`eval-apply`循环，只是说基于这个核心可以有各种延伸，像延迟求值、amb 不定选择求值、逻辑求值等等，有了这层的理解，我们应该能够透过各种花哨的[语法糖](https://en.wikipedia.org/wiki/Syntactic_sugar)，看出其本质来，像 Node.js 中的 Promise、 Python 中的 coroutine，都是 [continuation](https://en.wikipedia.org/wiki/Continuation) 的一种应用而已。

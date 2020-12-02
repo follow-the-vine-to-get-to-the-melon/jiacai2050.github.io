@@ -1,6 +1,6 @@
 title: MacBook 最佳实践
 date: 2014-11-23 20:40:07
-tags: 最佳实践
+tags: [最佳实践]
 
 ---
 

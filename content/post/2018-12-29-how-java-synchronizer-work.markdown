@@ -1,7 +1,7 @@
 title: Java 线程同步原理探析
 date: 2018-12-29 22:40:42
 categories: 编程语言
-tags: Java
+tags: [Java]
 ---
 
 现如今，服务器性能日益增长，并发（concurrency）编程已经“深入人心”，但由于冯诺依式计算机“指令存储，顺序执行”的特性，使得编写跨越时间维度的并发程序异常困难，所以现代编程语言都对并发编程提供了一定程度的支持，像 Golang 里面的 [Goroutines](https://tour.golang.org/concurrency/1)、Clojure 里面的 [STM（Software Transactional Memory）](https://clojure.org/reference/refs)、Erlang 里面的 [Actor](https://en.wikipedia.org/wiki/Actor_model)。

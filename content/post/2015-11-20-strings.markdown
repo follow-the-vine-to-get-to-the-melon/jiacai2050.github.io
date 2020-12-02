@@ -1,6 +1,6 @@
 title: 字符串，那些你不知道的事
 date: 2015-11-20 23:16:21
-tags: string
+tags: [string]
 categories: 理解计算机
 ---
 

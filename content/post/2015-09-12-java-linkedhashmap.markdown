@@ -1,7 +1,7 @@
 title: Java LinkedHashMap源码解析
 date: 2015-09-12 18:31:12
 categories: 编程语言
-tags: Java
+tags: [Java]
 ---
 
 上周把[HashMap](/blog/2015/09/03/java-hashmap/)、[TreeMap](/blog/2015/09/04/java-treemap/)这两个Map体系中比较有代表性的类介绍完了，大家应该也能体会到，如果该类所对应的数据结构与算法掌握好了，再看这些类的源码真是太简单不过了。

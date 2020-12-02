@@ -1,6 +1,6 @@
 title: 《硅谷之谜》读后感
 date: 2017-05-11 07:07:31
-tags: ideas
+tags: [ideas]
 categories: 热爱生活
 ---
 

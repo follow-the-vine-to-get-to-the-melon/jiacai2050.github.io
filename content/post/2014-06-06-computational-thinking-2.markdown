@@ -2,7 +2,7 @@
 layout: post
 title: "计算思维之二计算之树"
 date: 2014-06-06 13:07:27 +0800
-tags: mooc
+tags: [mooc]
 list_number: false
 ---
 

@@ -1,6 +1,6 @@
 title: SF 黑客马拉松赛后回顾
 date: 2015-10-27 21:05:30
-tags: nodejs
+tags: [nodejs]
 categories: 热爱生活
 ---
 

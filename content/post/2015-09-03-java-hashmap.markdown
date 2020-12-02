@@ -1,7 +1,7 @@
 title: Java HashMap 源码解析
 date: 2015-09-03 11:51:12
 categories: 编程语言
-tags: Java
+tags: [Java]
 ---
 
 继上一篇文章[Java集合框架综述](/blog/2015/09/01/java-collection-overview)后，今天正式开始分析具体集合类的代码，首先以既熟悉又陌生的[HashMap](http://docs.oracle.com/javase/7/docs/api/index.html?java/util/HashMap.html)开始。
