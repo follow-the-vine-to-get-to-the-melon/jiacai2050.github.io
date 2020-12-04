@@ -1,8 +1,10 @@
 ---
-title: 由浅入深学习 Lisp 宏之实战篇
+categories:
+- 编程语言
 date: 2017-10-01 10:13:05
-tags: [Clojure]
-categories: [编程语言]
+tags:
+- Clojure
+title: 由浅入深学习 Lisp 宏之实战篇
 ---
 
 本文是宏系列的第二篇文章，侧重于实战，对于新手建议先阅读宏系列的[理论篇](/blog/2017/08/31/master-macro-theory/)，之后再来看本文。当然如果你有一定基础，也可以直接阅读本文。

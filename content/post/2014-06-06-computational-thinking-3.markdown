@@ -1,10 +1,11 @@
 ---
-title: "计算思维之三语义符号化表达与计算"
 date: 2014-06-06 21:13:30 +0800
-tags: [mooc]
-description: "0和1与逻辑——思维符号化表达与逻辑运算" 
-keywords: 0和1,逻辑,思维,表达 
+description: 0和1与逻辑——思维符号化表达与逻辑运算
+keywords: 0和1,逻辑,思维,表达
 list_number: false
+tags:
+- mooc
+title: 计算思维之三语义符号化表达与计算
 ---
 
 ##0和1与逻辑——思维符号化表达与逻辑运算

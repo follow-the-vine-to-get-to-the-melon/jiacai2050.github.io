@@ -1,8 +1,10 @@
 ---
-title: 使用 ClojureScript 开发浏览器插件的过程与收获
+categories:
+- 编程语言
 date: 2017-11-22 16:23:34
-tags: [Clojure]
-categories: [编程语言]
+tags:
+- Clojure
+title: 使用 ClojureScript 开发浏览器插件的过程与收获
 ---
 
 随着 Firefox 57 的到来，之前维护的一个浏览器插件 [gooreplacer](https://github.com/jiacai2050/gooreplacer) 必须升级到 WebExtensions 才能继续使用，看了下之前写的 JS 代码，毫无修改的冲动，怕改了这个地方，那个地方突然就 broken 了。因此，这次选择了 cljs，整体下来流程很顺利，除了迁移之前的功能，又加了更多功能，希望能成为最简单易用的重定向插件 :-)

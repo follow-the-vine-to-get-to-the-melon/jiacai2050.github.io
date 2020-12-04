@@ -1,8 +1,10 @@
 ---
-title: 深入浅出垃圾回收（二）Mark-Sweep 详析及其优化
+categories:
+- 理解计算机
 date: 2018-07-08 12:26:31
-tags: [GC]
-categories: [理解计算机]
+tags:
+- GC
+title: 深入浅出垃圾回收（二）Mark-Sweep 详析及其优化
 ---
 
 在上一篇文中介绍的追踪类（tracing）GC 较引用计数（Reference Counting）[性能更高](/blog/2018/06/15/garbage-collection-intro/#引用计数（Reference-counting）)，但原生的追踪类 GC 也有其自身缺点，需要对其进行改造才能真正的名副其实。这篇文章就来介绍与之相关的内容。

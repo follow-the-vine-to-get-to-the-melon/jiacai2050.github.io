@@ -1,8 +1,10 @@
 ---
-title: Clojure 运行原理之字节码生成篇
+categories:
+- 编程语言
 date: 2017-02-09 21:51:29
-categories: [编程语言]
-tags: [Clojure]
+tags:
+- Clojure
+title: Clojure 运行原理之字节码生成篇
 ---
 
 [上一篇文章](/blog/2017/02/05/clojure-compiler-analyze/)讲述了 Clojure 编译器工作的整体流程，主要涉及 LispReader 与 Compiler 这两个类，而且指出编译器并没有把 Clojure 转为相应的 Java 代码，而是直接使用 ASM 生成可运行在 JVM 中的 bytecode。本文将主要讨论 Clojure 编译成的 bytecode 如何实现动态运行时以及为什么 Clojure 程序启动慢，这会涉及到 JVM 的类加载机制。

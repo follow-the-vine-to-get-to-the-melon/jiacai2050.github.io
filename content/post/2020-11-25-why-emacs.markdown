@@ -1,9 +1,10 @@
 ---
-title: Emacs 入门指南
+categories:
+- 效率工具
 date: 2020-11-25 23:25:09
-categories: [效率工具]
-tags: [Emacs]
-
+tags:
+- Emacs
+title: Emacs 入门指南
 ---
 
 提到 Emacs，每个程序员应该或多或少听过其大名，毕竟 Emacs 已经有将近四十多年的[悠久历史](https://www.zdnet.com/article/the-10-oldest-significant-open-source-programs/)。不过由于 Emacs “入道”门槛较高，导致很多初学者还没领略其精髓就弃之而去。在“熟练”使用 Emacs 之前，我也被其虐的体无完肤，不过幸好坚持了下来，给自己的编程生涯增加了不少乐趣。

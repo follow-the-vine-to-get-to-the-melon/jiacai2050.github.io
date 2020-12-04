@@ -1,11 +1,13 @@
 ---
-layout: post
-title: "搜索引擎概貌"
-date: 2014-05-22 15:28:26 +0800
+categories:
+- 搜索引擎
 comments: true
-categories: [搜索引擎]
-tags: [lucene]
+date: 2014-05-22 15:28:26 +0800
+layout: post
 list_number: false
+tags:
+- lucene
+title: 搜索引擎概貌
 ---
 
 ## 1. 前言

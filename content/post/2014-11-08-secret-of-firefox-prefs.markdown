@@ -1,7 +1,9 @@
 ---
-title: 让firefox与chrome一样快
 date: 2014-11-08 20:23:53 +0800
-tags: [mozilla, 最佳实践]
+tags:
+- mozilla
+- 最佳实践
+title: 让firefox与chrome一样快
 ---
 
 在如今这个Web时代，浏览器可以说是仅次于操作系统的软件了，各种应用都可以放到云端、移动端随时随地的使用，[HTML5标准](http://www.w3.org/TR/html5/)的最终版正式[发布](http://www.w3.org/blog/news/archives/4167)， 再次为使用Web技术开发跨平台应用奠定了基石。

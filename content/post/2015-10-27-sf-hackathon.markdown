@@ -1,8 +1,10 @@
 ---
-title: SF 黑客马拉松赛后回顾
+categories:
+- 热爱生活
 date: 2015-10-27 21:05:30
-tags: [nodejs]
-categories: [热爱生活]
+tags:
+- nodejs
+title: SF 黑客马拉松赛后回顾
 ---
 
 上个周末，也就是10月24、25号，参加了人生中第一次[黑客马拉松](http://segmentfault.com/hackathon-2015)（hackathon），虽然最终没有获奖，但是这个比赛过程中还是 hack 的挺爽，趁现在还有余热，纪录下比赛时的一些心得与收获。

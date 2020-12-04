@@ -1,10 +1,11 @@
 ---
-layout: post
-title: "计算思维之一序言篇"
-date: 2014-06-06 11:58:43 +0800
 comments: true
-tags: [mooc]
+date: 2014-06-06 11:58:43 +0800
+layout: post
 list_number: false
+tags:
+- mooc
+title: 计算思维之一序言篇
 ---
 
 这一系列笔记是我在上一个mooc课[大学计算机—计算思维导论](http://www.icourse163.org/course/hit/hit001?tid=7001)上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。

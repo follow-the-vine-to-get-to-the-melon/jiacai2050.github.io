@@ -1,8 +1,11 @@
 ---
-title: 实践总结：在 Java 中调用 Go 代码
+categories:
+- 编程语言
 date: 2020-08-08 09:30:53
-categories: [编程语言]
-tags: [Go, Java]
+tags:
+- Go
+- Java
+title: 实践总结：在 Java 中调用 Go 代码
 ---
 
 在 Java 中调用 Go 的大致过程如下

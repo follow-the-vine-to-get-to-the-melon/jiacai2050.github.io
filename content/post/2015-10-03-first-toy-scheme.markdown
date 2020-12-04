@@ -1,8 +1,10 @@
 ---
-title: 我的第一个玩具语言 JCScheme 问世了
+categories:
+- 编程语言
 date: 2015-10-03 17:13:49
-categories: [编程语言]
-tags: [Scheme]
+tags:
+- Scheme
+title: 我的第一个玩具语言 JCScheme 问世了
 ---
 
 记得在上大学那会，就想着能够实现个自己的编程语言。由于之前技能不足，一直没敢去尝试。现赶上国庆七天假期，SICP 看的也正起劲，终于鼓起勇气，把这个坑给填上了。甚是开心。

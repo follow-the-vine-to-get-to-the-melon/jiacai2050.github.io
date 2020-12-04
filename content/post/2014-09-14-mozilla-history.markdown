@@ -1,9 +1,8 @@
 ---
-title: Mozilla 前世今生
 date: 2014-09-14 00:14:52 +0800
 tags:
 - mozilla
-
+title: Mozilla 前世今生
 ---
 
 用过 Firefox 的同学多多少少都应该对 Mozilla 有些了解，Mozilla 作为一老牌软件公司，诞生了很多传奇性的故事和人物，本篇文章将带来读者重新回顾上个世纪九十年代发生的那些激荡人心的时刻。

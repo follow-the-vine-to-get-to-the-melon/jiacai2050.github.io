@@ -1,8 +1,10 @@
 ---
-title: javascript中的数据类型
+categories:
+- 编程语言
 date: 2015-02-24 21:09:45
-categories: [编程语言]
-tags: [JavaScript]
+tags:
+- JavaScript
+title: javascript中的数据类型
 ---
 
 学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上object。

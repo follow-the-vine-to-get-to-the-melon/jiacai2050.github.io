@@ -1,8 +1,10 @@
 ---
-title: 形单影只的 Socket
+categories:
+- 理解计算机
 date: 2018-11-10 22:15:18
-categories: [理解计算机]
-tags: [Linux]
+tags:
+- Linux
+title: 形单影只的 Socket
 ---
 
 最近工作上遇到过几次因 http client 没有配置超时相关参数，导致线程数占满或应用卡住的情况，出问题时线程的堆栈大致是这样的：

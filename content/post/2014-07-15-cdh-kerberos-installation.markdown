@@ -1,11 +1,13 @@
 ---
-layout: post
-title: "hadoop1.0 安全认证(kerberos)安装与总结"
-date: 2014-07-15 21:56:28 +0800
+categories:
+- 大数据
 comments: true
-categories: [大数据]
-tags: [hadoop]
+date: 2014-07-15 21:56:28 +0800
+layout: post
 list_number: false
+tags:
+- hadoop
+title: hadoop1.0 安全认证(kerberos)安装与总结
 ---
 
 俗话说得好，万事开头难。在软件开发中，环境部署要算是第一门槛了。我最近折腾了一周时间把cdh5.0.2.tar.gz版本在MRv1模式下，成功集成了Kerberos安全认证，并且是在全分布式模式下。经过这次安装过程，对hadoop的了解又深入了一层。现在趁着自己刚搭建完环境，脑子还时不时的闪现遇到的错误，把我的安装过程记录于此，一方面方便自己今后查阅，另一方面希望对今后遇到同样问题人有所启发。

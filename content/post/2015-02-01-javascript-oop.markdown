@@ -1,8 +1,11 @@
 ---
-title: javascript中的面向对象编程
+categories:
+- 编程语言
 date: 2015-02-01 12:53:18
-categories: [编程语言]
-tags: [JavaScript, mozilla]
+tags:
+- JavaScript
+- mozilla
+title: javascript中的面向对象编程
 ---
 
 最近工作一直在用nodejs做开发，有了nodejs，前端、后端、脚本全都可以用javascript搞定，很是方便。但是javascript的很多语法，比如对象，就和我们常用的面向对象(object oriented programming)的编程语言不同；看某个javascript开源项目，也经常会看到使用this关键字，而这个this关键字在javascript中因上下文不同而意义不同；还有让人奇怪的原型链。这些零零碎碎的东西加起来就很容易让人不知所措，所以，有必要对javascript这门语言进行一下深入了解。

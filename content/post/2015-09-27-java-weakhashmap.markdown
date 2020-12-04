@@ -1,8 +1,10 @@
 ---
-title: Java WeakHashMap 源码解析
+categories:
+- 编程语言
 date: 2015-09-27 14:10:24
-categories: [编程语言]
-tags: [Java]
+tags:
+- Java
+title: Java WeakHashMap 源码解析
 ---
 
 前面把基于特定数据结构的Map介绍完了，它们分别利用了相应数据结构的特点来实现特殊的目的，像HashMap利用哈希表的快速插入、查找实现`O(1)`的增删改查，TreeMap则利用了红黑树来保证key的有序性的同时，使得增删改查的时间复杂度为`O(log(n))`。

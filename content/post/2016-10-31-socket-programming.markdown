@@ -1,9 +1,10 @@
 ---
-title: Socket 编程实战
+categories:
+- 理解计算机
 date: 2016-10-31 16:24:17
-categories: [理解计算机]
-tags: [Python]
-
+tags:
+- Python
+title: Socket 编程实战
 ---
 
 Socket 在英文中的含义为“（连接两个物品的）凹槽”，像`the eye socket`，意为“眼窝”，此外还有“插座”的意思。在计算机科学中，socket 通常是指一个连接的两个端点，这里的连接可以是同一机器上的，像[unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket)，也可以是不同机器上的，像[network socket](https://en.wikipedia.org/wiki/Network_socket)。

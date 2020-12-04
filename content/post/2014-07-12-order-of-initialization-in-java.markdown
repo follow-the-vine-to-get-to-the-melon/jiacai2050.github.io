@@ -1,8 +1,10 @@
 ---
-title: JVM 的类初始化机制
+categories:
+- 编程语言
 date: 2014-07-12 13:02:29 +0800
-categories: [编程语言]
-tags: [Java]
+tags:
+- Java
+title: JVM 的类初始化机制
 ---
 
 

@@ -1,9 +1,12 @@
 ---
-title: "一个音乐盲如何才能听'懂'严肃音乐？"
-date: 2014-05-09 11:59:40 +0800
+categories:
+- 热爱生活
 comments: true
-categories: [热爱生活]
-tag: [music, GEB]
+date: 2014-05-09 11:59:40 +0800
+tag:
+- music
+- GEB
+title: 一个音乐盲如何才能听'懂'严肃音乐？
 ---
 
 ##初识古典

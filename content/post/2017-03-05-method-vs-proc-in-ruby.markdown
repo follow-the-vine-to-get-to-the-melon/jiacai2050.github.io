@@ -1,8 +1,10 @@
 ---
-title: 辨析 Ruby 中的 Method 与 Proc
+categories:
+- 编程语言
 date: 2017-03-05 15:26:28
-categories: [编程语言]
-tags: [Ruby]
+tags:
+- Ruby
+title: 辨析 Ruby 中的 Method 与 Proc
 toc: true
 ---
 

@@ -1,8 +1,10 @@
 ---
-title: “玩转” 技术面试——链表的函数表示法
+categories:
+- 他山之石
 date: 2017-03-22 11:31:11
-categories: [他山之石]
-tags: [Clojure]
+tags:
+- Clojure
+title: “玩转” 技术面试——链表的函数表示法
 ---
 
 ## 简介

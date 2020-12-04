@@ -1,9 +1,11 @@
 ---
-title: Yarn概述
+categories:
+- 大数据
 date: 2014-09-07 22:07:51 +0800
-categories: [大数据]
-tags: [hadoop]
 list_number: false
+tags:
+- hadoop
+title: Yarn概述
 ---
 
 Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前hadoop中jobtracker（后面简写JT）的角色，因为以前JT的任务过重，负责任务的调度、跟踪、失败重启等过程，而且只能运行mapreduce作业，不支持其他编程模式，这也限制了JT使用范围，而yarn应运而生，解决了这两个问题。

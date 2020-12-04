@@ -1,9 +1,10 @@
 ---
-title: Python2 中的编码问题
+categories:
+- 编程语言
 date: 2016-06-30 16:13:17
-categories: [编程语言]
-tags: [Python]
-
+tags:
+- Python
+title: Python2 中的编码问题
 ---
 
 先来看一个异常信息：

@@ -1,8 +1,10 @@
 ---
-title: Go struct/interface 最佳实践
+categories:
+- 编程语言
 date: 2020-03-14 22:52:26
-categories: [编程语言]
-tags: [Go]
+tags:
+- Go
+title: Go struct/interface 最佳实践
 ---
 
 使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的：

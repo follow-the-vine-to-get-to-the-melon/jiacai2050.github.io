@@ -1,9 +1,10 @@
 ---
-title: Clojure 开发经验总结
+categories:
+- 编程语言
 date: 2019-04-21 13:10:52
-categories: [编程语言]
-tags: [Clojure]
-
+tags:
+- Clojure
+title: Clojure 开发经验总结
 ---
 
 大概在两年半前，我开始陆陆续续写了[一系列文章](/tags/Clojure/)，来介绍如何上手、深入 Clojure，后来有幸加入 LeanCloud 写了两年的 Clojure，期间制作了一套[七集的教学视频](https://github.com/jiacai2050/learn_clojure.mp4)，算是对这门语言有了较为全面的认识。

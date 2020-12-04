@@ -1,8 +1,11 @@
 ---
-title: 如何实现一个没有名字的递归函数
+categories:
+- 理解计算机
 date: 2016-02-22 21:31:11
-categories: [理解计算机]
-tags: [Lambda, Lisp]
+tags:
+- Lambda
+- Lisp
+title: 如何实现一个没有名字的递归函数
 ---
 
 [递归](https://en.wikipedia.org/wiki/Recursion_%28computer_science%29) 作为计算机科学中很重要的一个概念，应用范围非常广泛。比较重要的数据结构，像树、图，本身就是递归定义的。

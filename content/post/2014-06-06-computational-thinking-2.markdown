@@ -1,9 +1,10 @@
 ---
-layout: post
-title: "计算思维之二计算之树"
 date: 2014-06-06 13:07:27 +0800
-tags: [mooc]
+layout: post
 list_number: false
+tags:
+- mooc
+title: 计算思维之二计算之树
 ---
 
 这次从计算机的宏观角度对整个计算机行业做个剖析，这里老师引入一个计算之树的模型。

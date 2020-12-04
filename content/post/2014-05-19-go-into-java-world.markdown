@@ -1,10 +1,12 @@
 ---
-layout: post
-title: "深入Java世界"
-date: 2014-05-19 08:18:39 +0800
+categories:
+- 编程语言
 comments: true
-categories: [编程语言]
-tags: [Java]
+date: 2014-05-19 08:18:39 +0800
+layout: post
+tags:
+- Java
+title: 深入Java世界
 ---
 
 俗话说的好：不经一事，不长一智。

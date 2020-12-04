@@ -1,8 +1,10 @@
 ---
-title: Clojure 开发那些事
+categories:
+- 编程语言
 date: 2016-12-31 16:49:17
-categories: [编程语言]
-tags: [Clojure]
+tags:
+- Clojure
+title: Clojure 开发那些事
 ---
 
 Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 [Storm](http://storm.apache.org/)，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员。
