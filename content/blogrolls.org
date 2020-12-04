@@ -1,0 +1,30 @@
+#+TITLE: 友情链接
+#+DATE: 2017-01-06 16:01:36
+#+DRAFT: false
+#+TAGS[]:
+#+KEYWORDS[]:
+#+SLUG:
+#+SUMMARY:
+
+#+begin_quote
+  如果你拥有独立博客，喜欢思考，认同我的博客风格，欢迎交换友链。
+#+end_quote
+
+- [[http://www.cs.indiana.edu/~dfried/][Daniel P. Friedman]] 语言学专家，[[http://book.douban.com/subject/1632977/][The Little Schemer]] & [[https://book.douban.com/subject/1726083/][The Seasoned Schemer]] 作者
+- [[http://gee.cs.oswego.edu/dl/][Doug Lea]] 并发专家，[[http://gee.cs.oswego.edu/dl/concurrency-interest/index.html][java.util.concurrent]]、[[http://gee.cs.oswego.edu/dl/jmm/cookbook.html][JMM]] 作者
+- [[http://www.yinwang.org/][王垠]] 当然我在扯淡
+- [[http://www.matrix67.com/blog/][Matrix67]] 一位数学高手
+- [[http://nathanmarz.com/][Nathan Marz]] Cascalog 与 Storm 作者
+- [[http://www.brendangregg.com/index.html][Brendan D. Gregg]] Linux 监控、优化
+
+* 志同道友
+** Java
+- [[https://www.jianshu.com/u/28d7875c78df][阿杜]]
+** Frontend
+- [[http://laker.me/blog][江小湖]]，进击的程序媛
+** PHP
+- [[http://www.sundabao.com][孙大宝]]，PHP 是最好的语言
+** Miscellaneous
+- [[http://adairjun.github.io][熊俊]]
+- [[http://blog.csdn.net/xx_123_1_rj/][刘银星]]
+- [[http://blog.zhengsj.top/][郑同学]]
