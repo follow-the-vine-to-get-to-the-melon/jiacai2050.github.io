@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GC on Keep Coding</title>
+    <link>https://liujiacai.net/tags/gc/</link>
+    <description>Recent content in GC on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 09 Jan 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/gc/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java 垃圾回收权威指北</title>
+      <link>https://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</link>
+      <pubDate>Wed, 09 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</guid>
+      <description>毫无疑问，GC（垃圾回收） 已经是现代编程语言标配，为了研究这个方向之前曾经写过四篇《深入浅出垃圾回收》博文来介绍其理论，之后也看了不少网络上</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（四）分代式 GC</title>
+      <link>https://liujiacai.net/blog/2018/08/18/generational-gc/</link>
+      <pubDate>Sat, 18 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/08/18/generational-gc/</guid>
+      <description>上文介绍的增量式 GC 是对 mark 阶段的一大优化，可以极大避免 STW 的影响。本文将要介绍的分代式 GC 根据对象生命周期（后面称为 age）的特点来优化 GC，降低</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（三）增量式 GC</title>
+      <link>https://liujiacai.net/blog/2018/08/04/incremental-gc/</link>
+      <pubDate>Sat, 04 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/08/04/incremental-gc/</guid>
+      <description>在上一篇文章中介绍的 MS 优化策略都是围绕 sweep 阶段展开，但 mark 阶段会导致应用程序挂起，也就是常说的：stop-the-world（STW），这严重影</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（二）Mark-Sweep 详析及其优化</title>
+      <link>https://liujiacai.net/blog/2018/07/08/mark-sweep/</link>
+      <pubDate>Sun, 08 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/07/08/mark-sweep/</guid>
+      <description>在上一篇文中介绍的追踪类（tracing）GC 较引用计数（Reference Counting）性能更高，但原生的追踪类 GC 也有其自身缺点，需要</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（一）简介篇</title>
+      <link>https://liujiacai.net/blog/2018/06/15/garbage-collection-intro/</link>
+      <pubDate>Fri, 15 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/06/15/garbage-collection-intro/</guid>
+      <description>GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年1，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当</description>
+    </item>
+    
+  </channel>
+</rss>

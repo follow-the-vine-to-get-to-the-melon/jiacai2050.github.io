@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>javascript中的数据类型 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上ob" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/2015/02/24/javascript-datatype/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="javascript中的数据类型" />
+<meta property="og:description" content="学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上ob" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/2015/02/24/javascript-datatype/" />
+<meta property="article:published_time" content="2015-02-24T21:09:45+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="javascript中的数据类型">
+<meta itemprop="description" content="学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上ob">
+<meta itemprop="datePublished" content="2015-02-24T21:09:45+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="3455">
+
+
+
+<meta itemprop="keywords" content="JavaScript," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="javascript中的数据类型"/>
+<meta name="twitter:description" content="学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上ob"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">javascript中的数据类型</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-02-24 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            </div>
+          <span class="more-meta"> 约 3455 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#弱类型-vs-强类型">弱类型 vs 强类型</a></li>
+        <li><a href="#数据类型">数据类型</a>
+          <ul>
+            <li><a href="#基本数据类型">基本数据类型</a></li>
+            <li><a href="#对象类型">对象类型</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上object。
+语法只是语言设计者预先做的一套规则，不同语言语法不尽相同，但都有一些共通点，对于熟悉一两门编程语言的人，学其他的编程语言时，语法往往不是问题（当然，如果你一直学的是类C语言，那么首次接触lisp时肯定也要花些时间），学习的重点往往是数据类型及其相关操作上，不是有句老话：“数据结构＋算法＝程序”！其次，有些语言的语法本身就存在设计问题（javascript更甚），我们没必要深究这些点，当然，如果你自诩geek，可以把玩把玩。</p>
+<p>本文将对javascript中的数据类型做一个详尽的介绍。</p>
+<h2 id="弱类型-vs-强类型">弱类型 vs 强类型</h2>
+<p>鉴于javascript的<a href="/blog/2015/02/01/javascript-oop/#%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5">设计理念</a>，javascript被设计成一种弱类型的语言。
+说到这里，难免要说一下，弱类型与强类型的区别。
+一些人会误以为这两者的差别就是“强类型的语言在声明一个变量时需要指明它的类型，而弱类型的则不用”。其实这种观点是错误的。比如下面这个Java代码片段：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">String s = &#34;hello&#34;;
+int l = s.getBytes().length;
+</code></pre></td></tr></table>
+</div>
+</div><p>编译器是怎么知道<code>.length</code>是合法的表达式呢？这是因为编译器知道<code>s</code>的数据类型为<code>String</code>，当调用<code>String</code>的<code>getBytes</code>方法时，返回值的数据类型为<code>byte[]</code>，所以<code>.length</code>是合法的表达式。
+这两者真正的区别是：</p>
+<blockquote>
+<p>在强类型的语言，每个表达式的类型都能够在编译时确定，并且只允许适用于该类型的操作；
+弱类型的语言允许对任意类型施加任何操作，只是这个操作有可能在运行时报错。</p>
+</blockquote>
+<h2 id="数据类型">数据类型</h2>
+<p>根据<a href="http://www.ecma-international.org/ecma-262/5.1/#sec-8">ECMAScript 5.1</a>的规范，javascript中共有六种数据类型，分别为：<code>Undefined</code>, <code>Null</code>, <code>Boolean</code>, <code>Number</code>, <code>String</code>、<code>Object</code>。前五种属于基本类型，最后一种属于对象类型。</p>
+<h3 id="基本数据类型">基本数据类型</h3>
+<ul>
+<li><code>Undefined</code>类型只有一个值，为<code>undefined</code>，意味着“空值(no value)”，适用于所有数据类型。</li>
+<li><code>Null</code>类型只有一个值，为<code>null</code>，意味着“空对象(no object)”，只适用于对象类型。</li>
+<li><code>Boolean</code>类型有两个值，为<code>true</code>与<code>false</code></li>
+<li><code>Number</code>类型的值是遵循IEEE 754标准的64位浮点数的集合，类似于Java的double。没有整型数据结构。此外还包含三个特殊的值：<code>NaN</code>、<code>Infinity</code>、<code>-Infinity</code></li>
+<li><code>String</code>类型的值是有穷个Unicode字符的集合。必须用<code>'</code>或<code>&quot;</code>括起来。</li>
+</ul>
+<h4 id="基本类型的string与对象类型的string区别">基本类型的string与对象类型的string区别</h4>
+<p>在javascript是区分基本类型的string与对象类型的string（Number、Boolean与之类似）。</p>
+<ul>
+<li>使用字面量方式创建的字符串，为基本类型的string</li>
+<li>使用<code>String()</code>创建的字符串，为基本类型的string</li>
+<li>使用<code>new String()</code>的方式创建的字符串，为对象类型的string</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">str1 = &#34;javascript&#34;
+str2 = String(&#34;javascript&#34;)
+str3 = new String(&#34;javascript&#34;)
+
+&gt; typeof str1
+&#34;string&#34;
+&gt; typeof str2
+&#34;string&#34;
+&gt; typeof str3
+&#34;object&#34;
+</code></pre></td></tr></table>
+</div>
+</div><p>javascript会在合适的时候自动把基本类型的string转为对象类型的string，也就是说我们可以对基本类型string使用<code>String.prototype</code>中的方法。这两者也可以进行显式转化。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// 基本类型-----&gt;对象类型
+str1 = &#34;javascript&#34;
+str1 = new String(str1)
+&gt; typeof str1
+&#34;object&#34;
+// 对象类型-----&gt;基本类型
+str1 = new String(&#34;javascript&#34;)
+str1 = str1.valueOf()
+&gt; typeof str1
+&#34;string&#34;
+</code></pre></td></tr></table>
+</div>
+</div><p>这两者用在<code>eval</code>函数中时，结果有所区别：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">var s1 = &#39;2 + 2&#39;;
+var s2 = new String(&#39;2 + 2&#39;);
+&gt; eval(s1)
+4
+&gt; eval(s2)
+[String: &#39;2 + 2&#39;]   //这里还是返回的string对象
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="null与undefined">null与undefined</h4>
+<p><code>null</code>与<code>undefined</code>都表示“没有值(non-value)”的概念，如果严格区分：</p>
+<ul>
+<li><code>null</code>表示空</li>
+<li><code>undefined</code>表示不存在。没有初始化的变量、函数中缺失的参数、函数没有显式return值时都为此值</li>
+</ul>
+<p>在其他语言中，一般只用一个null来表示空值，javascript中为什么多了个undefined呢？这是历史原因造成的：</p>
+<blockquote>
+<p>javascript采用了Java的语法，把类型分为了基本类型与对象类型，Java中用null来表示空对象，javascript想当然的继承了过来；在C语言中，null在转为数字时为0，javascript也采取同样的方式：</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt; Number(null)
+0
+&gt; 5 + null
+5
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>在javascript1.0时，还没有异常处理(exception handling)，对于一些异常情况（没有初始化的变量、调用函数时缺失的参数等），需要标明为一种特殊的值，<code>null</code>本来是个很好的选择，但是Brendan Eich同时想避免下面两件事：</p>
+</blockquote>
+<ul>
+<li>这个特殊值不应该有引用的特性，因为那是对象特有的</li>
+<li>这个特殊值不应该能转为0，因为这样不容易发现程序中的错误</li>
+</ul>
+<blockquote>
+<p>基于这两个原因，Brendan Eich选择了<code>undefined</code>，它可以被强转为<code>NaN</code>。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt; Number(undefined)
+NaN
+&gt; 5 + undefined
+NaN
+</code></pre></td></tr></table>
+</div>
+</div><p>两者在于JSON对象打交道时，结果也迥然不同：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt; JSON.parse(null)
+null
+&gt; JSON.parse(undefined)
+//Firfox SyntaxError: JSON.parse: unexpected character at line 1 column 1 of the JSON data
+//Chrome SyntaxError: Unexpected token u
+
+&gt; JSON.stringify(null)
+&#34;null&#34;
+&gt; JSON.stringify(undefined)
+undefined
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="对象类型">对象类型</h3>
+<p>javascript作为一门<a href="http://en.wikipedia.org/wiki/Scripting_language">脚本语言</a>，本身功能十分精简，很多功能（文件读写、网络等）都是由宿主环境提供。宿主环境与javascript语言的桥梁是对象，宿主环境通过提供一系列符合javascript语法的对象，提供各种各样的功能。</p>
+<p>在<a href="/blog/2015/02/01/javascript-oop">javascript面向对象编程</a>这篇文章（如果你不知道prototype是什么，强烈建议看看这篇文章）里，我多次强调了<code>对象在javascript中就是一系列的键值对</code>，就像Java中的HashMap一样，不过，javascript中对象的属性可以有一些描述符(property descriptor)，这在HashMap中是没有的。</p>
+<h4 id="属性描述符">属性描述符</h4>
+<p>属性描述符分为两类：</p>
+<ul>
+<li>数据描述符(data descriptor)，包含一系列boolean值，用以说明该属性是否允许修改、删除。</li>
+<li>访问描述符(accessor descriptor)，包含get与set函数。</li>
+</ul>
+<p>这两种描述符都是对象，它们都拥有下面两个boolean属性：</p>
+<ul>
+<li>configurable 用以指定该描述符是否允许修改、删除。默认为false。</li>
+<li>enumerable 用以指定在遍历对象（使用<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in">for&hellip;in循环</a>或<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys">Object.keys方法</a>）的属性时，是否访问该属性。默认为false。</li>
+</ul>
+<p>除了上面这两个共有属性外，数据描述符还有下面两个属性：</p>
+<ul>
+<li>value 用以指定该属性的值，默认为undefined</li>
+<li>writable 用以指定该属性的值是否允许改变该属性的值，默认为false</li>
+</ul>
+<p>访问描述符还有下面两个属性：</p>
+<ul>
+<li>get 用以指定访问该属性时的访问器(getter，本质是个函数)，该访问器的返回值为该属性的值。默认为undefined</li>
+<li>set 用以指定访问该属性时的赋值器(setter，本质是个函数)，该赋值器的接受一个参数。默认为undefined</li>
+</ul>
+<p>我们可以使用<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty</a>来设置对象的属性描述符。例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// using __proto__
+Object.defineProperty(obj, &#39;key&#39;, {
+  __proto__: null, // no inherited properties
+  value: &#39;static&#39;  // not enumerable
+                   // not configurable
+                   // not writable
+                   // as defaults
+});
+</code></pre></td></tr></table>
+</div>
+</div><p>通过上面这个例子可以看出，描述符具有继承的特点，我们这里显式的把描述符对象的<code>__proto__</code>设为<code>null</code>，就避免了从<code>Object.prototype</code>中继承相应属性。当然我们也可以显式地设置描述符的所有属性：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// being explicit
+Object.defineProperty(obj, &#39;key&#39;, {
+  enumerable: false,
+  configurable: false,
+  writable: false,
+  value: &#39;static&#39;
+});
+</code></pre></td></tr></table>
+</div>
+</div><p>这样的效果和第一段代码的效果是一样的。</p>
+<p>下面再举一个访问描述符的例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// Example of an object property added with defineProperty with an accessor property descriptor
+var bValue = 38;
+Object.defineProperty(obj, &#39;key&#39;, {
+  get: function() { return bValue; },
+  set: function(newValue) { bValue = newValue; },
+  enumerable: true,
+  configurable: true
+});
+</code></pre></td></tr></table>
+</div>
+</div><p>需要注意的是，不能混淆了访问描述器与数据描述器。下面这样写是错误的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// You cannot try to mix both:
+Object.defineProperty(obj, &#39;conflict&#39;, {
+  value: 0x9f91102,
+  get: function() { return 0xdeadbeef; }
+});
+// throws a TypeError: property descriptors must not specify a value
+// or be writable when a getter or setter has been specified
+
+</code></pre></td></tr></table>
+</div>
+</div><p>##typeof</p>
+<p>如果想在运行时获知某变量的类型，可以使用typeof操作符。typeof的返回值如下表：</p>
+<center>
+<img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2WufjbVXXXXX1XpXXXXXXXXXX_!!581166664.png" alt="typeof-values"/>
+</center>
+<p>其中有一处需要注意，那就是<code>typeof null == &quot;object&quot;</code>，按照<a href="http://www.ecma-international.org/ecma-262/5.1/#sec-4.3.2">ECMAScript 5.1</a>标准，<code>Null</code>类型应该是个基本类型，为什么这里返回<code>object</code>呢？原因是这样的：</p>
+<blockquote>
+<p>在javascript 1.0中，javascript中的值是用一个类型标志（type tag）和一个实际值这样的结构表示的，对象的类型标志为0，null在C语言中表示NULL指针（0x00），所以null的类型标志就为0了。</p>
+</blockquote>
+<p>##参考</p>
+<ul>
+<li><a href="http://speakingjs.com/es5/ch08.html#undefined_null">《Speaking JavaScript》 Chapter 8. Values</a></li>
+<li><a href="http://javascript.crockford.com/survey.html">A Survey of the JavaScript Programming Language</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">Standard built-in objects String</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof">typeof</a></li>
+<li><a href="http://www.2ality.com/2013/10/typeof-null.html">The history of “typeof null”</a> （需翻墙）</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/javascript/">JavaScript</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2015/04/03/leave-ucloud-to-youzan/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">我来有赞了</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2015/02/01/javascript-oop/">
+            <span class="next-text nav-default">javascript中的面向对象编程</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>搜索引擎 on Keep Coding</title>
+    <link>https://liujiacai.net/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/</link>
+    <description>Recent content in 搜索引擎 on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 22 May 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>搜索引擎概貌</title>
+      <link>https://liujiacai.net/blog/2014/05/22/search-engine-overview/</link>
+      <pubDate>Thu, 22 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/05/22/search-engine-overview/</guid>
+      <description>&lt;h2 id=&#34;1-前言&#34;&gt;1. 前言&lt;/h2&gt;
+&lt;p&gt;以前参加齐鲁软件大师时用过lucene，但是仅仅只是停留在API调用层面上，这次借着看《lucene in action》第二版的机会把与lucene和搜索相关的知识系统整理一遍。以下内容来自lucene in action的翻译加上我自己的理解，如有疑问或错误，请指出，谢谢。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

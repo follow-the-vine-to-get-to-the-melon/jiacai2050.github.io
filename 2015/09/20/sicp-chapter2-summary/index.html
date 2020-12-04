@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>SICP 第二章总结 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="到今天为止终于把第二章看完了，相比于第一章，感觉难点少了些，这章主要是通过大量例子（主要有图形语言、区间运算、符号求导、集合的表示、通用型算" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/2015/09/20/sicp-chapter2-summary/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="SICP 第二章总结" />
+<meta property="og:description" content="到今天为止终于把第二章看完了，相比于第一章，感觉难点少了些，这章主要是通过大量例子（主要有图形语言、区间运算、符号求导、集合的表示、通用型算" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/2015/09/20/sicp-chapter2-summary/" />
+<meta property="article:published_time" content="2015-09-20T17:48:17+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="SICP 第二章总结">
+<meta itemprop="description" content="到今天为止终于把第二章看完了，相比于第一章，感觉难点少了些，这章主要是通过大量例子（主要有图形语言、区间运算、符号求导、集合的表示、通用型算">
+<meta itemprop="datePublished" content="2015-09-20T17:48:17+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="3560">
+
+
+
+<meta itemprop="keywords" content="sicp," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SICP 第二章总结"/>
+<meta name="twitter:description" content="到今天为止终于把第二章看完了，相比于第一章，感觉难点少了些，这章主要是通过大量例子（主要有图形语言、区间运算、符号求导、集合的表示、通用型算"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">SICP 第二章总结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-09-20 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%A0%94%E4%B9%A0%E7%BB%8F%E5%85%B8/"> 研习经典 </a>
+            </div>
+          <span class="more-meta"> 约 3560 字 </span>
+          <span class="more-meta"> 预计阅读 8 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#数据抽象的意义">数据抽象的意义</a>
+          <ul>
+            <li><a href="#过程抽象与数据抽象">过程抽象与数据抽象</a></li>
+          </ul>
+        </li>
+        <li><a href="#数据抽象的语言支持">数据抽象的语言支持</a>
+          <ul>
+            <li><a href="#序对pair">序对pair</a></li>
+            <li><a href="#序对的操作">序对的操作</a></li>
+          </ul>
+        </li>
+        <li><a href="#数据导向-vs-消息传递">数据导向 vs. 消息传递</a></li>
+        <li><a href="#示例">示例</a>
+          <ul>
+            <li><a href="#有理数运算">有理数运算</a></li>
+            <li><a href="#区间运算">区间运算</a></li>
+            <li><a href="#八皇后问题">八皇后问题</a></li>
+            <li><a href="#图形语言">图形语言</a></li>
+            <li><a href="#huffman编码树">Huffman编码树🌲</a></li>
+            <li><a href="#复数的表示">复数的表示</a></li>
+            <li><a href="#通用型算术包的实现">通用型算术包的实现</a></li>
+            <li><a href="#符号代数多项式算术">符号代数——多项式算术</a></li>
+            <li><a href="#扩充练习有理函数">扩充练习：有理函数</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>到今天为止终于把第二章看完了，相比于第一章，感觉难点少了些，这章主要是通过大量例子（主要有图形语言、区间运算、符号求导、集合的表示、通用型算术运算）来熟悉构造数据抽象的相关技能。下面来回顾总结一下第二章。</p>
+<h2 id="数据抽象的意义">数据抽象的意义</h2>
+<p>在第一章中，只是进行了一些数值演算，这是比较简单的数据，并没有体现出数据抽象的意义，本章一开始就通过有理数的运算这个例子引出了数据抽象的意义。
+数据抽象的基本思想，就是设法构造出一些使用复合数据对象的程序，使它们可以像操作数值等简单数据类型一样操作“抽象数据”。通过构造复合数据（与构造复合过程类似）可以达到下面的效果：</p>
+<ol>
+<li>降低程序间的耦合度</li>
+<li>提高设计的模块性</li>
+<li>增强语言表达能力，为处理计算问题提供更多手段和方法。</li>
+</ol>
+<p>第二章主要围绕下面两个部分展开：</p>
+<ol>
+<li>如何构造复合数据对象（通过数据组合）</li>
+<li>如何处理复合数据对象</li>
+</ol>
+<p>其他一些细节点还包括：</p>
+<ol>
+<li>复合数据如何支持以“匹配和组合”方式工作的编程接口</li>
+<li>通过定义数据抽象,进一步模糊“过程”和“数据”的差异</li>
+<li>符号表达式的处理,这种表达式的基本部分是符号而不是数 通用型(泛型)操作,使同样操作可能用于不同的数据</li>
+<li>数据制导（导向/驱动）的程序设计,方便新数据类的加入</li>
+</ol>
+<h3 id="过程抽象与数据抽象">过程抽象与数据抽象</h3>
+<p>一个过程描述了一类计算的模式,又可以作为元素用于实现其他(更复 杂的)过程。因此过程是一种抽象——过程抽象。过程抽象的优势在于：</p>
+<ol>
+<li>屏蔽计算的实现细节,可以用任何功能/使用形式合适的过程取代</li>
+<li>规定了使用方式,使用方只依赖于抽象的使用方式约定</li>
+</ol>
+<p>数据抽象的情况类似。
+一个数据抽象实现一类数据所需的所有功能,又像基本数据元素一样可以作为其他数据抽象的元素。主要优势：</p>
+<ol>
+<li>屏蔽一种复合数据的实现细节</li>
+<li>提供一套抽象操作,使用组合数据的就像是使用基本数据</li>
+<li>数据抽象的接口(界面)包括两类操作:构造函数和选择函数。构造函数基于一些参数构造这类数据,选择函数提取其内容</li>
+</ol>
+<p>后面将说明（在第三章😊）,如果需要支持基于状态的程序设计，那么就需要增加另外 一类变动操作（mutation，修改操作）。</p>
+<h2 id="数据抽象的语言支持">数据抽象的语言支持</h2>
+<p>一般来说，实现数据抽象，编程语言需要提供下面三种机:</p>
+<ol>
+<li>粘合机制，支持把一组数据对象组合成一个整体（通过闭包实现）</li>
+<li>操作定义机制，定义针对组合数据的操作（通过scheme内置的define实现）</li>
+<li>抽象机制，屏蔽实现细节，使组合数据能像简单数据一样使用（通过数据导向的程序设计风格实现）</li>
+</ol>
+<p>处理复合数据的一个关键概念是<code>闭包</code>，这里的闭包概念来自<a href="https://en.wikipedia.org/wiki/Abstract_algebra">抽象代数</a>，指的是</p>
+<blockquote>
+<p>通过数据对象组合起来得到的结果，还可以通过同样的操作再进行再次组合。</p>
+</blockquote>
+<p>这个概念和我们在JavaScript等现代编程语言中的概念（一种为表示带有自由变量的过程而用的实现技术）不一样，要注意区分。</p>
+<h3 id="序对pair">序对pair</h3>
+<p>Scheme的基本复合结构称为“序对”，序对本身也是数据对象,可以用于构造更复杂的数据对象（也就是表，list）。例如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(define x (cons 3 4))
+(define y (cons 5 6))
+(define z (cons x y))
+; 注意理解序对pair 与表list 的区别
+(define x (cons 1 2))
+(define y (list 1 2))
+(cdr x)  ; 2
+(cdr y)  ; (2)
+</code></pre></td></tr></table>
+</div>
+</div><p>常规过程性语言都没有内部的表数据类型，但是我们在算法与数据结构课上，一般都用C语言实现过各种表（单向双向链表，环形链表等）结构，C++的标准STL库的list，Java集合框架中的List。</p>
+<p>表及其相关概念是从 Lisp 开始开发，现已经成为很多技术的基础：</p>
+<ol>
+<li>动态存储管理已经成为日常编程工作的基本支持</li>
+<li>链表的定义和使用是常用技术（想想Java 中你用了多少次ArrayList吧）</li>
+<li>有关表的使用和操作,以及各种操作的设计和实现,都可以从Lisp的表结构学习许多东西</li>
+<li>基于map、reduce的hadoop</li>
+<li>高阶表操作对分解程序复杂性很有意义</li>
+</ol>
+<h3 id="序对的操作">序对的操作</h3>
+<p>由于序对是构造复杂数据对象的基础，所有掌握序对的操作也就显得尤为重要，在学习这些操作时，我们可以感受到函数式编程的奇妙。
+废话不多说，直接看代码<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/02/lib/list.scm">list.scm</a>看代码吧。</p>
+<h2 id="数据导向-vs-消息传递">数据导向 vs. 消息传递</h2>
+<p>这两种方式是本章着重接受的两种数据抽象方式，分别对象函数式编程（数据导向）与面向对象编程（消息传递），具体辨析可参考<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.76.md">习题2.76</a>。</p>
+<h2 id="示例">示例</h2>
+<p>由于本章大部分内容都是用具体例子来讲解，下面我就再一一回顾遍。大部分内容都在我Github的读书笔记中，这里相当于个索引，具体例子可参考给出的相应链接😊。</p>
+<h3 id="有理数运算">有理数运算</h3>
+<p>通过这里例子，引入数据抽象的意义。具体代码见<a href="https://github.com/jiacai2050/sicp/tree/master/exercises/02/lib/rational.scm">rational.scm</a>。</p>
+<p>介绍完这个例子后，书上提出了一个重要的问题，“什么是数据”，在有理数运算这个例子，中我们能看到的就是一个构造函数<code>make-rat</code>，两个选择函数<code>numer</code>与<code>demon</code>。首先我们要明确，并不是任意三个过程都能构成有理数的实现，需要满足</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(make-rat (numer x) (denom x)) = x
+</code></pre></td></tr></table>
+</div>
+</div><p>任意满足这一条件的三个函数，都能作为有理数表示的基础。
+一般来说，一种数据对象的构造函数和选择函数都要满足一定条件。scheme中底层的数据结构序对也满足这一特点。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(car (cons a b)) = a
+(cdr (cons a b)) = b
+(cons (car x)(cdr x)) = x  ;有前提,x 必须是序对
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="church数">Church数</h4>
+<p><a href="https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.06.scm">习题2.06</a>引出Church数，完全用过程实现整数算术系统，关于这一点，推荐大家看我之前写的<a href="/blog/2014/10/12/lambda-calculus-introduction/">编程语言的基石——Lambda calculus</a>，绝对能够颠覆你的思维。</p>
+<h3 id="区间运算">区间运算</h3>
+<p>见相应的习题解答，推荐看<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.14_2.16.md">习题2.14_2.16</a></p>
+<h3 id="八皇后问题">八皇后问题</h3>
+<center>
+<img src="https://img.alicdn.com/imgextra/i3/581166664/TB23LNQfFXXXXckXXXXXXXXXXXX_!!581166664.png" alt="八皇后示意图"/>    
+</center>
+<p>经典的问题，参考<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.42_2.43.md">习题2.42</a>。</p>
+<h3 id="图形语言">图形语言</h3>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i3/581166664/TB2lhtEfFXXXXaRXpXXXXXXXXXX_!!581166664.png" alt="图形语言"/>
+</center>
+这个示例比较好玩，设计了一个图形语言，基本的元素painter用一过程表示，进一步模糊过程与数据的区别。参考相关习题，推荐[2.44](https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.44_2.45.md)、[2.49](https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.49.md)。
+你可以看到，把painter用过程实现后，相关操作（flip-vert、besides等）变得何其简单。
+<h3 id="huffman编码树">Huffman编码树🌲</h3>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2Uy8RfFXXXXcEXXXXXXXXXXXX_!!581166664.png" alt="一个Huffman的例子"/>
+</center>
+又一经典算法，一定要看，推荐[练习2.69](https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.69.scm)，学习如果构造一个Huffman编码树。
+<h3 id="复数的表示">复数的表示</h3>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB213J7fFXXXXXOXXXXXXXXXXXX_!!581166664.png" alt="复数的表示"/>
+</center>
+这种主要是用直角坐标与极坐标两种形式表示复数，用带标志的数据，实现了数据导向的设计风格。
+<p>两种坐标的实现，参考代码<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/02/lib/generic_arithmetic.scm">lib/generic_arithmetic.scm</a></p>
+<h3 id="通用型算术包的实现">通用型算术包的实现</h3>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2GYJSfFXXXXcFXXXXXXXXXXXX_!!581166664.png" alt="通用型算术包"/>
+</center>
+这一示例基本在前面有理数与复数的基础上，定义了统一的接口（add、sub等）来操作`scheme-number`、`rational`与`complex`三种类型的数据。
+<p>参考<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/02/lib/complex_number.scm">lib/complex_number.scm</a></p>
+<h3 id="符号代数多项式算术">符号代数——多项式算术</h3>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i3/581166664/TB2_HRVfFXXXXbzXXXXXXXXXXXX_!!581166664.png" alt="多边形的继承性（强制的难点）"/>
+</center>
+本章最后一个例子，难度比之前通用型算术包要大，因为不同类型的数据间操作需要“强制（coercion）”，而强制就需要一定的规则，实际编程中这种规则可能很复杂，所有这里需要注意的细节点比较多。
+<p>从“强制”引出的问题可以看出强类型语言的劣势，现在像python、javascript等弱类型的语言这么火，很大程序上就是由于弱类型语言的编译器把“强制”的工作给做了，程序员根本不用去关心。当然，如果所有“强制”工作都让编译器去做，也是不合适的，具体如何选择，就需要综合多种因素了。
+我本身经验还不是很丰富，就不乱说了，如果你有这方面的亲身体会，可以留言，我会及时更新😊。</p>
+<p>代码实现参考<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/02/lib/poly.scm">lib/poly.scm</a>与<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/02/2.92.md">习题2.92</a>。</p>
+<h3 id="扩充练习有理函数">扩充练习：有理函数</h3>
+<p>经过前面多项式算术的习题，我基本已经败下阵来了，实在是吸收消化不了了，改日再战😂。</p>
+<h2 id="总结">总结</h2>
+<p>这一次看第二章，陆陆续续用了2个月，基本上耗费平时下班＋周末双休的时间，收获还是挺大的。
+不过由于本章习题量有些大，而且一开始像一些基础的过程<code>put</code>、<code>get</code>都没有，所以自己只是随便写写，没法运行，所以前面看的不好，这章习题之简的联系很紧密，前面没做好，后面只能呵呵了。</p>
+<p>有一段时间让这些题弄的很烦，一点不想做，还好我这时候分散了下注意力，看了些其他的东西，像java集合框架的一些代码、the little schemer第九章的Y算子推导（虽然还没看懂），由于带着放松心情看的，遇到不懂的地方我就跳过去，没有深究，基本上达到了放松的目的。之后在网上把那些基础的过程都实现出来，再去做那些习题就顺多了。</p>
+<p>这一章的内容，我之前多多少少了解过，所以大部分内容看起来还是比较顺畅的，就是习题多了点，由于当初给自己定的目标，所以还是慢慢的把所有习题（有理函数的除外）做了一遍。还是一点就是做后面的题时，忘了前面的知识点，需要平时没事多去翻翻，毕竟现在还达不到烂熟于心的地步。</p>
+<p>下周一小组内再过一遍，向着第三章进军了。⛽️</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/sicp/">sicp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2015/09/27/java-weakhashmap/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Java WeakHashMap 源码解析</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2015/09/12/java-linkedhashmap/">
+            <span class="next-text nav-default">Java LinkedHashMap源码解析</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

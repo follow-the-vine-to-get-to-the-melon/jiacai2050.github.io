@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>大数据 on Keep Coding</title>
+    <link>https://liujiacai.net/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/</link>
+    <description>Recent content in 大数据 on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 07 Sep 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Yarn概述</title>
+      <link>https://liujiacai.net/blog/2014/09/07/yarn-intro/</link>
+      <pubDate>Sun, 07 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/09/07/yarn-intro/</guid>
+      <description>Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前had</description>
+    </item>
+    
+    <item>
+      <title>Yarn的安全模式与高可靠性安装总结</title>
+      <link>https://liujiacai.net/blog/2014/08/06/cdh-yarn-ha-kerberos/</link>
+      <pubDate>Wed, 06 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/08/06/cdh-yarn-ha-kerberos/</guid>
+      <description>&lt;p&gt;最近几天又重新把cdh的安全模块与高可靠性模块重新搭建了一遍，这次用是的目前最新的5.1.0的tar包安装，以前把MRv1搭建了好，这次主要是熟悉安装过程，并且把YARN的安全模块与HA模块成功搭建起来。遇到的错误还是不少，安装过程也是废了我好几天，现在想想很多错误都比较典型，现在此记录下我搭建过程中遇到的错误与心得，一方面为自己以后查阅，另一方面希望也能对遇到同样问题的人有所启发。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>hadoop1.0 高可靠性(HA)安装与总结</title>
+      <link>https://liujiacai.net/blog/2014/07/17/cdh-ha-installation/</link>
+      <pubDate>Thu, 17 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/07/17/cdh-ha-installation/</guid>
+      <description>&lt;p&gt;继上次&lt;a href=&#34;https://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/&#34;&gt;安装完Kerberos安全认证&lt;/a&gt;后，现在我在这基础上，又给CDH加上了HA（high availability），也就是高可靠性，具体来讲就是双NameNode，双Jobtracker（我还是在MRv1模式下），有了HA后，这下集群的健壮性就能够得到很好的保证了。&lt;/p&gt;
+&lt;p&gt;我还是按照&lt;a href=&#34;http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-High-Availability-Guide/CDH5-High-Availability-Guide.html&#34;&gt;官方文档&lt;/a&gt;来操作的，有了上次的经验，建议大家在具体操作实施前，先快速阅读一遍，做到心中有数，我还阅读了&lt;a href=&#34;http://hadoop.apache.org/docs/r2.3.0/hadoop-yarn/hadoop-yarn-site/HDFSHighAvailabilityWithNFS.html&#34;&gt;Apache官方的说明&lt;/a&gt;，也不用怎么详细，大概知道怎么回事就行了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>hadoop1.0 安全认证(kerberos)安装与总结</title>
+      <link>https://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/</link>
+      <pubDate>Tue, 15 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/</guid>
+      <description>&lt;p&gt;俗话说得好，万事开头难。在软件开发中，环境部署要算是第一门槛了。我最近折腾了一周时间把cdh5.0.2.tar.gz版本在MRv1模式下，成功集成了Kerberos安全认证，并且是在全分布式模式下。经过这次安装过程，对hadoop的了解又深入了一层。现在趁着自己刚搭建完环境，脑子还时不时的闪现遇到的错误，把我的安装过程记录于此，一方面方便自己今后查阅，另一方面希望对今后遇到同样问题人有所启发。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

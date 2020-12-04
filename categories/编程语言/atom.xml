@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>编程语言 on Keep Coding</title>
+    <link>https://liujiacai.net/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</link>
+    <description>Recent content in 编程语言 on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 08 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>实践总结：在 Java 中调用 Go 代码</title>
+      <link>https://liujiacai.net/blog/2020/08/08/go-meet-java/</link>
+      <pubDate>Sat, 08 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/08/08/go-meet-java/</guid>
+      <description>在 Java 中调用 Go 的大致过程如下 1 go --&amp;gt; cgo --&amp;gt; jna --&amp;gt; java 整个过程要解决的问题主要两个： 数据类型在两种语言中如何转化 何时清理无用的数据 下面就围绕上述调用过程</description>
+    </item>
+    
+    <item>
+      <title>Go struct/interface 最佳实践</title>
+      <link>https://liujiacai.net/blog/2020/03/14/go-struct-interface/</link>
+      <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/03/14/go-struct-interface/</guid>
+      <description>使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的： Go is expressive, concise, clean, and efficient. It&amp;rsquo;s a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language. Rob Pike 在 Simplicity is Complicated 中也提到 Go 的简洁是其流行</description>
+    </item>
+    
+    <item>
+      <title>何处安放我们的 Go 代码</title>
+      <link>https://liujiacai.net/blog/2019/10/24/go-modules/</link>
+      <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/10/24/go-modules/</guid>
+      <description>用了近半年的 Go，真是有种相见恨晚的感觉。简洁的语法、完善并强大的开发工具链，省去新手不少折腾的时间，可以专注写代码。 这期间也掌握了不少技巧</description>
+    </item>
+    
+    <item>
+      <title>写给新手的 Go 开发指南</title>
+      <link>https://liujiacai.net/blog/2019/07/17/hello-golang/</link>
+      <pubDate>Wed, 17 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/07/17/hello-golang/</guid>
+      <description>转眼加入蚂蚁已经三个多月，这期间主要维护一 Go 写的服务器。虽然用的时间不算长，但还是积累了一些心得体会，这里总结归纳一下，供想尝试 Go 的同学参考</description>
+    </item>
+    
+    <item>
+      <title>Clojure 开发经验总结</title>
+      <link>https://liujiacai.net/blog/2019/04/21/experience-in-clojure/</link>
+      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/04/21/experience-in-clojure/</guid>
+      <description>大概在两年半前，我开始陆陆续续写了一系列文章，来介绍如何上手、深入 Clojure，后来有幸加入 LeanCloud 写了两年的 Clojure，期间制作了一套七集</description>
+    </item>
+    
+    <item>
+      <title>Java 线程同步原理探析</title>
+      <link>https://liujiacai.net/blog/2018/12/29/how-java-synchronizer-work/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/12/29/how-java-synchronizer-work/</guid>
+      <description>现如今，服务器性能日益增长，并发（concurrency）编程已经“深入人心”，但由于冯诺依式计算机“指令存储，顺序执行”的特性，使得编写跨</description>
+    </item>
+    
+    <item>
+      <title>使用 ClojureScript 开发浏览器插件的过程与收获</title>
+      <link>https://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</link>
+      <pubDate>Wed, 22 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</guid>
+      <description>随着 Firefox 57 的到来，之前维护的一个浏览器插件 gooreplacer 必须升级到 WebExtensions 才能继续使用，看了下之前写的 JS 代码，毫无修改的冲动，怕改了这个地方，那个地方突然就 broken 了</description>
+    </item>
+    
+    <item>
+      <title>由浅入深学习 Lisp 宏之实战篇</title>
+      <link>https://liujiacai.net/blog/2017/10/01/macro-in-action/</link>
+      <pubDate>Sun, 01 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/10/01/macro-in-action/</guid>
+      <description>本文是宏系列的第二篇文章，侧重于实战，对于新手建议先阅读宏系列的理论篇，之后再来看本文。当然如果你有一定基础，也可以直接阅读本文。 其次，希望</description>
+    </item>
+    
+    <item>
+      <title>由浅入深学习 Lisp 宏之理论篇</title>
+      <link>https://liujiacai.net/blog/2017/08/31/master-macro-theory/</link>
+      <pubDate>Thu, 31 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/08/31/master-macro-theory/</guid>
+      <description>宏（macro）是 Lisp 语言中最重要的武器，它可以自动生成运行时的代码。宏也是编写领域特定语言（DSL）的利器，可以在不改动语言本身的基础上，增</description>
+    </item>
+    
+    <item>
+      <title>辨析 Ruby 中的 Method 与 Proc</title>
+      <link>https://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</link>
+      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</guid>
+      <description>Ruby is simple in appearance, but is very complex inside, just like our human body. &amp;ndash; Matz https://www.ruby-lang.org/en/about Ruby 与 Python、Scala 类似，在一切皆是对象（Seeing Everything as an Object）的基础上，支持函数式编</description>
+    </item>
+    
+    <item>
+      <title>Clojure 运行原理之字节码生成篇</title>
+      <link>https://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</link>
+      <pubDate>Thu, 09 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</guid>
+      <description>上一篇文章讲述了 Clojure 编译器工作的整体流程，主要涉及 LispReader 与 Compiler 这两个类，而且指出编译器并没有把 Clojure 转为相应的 Java 代码，而是直接使用 ASM 生成可运行在 JVM 中的 b</description>
+    </item>
+    
+    <item>
+      <title>Clojure 运行原理之编译器剖析篇</title>
+      <link>https://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</link>
+      <pubDate>Sun, 05 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</guid>
+      <description>Clojure is a compiled language, yet remains completely dynamic &amp;ndash; every feature supported by Clojure is supported at runtime. Rich Hickey https://clojure.org/ 这里的 runtime 指的是 JVM，JVM 之初是为运行 Java 语言而设计，而现在已经发展成一重量级平台，除了 Clojure 之外，</description>
+    </item>
+    
+    <item>
+      <title>Clojure 开发那些事</title>
+      <link>https://liujiacai.net/blog/2016/12/31/dev-in-clojure/</link>
+      <pubDate>Sat, 31 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/12/31/dev-in-clojure/</guid>
+      <description>Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 Storm，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员</description>
+    </item>
+    
+    <item>
+      <title>Python2 中的编码问题</title>
+      <link>https://liujiacai.net/blog/2016/06/30/python2-encoding/</link>
+      <pubDate>Thu, 30 Jun 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/06/30/python2-encoding/</guid>
+      <description>先来看一个异常信息： UnicodeEncodeError: &amp;lsquo;ascii&amp;rsquo; codec can&amp;rsquo;t encode characters in position 51-52: ordinal not in range(128) 相信每个 Python 程序员对上面这个错误都再熟悉不过了，也许你这个问题的根源以及解决方法不是很清楚，那么</description>
+    </item>
+    
+    <item>
+      <title>编程语言中的变量作用域与闭包</title>
+      <link>https://liujiacai.net/blog/2016/05/28/scope-closure/</link>
+      <pubDate>Sat, 28 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/05/28/scope-closure/</guid>
+      <description>如果你写过 javascript，应该听说过变量提升（hoisting），如果你自诩“Life is short, I use Python”，那么多多少少会用过glo</description>
+    </item>
+    
+    <item>
+      <title>python, ruby, javascript 浅析</title>
+      <link>https://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</link>
+      <pubDate>Sat, 26 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</guid>
+      <description>最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面</description>
+    </item>
+    
+    <item>
+      <title>我的第一个玩具语言 JCScheme 问世了</title>
+      <link>https://liujiacai.net/blog/2015/10/03/first-toy-scheme/</link>
+      <pubDate>Sat, 03 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/10/03/first-toy-scheme/</guid>
+      <description>记得在上大学那会，就想着能够实现个自己的编程语言。由于之前技能不足，一直没敢去尝试。现赶上国庆七天假期，SICP 看的也正起劲，终于鼓起勇气，</description>
+    </item>
+    
+    <item>
+      <title>Java WeakHashMap 源码解析</title>
+      <link>https://liujiacai.net/blog/2015/09/27/java-weakhashmap/</link>
+      <pubDate>Sun, 27 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/27/java-weakhashmap/</guid>
+      <description>前面把基于特定数据结构的Map介绍完了，它们分别利用了相应数据结构的特点来实现特殊的目的，像HashMap利用哈希表的快速插入、查找实现O(</description>
+    </item>
+    
+    <item>
+      <title>Java LinkedHashMap源码解析</title>
+      <link>https://liujiacai.net/blog/2015/09/12/java-linkedhashmap/</link>
+      <pubDate>Sat, 12 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/12/java-linkedhashmap/</guid>
+      <description>上周把HashMap、TreeMap这两个Map体系中比较有代表性的类介绍完了，大家应该也能体会到，如果该类所对应的数据结构与算法掌握好了，</description>
+    </item>
+    
+    <item>
+      <title>Java TreeMap 源码解析</title>
+      <link>https://liujiacai.net/blog/2015/09/04/java-treemap/</link>
+      <pubDate>Fri, 04 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/04/java-treemap/</guid>
+      <description>继上篇文章介绍完了HashMap，这篇文章开始介绍Map系列另一个比较重要的类TreeMap。 大家也许能感觉到，网络上介绍HashMap的文</description>
+    </item>
+    
+    <item>
+      <title>Java HashMap 源码解析</title>
+      <link>https://liujiacai.net/blog/2015/09/03/java-hashmap/</link>
+      <pubDate>Thu, 03 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/03/java-hashmap/</guid>
+      <description>继上一篇文章Java集合框架综述后，今天正式开始分析具体集合类的代码，首先以既熟悉又陌生的HashMap开始。 本文源码分析基于Oracle JDK</description>
+    </item>
+    
+    <item>
+      <title>Java集合框架综述</title>
+      <link>https://liujiacai.net/blog/2015/09/01/java-collection-overview/</link>
+      <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/01/java-collection-overview/</guid>
+      <description>最近被陆陆续续问了几遍HashMap的实现，回答的不好，打算复习复习JDK中的集合框架，并尝试分析其源码，这么做一方面是这些类非常实用，掌握</description>
+    </item>
+    
+    <item>
+      <title>javascript中的数据类型</title>
+      <link>https://liujiacai.net/blog/2015/02/24/javascript-datatype/</link>
+      <pubDate>Tue, 24 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/02/24/javascript-datatype/</guid>
+      <description>学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上ob</description>
+    </item>
+    
+    <item>
+      <title>javascript中的面向对象编程</title>
+      <link>https://liujiacai.net/blog/2015/02/01/javascript-oop/</link>
+      <pubDate>Sun, 01 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/02/01/javascript-oop/</guid>
+      <description>最近工作一直在用nodejs做开发，有了nodejs，前端、后端、脚本全都可以用javascript搞定，很是方便。但是javascript</description>
+    </item>
+    
+    <item>
+      <title>JVM 的类初始化机制</title>
+      <link>https://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</link>
+      <pubDate>Sat, 12 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</guid>
+      <description>更新日志 2014-07-12, 根据校招经验，完成初稿，很多地方没写清楚 2017-01-15，全部重写，增加 Load、Link、Initialization 过程与</description>
+    </item>
+    
+    <item>
+      <title>深入Java世界</title>
+      <link>https://liujiacai.net/blog/2014/05/19/go-into-java-world/</link>
+      <pubDate>Mon, 19 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/05/19/go-into-java-world/</guid>
+      <description>&lt;p&gt;俗话说的好：不经一事，不长一智。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

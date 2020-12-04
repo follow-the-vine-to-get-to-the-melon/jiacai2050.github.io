@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>SF 黑客马拉松赛后回顾 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="上个周末，也就是10月24、25号，参加了人生中第一次黑客马拉松（hackathon），虽然最终没有获奖，但是这个比赛过程中还是 hack 的挺爽，趁" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/2015/10/27/sf-hackathon/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="SF 黑客马拉松赛后回顾" />
+<meta property="og:description" content="上个周末，也就是10月24、25号，参加了人生中第一次黑客马拉松（hackathon），虽然最终没有获奖，但是这个比赛过程中还是 hack 的挺爽，趁" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/2015/10/27/sf-hackathon/" />
+<meta property="article:published_time" content="2015-10-27T21:05:30+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="SF 黑客马拉松赛后回顾">
+<meta itemprop="description" content="上个周末，也就是10月24、25号，参加了人生中第一次黑客马拉松（hackathon），虽然最终没有获奖，但是这个比赛过程中还是 hack 的挺爽，趁">
+<meta itemprop="datePublished" content="2015-10-27T21:05:30+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="2857">
+
+
+
+<meta itemprop="keywords" content="nodejs," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SF 黑客马拉松赛后回顾"/>
+<meta name="twitter:description" content="上个周末，也就是10月24、25号，参加了人生中第一次黑客马拉松（hackathon），虽然最终没有获奖，但是这个比赛过程中还是 hack 的挺爽，趁"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">SF 黑客马拉松赛后回顾</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-10-27 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/"> 热爱生活 </a>
+            </div>
+          <span class="more-meta"> 约 2857 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#为什么参加-hackathon">为什么参加 hackathon</a></li>
+        <li><a href="#赛前准备">赛前准备</a></li>
+        <li><a href="#比赛开始了">比赛开始了</a>
+          <ul>
+            <li><a href="#微信公众号开发">微信公众号开发</a></li>
+            <li><a href="#订单系统">订单系统</a></li>
+            <li><a href="#callback-hell">callback hell</a></li>
+          </ul>
+        </li>
+        <li><a href="#编码与生活">编码与生活</a></li>
+        <li><a href="#精彩瞬间">精彩瞬间</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>上个周末，也就是10月24、25号，参加了人生中第一次<a href="http://segmentfault.com/hackathon-2015">黑客马拉松</a>（hackathon），虽然最终没有获奖，但是这个比赛过程中还是 hack 的挺爽，趁现在还有余热，纪录下比赛时的一些心得与收获。</p>
+<h2 id="为什么参加-hackathon">为什么参加 hackathon</h2>
+<p>当在公司得知有黑客马拉松之后，我就立即报名了，觉得这件事本身就很酷，虽然身边一些同事说此类比赛没意思，大部分人都是奔着投资去的，但我还是觉得要你怎么看了，你如果去是为了那奖品、钱，我觉得那失去了 hackathon 的意义了，hackathon 我理解的就是</p>
+<blockquote>
+<p>做一些很酷的事情，而这些事情在平时的工作中“用不到”，但是完成这些事能够让我们有很强的满足感。</p>
+</blockquote>
+<p>也就是玩，虽然当知道自己的作品没有获奖时会有些许失落，但那是一时的，最起码那一天一夜 coding，让我确实很 high。</p>
+<h2 id="赛前准备">赛前准备</h2>
+<p>编程语言我毫无疑问的选择了 javascript，一来 javascript 与 Scheme 有<a href="https://en.wikipedia.org/wiki/JavaScript#JavaScript_and_Java">很深的渊源</a>，其次我也一直想好好系统学习下 nodejs，所以就是它了。参加比赛前的一周，我停止了 <a href="https://github.com/jiacai2050/sicp">SICP</a> 的阅读，转而进攻<a href="http://book.douban.com/subject/25870705/">《Node.js实战》</a>，这本书之前断断续续翻过前两章，这次基本把这本书看完了，主要是学习了下如何系统的开发一个完整的 node 应用，包括常用模块、通用架构等，之前写的 node 都是玩具，没有错误处理，没有单元测试（这次比赛虽然也没用上，但是知道了如何使用相应工具去测了）。</p>
+<p>书上最后一章介绍了 node 中较为底层的知识，像<code>net</code>库，node 的定位就是提供小而美的核心类库，常用的模块都是基于这些核心类库构建。下面纪录两个书中比较有趣的例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">var net = require(&#34;net&#34;);
+var socket = net.connect({host: &#34;github.com&#34;, port: 22});
+socket.on(&#34;data&#34;, function(chunk) {
+    console.log(chunk.toString());
+    socket.end();
+})
+// 启动后，会输出 SSH-2.0-libssh-0.7.0
+</code></pre></td></tr></table>
+</div>
+</div><p>下面的代码片段实现了类似于 Linux 上 <a href="http://linux.die.net/man/1/nc">nc</a> 命令的功能：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">var net = require(&#34;net&#34;);
+var socket = net.connect({host: process.argv[2], port: process.argv[3]});
+
+socket.on(&#34;connect&#34;, function() {
+    process.stdin.pipe(socket);
+    socket.pipe(process.stdout);
+    process.stdin.resume();
+});
+socket.on(&#34;close&#34;, function() {
+    console.log(&#34;bye...&#34;);
+});
+</code></pre></td></tr></table>
+</div>
+</div><p>其次在看 expressjs 时，无意间发现其作者 <a href="https://github.com/tj">tj</a> 早在 2014年4月份，就已经<a href="https://medium.com/@tjholowaychuk/farewell-node-js-4ba9e7f3e52b">抛弃 nodejs，投向 go 的怀抱</a>，心中难免有些忧伤，大牛总是这样，在我们还在学习某东西时，人家已经发现其缺点，转向更高深的地方&hellip;&hellip;</p>
+<h2 id="比赛开始了">比赛开始了</h2>
+<p>这次的比赛是命题制——技术改变生活，这基本上是没有限制，经过有赞小伙伴的一番讨论，最终定了3个题目，然后就开始组队做了，我和劲风一组，做的是一个超市扫码购物的微信应用，想要解决的基本问题是——超市排长队付款。对于我来说，主要是想做一些有难度的技术，挑战自己，也没想为什么现在超市为什么不推行扫码购物，当然这也是后来评委问我们的问题。
+这个题目主要的技术难点有：</p>
+<h3 id="微信公众号开发">微信公众号开发</h3>
+<p>如何扫码是我们遇到的第一个问题，是借助微信还是自己做原生应用，由于我俩都不会 Android 与 IOS 开发，所以微信成了唯一选择。
+微信开发需要有公众号，如果调用 <a href="http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html">JS-SDK</a>，需要有备过案的域名，我们都没有，这时我想到了<a href="http://sundabao.com/">大宝</a>兄，他很慷慨的给我提供云主机、mysql、nginx，加上宝贵的域名，很是感谢。（后面知道了可以用<a href="http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login">测试号</a>）。</p>
+<p>这里必须吐槽下微信的开发文档，真是烂：排版烂、个别语句不通顺、经常有死链接，希望微信团队好好维护下。</p>
+<p>比如这里的<a href="http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html">签名算法</a>，由于微信的人不知道<a href="http://www.w3school.com.cn/html/html_links.asp">命名锚（named anchors）</a>，所以你在打开上面的链接后，需要用<code>Ctrl + F</code> 来搜索 “签名算法” 才能找到我这里所指的签名算法，最最坑人的是，由于签名是针对网页 URL 的，所以一个网页需要签名一个，而这个 URL 必须是以<code>/</code>结尾，比如，如果用<code>http://1024.sundabao.com</code>这个 URL 来签名是不对的，必须是<code>http://1024.sundabao.com/</code>，这个真的好坑。</p>
+<p>相比之下，Github的<a href="https://developer.github.com/v3">开发者文档</a>，看起来就很让人舒服，希望微信团队好好学学。</p>
+<h3 id="订单系统">订单系统</h3>
+<p>扫码问题解决了，剩下的就是一个集成购物车的订单系统，之前在公司虽然也是在数据部，但是报表做的不多，真是没想到这订单系统是多么麻烦，我当时遇到问题就是，购物车选好后，点击提交，这时，按理说应该生成订单的，但是生成订单的同时是否需要把购物车的商品删除呢，第一感觉是需要，但是后来发现不是这样的，如果顾客发现还有商品没有购买，这时他会返回上一页继续购买，所以正确的做法是在确认支付订单后，再去把购物车的商品删掉。但是这样也会有问题，因为顾客确认支付方式后，有可能支付失败了，这时按理说购物车里的东西还是应该有的，但是我们这里比较简单，只要用户点击支付，就认为成功了。可见，要做一个完整的订单＋交易系统，是多么不容易的事。</p>
+<h3 id="callback-hell">callback hell</h3>
+<p>由于订单系统的逻辑比较多，涉及很多数据库的操作，而我们使用 nodejs 也没用什么 ORM 系统，只是用原生的 sql 来做，这时就陷入了 <a href="http://callbackhell.com/">callback hell</a>，之前写 node 程序一般都不怎么关注错误处理， 所以一直没怎么发现这个问题，这次在做这个订单系统，真是暴露无疑，太难维护了。</p>
+<p>下面代码片段的功能是：扫描一个商品，向购物车列表中增加一个商品的 <code>callback hell</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">exports.add = function(userId, goodsId, goodsNum, cb) {
+    var that = this;
+    var dbPool = db.getPool();
+    var sql = &#34;insert into 1024_cart values (?,?,?) ON DUPLICATE KEY UPDATE goods_num=goods_num+1&#34;;
+    sql = db.formatSQL(sql, [userId, goodsId, goodsNum]);
+    dbPool.query(sql, function(err, result) {
+        if(err) {
+            logger.error(&#34;exec:&#34; + sql + &#34; error:&#34; + err);
+            cb({code:-2, msg: &#34;服务器内部错误！&#34;});
+        } else if(result.affectedRows &gt; 0) {
+            goodsDAO.select(goodsId, function(err, result) {
+                if(err) {
+                    logger.error(&#34;exec:goodsDAO.select. error:&#34; + err);
+                    cb({code:-2, msg: &#34;服务器内部错误！&#34;});
+                }
+                else if(result.length == 0) {
+                    that.delete(userId, goodsId);
+                    cb({code:-1, msg: &#34;数据库中没有该商品！&#34;});
+                } else {
+                    var goods = result[0];
+                    getGoodsNum(userId, goodsId, function(err, result) {
+                        if(err) {
+                            cb({code:-2, msg: &#34;服务器内部错误！&#34;});
+                        } else {
+                            goods[&#34;num&#34;] = result[0][&#34;goods_num&#34;];
+                            cb({code:0, data: goods});
+                        }
+                    })
+                }
+            }); 
+        } else {
+            cb({code:-3, msg: &#34;修改失败！&#34;});
+        }
+    });
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="编码与生活">编码与生活</h2>
+<p>在整个比赛过程中（大概20个小时），我睡了不到4个小时，大脑一直处于兴奋状态，一直在解决问题，从动态获取微信签名，到解决订单系统的 bug，到最后的测试，都是极度兴奋的，coding 的比较 high。</p>
+<blockquote>
+<p><strong>我觉得我会编码到老</strong>。</p>
+</blockquote>
+<p>记得在学生时代就不断听到有人说，程序员是青春饭，做几年后要转向管理岗，真不知道说这些话的人是出于什么心理，当然有部分人是把编码当成为一份养家糊口的工作，但是我相信更多人是因为热爱编码而编码的，从编码中能汲取无限快乐。</p>
+<p>如果你身边在有人 balabala 的说诸如此类的话，我劝你最好离这种人远些，道不同不相为谋，世界这么大，为什么不去做自己喜欢的事呢？</p>
+<h2 id="精彩瞬间">精彩瞬间</h2>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB29QBpgFXXXXcOXXXXXXXXXXXX_!!581166664.jpg" alt="美丽的互联网小镇">
+    <figcaption><center>美丽的互联网小镇</center></figcaption>
+  </figure>
+
+</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2bstCgFXXXXXSXXXXXXXXXXXX_!!581166664.jpg" alt="午餐时刻">
+    <figcaption><center>午餐时刻</center></figcaption>
+  </figure>
+
+</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i3/581166664/TB2pBXCgFXXXXanXXXXXXXXXXXX_!!581166664.jpg" alt="比赛开始了">
+    <figcaption><center>比赛开始了</center></figcaption>
+  </figure>
+
+</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2dNhogFXXXXXmXpXXXXXXXXXX_!!581166664.jpg" alt="休息，休息一会♨️">
+    <figcaption><center>休息，休息一会♨️</center></figcaption>
+  </figure>
+
+
+
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2ZDFngFXXXXXvXpXXXXXXXXXX_!!581166664.jpg" alt="大家都睡了，但我们还在继续&amp;hellip;">
+    <figcaption><center>大家都睡了，但我们还在继续&amp;hellip;</center></figcaption>
+  </figure>
+
+</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i3/581166664/TB2QsppgFXXXXXQXpXXXXXXXXXX_!!581166664.jpg" alt="凌晨3点的互联网小镇">
+    <figcaption><center>凌晨3点的互联网小镇</center></figcaption>
+  </figure>
+
+</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i1/581166664/TB2w8xkgFXXXXX5XpXXXXXXXXXX_!!581166664.jpg" alt="圆满结束，感谢 sf 组办方">
+    <figcaption><center>圆满结束，感谢 sf 组办方</center></figcaption>
+  </figure>
+
+</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i1/581166664/TB212BEgFXXXXX0XXXXXXXXXXXX_!!581166664.jpg" alt="有赞小伙伴">
+    <figcaption><center>有赞小伙伴</center></figcaption>
+  </figure>
+
+</p>
+<p>注：图片均来自 sf 官方，如涉及个人隐私请告知。</p>
+<h2 id="总结">总结</h2>
+<p>这次参加比赛，玩的很开心，没什么遗憾。至于代码就不开源了，写的比较烂，后面等功力提升了在说这事。感兴趣可以看看我们作品<a href="http://note.youdao.com/share/web/file.html?id=134b727dc48180570c66408da03116d4&amp;type=note">易购 EasyGo</a>的简介。</p>
+<p>这里我想回答当时评委问我们组的问题——<strong>为什么现在的超市不推广扫码支付</strong>：</p>
+<ol>
+<li>二维码识别后，一般会包含商品的生产日期这个信息，而对于超市某些产品，像海鲜，是不想让顾客知道这个的&hellip;</li>
+<li>同一商品不同超市买的价格可能不一样，这样卖的贵的超市是不愿意用这套系统的&hellip;</li>
+</ol>
+<p>对于这些，我只能说，经济基础决定上层建筑，商家还是以盈利为目的的。</p>
+<p>比赛是结束了，但生活的挑战还在继续，<a href="https://github.com/jiacai2050/sicp">SICP</a> 要继续搞起了，这次停了有两个多星期了，真要多下功夫了。</p>
+<p>希望大家都能够 happy hacking ！</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/nodejs/">nodejs</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2015/11/20/strings/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">字符串，那些你不知道的事</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2015/10/21/programming-guide/">
+            <span class="next-text nav-default">转载『非科班出身的人学习编程不负责任指南』</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

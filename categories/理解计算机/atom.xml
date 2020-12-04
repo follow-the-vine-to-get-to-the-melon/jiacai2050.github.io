@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>理解计算机 on Keep Coding</title>
+    <link>https://liujiacai.net/categories/%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA/</link>
+    <description>Recent content in 理解计算机 on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 09 Jan 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/categories/%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java 垃圾回收权威指北</title>
+      <link>https://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</link>
+      <pubDate>Wed, 09 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</guid>
+      <description>毫无疑问，GC（垃圾回收） 已经是现代编程语言标配，为了研究这个方向之前曾经写过四篇《深入浅出垃圾回收》博文来介绍其理论，之后也看了不少网络上</description>
+    </item>
+    
+    <item>
+      <title>形单影只的 Socket</title>
+      <link>https://liujiacai.net/blog/2018/11/10/damn-single-socket/</link>
+      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/11/10/damn-single-socket/</guid>
+      <description>最近工作上遇到过几次因 http client 没有配置超时相关参数，导致线程数占满或应用卡住的情况，出问题时线程的堆栈大致是这样的： 1 2 3 4 5 6 7 8 9 10 11 12 13 14</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（四）分代式 GC</title>
+      <link>https://liujiacai.net/blog/2018/08/18/generational-gc/</link>
+      <pubDate>Sat, 18 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/08/18/generational-gc/</guid>
+      <description>上文介绍的增量式 GC 是对 mark 阶段的一大优化，可以极大避免 STW 的影响。本文将要介绍的分代式 GC 根据对象生命周期（后面称为 age）的特点来优化 GC，降低</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（三）增量式 GC</title>
+      <link>https://liujiacai.net/blog/2018/08/04/incremental-gc/</link>
+      <pubDate>Sat, 04 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/08/04/incremental-gc/</guid>
+      <description>在上一篇文章中介绍的 MS 优化策略都是围绕 sweep 阶段展开，但 mark 阶段会导致应用程序挂起，也就是常说的：stop-the-world（STW），这严重影</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（二）Mark-Sweep 详析及其优化</title>
+      <link>https://liujiacai.net/blog/2018/07/08/mark-sweep/</link>
+      <pubDate>Sun, 08 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/07/08/mark-sweep/</guid>
+      <description>在上一篇文中介绍的追踪类（tracing）GC 较引用计数（Reference Counting）性能更高，但原生的追踪类 GC 也有其自身缺点，需要</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（一）简介篇</title>
+      <link>https://liujiacai.net/blog/2018/06/15/garbage-collection-intro/</link>
+      <pubDate>Fri, 15 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/06/15/garbage-collection-intro/</guid>
+      <description>GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年1，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当</description>
+    </item>
+    
+    <item>
+      <title>Socket 编程实战</title>
+      <link>https://liujiacai.net/blog/2016/10/31/socket-programming/</link>
+      <pubDate>Mon, 31 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/10/31/socket-programming/</guid>
+      <description>Socket 在英文中的含义为“（连接两个物品的）凹槽”，像the eye socket，意为“眼窝”，此外还有“插座”的意思。在计算机科学中，socket 通常</description>
+    </item>
+    
+    <item>
+      <title>如何实现一个没有名字的递归函数</title>
+      <link>https://liujiacai.net/blog/2016/02/22/recursion-without-name/</link>
+      <pubDate>Mon, 22 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/02/22/recursion-without-name/</guid>
+      <description>递归 作为计算机科学中很重要的一个概念，应用范围非常广泛。比较重要的数据结构，像树、图，本身就是递归定义的。 比较常见的递归算法有阶乘、斐波那契</description>
+    </item>
+    
+    <item>
+      <title>字符串，那些你不知道的事</title>
+      <link>https://liujiacai.net/blog/2015/11/20/strings/</link>
+      <pubDate>Fri, 20 Nov 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/11/20/strings/</guid>
+      <description>最近在看《Dive Into Python 3》，第四章讲了字符串相关知识，看后才发现，字符串远比我们想象的要复杂多。就像该书所说的 Everything you thought you knew about strings is wrong. 是的，我之前</description>
+    </item>
+    
+    <item>
+      <title>正则表达式“派别”简述</title>
+      <link>https://liujiacai.net/blog/2014/12/07/regexp-favors/</link>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/12/07/regexp-favors/</guid>
+      <description>相信大家对于正则表达式都不陌生，在文本处理中或多或少的都会使用到它。但是，我们在使用linux下的文本处理工具如awk、sed等时，正则表达</description>
+    </item>
+    
+    <item>
+      <title>编程语言的基石——Lambda calculus</title>
+      <link>https://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</link>
+      <pubDate>Sun, 12 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</guid>
+      <description>Lambda calculus我们一般称为λ演算，最早是由邱奇（Alonzo Church，图灵的博导）在20世纪30年代引入，当时的背景是解决函数可计算</description>
+    </item>
+    
+    <item>
+      <title>两个水壶问题</title>
+      <link>https://liujiacai.net/blog/2014/08/16/two-pot-question/</link>
+      <pubDate>Sat, 16 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/08/16/two-pot-question/</guid>
+      <description>问题描述是这样的： 假设有一个池塘，里面有无穷多的水。现有2个空水壶a，b，其容积分别为6升和5升。如何只用这2个水壶从池塘里取得3升的水**</description>
+    </item>
+    
+  </channel>
+</rss>

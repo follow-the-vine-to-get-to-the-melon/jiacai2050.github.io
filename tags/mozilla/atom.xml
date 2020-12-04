@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mozilla on Keep Coding</title>
+    <link>https://liujiacai.net/tags/mozilla/</link>
+    <description>Recent content in mozilla on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 01 Feb 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/mozilla/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>javascript中的面向对象编程</title>
+      <link>https://liujiacai.net/blog/2015/02/01/javascript-oop/</link>
+      <pubDate>Sun, 01 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/02/01/javascript-oop/</guid>
+      <description>最近工作一直在用nodejs做开发，有了nodejs，前端、后端、脚本全都可以用javascript搞定，很是方便。但是javascript</description>
+    </item>
+    
+    <item>
+      <title>让firefox与chrome一样快</title>
+      <link>https://liujiacai.net/blog/2014/11/08/secret-of-firefox-prefs/</link>
+      <pubDate>Sat, 08 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/11/08/secret-of-firefox-prefs/</guid>
+      <description>在如今这个Web时代，浏览器可以说是仅次于操作系统的软件了，各种应用都可以放到云端、移动端随时随地的使用，HTML5标准的最终版正式发布， 再</description>
+    </item>
+    
+    <item>
+      <title>Mozilla 前世今生</title>
+      <link>https://liujiacai.net/blog/2014/09/14/mozilla-history/</link>
+      <pubDate>Sun, 14 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/09/14/mozilla-history/</guid>
+      <description>用过 Firefox 的同学多多少少都应该对 Mozilla 有些了解，Mozilla 作为一老牌软件公司，诞生了很多传奇性的故事和人物，本篇文章将带来读者重新回顾上个世纪九</description>
+    </item>
+    
+  </channel>
+</rss>

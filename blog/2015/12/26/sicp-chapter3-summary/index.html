@@ -1,16 +1,191 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>SICP 第三章总结 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">SICP 第三章总结</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">SICP 第三章总结</h1><div class="post-meta">Dec 26, 2015<span> | </span><span class="category"><a href="/categories/研习经典/">研习经典</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.9k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 13</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2015/12/26/sicp-chapter3-summary/" href="/blog/2015/12/26/sicp-chapter3-summary/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#主旨"><span class="toc-number">1.</span> <span class="toc-text">主旨</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设计策略"><span class="toc-number">2.</span> <span class="toc-text">设计策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基于对象的设计"><span class="toc-number">3.</span> <span class="toc-text">基于对象的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#赋值"><span class="toc-number">3.1.</span> <span class="toc-text">赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境计算模型"><span class="toc-number">3.2.</span> <span class="toc-text">环境计算模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用变动的数据做模拟"><span class="toc-number">4.</span> <span class="toc-text">用变动的数据做模拟</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#变动的表"><span class="toc-number">4.1.</span> <span class="toc-text">变动的表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#队列"><span class="toc-number">4.2.</span> <span class="toc-text">队列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表格"><span class="toc-number">4.3.</span> <span class="toc-text">表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字电路的模拟器"><span class="toc-number">4.4.</span> <span class="toc-text">数字电路的模拟器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#约束的传播"><span class="toc-number">4.5.</span> <span class="toc-text">约束的传播</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#并发，时间是一个本质问题"><span class="toc-number">5.</span> <span class="toc-text">并发，时间是一个本质问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#流"><span class="toc-number">6.</span> <span class="toc-text">流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#流计算模式的使用"><span class="toc-number">6.1.</span> <span class="toc-text">流计算模式的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#将迭代操作表示为流操作"><span class="toc-number">6.1.1.</span> <span class="toc-text">将迭代操作表示为流操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#序对的无穷流"><span class="toc-number">6.1.2.</span> <span class="toc-text">序对的无穷流</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#将流作为信号"><span class="toc-number">6.1.3.</span> <span class="toc-text">将流作为信号</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#流的弊端"><span class="toc-number">6.2.</span> <span class="toc-text">流的弊端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="post-content"><p>历时三个月，终于把第三章看完了。这三月发生了太多的意外，本文不打算说了，后面在写 <a href="/blog/2016/01/08/review-2015/#读书">2015 年终总结</a>时再来谈谈这三个月的事情。如今回过头来看看第三章的内容，好像也不怎么难，只是内容涉及的面稍微广一些而已，下面来回顾总结一下第三章。</p>
-<h2 id="主旨"><a href="#主旨" class="headerlink" title="主旨"></a>主旨</h2><p>第三章的标题为<code>模块化、对象和状态</code>，主要讨论与状态有关的编程问题。前面两章，讨论的问题主要是：</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>SICP 第三章总结 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="历时三个月，终于把第三章看完了。这三月发生了太多的意外，本文不打算说了，后面在写 2015 年终总结时再来谈谈这三个月的事情。如今回过头来看看第三章的" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="SICP 第三章总结" />
+<meta property="og:description" content="历时三个月，终于把第三章看完了。这三月发生了太多的意外，本文不打算说了，后面在写 2015 年终总结时再来谈谈这三个月的事情。如今回过头来看看第三章的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/" />
+<meta property="article:published_time" content="2015-12-26T12:53:33+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="SICP 第三章总结">
+<meta itemprop="description" content="历时三个月，终于把第三章看完了。这三月发生了太多的意外，本文不打算说了，后面在写 2015 年终总结时再来谈谈这三个月的事情。如今回过头来看看第三章的">
+<meta itemprop="datePublished" content="2015-12-26T12:53:33+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="4514">
+
+
+
+<meta itemprop="keywords" content="sicp," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SICP 第三章总结"/>
+<meta name="twitter:description" content="历时三个月，终于把第三章看完了。这三月发生了太多的意外，本文不打算说了，后面在写 2015 年终总结时再来谈谈这三个月的事情。如今回过头来看看第三章的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">SICP 第三章总结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-12-26 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%A0%94%E4%B9%A0%E7%BB%8F%E5%85%B8/"> 研习经典 </a>
+            </div>
+          <span class="more-meta"> 约 4514 字 </span>
+          <span class="more-meta"> 预计阅读 10 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#主旨">主旨</a></li>
+        <li><a href="#设计策略">设计策略</a></li>
+        <li><a href="#基于对象的设计">基于对象的设计</a>
+          <ul>
+            <li><a href="#赋值">赋值</a></li>
+            <li><a href="#环境计算模型">环境计算模型</a></li>
+          </ul>
+        </li>
+        <li><a href="#用变动的数据做模拟">用变动的数据做模拟</a>
+          <ul>
+            <li><a href="#变动的表">变动的表</a></li>
+            <li><a href="#队列">队列</a></li>
+            <li><a href="#表格">表格</a></li>
+            <li><a href="#数字电路的模拟器">数字电路的模拟器</a></li>
+            <li><a href="#约束的传播">约束的传播</a></li>
+          </ul>
+        </li>
+        <li><a href="#并发时间是一个本质问题">并发，时间是一个本质问题</a></li>
+        <li><a href="#流">流</a>
+          <ul>
+            <li><a href="#流计算模式的使用">流计算模式的使用</a></li>
+            <li><a href="#流的弊端">流的弊端</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>历时三个月，终于把第三章看完了。这三月发生了太多的意外，本文不打算说了，后面在写 <a href="/blog/2016/01/08/review-2015/#%E8%AF%BB%E4%B9%A6">2015 年终总结</a>时再来谈谈这三个月的事情。如今回过头来看看第三章的内容，好像也不怎么难，只是内容涉及的面稍微广一些而已，下面来回顾总结一下第三章。</p>
+<h2 id="主旨">主旨</h2>
+<p>第三章的标题为<code>模块化、对象和状态</code>，主要讨论与状态有关的编程问题。前面两章，讨论的问题主要是：</p>
 <ol>
 <li>如何组合基本过程和基本数据</li>
 <li>如何构造各种复合对象(组合过程/数据)</li>
@@ -38,52 +213,114 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 <li>在修改时只需要局部做，不需要大范围改变程序</li>
 <li>在扩充时只需简单加入对象或操作，局部修改/加入相关操作</li>
 </ol>
-<h2 id="设计策略"><a href="#设计策略" class="headerlink" title="设计策略"></a>设计策略</h2><p>本章针对上述目标，将讨论两种系统的组织策略：</p>
+<h2 id="设计策略">设计策略</h2>
+<p>本章针对上述目标，将讨论两种系统的组织策略：</p>
 <ol>
-<li>把系统看成是由一批相互作用的对象组成<blockquote>
+<li>把系统看成是由一批相互作用的对象组成
+<blockquote>
 <p>真实系统中的对象随着时间的进展不断变化，模拟它们的系统对象也吸引相应地变化</p>
 </blockquote>
 </li>
-<li>把系统看作一种信号处理系统<blockquote>
+<li>把系统看作一种信号处理系统
+<blockquote>
 <p>关注流过系统的信息流</p>
 </blockquote>
 </li>
 </ol>
-<h2 id="基于对象的设计"><a href="#基于对象的设计" class="headerlink" title="基于对象的设计"></a>基于对象的设计</h2><p>基于对象，需要关注计算对象可以怎样变化而又同时保持其标识。这是一种新的计算模型，带来许多本质性变化，包括有关计算的基本观点，基本操作，抽象的计算模型及其实现。</p>
-<h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><p>为了说清楚让一个计算对象具有随时间变化状态，贯穿本章的例子是：银行账号。一个账号对于我们系统设计中的一个对象，对同一个对象调用同一方法，返回的结果缺不一致。例如，假设开始时账户有100元钱，在不断调用“取钱”过程时，得到结果是不一样的。<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">withdraw</span> <span class="number">25</span>)</span><br><span class="line"><span class="number">75</span></span><br><span class="line">(<span class="name">withdraw</span> <span class="number">25</span>)</span><br><span class="line"><span class="number">50</span></span><br><span class="line">(<span class="name">withdraw</span> <span class="number">60</span>)</span><br><span class="line"><span class="string">"Insufficient funds"</span></span><br></pre></td></tr></table></figure></p>
-<p>这样的计算模型如果使用第一章介绍的<code>替换计算模型</code>，是不可能做到的，为此，本章引入了一新的计算模型，在该模型中，变量不在仅仅是某个值的名字，更准确的说，此时的变量标识了一个值的地址，这很像 C语言中的指针，面向对象中的值引用。</p>
-<h3 id="环境计算模型"><a href="#环境计算模型" class="headerlink" title="环境计算模型"></a>环境计算模型</h3><figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">make-withdraw</span> balance)</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (amount)</span><br><span class="line">    (<span class="name"><span class="builtin-name">if</span></span> (<span class="name"><span class="builtin-name">&gt;</span></span> amount balance)</span><br><span class="line">      <span class="string">"Insufficient"</span></span><br><span class="line">      (<span class="name"><span class="builtin-name">begin</span></span></span><br><span class="line">        (<span class="name"><span class="builtin-name">set!</span></span> balance (<span class="name"><span class="builtin-name">-</span></span> balance amount))</span><br><span class="line">        balance))))</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> W1 (<span class="name">make-withdraw</span> <span class="number">100</span>))</span><br><span class="line">(<span class="name">W1</span> <span class="number">50</span>)</span><br></pre></td></tr></table></figure>
-<center><br><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2WwebiVXXXXcxXXXXXXXXXXXX_!!581166664.png" alt="(define W1 (make-withdraw 100))的环境模型"><br><img src="https://img.alicdn.com/imgextra/i1/581166664/TB2mo5iiVXXXXa.XXXXXXXXXXXX_!!581166664.png" alt="(W1 50)的环境模型"><br></center>
+<h2 id="基于对象的设计">基于对象的设计</h2>
+<p>基于对象，需要关注计算对象可以怎样变化而又同时保持其标识。这是一种新的计算模型，带来许多本质性变化，包括有关计算的基本观点，基本操作，抽象的计算模型及其实现。</p>
+<h3 id="赋值">赋值</h3>
+<p>为了说清楚让一个计算对象具有随时间变化状态，贯穿本章的例子是：银行账号。一个账号对于我们系统设计中的一个对象，对同一个对象调用同一方法，返回的结果缺不一致。例如，假设开始时账户有100元钱，在不断调用“取钱”过程时，得到结果是不一样的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(withdraw 25)
+75
+(withdraw 25)
+50
+(withdraw 60)
+&#34;Insufficient funds&#34;
+</code></pre></td></tr></table>
+</div>
+</div><p>这样的计算模型如果使用第一章介绍的<code>替换计算模型</code>，是不可能做到的，为此，本章引入了一新的计算模型，在该模型中，变量不在仅仅是某个值的名字，更准确的说，此时的变量标识了一个值的地址，这很像 C语言中的指针，面向对象中的值引用。</p>
+<h3 id="环境计算模型">环境计算模型</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(define (make-withdraw balance)
+  (lambda (amount)
+    (if (&gt; amount balance)
+      &#34;Insufficient&#34;
+      (begin
+        (set! balance (- balance amount))
+        balance))))
 
+(define W1 (make-withdraw 100))
+(W1 50)
+</code></pre></td></tr></table>
+</div>
+</div><center>
+<img src="https://img.alicdn.com/imgextra/i2/581166664/TB2WwebiVXXXXcxXXXXXXXXXXXX_!!581166664.png" alt="(define W1 (make-withdraw 100))的环境模型"/>
+<img src="https://img.alicdn.com/imgextra/i1/581166664/TB2mo5iiVXXXXa.XXXXXXXXXXXX_!!581166664.png" alt="(W1 50)的环境模型"/>
+</center>
 <p>关于环境计算模型，核心点就两个：</p>
 <ol>
 <li>过程声明时，其外围指针指向其运行时的环境</li>
 <li>过程调用时，其外围指针指向声明时外围指针指向的那个环境</li>
 </ol>
-<p>我自己尝试着用 Java 实现了一个 <a href="https://github.com/jiacai2050/JCScheme" target="_blank" rel="noopener">Scheme 方言</a>，其中对这个环境模型也进行了模拟，大家不清楚的可以看看我<a href="/blog/2015/10/03/first-toy-scheme/#作用域">这篇文章</a>的介绍。</p>
-<h2 id="用变动的数据做模拟"><a href="#用变动的数据做模拟" class="headerlink" title="用变动的数据做模拟"></a>用变动的数据做模拟</h2><p>在前两章中，没有赋值的概念，那时对于一种数据结构，我们只需明确其<code>构造函数</code>与<code>选择函数</code>即可使用该数据结构，在之前两章中，我们介绍了“表”、“树”这两种数据结构，引入了赋值后，一个数据结构多了一种函数，即<code>修改函数</code>，利用修改函数，3.3 小节介绍了“变动的表”、“队列”、“表格”三种新的数据结构。</p>
-<h3 id="变动的表"><a href="#变动的表" class="headerlink" title="变动的表"></a>变动的表</h3><center><br><img src="https://img.alicdn.com/imgextra/i3/581166664/TB2f4qciVXXXXcIXXXXXXXXXXXX_!!581166664.png" alt="(cons (list 'a 'b) (list 'a 'b)) 的盒模型"><br></center>
-
-<p>变动的表这一数据结构，主要是借助<code>set!</code>，实现了<code>set-car!</code>与<code>set-cdr!</code>，进而可以实现变动的表，其中比较有意思的是<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.19.md" target="_blank" rel="noopener">习题3.19</a>，让我们在<code>O(1)</code>空间复杂度检查一个表中是否包含环，这也是面试题中经常出现的一道，大家一定要掌握。基本思路就是</p>
+<p>我自己尝试着用 Java 实现了一个 <a href="https://github.com/jiacai2050/JCScheme">Scheme 方言</a>，其中对这个环境模型也进行了模拟，大家不清楚的可以看看我<a href="/blog/2015/10/03/first-toy-scheme/#%E4%BD%9C%E7%94%A8%E5%9F%9F">这篇文章</a>的介绍。</p>
+<h2 id="用变动的数据做模拟">用变动的数据做模拟</h2>
+<p>在前两章中，没有赋值的概念，那时对于一种数据结构，我们只需明确其<code>构造函数</code>与<code>选择函数</code>即可使用该数据结构，在之前两章中，我们介绍了“表”、“树”这两种数据结构，引入了赋值后，一个数据结构多了一种函数，即<code>修改函数</code>，利用修改函数，3.3 小节介绍了“变动的表”、“队列”、“表格”三种新的数据结构。</p>
+<h3 id="变动的表">变动的表</h3>
+<center>
+<img src="https://img.alicdn.com/imgextra/i3/581166664/TB2f4qciVXXXXcIXXXXXXXXXXXX_!!581166664.png" alt="(cons (list 'a 'b) (list 'a 'b)) 的盒模型"/>
+</center>
+<p>变动的表这一数据结构，主要是借助<code>set!</code>，实现了<code>set-car!</code>与<code>set-cdr!</code>，进而可以实现变动的表，其中比较有意思的是<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.19.md">习题3.19</a>，让我们在<code>O(1)</code>空间复杂度检查一个表中是否包含环，这也是面试题中经常出现的一道，大家一定要掌握。基本思路就是</p>
 <blockquote>
 <p>设置两个指针，一个一次走一步，另一个一次走两步，然后如果两个指针相等，那么就说明有环存在。</p>
 </blockquote>
-<p>更进一步，如果一个表中有环的存在，如何找出那个环的交叉点（即如何找出下图中的<code>m</code>点）。如果不清楚，可以参考我<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.19.md" target="_blank" rel="noopener">习题3.19</a> 的解答。</p>
-<center><br><img src="https://img.alicdn.com/imgextra/i1/581166664/TB2kxxRiVXXXXXmXFXXXXXXXXXX_!!581166664.png" alt="环交叉点检测"><br></center>
-
-<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><center><br><img src="https://img.alicdn.com/imgextra/i3/581166664/TB27OhWiVXXXXcjXpXXXXXXXXXX_!!581166664.png" alt="带首尾指针的队列"><br></center>
-
-<p>队列是一个“先进先出”的数据结构，这里主要是引入首尾指针的思想来加速对队列末端的访问。队列的实现可以参考我 Github 库的<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/queue.scm" target="_blank" rel="noopener">/exercises/03/lib/queue.scm</a>。<br>其中<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.23.md" target="_blank" rel="noopener">习题3.23</a>让我们实现一双向链表，一种很实用的队列的变种，大家一定要自己做一下。</p>
-<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><p>这里的表格和我们Java中的Map、Python中的dict类型比较类似。</p>
-<center><br>    <img src="https://img.alicdn.com/imgextra/i1/581166664/TB2G54UiVXXXXcNXpXXXXXXXXXX_!!581166664.png" alt="二维表"><br></center>
-
-<p>其中比较有意思对是<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.25.md" target="_blank" rel="noopener">习题3.25</a>，让我们推广一维表格、二维表格的概念，实现任意多个关键码的表格，比较有趣。</p>
-<h3 id="数字电路的模拟器"><a href="#数字电路的模拟器" class="headerlink" title="数字电路的模拟器"></a>数字电路的模拟器</h3><p>这是本章一个比较实际的例子，其背景是</p>
+<p>更进一步，如果一个表中有环的存在，如何找出那个环的交叉点（即如何找出下图中的<code>m</code>点）。如果不清楚，可以参考我<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.19.md">习题3.19</a> 的解答。</p>
+<center>
+<img src="https://img.alicdn.com/imgextra/i1/581166664/TB2kxxRiVXXXXXmXFXXXXXXXXXX_!!581166664.png" alt="环交叉点检测"/>
+</center>
+<h3 id="队列">队列</h3>
+<center>
+![带首尾指针的队列](https://img.alicdn.com/imgextra/i3/581166664/TB27OhWiVXXXXcjXpXXXXXXXXXX_!!581166664.png)
+</center>
+<p>队列是一个“先进先出”的数据结构，这里主要是引入首尾指针的思想来加速对队列末端的访问。队列的实现可以参考我 Github 库的<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/queue.scm">/exercises/03/lib/queue.scm</a>。
+其中<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.23.md">习题3.23</a>让我们实现一双向链表，一种很实用的队列的变种，大家一定要自己做一下。</p>
+<h3 id="表格">表格</h3>
+<p>这里的表格和我们Java中的Map、Python中的dict类型比较类似。</p>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i1/581166664/TB2G54UiVXXXXcNXpXXXXXXXXXX_!!581166664.png" alt="二维表"/>
+</center>
+<p>其中比较有意思对是<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.25.md">习题3.25</a>，让我们推广一维表格、二维表格的概念，实现任意多个关键码的表格，比较有趣。</p>
+<h3 id="数字电路的模拟器">数字电路的模拟器</h3>
+<p>这是本章一个比较实际的例子，其背景是</p>
 <blockquote>
 <p>数字系统（像计算机）都是通过连接一些简单元件构造起来的，这些元件单独看起来功能都很简单，它们连接起来形成的网络就可能产生非常复杂的行为。</p>
 </blockquote>
-<center><br><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2O48ZiVXXXXcnXpXXXXXXXXXX_!!581166664.png" alt="半加器电路"><br></center>
-
+<center>
+<img src="https://img.alicdn.com/imgextra/i2/581166664/TB2O48ZiVXXXXcnXpXXXXXXXXXX_!!581166664.png" alt="半加器电路"/>
+</center>
 <p>从上面这个半加器可以看出</p>
 <blockquote>
 <p>由于各个门部件延迟的存在，使得输出可能在不同的时间产生，有关数字电路的设计的许多困难都源于此。</p>
@@ -93,83 +330,311 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 <li>构造电路的基本构件，像反门、与门、或门</li>
 <li>传递数字信号的连线</li>
 </ol>
-<p>除了上面两部分，为了模拟门部件延时的效果，本系统引入待处理表。这三部分都是用Scheme的过程实现，用内部状态表示该对象的改变，具体代码可以参考<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/simulator.scm" target="_blank" rel="noopener">simulator.scm</a>。</p>
-<p>其中比较有意思的是<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.31.md" target="_blank" rel="noopener">习题3.31</a>，大家可以好好想想。<br><figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(define (accept-action-<span class="function"><span class="keyword">procedure</span>! <span class="title">proc</span>)</span></span><br><span class="line"><span class="function">  <span class="params">(<span class="keyword">set</span>! action-procedures (cons proc action-procedures)</span>)</span></span><br><span class="line"><span class="function">  ;</span> 这里将 proc 加入后，立即执行了 proc，为什么？ 见习题<span class="number">3.31</span></span><br><span class="line">  (proc))</span><br></pre></td></tr></table></figure></p>
-<h3 id="约束的传播"><a href="#约束的传播" class="headerlink" title="约束的传播"></a>约束的传播</h3><p>本章另一个比较实用的例子，之前我们的过程都是单向，我们只能通过一个过程的输入获得其输出，但是这里给我们展示了如何构建一个约束系统，是的我们可以从任意方向求过程的未知数的值。</p>
-<center><br><img src="https://img.alicdn.com/imgextra/i1/581166664/TB2jEGbiVXXXXXDXpXXXXXXXXXX_!!581166664.png" alt="9C = 5(F-32) 形成的约束网络"><br></center>
-
+<p>除了上面两部分，为了模拟门部件延时的效果，本系统引入待处理表。这三部分都是用Scheme的过程实现，用内部状态表示该对象的改变，具体代码可以参考<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/simulator.scm">simulator.scm</a>。</p>
+<p>其中比较有意思的是<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.31.md">习题3.31</a>，大家可以好好想想。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(define (accept-action-procedure! proc)
+  (set! action-procedures (cons proc action-procedures))
+  ; 这里将 proc 加入后，立即执行了 proc，为什么？ 见习题3.31
+  (proc))
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="约束的传播">约束的传播</h3>
+<p>本章另一个比较实用的例子，之前我们的过程都是单向，我们只能通过一个过程的输入获得其输出，但是这里给我们展示了如何构建一个约束系统，是的我们可以从任意方向求过程的未知数的值。</p>
+<center>
+<img src="https://img.alicdn.com/imgextra/i1/581166664/TB2jEGbiVXXXXXDXpXXXXXXXXXX_!!581166664.png" alt="9C = 5(F-32) 形成的约束网络"/>
+</center>
 <p>在讲解这个实例时，3.3.5小节引入一新语言的设计，这种语言将使我们可以基于各种关系进行工作。</p>
 <p>我们在第一章里面就知道了，任何一门语言都必须提供三种机制：<code>基本表达形式</code>、<code>组合的方法</code>与<code>抽象的方法</code>。针对本系统的语言的基本元素就是各种<code>基本约束</code>，像<code>adder</code>、<code>multiplier</code>、<code>constant</code>。用 Scheme 过程来实现基本约束也就自动地为该新语言提供了一种复合对象的抽象方式。</p>
 <p>整个约束系统，我个人觉得主要是理解<code>process-forget-value</code>过程中为什么要调用<code>process-new-value</code>，这是串联起整个约束系统很重要的一步。书上是这么解释的：</p>
 <blockquote>
-<p>只所以需要这一步，是因为还可能有些连接器仍然有自己的值（也就是说，某个连接器过去所拥有的值原来就不是由当前对象设置的）<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">; adder 中 <span class="built_in">process</span>-forget-<span class="built_in">value</span> 的实现</span><br><span class="line">(define (<span class="built_in">process</span>-forget-<span class="built_in">value</span>)</span><br><span class="line">  (forget-<span class="built_in">value</span>! <span class="built_in">sum</span> me)</span><br><span class="line">  (forget-<span class="built_in">value</span>! a1 me)</span><br><span class="line">  (forget-<span class="built_in">value</span>! a2 me)</span><br><span class="line">  ; TODO 为什么需要理解执行 <span class="built_in">process</span>-<span class="built_in">new</span>-<span class="built_in">value</span></span><br><span class="line">  (<span class="built_in">process</span>-<span class="built_in">new</span>-<span class="built_in">value</span>))</span><br></pre></td></tr></table></figure></p>
+<p>只所以需要这一步，是因为还可能有些连接器仍然有自己的值（也就是说，某个连接器过去所拥有的值原来就不是由当前对象设置的）</p>
 </blockquote>
-<p>整个约束系统的代码可以在<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/propagation.scm" target="_blank" rel="noopener">propagation.scm</a>找到。</p>
-<h2 id="并发，时间是一个本质问题"><a href="#并发，时间是一个本质问题" class="headerlink" title="并发，时间是一个本质问题"></a>并发，时间是一个本质问题</h2><p>这一小节主要讲解引入<code>赋值</code>这一行为后，并发程序可能出现的问题，其实这里的东西我们在平常的编程中多多少少有些了解，主要是如何保证操作的原子性。</p>
-<p><center><br><img src="https://img.alicdn.com/imgextra/i3/581166664/TB2lzajiVXXXXcHXXXXXXXXXXXX_!!581166664.png" alt="Peter与Paul同时取同一个账户的一种场景"><br></center><br>保证操作的原子性，这里解释了一种方式——串行化组（serializer），其实就是我们 Java 里面的 synchronized 的关键字的功能。<br>保证一个对象的原子性还比较好解决，但是保证多个对象间交互的原子性就比较麻烦了，书上用从一个账户向另一个账户转账这个例子说明了这种情况。<br><figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">serialized-exchange</span> account1 account2)</span><br><span class="line">  (<span class="name"><span class="builtin-name">let</span></span> ((<span class="name">serializer1</span> (<span class="name">account1</span> <span class="symbol">'serializer</span>))</span><br><span class="line">        (<span class="name">serializer2</span> (<span class="name">account2</span> <span class="symbol">'serializer</span>)))</span><br><span class="line">    ((<span class="name">serializer1</span> (<span class="name">serializer2</span> exchange)))</span><br><span class="line">      account1</span><br><span class="line">      account2))</span><br></pre></td></tr></table></figure></p>
-<p>该例子完整代码可以参考<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/serialized_exchange.scm" target="_blank" rel="noopener">serialized_exchange.scm</a>。</p>
-<p>更进一步，如果保证 n 对象间交互的原子性呢？这应该就是现在比较热门的一领域：分布式系统中，如何保证数据的一致性，后面有精力可以看看看业界使用最广泛的 <a href="http://stackoverflow.com/questions/3662995/explaining-apache-zookeeper" target="_blank" rel="noopener">zookeeper 的实现原理</a>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; adder 中 process-forget-value 的实现
+(define (process-forget-value)
+  (forget-value! sum me)
+  (forget-value! a1 me)
+  (forget-value! a2 me)
+  ; TODO 为什么需要理解执行 process-new-value
+  (process-new-value))
+</code></pre></td></tr></table>
+</div>
+</div><p>整个约束系统的代码可以在<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/propagation.scm">propagation.scm</a>找到。</p>
+<h2 id="并发时间是一个本质问题">并发，时间是一个本质问题</h2>
+<p>这一小节主要讲解引入<code>赋值</code>这一行为后，并发程序可能出现的问题，其实这里的东西我们在平常的编程中多多少少有些了解，主要是如何保证操作的原子性。</p>
+<center>
+<img src="https://img.alicdn.com/imgextra/i3/581166664/TB2lzajiVXXXXcHXXXXXXXXXXXX_!!581166664.png" alt="Peter与Paul同时取同一个账户的一种场景"/>
+</center>
+保证操作的原子性，这里解释了一种方式——串行化组（serializer），其实就是我们 Java 里面的 synchronized 的关键字的功能。
+保证一个对象的原子性还比较好解决，但是保证多个对象间交互的原子性就比较麻烦了，书上用从一个账户向另一个账户转账这个例子说明了这种情况。
+```
+(define (serialized-exchange account1 account2)
+  (let ((serializer1 (account1 'serializer))
+        (serializer2 (account2 'serializer)))
+    ((serializer1 (serializer2 exchange)))
+      account1
+      account2))
+```
+该例子完整代码可以参考[serialized_exchange.scm](https://github.com/jiacai2050/sicp/blob/master/exercises/03/lib/serialized_exchange.scm)。
+<p>更进一步，如果保证 n 对象间交互的原子性呢？这应该就是现在比较热门的一领域：分布式系统中，如何保证数据的一致性，后面有精力可以看看看业界使用最广泛的 <a href="http://stackoverflow.com/questions/3662995/explaining-apache-zookeeper">zookeeper 的实现原理</a>。</p>
 <p>书上进一步扩展，讲述了并发问题与物理学的联系。有种发现一世界未解之谜的感觉，摘抄如下：</p>
 <blockquote>
 <p>从本质上看，在并发控制中，任何时间概念都必然与通信有内在的密切联系。有意思的是，时间与通信之间的这种联系也出现在相对论里，在那里的光速（可能用于同步事件的最快信号）是与时间和空间有关的基本常量。在处理时间和状态时，我们在计算模型领域所遭遇的复杂性，事实上，可能就是物理世界中最基本的复杂性的一种反映。</p>
 </blockquote>
-<h2 id="流"><a href="#流" class="headerlink" title="流"></a>流</h2><p>流是另一种模拟现实物理世界的设计策略，其核心思想就是用数学概念上的函数来表示一现实物体的改变，比如对象X，可以用<code>X(t)</code>来表示，如果我们想集中关心的是一个个时刻的x，那么就可以将它看作一个变化的量。如果关注的是这些值的整个时间史，那么就不需要强调其中的变化——这一函数本身是没有改变的。</p>
-<p>这里流，较之前的表而言，主要是引入<code>force</code>、<code>delay</code>两个过程，将其延时求值。有了延时求值，我们就可以做很多之前不能做的事情，比如实现一个表示所有正整数的无穷流<br><figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">; 第一种方式</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">integers-starting-from</span> n)</span><br><span class="line">  (<span class="name">cons-stream</span> n (<span class="name">integers-starting-from</span> (<span class="name"><span class="builtin-name">+</span></span> n <span class="number">1</span>))))</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> integers (<span class="name">integers-starting-from</span> <span class="number">1</span>))</span><br><span class="line"><span class="comment">; 第二种方式，隐式定义</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> ones (<span class="name">cons-stream</span> <span class="number">1</span> ones))</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">add-streams</span> s1 s2)</span><br><span class="line">  (<span class="name">stream-map</span> + s1 s2))</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> integers2 (<span class="name">cons-stream</span> <span class="number">1</span> (<span class="name">add-streams</span> ones integers2)))</span><br></pre></td></tr></table></figure></p>
-<h3 id="流计算模式的使用"><a href="#流计算模式的使用" class="headerlink" title="流计算模式的使用"></a>流计算模式的使用</h3><p>流方法极富有启发性，因为借助于它去构造系统时，所用的模块划分方式可以与采用赋值，围绕着状态变量组织系统的方式不同。例如，我们可以将整个的时间序列作为有关的目标，而不是去关注状态变量在各个时刻的值。这将使我们更方便地组合与比较来自不同时刻的状态的组合。</p>
-<h4 id="将迭代操作表示为流操作"><a href="#将迭代操作表示为流操作" class="headerlink" title="将迭代操作表示为流操作"></a>将迭代操作表示为流操作</h4><figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">; 求解一个数的平方</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">sqrt-stream</span> x)</span><br><span class="line">  (<span class="name"><span class="builtin-name">define</span></span> guesses</span><br><span class="line">    (<span class="name">cons-stream</span> <span class="number">1.0</span></span><br><span class="line">                 (<span class="name">stream-map</span> (<span class="name"><span class="builtin-name">lambda</span></span> (guess) (<span class="name">sqrt-improve</span> guess x))</span><br><span class="line">                             guesses)))</span><br><span class="line">  guesses)</span><br><span class="line"><span class="comment">; 由 π/4 = 1- 1/3 + 1/5 - 1/7 + ..... 计算 π 的值</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">pi-summands</span> n)</span><br><span class="line">  (<span class="name">cons-stream</span> (<span class="name"><span class="builtin-name">/</span></span> <span class="number">1.0</span> n)</span><br><span class="line">               (<span class="name">stream-map</span> - (<span class="name">pi-summands</span> (<span class="name"><span class="builtin-name">+</span></span> n <span class="number">2</span>)))))</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">partial-sums</span> s)</span><br><span class="line">  (<span class="name">cons-stream</span> (<span class="name">stream-car</span> s)</span><br><span class="line">               (<span class="name">add-streams</span> (<span class="name">stream-cdr</span> s)</span><br><span class="line">                            (<span class="name">partial-sums</span> s))))</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> pi-stream</span><br><span class="line">  (<span class="name">scale-stream</span> (<span class="name">partial-sums</span> (<span class="name">pi-summands</span> <span class="number">1</span>)) <span class="number">4</span>))</span><br></pre></td></tr></table></figure>
-<h4 id="序对的无穷流"><a href="#序对的无穷流" class="headerlink" title="序对的无穷流"></a>序对的无穷流</h4><p><center><br>  <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2UTipiVXXXXa5XXXXXXXXXXXX_!!581166664.png" alt="序对(i,j)，并且i<=j"><br></center><br>这里主要是生产序对<code>(i,j)</code>，并且<code>i&lt;=j</code><br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">define</span> (<span class="name">pairs</span> s <span class="literal">t</span>)</span><br><span class="line">  (<span class="name">cons-stream</span></span><br><span class="line">    (<span class="name">list</span> (<span class="name">stream-car</span> s) (<span class="name">stream-car</span> <span class="literal">t</span>))</span><br><span class="line">    (<span class="name">interleave</span></span><br><span class="line">      (<span class="name">stream-map</span> (<span class="name">lambda</span> (<span class="name">x</span>) (<span class="name">list</span> (<span class="name">stream-car</span> s) x))</span><br><span class="line">                  (<span class="name">stream-cdr</span> <span class="literal">t</span>))</span><br><span class="line">      (<span class="name">pairs</span> (<span class="name">stream-cdr</span> s) (<span class="name">stream-cdr</span> <span class="literal">t</span>)))))</span><br></pre></td></tr></table></figure></p>
-<p>这里比较有意思的是<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.66.md" target="_blank" rel="noopener">习题3.66</a>，让我们计算某序对在流中的位置，这题感觉需要将强的数学功底。</p>
-<h4 id="将流作为信号"><a href="#将流作为信号" class="headerlink" title="将流作为信号"></a>将流作为信号</h4><p><center><br><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2KcaeiVXXXXXtXpXXXXXXXXXX_!!581166664.png" alt="将积分过程看作信号处理系统"><br></center><br>这里充分利用流当作某系统的输入信号，使得这个系统不断运转下去。</p>
-<h3 id="流的弊端"><a href="#流的弊端" class="headerlink" title="流的弊端"></a>流的弊端</h3><p><center><br><img src="https://img.alicdn.com/imgextra/i4/581166664/TB2o7KviVXXXXarXXXXXXXXXXXX_!!581166664.png" alt="一个合用账户，通过合并两个交易请求流的方式模拟"><br></center><br>这里还是用两个用户同时访问一个账户为例。处理的麻烦之处在于如何<strong>归并</strong>两个请求流。这里并不能简单交替地从两个请求流取一个地方式合并，因为两个用户访问账户的频率可能不一样。这正好是在并发中不得不去处理的同一个约束条件，在那里我们发现需要引进显式同步，以保证在并发处理具有状态的对象的过程中，各个事件时按照“正确”顺序发生的。这样，虽然这里试图支持函数式的风格，但在需要归并来自不同主体的输入时，又要重新引入函数式风格中致力于消除的同一个问题。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本章一开始就提出了其目标，那就是构造一些计算模型，使其结构能够符合我们对于试图去模拟的真实世界的看法。我们学到了两种方式：</p>
+<h2 id="流">流</h2>
+<p>流是另一种模拟现实物理世界的设计策略，其核心思想就是用数学概念上的函数来表示一现实物体的改变，比如对象X，可以用<code>X(t)</code>来表示，如果我们想集中关心的是一个个时刻的x，那么就可以将它看作一个变化的量。如果关注的是这些值的整个时间史，那么就不需要强调其中的变化——这一函数本身是没有改变的。</p>
+<p>这里流，较之前的表而言，主要是引入<code>force</code>、<code>delay</code>两个过程，将其延时求值。有了延时求值，我们就可以做很多之前不能做的事情，比如实现一个表示所有正整数的无穷流</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; 第一种方式
+(define (integers-starting-from n)
+  (cons-stream n (integers-starting-from (+ n 1))))
+(define integers (integers-starting-from 1))
+; 第二种方式，隐式定义
+(define ones (cons-stream 1 ones))
+(define (add-streams s1 s2)
+  (stream-map + s1 s2))
+(define integers2 (cons-stream 1 (add-streams ones integers2)))
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="流计算模式的使用">流计算模式的使用</h3>
+<p>流方法极富有启发性，因为借助于它去构造系统时，所用的模块划分方式可以与采用赋值，围绕着状态变量组织系统的方式不同。例如，我们可以将整个的时间序列作为有关的目标，而不是去关注状态变量在各个时刻的值。这将使我们更方便地组合与比较来自不同时刻的状态的组合。</p>
+<h4 id="将迭代操作表示为流操作">将迭代操作表示为流操作</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; 求解一个数的平方
+(define (sqrt-stream x)
+  (define guesses
+    (cons-stream 1.0
+                 (stream-map (lambda (guess) (sqrt-improve guess x))
+                             guesses)))
+  guesses)
+; 由 π/4 = 1- 1/3 + 1/5 - 1/7 + ..... 计算 π 的值
+(define (pi-summands n)
+  (cons-stream (/ 1.0 n)
+               (stream-map - (pi-summands (+ n 2)))))
+(define (partial-sums s)
+  (cons-stream (stream-car s)
+               (add-streams (stream-cdr s)
+                            (partial-sums s))))
+(define pi-stream
+  (scale-stream (partial-sums (pi-summands 1)) 4))  
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="序对的无穷流">序对的无穷流</h4>
+<center>
+  <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2UTipiVXXXXa5XXXXXXXXXXXX_!!581166664.png" alt="序对(i,j)，并且i<=j"/>
+</center>
+这里主要是生产序对`(i,j)`，并且`i<=j`
+```
+(define (pairs s t)
+  (cons-stream
+    (list (stream-car s) (stream-car t))
+    (interleave
+      (stream-map (lambda (x) (list (stream-car s) x))
+                  (stream-cdr t))
+      (pairs (stream-cdr s) (stream-cdr t)))))
+```
+这里比较有意思的是[习题3.66](https://github.com/jiacai2050/sicp/blob/master/exercises/03/3.66.md)，让我们计算某序对在流中的位置，这题感觉需要将强的数学功底。
+<h4 id="将流作为信号">将流作为信号</h4>
+<center>
+<img src="https://img.alicdn.com/imgextra/i2/581166664/TB2KcaeiVXXXXXtXpXXXXXXXXXX_!!581166664.png" alt="将积分过程看作信号处理系统"/>
+</center>
+这里充分利用流当作某系统的输入信号，使得这个系统不断运转下去。
+<h3 id="流的弊端">流的弊端</h3>
+<center>
+<img src="https://img.alicdn.com/imgextra/i4/581166664/TB2o7KviVXXXXarXXXXXXXXXXXX_!!581166664.png" alt="一个合用账户，通过合并两个交易请求流的方式模拟"/>
+</center>
+这里还是用两个用户同时访问一个账户为例。处理的麻烦之处在于如何**归并**两个请求流。这里并不能简单交替地从两个请求流取一个地方式合并，因为两个用户访问账户的频率可能不一样。这正好是在并发中不得不去处理的同一个约束条件，在那里我们发现需要引进显式同步，以保证在并发处理具有状态的对象的过程中，各个事件时按照“正确”顺序发生的。这样，虽然这里试图支持函数式的风格，但在需要归并来自不同主体的输入时，又要重新引入函数式风格中致力于消除的同一个问题。
+<h2 id="总结">总结</h2>
+<p>本章一开始就提出了其目标，那就是构造一些计算模型，使其结构能够符合我们对于试图去模拟的真实世界的看法。我们学到了两种方式：</p>
 <ol>
 <li>将这一世界模拟为一集相互分离的、受时间约束的、具有状态的相互交流的对象</li>
 <li>将它模拟为单一的、无时间也无状态的统一体</li>
 </ol>
 <p>每种方式都具有强有力的优势，但就其自身而言，有没有一种方式能够完全令人满意。如何整合这两个系统，是现在一重要难题。</p>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/" data-id="ckhxlinwg0032szljklxhubjx" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3aS27DMAxF0ex/0y7QqWvlPtIJaupqFDg/HQ0IiuTrhdfxu65er5+cf+f87nFar08sGTJkPJZxLNd561dP1uyrJ+R/15+RIUPGPgweZMm7PJiuj4zsTYYMGTJqCR9ny5AhQ8YnAi7fEEkc10FZhgwZMtJLLE/vaknk+mhuu4vLkCHjgYx+Y+Bzr7/a35AhQ8a/ZBztxdO+WoqJ9iBDhozRjPTymV5E+UZrJTw0xyFDhoyHM/iVMh3/uusg0NHLkCFje8Z607wBuf4FErIvj0CGDBkbMNKQmqZ0tYyVD2TIkCFjB8a9F1oO4AMWqAcrQ4aMoYy0QF8bzuAbqrUNZMiQsQ+jkxR2GgBpUU+GDBl7MmpbrF2DSUEtHc6QIUPGbEYtsPbTxM5V+Y9/kSFDxmgGH8ZKA2X6nJTeArYMGTIGMdKQxwe80rp9OuQhQ4aMfRi1gMtLabXv8vKcDBkydmCQTdRK+bVEMB3FeHMXlyFDxggGD7XrJ3clmqQJ8SbGypAhYyijn1HeG0BrRT0ZMmTswKi1AXjw7bQBUCiXIUPGaAYvuvUbnzwR7O9KhgwZMxhHuMhlkl+D07bB5S/LkCFjNKMzTpG2MDtlNfJJGTJkzGbUgmwtvNbKczJkyJDBxyNICE55t1XPZMiQIQNvoh+mecEOdVllyJCxGYN8Mr3KpuEYDVvIkCFjKIMX69OD4FfZVptThgwZoxlpY4APiqUHR/4xSBZlyJAxgfEDZ1Ai4ErpFSQAAAAASUVORK5CYII=">分享</a><div class="tags"><a href="/tags/sicp/">sicp</a></div><div class="post-nav"><a class="pre" href="/blog/2016/01/08/review-2015/">2015 年终总结</a><a class="next" href="/blog/2015/11/20/strings/">字符串，那些你不知道的事</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/';
-    this.page.identifier = 'blog/2015/12/26/sicp-chapter3-summary/';
-    this.page.title = 'SICP 第三章总结';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/sicp/">sicp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2016/01/08/review-2015/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">2015 年终总结</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2015/11/20/strings/">
+            <span class="next-text nav-default">字符串，那些你不知道的事</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

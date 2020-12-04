@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何实现一个没有名字的递归函数 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="递归 作为计算机科学中很重要的一个概念，应用范围非常广泛。比较重要的数据结构，像树、图，本身就是递归定义的。 比较常见的递归算法有阶乘、斐波那契" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/2016/02/22/recursion-without-name/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="如何实现一个没有名字的递归函数" />
+<meta property="og:description" content="递归 作为计算机科学中很重要的一个概念，应用范围非常广泛。比较重要的数据结构，像树、图，本身就是递归定义的。 比较常见的递归算法有阶乘、斐波那契" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/2016/02/22/recursion-without-name/" />
+<meta property="article:published_time" content="2016-02-22T21:31:11+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="如何实现一个没有名字的递归函数">
+<meta itemprop="description" content="递归 作为计算机科学中很重要的一个概念，应用范围非常广泛。比较重要的数据结构，像树、图，本身就是递归定义的。 比较常见的递归算法有阶乘、斐波那契">
+<meta itemprop="datePublished" content="2016-02-22T21:31:11+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="2736">
+
+
+
+<meta itemprop="keywords" content="Lambda,Lisp," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何实现一个没有名字的递归函数"/>
+<meta name="twitter:description" content="递归 作为计算机科学中很重要的一个概念，应用范围非常广泛。比较重要的数据结构，像树、图，本身就是递归定义的。 比较常见的递归算法有阶乘、斐波那契"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何实现一个没有名字的递归函数</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-02-22 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA/"> 理解计算机 </a>
+            </div>
+          <span class="more-meta"> 约 2736 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#问题描述">问题描述</a></li>
+        <li><a href="#问题分析">问题分析</a></li>
+        <li><a href="#寻找转换函数-f">寻找转换函数 F</a></li>
+        <li><a href="#寻找转换函数-f-的不动点">寻找转换函数 F 的不动点</a></li>
+        <li><a href="#正则序-vs-应用序">正则序 vs. 应用序</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><a href="https://en.wikipedia.org/wiki/Recursion_%28computer_science%29">递归</a> 作为计算机科学中很重要的一个概念，应用范围非常广泛。比较重要的数据结构，像树、图，本身就是递归定义的。
+比较常见的递归算法有<code>阶乘</code>、<code>斐波那契数</code>等，它们都是在定义函数的同时又引用本身，对于初学者来说也比较好理解，但是如果你对编程语言，特别是函数式语言，有所研究，可能就会有下面的疑问：</p>
+<blockquote>
+<p>一个函数在还没有定义完整时，为什么能够直接调用的呢？</p>
+</blockquote>
+<p>这篇文章主要是解答上面这个问题。阅读下面的内容，你需要有些函数式编程的经验，为了保证你能够比较愉快的阅读本文，你至少能看懂<code>前缀表达式</code>。相信读完本文后，你将会对编程语言有一全新的认识。
+本文所有演示代码有<code>Scheme</code>、<code>JS</code>两个版本。</p>
+<h2 id="问题描述">问题描述</h2>
+<p>下面的讲解以<code>阶乘</code>为例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; Scheme
+(define (FACT n)
+  (if (= n 0)
+    1
+    (* n (FACT (- n 1)))))
+
+; JS
+var FACT = function(n) {
+    if (n == 0) {
+        return 1;
+    } else {
+        return n * FACT(n-1);
+    }
+}    
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的阶乘算法比较直观，这里就不再进行解释了。重申下我们要探究的问题</p>
+<blockquote>
+<p><code>FACT</code> 这个函数为什么在没有被定义完整时，就可以调用了呢？</p>
+</blockquote>
+<h2 id="问题分析">问题分析</h2>
+<p>解决一个新问题，常见的做法就是类比之前解决的问题。我们要解决的这个问题和求解下面的等式很类似：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    2x = x + 1
+</code></pre></td></tr></table>
+</div>
+</div><p>在等号两边都出现了<code>x</code>，要想解决这个问题，最简单的方式就是将等号右边的<code>x</code>移到左边即可。这样就知道<code>x</code>是什么值了。</p>
+<p>但是我们的问题比这个要复杂些了，因为我们这里需要用<code>if</code>、<code>n</code>、<code>*</code>、<code>-</code>这四个符号来表示<code>FACT</code>，可以这么类比是因为一个程序无非就是通过一些具有特定语意的符号（编程语言规定）构成的。</p>
+<p>再进一步思考，<code>FACT</code> 需要用四个符号来表示，这和我们求解多元方程组的解不是很像嘛：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    x + y = 3
+    x - y = 1
+</code></pre></td></tr></table>
+</div>
+</div><p>为了求解上面方程组，一般可以转为下面的形式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    x = 3 - y
+    y = x - 1
+</code></pre></td></tr></table>
+</div>
+</div><p>即</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    (x, y) = T (x, y)
+</code></pre></td></tr></table>
+</div>
+</div><p>其中的<code>T</code>为一个转换，在线性代数其实就是个矩阵，根据矩阵<code>T</code>的一些性质，我们可以判定<code>(x ,y)</code>是否有解，以及解的个数。</p>
+<p>对比此，我们可以把问题转化为下面的形式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    FACT = F (FACT)
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的<code>F</code>为某种转换，在这里其实就是个需要一个函数作为参数并且返回一个函数的函数。如果存在这么个<code>F</code>函数，那么我们就可以通过求解<code>F</code>的<a href="https://zh.wikipedia.org/wiki/%E4%B8%8D%E5%8A%A8%E7%82%B9">不动点</a>来求出<code>FACT</code>了。</p>
+<p>但这里有个问题，即便我们知道了<code>F</code>的存在，我们也无法确定其是否存在不动点，以及如果存在，不动点的个数又是多少？</p>
+<p>计算机科学并不像数学领域有那么多可以套用的定理。</p>
+<h2 id="寻找转换函数-f">寻找转换函数 F</h2>
+<p>证明<code>F</code>是否存在是个比较难的问题，不在本文的讨论范围内，这涉及到<a href="https://en.wikipedia.org/wiki/Denotational_semantics">Denotational semantics</a>领域的知识，感兴趣的读者可以自己去网上查找相关资料。</p>
+<p>这里直接给出<code>FACT</code>对应的函数<code>F</code>的定义：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; Scheme
+(define F
+  (lambda (g)
+    (lambda (n)
+      (if (= n 0)
+        1
+        (* n (g (- n 1)))))))
+
+; JS
+var F = function(g) {
+    return function(n) {
+        if (n == 0) {
+            return 1;
+        } else {
+            return x * g(n-1);
+        }
+  }
+}
+
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，对比递归版本的<code>FACT</code>变动不大，就是把函数内<code>FACT</code>的调用换成了参数<code>g</code>而已，其实我们常见的递归算法都可以这么做。</p>
+<h2 id="寻找转换函数-f-的不动点">寻找转换函数 F 的不动点</h2>
+<p>找到了转换函数<code>F</code>后，下一步就是确定其不动点了，而这个不动点就是我们最终想要的<code>FACT</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    FACT = (F (F (F ...... (F FACT) ...... )))
+</code></pre></td></tr></table>
+</div>
+</div><p>假设我们已经知道了<code>FACT</code>非递归版本了，记为<code>g</code>，那么</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">E0 = (F g)      这时(E0 0) 对应 (FACT 0)得值，这时用不到 g
+E1 = (F E0)     这时(E1 0)、(E1 1)分别对应(FACT 0)、(FACT 1)的值
+E2 = (F E1)     这时(E2 0)、(E2 1)、(E2 2)分别对应(FACT 0)、(FACT 1)、(FACT 2)的值
+.....
+En = (F En-1)   这时....(En n)分别对应.... (FACT n)的值
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，我们在求出<code>(FACT n)</code>时完全没有用到初始的<code>g</code>，换句话说就是<code>g</code>的取值不影响我们计算<code>(FACT n)</code>。
+那么我们完全可以这么定义<code>FACT</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    FACT = (F (F (F ...... (F 1) ...... )))
+</code></pre></td></tr></table>
+</div>
+</div><p>可惜，我们不能这么写，我们必须想个办法表示无穷。在函数式编程中，最简单的无穷循环是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; Scheme
+((lambda (x) (x x))
+  (lambda (x) (x x)))
+
+; JS
+(function (x) {
+    return x(x);
+})(function(x) {
+    return x(x);
+});
+</code></pre></td></tr></table>
+</div>
+</div><p>基于此，我们就得到函数式编程中一重要概念 <a href="https://zh.wikipedia.org/wiki/%E4%B8%8D%E5%8A%A8%E7%82%B9%E7%BB%84%E5%90%88%E5%AD%90">Y 算子</a>，关于 Y 算子的严格推导，可以在参考这篇文章 <a href="http://mvanier.livejournal.com/2897.html">The Y combinator (Slight Return)</a>，这里直接给出：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; Scheme
+(define Y
+  (lambda (f)
+    ((lambda (x) (f (x x))
+      (lambda (x) (f (x x)))))))
+
+(define FACT (Y F))
+
+; JS
+var Y = function(f) {
+    return (function(x) {
+        return f(x(x));
+    })(function(x) {
+        return f(x(x));
+    });
+}
+var FACT = Y(F);
+</code></pre></td></tr></table>
+</div>
+</div><p>这样我们就得到的<code>FACT</code>了，但这里得到的<code>FACT</code>并不能在<code>Scheme</code>或<code>JS</code>解释器中运行，因为就像上面说的，这其实是个死循环，如果你把上面代码拷贝到解释器中运行，一般可以得到下面的错：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">RangeError: Maximum call stack size exceeded
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="正则序-vs-应用序">正则序 vs. 应用序</h2>
+<p>为了得到能够在<code>Scheme</code>或<code>JS</code>解释器中可以运行的代码，这里需要解释复合函数在调用时传入参数的两种求值策略：</p>
+<ul>
+<li>正则序（Normal Order），完全展开而后归约求值。惰性求值的语言采用这种顺序。</li>
+<li>应用序（Applicative Order），先对参数求值而后应用。我们常用的大部分语言都采用应用序。</li>
+</ul>
+<p>举个简单的例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; Scheme
+(define (p)
+  (p))
+
+(define (test x y)
+  (if (= x 0)
+    0
+    y))
+(test 0 (p))
+
+; JS
+var p = function() {
+    return (p);
+}
+var test = function(x, y) {
+    if(x == 0) {
+        return 0;
+    } else {
+        return y;
+    }
+}
+test(0, (p));
+</code></pre></td></tr></table>
+</div>
+</div><p>上面这个例子，采用应用序的语言会产生死循环；而采用正则序的语言可以正常返回<code>0</code>，因为<code>test</code>的第二个参数只有在<code>x</code>不等于0时才会去求值。</p>
+<p>我们上面给出的<code>var FACT = Y(F)</code>在正则序的语言中是可行的，因为<code>Y(F)</code>中的返回值只有在真正需要时才进行求值，而在<code>F</code>中，<code>n</code>等于0时是不需要对<code>g(n-1)</code>进行求值的，所以这时<code>Y(F)(5)</code>就能够正常返回<code>120</code>了。</p>
+<blockquote>
+<p>如果你觉得上面这段话很绕，一时不能理解，这样很正常，我也是花了很久才弄明白，你可以多找些惰性求值的文章看看。</p>
+</blockquote>
+<p>为了能够得出在应用序语言可用的<code>FACT</code>，我们需要对上面的<code>Y</code>做进一步处理。思路也很简单，为了不立即求值表达式，我们可以在其外部包一层函数，假设这里有个表达式<code>p</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; Scheme
+(define lazy_p
+  (lambda () p))
+
+; JS
+var lazy_p = function() { return p; }
+</code></pre></td></tr></table>
+</div>
+</div><p>这时如果想得到<code>p</code>的值，就需要<code>(lazy_p)</code>才可以得到了。基于这个原理，下面给出最终版本的<code>Y 算子</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; Scheme
+(define Y
+  (lambda (f)
+    ((lambda (x) (x x))
+     (lambda (x) (f (lambda (y) ((x x) y)))))))
+
+(define FACT (Y F))
+(FACT 5)   ;===&gt; 120
+
+; JS
+ var Y = function(f) {
+     return function(x) {
+         return x(x)
+     }(function (x) {
+         return f(function(y) {
+             return x(x)(y)
+         })
+     })
+ }
+ var FACT = Y(F)
+ FACT(5)   ;===&gt; 120
+</code></pre></td></tr></table>
+</div>
+</div><p>好了，到现在为止，我们已经得到了可以在<code>Scheme</code>或<code>JS</code>解释器中运行<code>FACT</code>了，可以看到，这里面没有使用函数名也实现了递归方式求阶乘。
+本文一开始给出的<code>FACT</code>版本在解释器内部也会转换为这种形式，这也就解释了本文所提出的问题。</p>
+<h2 id="总结">总结</h2>
+<p>本文大部分内容由 SICP 4.1 小节延伸而来，写的相对比较粗糙，很多点都没有展开讲的原因是我自己也还没理解透彻，为了不误导大家，所以这里就省略了（后面理解的更深刻后再来填坑😊）。希望感兴趣的读者能够自己去搜索相应知识点，相信肯定会受益匪浅。</p>
+<p>最后，希望这篇文章对大家理解编程语言有一些帮助。有什么不对的地方请留言指出。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/lambda/">Lambda</a>
+          <a href="/tags/lisp/">Lisp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2016/03/26/python-ruby-javascript/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">python, ruby, javascript 浅析</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2016/01/08/review-2015/">
+            <span class="next-text nav-default">2015 年终总结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

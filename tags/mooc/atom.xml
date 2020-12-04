@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mooc on Keep Coding</title>
+    <link>https://liujiacai.net/tags/mooc/</link>
+    <description>Recent content in mooc on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 06 Jun 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/mooc/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>计算思维之一序言篇</title>
+      <link>https://liujiacai.net/blog/2014/06/06/computational-thinking-1/</link>
+      <pubDate>Fri, 06 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/06/06/computational-thinking-1/</guid>
+      <description>&lt;p&gt;这一系列笔记是我在上一个mooc课&lt;a href=&#34;http://www.icourse163.org/course/hit/hit001?tid=7001&#34;&gt;大学计算机—计算思维导论&lt;/a&gt;上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。&lt;/p&gt;
+&lt;p&gt;##1. 学习三种境界&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>计算思维之三语义符号化表达与计算</title>
+      <link>https://liujiacai.net/blog/2014/06/06/computational-thinking-3/</link>
+      <pubDate>Fri, 06 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/06/06/computational-thinking-3/</guid>
+      <description>&lt;p&gt;##0和1与逻辑——思维符号化表达与逻辑运算&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>计算思维之二计算之树</title>
+      <link>https://liujiacai.net/blog/2014/06/06/computational-thinking-2/</link>
+      <pubDate>Fri, 06 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/06/06/computational-thinking-2/</guid>
+      <description>&lt;p&gt;这次从计算机的宏观角度对整个计算机行业做个剖析，这里老师引入一个计算之树的模型。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

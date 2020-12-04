@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Scheme on Keep Coding</title>
+    <link>https://liujiacai.net/tags/scheme/</link>
+    <description>Recent content in Scheme on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 03 Oct 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/scheme/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我的第一个玩具语言 JCScheme 问世了</title>
+      <link>https://liujiacai.net/blog/2015/10/03/first-toy-scheme/</link>
+      <pubDate>Sat, 03 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/10/03/first-toy-scheme/</guid>
+      <description>记得在上大学那会，就想着能够实现个自己的编程语言。由于之前技能不足，一直没敢去尝试。现赶上国庆七天假期，SICP 看的也正起劲，终于鼓起勇气，</description>
+    </item>
+    
+  </channel>
+</rss>

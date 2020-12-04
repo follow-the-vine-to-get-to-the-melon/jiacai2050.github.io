@@ -1,99 +1,370 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>Yarn概述 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Yarn概述</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Yarn概述</h1><div class="post-meta">Sep 7, 2014<span> | </span><span class="category"><a href="/categories/bigdata/">大数据</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.5k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 5</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/09/07/yarn-intro/" href="/blog/2014/09/07/yarn-intro/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Yarn-或称MRv2"><span class="toc-number">1.</span> <span class="toc-text">1. Yarn(或称MRv2)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Yarn设计"><span class="toc-number">2.</span> <span class="toc-text">2. Yarn设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Yarn主要组件"><span class="toc-number">3.</span> <span class="toc-text">3. Yarn主要组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-ClientRM"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 ClientRM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-RMAM"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 RMAM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-AMNM"><span class="toc-number">3.3.</span> <span class="toc-text">3.2 AMNM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-API"><span class="toc-number">4.</span> <span class="toc-text">4. API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-总结"><span class="toc-number">5.</span> <span class="toc-text">5. 总结</span></a></li></ol></div></div><div class="post-content"><p>Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前hadoop中jobtracker（后面简写JT）的角色，因为以前JT的任务过重，负责任务的调度、跟踪、失败重启等过程，而且只能运行mapreduce作业，不支持其他编程模式，这也限制了JT使用范围，而yarn应运而生，解决了这两个问题。</p>
-<p>为了表述清楚，大家可以先看<a href="http://blog.csdn.net/jiacai2050/article/details/8656279" target="_blank" rel="noopener">hadoop版本说明</a>这篇文章，我这里要说的是hadoop2.0,也就是新增了yarn之后的版本。</p>
-<h2 id="1-Yarn-或称MRv2"><a href="#1-Yarn-或称MRv2" class="headerlink" title="1. Yarn(或称MRv2)"></a>1. Yarn(或称MRv2)</h2><p>Yarn把jobtracker的任务分解开来，分为：</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Yarn概述 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前had" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2014/09/07/yarn-intro/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Yarn概述" />
+<meta property="og:description" content="Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前had" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2014/09/07/yarn-intro/" />
+<meta property="article:published_time" content="2014-09-07T22:07:51+08:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="Yarn概述">
+<meta itemprop="description" content="Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前had">
+<meta itemprop="datePublished" content="2014-09-07T22:07:51+08:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="2294">
+
+
+
+<meta itemprop="keywords" content="hadoop," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Yarn概述"/>
+<meta name="twitter:description" content="Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前had"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Yarn概述</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-09-07 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"> 大数据 </a>
+            </div>
+          <span class="more-meta"> 约 2294 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-yarn或称mrv2">1. Yarn(或称MRv2)</a></li>
+        <li><a href="#2-yarn设计">2. Yarn设计</a></li>
+        <li><a href="#3-yarn主要组件">3. Yarn主要组件</a>
+          <ul>
+            <li><a href="#31-client--rm">3.1 Client&lt;&ndash;&gt;RM</a></li>
+            <li><a href="#32-rm--am">3.2 RM&lt;&ndash;&gt;AM</a></li>
+            <li><a href="#32-am--nm">3.2 AM&lt;&ndash;&gt;NM</a></li>
+          </ul>
+        </li>
+        <li><a href="#4-api">4. API</a></li>
+        <li><a href="#5-总结">5. 总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前hadoop中jobtracker（后面简写JT）的角色，因为以前JT的任务过重，负责任务的调度、跟踪、失败重启等过程，而且只能运行mapreduce作业，不支持其他编程模式，这也限制了JT使用范围，而yarn应运而生，解决了这两个问题。</p>
+<p>为了表述清楚，大家可以先看<a href="http://blog.csdn.net/jiacai2050/article/details/8656279">hadoop版本说明</a>这篇文章，我这里要说的是hadoop2.0,也就是新增了yarn之后的版本。</p>
+<h2 id="1-yarn或称mrv2">1. Yarn(或称MRv2)</h2>
+<p>Yarn把jobtracker的任务分解开来，分为：</p>
 <ul>
 <li>ResourceManager（简写RM）负责管理分配全局资源</li>
 <li>ApplicationMaster（简写AM），AM与每个具体任务对应，负责管理任务的整个生命周期内的所有事宜</li>
 </ul>
 <p>除了上面两个以外，tasktracker被NodeManager（简写NM）替代，RM与NM构成了集群的计算平台。这种设计允许NM上长期运行一些辅助服务，这些辅助服务一般都是应用相关的，通过配置项指定，在NM启动时加载。例如在yarn上运行mapreduce程序时，shuffle就是一个由NM加载起来的辅助服务。需要注意的是，在hadoop 0.23之前的版本，shuffle是tasktracker的一部分。</p>
 <p>与每个应用相关的AM是一个框架类库，它与RM沟通协商如何分配资源，与NM协同执行并且监测应用的执行情况。在yarn的设计中，mapreduce只是一种编程模式，yarn还允许像MPI(message passing interface)，Spark等应用构架部署在yarn上运行。</p>
-<h2 id="2-Yarn设计"><a href="#2-Yarn设计" class="headerlink" title="2. Yarn设计"></a>2. Yarn设计</h2><p><img src="http://img.blog.csdn.net/20140818230608465" width="550" height="500"><br>上图是一个典型的YARN集群。可以看到RM有两个主要服务：</p>
-<ul>
-<li>可插拔的Scheduler，只负责用户提交任务的调度</li>
-<li>ApplicationsMaster的（简写AsM）负责管理集群中每个任务的ApplicationMaster（简写AM），负责任务的监控、失败重起等</li>
-</ul>
+<h2 id="2-yarn设计">2. Yarn设计</h2>
+<img src="http://img.blog.csdn.net/20140818230608465" width="550" height="500"/>
+上图是一个典型的YARN集群。可以看到RM有两个主要服务：
+- 可插拔的Scheduler，只负责用户提交任务的调度
+- ApplicationsMaster的（简写AsM）负责管理集群中每个任务的ApplicationMaster（简写AM），负责任务的监控、失败重起等
 <p>在hadoop1.0时，资源分配的单位是slot，再具体分为map的slot与reduce的slot，而且这些slot的个数是在任务运行前事先定义的，在任务运行过程中不能改变，很明显，这会造成资源的分配不均问题。在haodop2.0中，yarn采用了container的概念来分配资源。每个container由一些可以动态改变的属性组成，到现在为止，仅支持内存、cpu两种。但是yarn的这种资源管理方式是通用的，社区以后会加入更多的属性，比如网络带宽，本地硬盘大小等等。</p>
-<h2 id="3-Yarn主要组件"><a href="#3-Yarn主要组件" class="headerlink" title="3. Yarn主要组件"></a>3. Yarn主要组件</h2><p>在这小节里，主要介绍yarn各个组件，以及他们之间是如何通信的。</p>
-<h3 id="3-1-ClientRM"><a href="#3-1-ClientRM" class="headerlink" title="3.1 ClientRM"></a>3.1 Client<-->RM</--></h3><p><img src="http://img02.taobaocdn.com/imgextra/i2/581166664/TB2LOpuapXXXXXXXpXXXXXXXXXX_!!581166664.png_620x10000.jpg" width="450" height="400"></p>
-<p>上面这个图是Client向RM提交任务时的流程。<br>(1) Client通过New Application Request来通知RM中的AsM组建<br>(2) AsM一般会返回一个新生成的全局ID，除此之外，传递的信息还有集群的资源状况，这样Client就可以在需要时请求资源来运行任务的第一个container即AM。<br>(3) 之后，Client就可以构造并发送ASC了。ASC中包括了调度队列，优先级，用户认证信息，除了这些基本的信息之外，还包括用来启动AM的CLC信息，一个CLC中包括jar包、依赖文件、安全token，以及运行任务过程中需要的其他文件。</p>
-<p>经过上面这三步，一个Client就完成了一次任务的提交。之后，Client可以直接通过RM查询任务的状态，在必要时，可以要求RM杀死这个应用。如下图：<br><img src="http://img02.taobaocdn.com/imgextra/i2/581166664/TB2WzhzapXXXXbcXXXXXXXXXXXX_!!581166664.png_620x10000.jpg" width="450" height="400"></p>
-<h3 id="3-2-RMAM"><a href="#3-2-RMAM" class="headerlink" title="3.2 RMAM"></a>3.2 RM<-->AM</--></h3><p>RM在收到Client端发送的ASC后，它会查询是否有满足其资源要求的container来运行AM，找到后，RM会与那个container所在机器上的NM通信，来启动AM。下面这个图描述了这其中的细节。<br><img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB21l0xapXXXXcUXXXXXXXXXXXX_!!581166664.png"></p>
-<p>(1) AM向RM注册，这个过程包括handshaking过程，并且传递一些信息，包括AM监听的RPC端口、用于监测任务运行状态的URL等。<br>(2) RM中的Scheduler部件做回应。这个过程会传递AM所需的信息，比如这个集群的最大与最小资源使用情况等。AM利用这些信息来计算并请求任务所需的资源。<br>(3) 这个过程是AM向RM请求资源。传递的信息主要包含请求container的列表，还有可能包含这个AM已经释放的container的列表。<br>(4) 在AM经过(3)请求资源之后，在稍微晚些时候，会把心跳包与任务进度信息发送给RM<br>(5) Scheduler在收到AM的资源请求后，会根据调度策略，来分配container以满足AM的请求。<br>(6) 在任务完成后，AM会给RM发送一个结束消息，然后退出。</p>
+<h2 id="3-yarn主要组件">3. Yarn主要组件</h2>
+<p>在这小节里，主要介绍yarn各个组件，以及他们之间是如何通信的。</p>
+<h3 id="31-client--rm">3.1 Client&lt;&ndash;&gt;RM</h3>
+<img src="http://img02.taobaocdn.com/imgextra/i2/581166664/TB2LOpuapXXXXXXXpXXXXXXXXXX_!!581166664.png_620x10000.jpg" width="450" height="400"/>
+<p>上面这个图是Client向RM提交任务时的流程。
+(1) Client通过New Application Request来通知RM中的AsM组建
+(2) AsM一般会返回一个新生成的全局ID，除此之外，传递的信息还有集群的资源状况，这样Client就可以在需要时请求资源来运行任务的第一个container即AM。
+(3) 之后，Client就可以构造并发送ASC了。ASC中包括了调度队列，优先级，用户认证信息，除了这些基本的信息之外，还包括用来启动AM的CLC信息，一个CLC中包括jar包、依赖文件、安全token，以及运行任务过程中需要的其他文件。</p>
+<p>经过上面这三步，一个Client就完成了一次任务的提交。之后，Client可以直接通过RM查询任务的状态，在必要时，可以要求RM杀死这个应用。如下图：
+<img src="http://img02.taobaocdn.com/imgextra/i2/581166664/TB2WzhzapXXXXbcXXXXXXXXXXXX_!!581166664.png_620x10000.jpg" width="450" height="400"/></p>
+<h3 id="32-rm--am">3.2 RM&lt;&ndash;&gt;AM</h3>
+<p>RM在收到Client端发送的ASC后，它会查询是否有满足其资源要求的container来运行AM，找到后，RM会与那个container所在机器上的NM通信，来启动AM。下面这个图描述了这其中的细节。
+<img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB21l0xapXXXXcUXXXXXXXXXXXX_!!581166664.png" /></p>
+<p>(1) AM向RM注册，这个过程包括handshaking过程，并且传递一些信息，包括AM监听的RPC端口、用于监测任务运行状态的URL等。
+(2) RM中的Scheduler部件做回应。这个过程会传递AM所需的信息，比如这个集群的最大与最小资源使用情况等。AM利用这些信息来计算并请求任务所需的资源。
+(3) 这个过程是AM向RM请求资源。传递的信息主要包含请求container的列表，还有可能包含这个AM已经释放的container的列表。
+(4) 在AM经过(3)请求资源之后，在稍微晚些时候，会把心跳包与任务进度信息发送给RM
+(5) Scheduler在收到AM的资源请求后，会根据调度策略，来分配container以满足AM的请求。
+(6) 在任务完成后，AM会给RM发送一个结束消息，然后退出。</p>
 <p>在上面(5)与(6)之间，AM在收到RM返回的container列表后，会与每个container所在机器的NM通信，来启动这个container，下面就说说这个过程。</p>
-<h3 id="3-2-AMNM"><a href="#3-2-AMNM" class="headerlink" title="3.2 AMNM"></a>3.2 AM<-->NM</--></h3><p><img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2FQ4AapXXXXaDXXXXXXXXXXXX_!!581166664.png"><br>(1) AM向container所在机器的NM发送CLC来启动container<br>(2)(3) 在container运行过程中，AM可以查询它的运行状态</p>
-<h2 id="4-API"><a href="#4-API" class="headerlink" title="4. API"></a>4. API</h2><p>通过上面的描述，开发者在开发YARN上的应用时主要需要关注以下接口：</p>
+<h3 id="32-am--nm">3.2 AM&lt;&ndash;&gt;NM</h3>
+<img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2FQ4AapXXXXaDXXXXXXXXXXXX_!!581166664.png"/>
+(1) AM向container所在机器的NM发送CLC来启动container
+(2)(3) 在container运行过程中，AM可以查询它的运行状态
+<h2 id="4-api">4. API</h2>
+<p>通过上面的描述，开发者在开发YARN上的应用时主要需要关注以下接口：</p>
 <ul>
-<li><p><a href="http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/yarn/api/ApplicationClientProtocol.html" target="_blank" rel="noopener">ApplicationClientProtocol</a></p>
+<li><a href="http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/yarn/api/ApplicationClientProtocol.html">ApplicationClientProtocol</a></li>
+</ul>
 <blockquote>
 <p>Client使用这个协议来与RM通信，来启动一个新应用，检查任务的运行状态或杀死任务</p>
 </blockquote>
-</li>
-<li><p><a href="http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/yarn/api/ApplicationMasterProtocol.html" target="_blank" rel="noopener">ApplicationMasterProtocol</a></p>
+<ul>
+<li><a href="http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/yarn/api/ApplicationMasterProtocol.html">ApplicationMasterProtocol</a></li>
+</ul>
 <blockquote>
 <p>AM使用这个协议来向RM注册/撤销，请求资源来运行任务。</p>
 </blockquote>
-</li>
-<li><p><a href="http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/yarn/api/ContainerManagementProtocol.html" target="_blank" rel="noopener">ContainerManagementProtocol</a></p>
+<ul>
+<li><a href="http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/yarn/api/ContainerManagementProtocol.html">ContainerManagementProtocol</a></li>
+</ul>
 <blockquote>
 <p>AM使用这个协议来与NM通信，来启动/停止container，查询container的状态。</p>
 </blockquote>
-</li>
-</ul>
-<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><p>用户在使用hadoop1.0 API编写的MapReduce可以不用修改直接运行在yarn上，不过随着yarn的发展，向后兼容性还不知道怎么样。不管怎样，新的yarn平台绝对值得我们使用。</p>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2014/09/07/yarn-intro/" data-id="ckhxlinvh0013szljx94azh1t" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACG0lEQVR42u3aQW7DMAwEwP7/0+m5KOLsUk7RSKNTgDiWxweGFPn1Fa/Hr/X722fXJ3dufzVcGBgYH8t4XK7ra54xrnfJX1PybBgYGOcwklDYBt8ZL7kDBgYGRnK7POzm4PaeGBgYGO0jXid2bYKIgYGBMSti68IyPly7YS8MDIytGfmp+99/fkt/AwMD46MYj3K1bcuV1LB4KgwMjK0Zdx3f5yVxkt4NG6IYGBgHMGaNzDxQts3RvKmAgYFxMiNJ/lZSwzb5e8HDwMDYlJEcsiePlbCvX1b7yn7siIGBcQCjLSOTMNpeOSuGi2kRDAyMj2W0JejK0ENb0LbHfBgYGLsyZqne+8rRlvE0w8XAwDiGsbJNFOnjUrk+bsPAwNiIsZLwFZ2HIHy/sYjFwMDYgtEepbUp42yvdlAMAwNjV0Z7oJ+njCvtz6VhCwwMjE0ZeZNgNuzV/gMkBTAGBsaZjHuD4yxza8fFMDAwTmC0ad9KqzIpiZMdX4xcYGBgHMaYDW+tB9DZ8AcGBsbJjHZ4YqW4bdNTDAyMkxlJ4dqOUOSkvMmKgYFxAuNRrpa3fgwXBXoMDIytGSvjYusjF+uBvoZhYGB8LGN2xN8ez+VvbhhwMTAwDmDcMJ4VB+J1JAYGBkbOyIPvbCyszl4xMDAwFgYv7gqyf9rfwMDA+GeMdrQ032DWHsgxGBgYJzBmIW9lm3ZQNfkVBgbGpoxveLIZBrjKHEYAAAAASUVORK5CYII=">分享</a><div class="tags"><a href="/tags/hadoop/">hadoop</a></div><div class="post-nav"><a class="pre" href="/blog/2014/09/14/mozilla-history/">Mozilla 前世今生</a><a class="next" href="/blog/2014/08/16/two-pot-question/">两个水壶问题</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2014/09/07/yarn-intro/';
-    this.page.identifier = 'blog/2014/09/07/yarn-intro/';
-    this.page.title = 'Yarn概述';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+<h2 id="5-总结">5. 总结</h2>
+<p>用户在使用hadoop1.0 API编写的MapReduce可以不用修改直接运行在yarn上，不过随着yarn的发展，向后兼容性还不知道怎么样。不管怎样，新的yarn平台绝对值得我们使用。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/hadoop/">hadoop</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2014/09/14/mozilla-history/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Mozilla 前世今生</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2014/08/16/two-pot-question/">
+            <span class="next-text nav-default">两个水壶问题</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

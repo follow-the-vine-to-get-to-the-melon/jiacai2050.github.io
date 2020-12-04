@@ -1,16 +1,195 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>Clojure 开发那些事 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Clojure 开发那些事</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Clojure 开发那些事</h1><div class="post-meta">Dec 31, 2016<span> | </span><span class="category"><a href="/categories/langs/">编程语言</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.2k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 11</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2016/12/31/dev-in-clojure/" href="/blog/2016/12/31/dev-in-clojure/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-Lisp"><span class="toc-number">1.</span> <span class="toc-text">Why Lisp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#语法入门"><span class="toc-number">2.</span> <span class="toc-text">语法入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#括号"><span class="toc-number">2.1.</span> <span class="toc-text">括号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据不可变"><span class="toc-number">2.2.</span> <span class="toc-text">数据不可变</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#托管型语言"><span class="toc-number">2.3.</span> <span class="toc-text">托管型语言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发环境搭建"><span class="toc-number">3.</span> <span class="toc-text">开发环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Intellj-Cursive"><span class="toc-number">3.1.</span> <span class="toc-text">Intellj + Cursive</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Emacs-Cider"><span class="toc-number">3.2.</span> <span class="toc-text">Emacs + Cider</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三方类库的选择"><span class="toc-number">4.</span> <span class="toc-text">第三方类库的选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调试-debug"><span class="toc-number">5.</span> <span class="toc-text">调试 debug</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#println"><span class="toc-number">5.1.</span> <span class="toc-text">println</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#spyscope"><span class="toc-number">5.2.</span> <span class="toc-text">spyscope</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#debux"><span class="toc-number">5.3.</span> <span class="toc-text">debux</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tools-trace"><span class="toc-number">5.4.</span> <span class="toc-text">tools.trace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Intellj-Debug"><span class="toc-number">5.5.</span> <span class="toc-text">Intellj Debug</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nrepl"><span class="toc-number">5.6.</span> <span class="toc-text">nrepl</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展阅读"><span class="toc-number">7.</span> <span class="toc-text">扩展阅读</span></a></li></ol></div></div><div class="post-content"><p>Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 <a href="http://storm.apache.org/" target="_blank" rel="noopener">Storm</a>，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员。<br>作为推广 Clojure 万里长城的第一步，这篇文章首先介绍为什么要使用 Lisp 开发，之后开始介绍 Clojure 语法入门，紧接着介绍 Clojure 开发环境搭建，然后介绍使用第三方库时的一些注意点，最后介绍一下常见的测试方法。本篇文章所介绍内容都是我自己实践得出，不足之处请各位 Clojurians 指出。</p>
-<h2 id="Why-Lisp"><a href="#Why-Lisp" class="headerlink" title="Why Lisp"></a>Why Lisp</h2><p>Lisp 语言诞生这么久了，为什么一直那么小众？原因就在于 Lisp 语言过于强大，不必也不可能像 Java 那么普及。你能要求每个人都能为 CTO 吗？<br>硅谷创业之父 <a href="http://www.paulgraham.com/" target="_blank" rel="noopener">Paul Graham</a> 在其著作<a href="https://book.douban.com/subject/6021440/" target="_blank" rel="noopener">《黑客与画家》</a>中极力推荐 Lisp 语言，并且讲到很多 Lisp 的特性逐渐融入到其他语言中。该书中列举了 Lisp 中 9 种新思想，依次为：</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Clojure 开发那些事 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 Storm，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2016/12/31/dev-in-clojure/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Clojure 开发那些事" />
+<meta property="og:description" content="Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 Storm，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2016/12/31/dev-in-clojure/" />
+<meta property="article:published_time" content="2016-12-31T16:49:17+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="Clojure 开发那些事">
+<meta itemprop="description" content="Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 Storm，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员">
+<meta itemprop="datePublished" content="2016-12-31T16:49:17+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="3873">
+
+
+
+<meta itemprop="keywords" content="Clojure," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Clojure 开发那些事"/>
+<meta name="twitter:description" content="Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 Storm，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Clojure 开发那些事</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-12-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            </div>
+          <span class="more-meta"> 约 3873 字 </span>
+          <span class="more-meta"> 预计阅读 8 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#why-lisp">Why Lisp</a></li>
+        <li><a href="#语法入门">语法入门</a>
+          <ul>
+            <li><a href="#括号">括号</a></li>
+            <li><a href="#数据不可变">数据不可变</a></li>
+            <li><a href="#托管型语言">托管型语言</a></li>
+          </ul>
+        </li>
+        <li><a href="#开发环境搭建">开发环境搭建</a>
+          <ul>
+            <li><a href="#intellj--cursive">Intellj + Cursive</a></li>
+            <li><a href="#emacs--cider">Emacs + Cider</a></li>
+          </ul>
+        </li>
+        <li><a href="#第三方类库的选择">第三方类库的选择</a></li>
+        <li><a href="#调试-debug">调试 debug</a>
+          <ul>
+            <li><a href="#println">println</a></li>
+            <li><a href="#spyscope">spyscope</a></li>
+            <li><a href="#debuxhttpsgithubcomphiloskimdebux"><a href="https://github.com/philoskim/debux">debux</a></a></li>
+            <li><a href="#toolstrace">tools.trace</a></li>
+            <li><a href="#intellj-debug">Intellj Debug</a></li>
+            <li><a href="#nrepl">nrepl</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#扩展阅读">扩展阅读</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 <a href="http://storm.apache.org/">Storm</a>，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员。
+作为推广 Clojure 万里长城的第一步，这篇文章首先介绍为什么要使用 Lisp 开发，之后开始介绍 Clojure 语法入门，紧接着介绍 Clojure 开发环境搭建，然后介绍使用第三方库时的一些注意点，最后介绍一下常见的测试方法。本篇文章所介绍内容都是我自己实践得出，不足之处请各位 Clojurians 指出。</p>
+<h2 id="why-lisp">Why Lisp</h2>
+<p>Lisp 语言诞生这么久了，为什么一直那么小众？原因就在于 Lisp 语言过于强大，不必也不可能像 Java 那么普及。你能要求每个人都能为 CTO 吗？
+硅谷创业之父 <a href="http://www.paulgraham.com/">Paul Graham</a> 在其著作<a href="https://book.douban.com/subject/6021440/">《黑客与画家》</a>中极力推荐 Lisp 语言，并且讲到很多 Lisp 的特性逐渐融入到其他语言中。该书中列举了 Lisp 中 9 种新思想，依次为：</p>
 <ol>
 <li>条件结构 if-then-else</li>
 <li>函数也是一种数据类型</li>
@@ -22,119 +201,383 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 <li>代码使用符号和常量组成的树形表示法</li>
 <li>无论什么时刻，整个语言都是可用。Lisp 并不真正区分读取期、编译期和运行期</li>
 </ol>
-<p>前 7 种特性可以在如今较流行的编程语言找到，但最后两种是 Lisp 特有的。Lisp 最擅长的领域是写编辑器（元编程）、领域特定语言DSL，现在用的最广的是 Emacs 与 AutoACD，其对应的脚本语言分别是 <a href="https://en.wikipedia.org/wiki/Emacs_Lisp" target="_blank" rel="noopener">Emacs Lisp</a>、<a href="https://en.wikipedia.org/wiki/AutoLISP" target="_blank" rel="noopener">AutoLisp</a>。<br>可以好不夸张的说，软件也复杂，越适合用 Lisp。其次，Clojure 作为新世纪的 Lisp 方言，在 Web 、大数据、数据库等现在常见领域都有丰富的类库与文档。</p>
-<p>目前国内使用 Clojure 成功案例较少，<a href="https://leancloud.cn/jobs/" target="_blank" rel="noopener">LeanCloud</a> 在其招聘网页上写到其成员都是 Clojure 社区成员，但并不了解其内部使用情况。国外的就比较多了，可以参考 Clojure 之父 Rich Hickey 所在公司 Congitect 列举的 <a href="http://cognitect.com/resources#success-stories" target="_blank" rel="noopener">Success Stories</a>。</p>
-<h2 id="语法入门"><a href="#语法入门" class="headerlink" title="语法入门"></a>语法入门</h2><h3 id="括号"><a href="#括号" class="headerlink" title="括号"></a>括号</h3><p>Lisp 语法最显著的特点是“括号多”，不过这只是其外在表现，内在表现是阅读代码的方式，需要从最里面的表达式开始，比如：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;; Clojure</span><br><span class="line">&gt; (split (upper-<span class="keyword">case</span> <span class="string">"hello, world"</span>) <span class="comment">#", ")</span></span><br><span class="line">[<span class="string">"HELLO"</span> <span class="string">"WORLD"</span>]</span><br><span class="line"></span><br><span class="line">;; Python</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; <span class="string">"hello, world"</span>.upper().split(<span class="string">", "</span>)</span><br><span class="line">[<span class="string">'HELLO'</span>, <span class="string">'WORLD'</span>]</span><br></pre></td></tr></table></figure>
-<p>为了防止过度嵌套，需要经常定义一些辅助函数，很幸运，Clojure 里面函数是一级成员，这意味着函数可以作为参数传入，也可以作为函数值返回，能够进行这两类操作的函数称为“高阶函数”（high-order functions），这在任何一门函数式语言中都很普及。</p>
+<p>前 7 种特性可以在如今较流行的编程语言找到，但最后两种是 Lisp 特有的。Lisp 最擅长的领域是写编辑器（元编程）、领域特定语言DSL，现在用的最广的是 Emacs 与 AutoACD，其对应的脚本语言分别是 <a href="https://en.wikipedia.org/wiki/Emacs_Lisp">Emacs Lisp</a>、<a href="https://en.wikipedia.org/wiki/AutoLISP">AutoLisp</a>。
+可以好不夸张的说，软件也复杂，越适合用 Lisp。其次，Clojure 作为新世纪的 Lisp 方言，在 Web 、大数据、数据库等现在常见领域都有丰富的类库与文档。</p>
+<p>目前国内使用 Clojure 成功案例较少，<a href="https://leancloud.cn/jobs/">LeanCloud</a> 在其招聘网页上写到其成员都是 Clojure 社区成员，但并不了解其内部使用情况。国外的就比较多了，可以参考 Clojure 之父 Rich Hickey 所在公司 Congitect 列举的 <a href="http://cognitect.com/resources#success-stories">Success Stories</a>。</p>
+<h2 id="语法入门">语法入门</h2>
+<h3 id="括号">括号</h3>
+<p>Lisp 语法最显著的特点是“括号多”，不过这只是其外在表现，内在表现是阅读代码的方式，需要从最里面的表达式开始，比如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">;; Clojure
+&gt; (split (upper-case &#34;hello, world&#34;) #&#34;, &#34;)
+[&#34;HELLO&#34; &#34;WORLD&#34;]
+
+;; Python
+&gt;&gt;&gt; &#34;hello, world&#34;.upper().split(&#34;, &#34;)
+[&#39;HELLO&#39;, &#39;WORLD&#39;]
+</code></pre></td></tr></table>
+</div>
+</div><p>为了防止过度嵌套，需要经常定义一些辅助函数，很幸运，Clojure 里面函数是一级成员，这意味着函数可以作为参数传入，也可以作为函数值返回，能够进行这两类操作的函数称为“高阶函数”（high-order functions），这在任何一门函数式语言中都很普及。</p>
 <p>除了最基本的圆括号<code>()</code>外，方括号<code>[]</code>与花括号<code>{}</code>在 Clojure 用的也比其他 Lisp 方言中多。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1 2</span> <span class="string">"buckle my shoe"</span>]        ;; 数组</span><br><span class="line">&#123;<span class="symbol">:ace</span> <span class="number">1</span>, <span class="symbol">:deuce</span> <span class="number">2</span>, <span class="string">"trey"</span> <span class="number">3</span>&#125;  ;; 哈希表</span><br><span class="line"><span class="comment">#&#123;:a :b :c&#125;                   ;; 集合</span></span><br></pre></td></tr></table></figure>
-<p>Clojure 中基本的数据结构可以参考其<a href="http://clojure.org/reference/data_structures" target="_blank" rel="noopener">官方网站</a>，我个人觉得，Lisp 方言的英文介绍往往过于精炼、晦涩，不适合初学者直接阅读，为了夯实基础，还是建议大家找本书来看，看书的好处是不仅仅知道某个知识点，更重要的是了解不同知识点之间的区别与联系，初学期间，我阅读了下面两本书：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[1 2 &#34;buckle my shoe&#34;]        ;; 数组
+{:ace 1, :deuce 2, &#34;trey&#34; 3}  ;; 哈希表
+#{:a :b :c}                   ;; 集合
+</code></pre></td></tr></table>
+</div>
+</div><p>Clojure 中基本的数据结构可以参考其<a href="http://clojure.org/reference/data_structures">官方网站</a>，我个人觉得，Lisp 方言的英文介绍往往过于精炼、晦涩，不适合初学者直接阅读，为了夯实基础，还是建议大家找本书来看，看书的好处是不仅仅知道某个知识点，更重要的是了解不同知识点之间的区别与联系，初学期间，我阅读了下面两本书：</p>
 <ul>
-<li><a href="https://book.douban.com/subject/4743790/" target="_blank" rel="noopener">The Joy of Clojure</a>，这本书对我帮助比较大，但是网上普遍说这本书比较难懂，我只能说萝卜青菜各有所爱。</li>
-<li><a href="https://book.douban.com/subject/21661495/" target="_blank" rel="noopener">Clojure编程</a>，这本书应该毋庸置疑是新手的必须书</li>
+<li><a href="https://book.douban.com/subject/4743790/">The Joy of Clojure</a>，这本书对我帮助比较大，但是网上普遍说这本书比较难懂，我只能说萝卜青菜各有所爱。</li>
+<li><a href="https://book.douban.com/subject/21661495/">Clojure编程</a>，这本书应该毋庸置疑是新手的必须书</li>
 </ul>
 <p>除了看书外，下面的文档也非常 newbie-friendly，推荐大家多去逛逛：</p>
 <ul>
-<li><a href="http://clojure-doc.org/" target="_blank" rel="noopener">http://clojure-doc.org/</a>，对 Clojure 语言的整个生态有非常详细的介绍</li>
-<li><a href="https://clojuredocs.org/" target="_blank" rel="noopener">https://clojuredocs.org/</a>，可以方便查看具体函数的使用方法</li>
+<li><a href="http://clojure-doc.org/">http://clojure-doc.org/</a>，对 Clojure 语言的整个生态有非常详细的介绍</li>
+<li><a href="https://clojuredocs.org/">https://clojuredocs.org/</a>，可以方便查看具体函数的使用方法</li>
 </ul>
-<h3 id="数据不可变"><a href="#数据不可变" class="headerlink" title="数据不可变"></a>数据不可变</h3><p>括号问题适应后，另一个比较挑战的是数据的不可变性，这融合在 Clojure 语言的设计之中，表象就是没有赋值语句了，但在实现时，为了达到时间、空间上的高效，采用了非常复杂的算法，我到现在也还是一知半解，不是很清楚。《The Joy of Clojure》一书中有简单介绍，不过我觉得初学者可以完全不用去关心实现的细节，在遇到性能问题时在考虑去优化。我这里放一些相关的资料，有兴趣的读者可以自取：</p>
+<h3 id="数据不可变">数据不可变</h3>
+<p>括号问题适应后，另一个比较挑战的是数据的不可变性，这融合在 Clojure 语言的设计之中，表象就是没有赋值语句了，但在实现时，为了达到时间、空间上的高效，采用了非常复杂的算法，我到现在也还是一知半解，不是很清楚。《The Joy of Clojure》一书中有简单介绍，不过我觉得初学者可以完全不用去关心实现的细节，在遇到性能问题时在考虑去优化。我这里放一些相关的资料，有兴趣的读者可以自取：</p>
 <ul>
-<li><a href="http://hypirion.com/musings/understanding-persistent-vector-pt-1" target="_blank" rel="noopener">Understanding Clojure’s Persistent Vectors</a></li>
-<li><a href="https://www.youtube.com/watch?v=7BFF50BHPPo" target="_blank" rel="noopener">What Lies Beneath - A Deep Dive Into Clojure’s Data Structures</a> YouTube 视频，需翻墙</li>
+<li><a href="http://hypirion.com/musings/understanding-persistent-vector-pt-1">Understanding Clojure&rsquo;s Persistent Vectors</a></li>
+<li><a href="https://www.youtube.com/watch?v=7BFF50BHPPo">What Lies Beneath - A Deep Dive Into Clojure&rsquo;s Data Structures</a> YouTube 视频，需翻墙</li>
 </ul>
-<h3 id="托管型语言"><a href="#托管型语言" class="headerlink" title="托管型语言"></a>托管型语言</h3><blockquote>
-<p><a href="http://clojure.org/about/jvm_hosted" target="_blank" rel="noopener">Clojure is desgined to be a hosted language</a>.</p>
+<h3 id="托管型语言">托管型语言</h3>
+<blockquote>
+<p><a href="http://clojure.org/about/jvm_hosted">Clojure is desgined to be a hosted language</a>.</p>
 </blockquote>
-<p>这一点非常重要，估计也是为什么 Clojure 较其他 Lisp 方言更流行的原因。Clojure 的宿主平台现在主要有两个：一个是 JVM；另一个是微软 .NET （<a href="https://github.com/clojure/clojure-clr" target="_blank" rel="noopener">Clojure-CLR</a>），现在还有一个发展迅猛的 ClojureScript，可以将 Clojure 代码编译为无处不在的 Javascript。</p>
-<p>这也就意味我们或多或少需要了解这些宿主语言，比如 Clojure 里面没有提供直接操作文件系统、网络的类库，而是采用间接的方法去调用其宿主语言的相应类库。这一点也让 Clojure 在生产环境中使用变得可能，比如 <a href="https://github.com/dakrone/clj-http" target="_blank" rel="noopener">clj-http</a> 就是对 <a href="http://hc.apache.org/httpcomponents-client-ga/" target="_blank" rel="noopener">Apache HttpComponents</a> 的包装，更符合 Clojure 使用习惯而已。</p>
-<h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><p>工欲善其事，必先利其器。<br>这里主要介绍 Intellj + Cursive 与 Emacs + Cider 两个环境，这两个是我用的最顺手，也是现在较为流行的方式。</p>
-<h3 id="Intellj-Cursive"><a href="#Intellj-Cursive" class="headerlink" title="Intellj + Cursive"></a>Intellj + Cursive</h3><p>在上面语法入门部分就介绍了，Clojure 与宿主语言经常需要交互，毋庸置疑 <a href="https://www.jetbrains.com/idea/" target="_blank" rel="noopener">Intellj</a> 是 Java 开发的利器，社区版足以满足需要，不用再去做找破解版那些不道德的事情，如果你还在用 Eclipse，可以考虑迁移了。<br><a href="https://cursive-ide.com/" target="_blank" rel="noopener">Cursive</a> 做到了开箱即用，而且足够的好用，而且也有<a href="https://cursive-ide.com/buy.html" target="_blank" rel="noopener">非商业免费版</a>，这极大方便了学生党，适应了中国国情。</p>
-<p>安装、使用比较简单，通过 Intellj 插件管理器安装后，设置下<a href="https://cursive-ide.com/userguide/keybindings.html" target="_blank" rel="noopener">快捷键类型</a>就可以使用了。</p>
-<p><img src="https://img.alicdn.com/imgextra/i1/581166664/TB2McCFcbxmpuFjSZJiXXXauVXa_!!581166664.png" alt="Cursive 快捷键设置"></p>
-<p><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2th5wcohnpuFjSZFpXXcpuXXa_!!581166664.png" alt="Cursive REPL"></p>
-<h3 id="Emacs-Cider"><a href="#Emacs-Cider" class="headerlink" title="Emacs + Cider"></a>Emacs + Cider</h3><p>作为一门 Lisp 方言，怎么能没有一个好的 Emacs mode 呢？<a href="https://github.com/clojure-emacs/cider" target="_blank" rel="noopener">Cider</a> 全称</p>
+<p>这一点非常重要，估计也是为什么 Clojure 较其他 Lisp 方言更流行的原因。Clojure 的宿主平台现在主要有两个：一个是 JVM；另一个是微软 .NET （<a href="https://github.com/clojure/clojure-clr">Clojure-CLR</a>），现在还有一个发展迅猛的 ClojureScript，可以将 Clojure 代码编译为无处不在的 Javascript。</p>
+<p>这也就意味我们或多或少需要了解这些宿主语言，比如 Clojure 里面没有提供直接操作文件系统、网络的类库，而是采用间接的方法去调用其宿主语言的相应类库。这一点也让 Clojure 在生产环境中使用变得可能，比如 <a href="https://github.com/dakrone/clj-http">clj-http</a> 就是对 <a href="http://hc.apache.org/httpcomponents-client-ga/">Apache HttpComponents</a> 的包装，更符合 Clojure 使用习惯而已。</p>
+<h2 id="开发环境搭建">开发环境搭建</h2>
+<p>工欲善其事，必先利其器。
+这里主要介绍 Intellj + Cursive 与 Emacs + Cider 两个环境，这两个是我用的最顺手，也是现在较为流行的方式。</p>
+<h3 id="intellj--cursive">Intellj + Cursive</h3>
+<p>在上面语法入门部分就介绍了，Clojure 与宿主语言经常需要交互，毋庸置疑 <a href="https://www.jetbrains.com/idea/">Intellj</a> 是 Java 开发的利器，社区版足以满足需要，不用再去做找破解版那些不道德的事情，如果你还在用 Eclipse，可以考虑迁移了。
+<a href="https://cursive-ide.com/">Cursive</a> 做到了开箱即用，而且足够的好用，而且也有<a href="https://cursive-ide.com/buy.html">非商业免费版</a>，这极大方便了学生党，适应了中国国情。</p>
+<p>安装、使用比较简单，通过 Intellj 插件管理器安装后，设置下<a href="https://cursive-ide.com/userguide/keybindings.html">快捷键类型</a>就可以使用了。</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i1/581166664/TB2McCFcbxmpuFjSZJiXXXauVXa_!!581166664.png" alt="Cursive 快捷键设置">
+    <figcaption><center>Cursive 快捷键设置</center></figcaption>
+  </figure>
+
+</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2th5wcohnpuFjSZFpXXcpuXXa_!!581166664.png" alt="Cursive REPL">
+    <figcaption><center>Cursive REPL</center></figcaption>
+  </figure>
+
+</p>
+<h3 id="emacs--cider">Emacs + Cider</h3>
+<p>作为一门 Lisp 方言，怎么能没有一个好的 Emacs mode 呢？<a href="https://github.com/clojure-emacs/cider">Cider</a> 全称</p>
 <blockquote>
 <p>The Clojure Interactive Development Environment that Rocks for Emacs</p>
 </blockquote>
 <p>而且 Emacs 本身就是个用 Lisp 方言写的“操作系统”，对以括号著称的 Lisp 语言有天然的支持，括号匹配主要是 Paredit mode，可以方便的把括号作为一个整体操作，不过像 Cursive 这种插件也集成了 Paredit 的主要功能，所以不用 Emacs 的同学也不用担心，毕竟 Emacs 学习成本实在是太高，我个人觉得比 Vim 有过之而无不及，相对于 Vim 的模态概念，Emacs 里面通过 Ctrl 与 Meta 键来与一般按键区别，这里我们不必对某个编辑器有过多的偏见，它们都是生产力的工具而已，写好代码才是重要的。</p>
-<p>初学者如果要尝试 Emacs 建议参考《Clojure For the Brave and True》的第二章<a href="http://www.braveclojure.com/basic-emacs/" target="_blank" rel="noopener">How to Use Emacs, an Excellent Clojure Editor</a>，我最初的环境也是仿照这份配置，然后一点点根据自己的需求增加的。<a href="https://github.com/jiacai2050/conf/tree/master/.emacs.d" target="_blank" rel="noopener"> .emacs.d</a> 是我的配置，供大家参考。</p>
-<p><img src="https://img.alicdn.com/imgextra/i4/581166664/TB26VWrchtmpuFjSZFqXXbHFpXa_!!581166664.png" alt="Emacs + Cider 编程环境"></p>
+<p>初学者如果要尝试 Emacs 建议参考《Clojure For the Brave and True》的第二章<a href="http://www.braveclojure.com/basic-emacs/">How to Use Emacs, an Excellent Clojure Editor</a>，我最初的环境也是仿照这份配置，然后一点点根据自己的需求增加的。<a href="https://github.com/jiacai2050/conf/tree/master/.emacs.d"> .emacs.d</a> 是我的配置，供大家参考。</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB26VWrchtmpuFjSZFqXXbHFpXa_!!581166664.png" alt="Emacs &#43; Cider 编程环境">
+    <figcaption><center>Emacs &#43; Cider 编程环境</center></figcaption>
+  </figure>
+
+</p>
 <p>Emacs + Cider 的组合相比 Intellj ＋ Cursive 最大的优势就是对宏的支持，Cider 提供了对宏展开的快捷键，但在 Cursive 中我没找到，不过宏也是比较高级的功能，初学者应该用不到，等到用的多的时候，就可以把 Emacs 环境熟悉起来了。</p>
 <p>最后还是建议初学者不要用 Emacs，学习成本太大，而且很容易就把注意力转移到编辑器的学习上，等到学习了一段时间后在尝试不迟。</p>
-<h2 id="第三方类库的选择"><a href="#第三方类库的选择" class="headerlink" title="第三方类库的选择"></a>第三方类库的选择</h2><p>由于 Clojure 语言定位就是个寄宿语言，所以无论是 Web 框架，还是数据库连接池，Clojure 里都有与 Java 版相对应包装类库，大家不必担心要使用某个功能，而没有相应库的问题，但是这里我必须说明一点，Clojure 类库的文档对初学者不够友好，最起码对我来说是的，我相信我不可能是个例。就拿打印日志来说，Github 上搜一下，应该能够找到最 idiomatic 应该是 <a href="https://github.com/ptaoussanis/timbre" target="_blank" rel="noopener">timbre</a>，通读其 README 后，怎么配置还不是很清楚，继续 Google，找到</p>
+<h2 id="第三方类库的选择">第三方类库的选择</h2>
+<p>由于 Clojure 语言定位就是个寄宿语言，所以无论是 Web 框架，还是数据库连接池，Clojure 里都有与 Java 版相对应包装类库，大家不必担心要使用某个功能，而没有相应库的问题，但是这里我必须说明一点，Clojure 类库的文档对初学者不够友好，最起码对我来说是的，我相信我不可能是个例。就拿打印日志来说，Github 上搜一下，应该能够找到最 idiomatic 应该是 <a href="https://github.com/ptaoussanis/timbre">timbre</a>，通读其 README 后，怎么配置还不是很清楚，继续 Google，找到</p>
 <ul>
-<li><a href="https://github.com/palletops/log-config" target="_blank" rel="noopener">log-config</a></li>
-<li><a href="http://www.filmspringopen.eu/blog-entry-blogentryid-447808.html" target="_blank" rel="noopener">Custom logging with timbre</a></li>
+<li><a href="https://github.com/palletops/log-config">log-config</a></li>
+<li><a href="http://www.filmspringopen.eu/blog-entry-blogentryid-447808.html">Custom logging with timbre</a></li>
 </ul>
 <p>这时我才能够知道怎么去定制他的<code>appenders</code>等各种参数，也可能是我个人的理解能力比较差，不过这里介绍一个非常实用并且适用于所有语言的方法，那就是看这个项目的test，test 里面核心的功能肯定会涉及到，然后照猫画虎就可以了。</p>
-<p>其实，在使用第三方类库之余，多去了解其实现，代码从 Github 上 Clone 下来，慢慢看，Clojure 里面提供了很多实用的小方法，像<code>partition</code>, <code>juxt</code>, <code>group-by</code>等等不一而足，最好带着 issue 里面的问题去看代码，说不定你就从使用者变成了开发者呢，我第一个尝试给了 <a href="https://github.com/dakrone/clj-http/pull/341" target="_blank" rel="noopener">http-clj</a>。</p>
-<h2 id="调试-debug"><a href="#调试-debug" class="headerlink" title="调试 debug"></a>调试 debug</h2><p>代码一次写对的几率基本为0，掌握一定的测试技能是每个同学的基本功，下面简单介绍下 Clojure里面常用的调试方法。</p>
-<h3 id="println"><a href="#println" class="headerlink" title="println"></a>println</h3><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">let</span></span> [headers         (<span class="symbol">:headers</span> ring-request)</span><br><span class="line">      header-names    (<span class="name"><span class="builtin-name">keys</span></span> headers)</span><br><span class="line">      <span class="comment">;; The following underscore is a convention for "unused variable"</span></span><br><span class="line">      _               (<span class="name">println</span> <span class="string">"Headers:"</span> header-names)  <span class="comment">;; &lt;-- this</span></span><br><span class="line">      header-keywords (<span class="name"><span class="builtin-name">map</span></span> keyword header-names)]</span><br><span class="line"><span class="comment">;; etc</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>最简单实用的 <code>println</code>，但问题是我们需要把要监控的变量打两次，这在变量比较多的时候比较麻烦，可以采用下面的 spyscope</p>
-<h3 id="spyscope"><a href="#spyscope" class="headerlink" title="spyscope"></a>spyscope</h3><p><a href="https://github.com/dgrnbrg/spyscope" target="_blank" rel="noopener">Spyscope</a> 库可以解决上<code>println</code>的问题，他提供三个<code>reader tags</code>来监控变量，用法极为简单：<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">let</span></span> [headers         (<span class="symbol">:headers</span> ring-request)</span><br><span class="line">      header-names    #spy/p (<span class="name"><span class="builtin-name">keys</span></span> headers)       <span class="comment">;; &lt;-- print out what header-names is</span></span><br><span class="line">      header-keywords (<span class="name"><span class="builtin-name">map</span></span> keyword header-names)]</span><br><span class="line"><span class="comment">;; etc</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-<h3 id="debux"><a href="#debux" class="headerlink" title="debux"></a><a href="https://github.com/philoskim/debux" target="_blank" rel="noopener">debux</a></h3><p>一个非常好用的测试库，可以把嵌套函数调用的每一步打印出来。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">dbg</span> (<span class="name"><span class="builtin-name">-&gt;</span></span> <span class="string">"a b c d"</span></span><br><span class="line">         .toUpperCase</span><br><span class="line">         (<span class="name">.replace</span> <span class="string">"A"</span> <span class="string">"X"</span>)</span><br><span class="line">         (<span class="name">.split</span> <span class="string">" "</span>)</span><br><span class="line">         first))</span><br><span class="line"><span class="comment">;=&gt; "X"</span></span><br></pre></td></tr></table></figure>
-<p>REPL 中会打印：<br><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dbg: (-&gt; <span class="string">"a b c d"</span> .toUpperCase (.<span class="built_in">replace</span> <span class="string">"A"</span> <span class="string">"X"</span>) (.<span class="built_in">split</span> <span class="string">" "</span>) <span class="built_in">first</span>)</span><br><span class="line">  <span class="string">"a b c d"</span> =&gt;</span><br><span class="line">    <span class="string">"a b c d"</span></span><br><span class="line">  .toUpperCase =&gt;</span><br><span class="line">    <span class="string">"A B C D"</span></span><br><span class="line">  (.<span class="built_in">replace</span> <span class="string">"A"</span> <span class="string">"X"</span>) =&gt;</span><br><span class="line">    <span class="string">"X B C D"</span></span><br><span class="line">  (.<span class="built_in">split</span> <span class="string">" "</span>) =&gt;</span><br><span class="line">    [<span class="string">"X"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>, <span class="string">"D"</span>]</span><br><span class="line">  <span class="built_in">first</span> =&gt;</span><br><span class="line">    <span class="string">"X"</span></span><br><span class="line">=&gt;</span><br><span class="line">  <span class="string">"X"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="tools-trace"><a href="#tools-trace" class="headerlink" title="tools.trace"></a>tools.trace</h3><p>上面介绍的方法都需要修改源代码，有没有不用修改的呢？答案是肯定的，<a href="https://github.com/clojure/tools.trace" target="_blank" rel="noopener">clojure.tools.trace</a>，Github 上的 README 比较详细，大家可以可以去了解，我目前在自己的项目里面还没有采用过这个方法。</p>
-<h3 id="Intellj-Debug"><a href="#Intellj-Debug" class="headerlink" title="Intellj Debug"></a>Intellj Debug</h3><p>借助于 IDE 的优势，我们可以打断点，一步一步调试，但是 Cursive 对宏的支持比较有限，目前出来把宏展开外，没找到好的调试宏的好方法。<br><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2HEWIcb4npuFjSZFmXXXl4FXa_!!581166664.png_620x10000.jpg" alt="Intellj debug"></p>
-<h3 id="nrepl"><a href="#nrepl" class="headerlink" title="nrepl"></a>nrepl</h3><p>Clojure 的 REPL 可以连接到远程服务器上的进程中，直接对进程中的函数或变量进行修改，这是非常便利的，对于很多运行时的错误可以采用这种方式解决，Emacs 与 Intellj 里面都提供了连接远程 REPL server 的方式。</p>
-<p><img src="https://img.alicdn.com/imgextra/i1/581166664/TB2KcGIcbBmpuFjSZFuXXaG_XXa_!!581166664.png" alt="Intellj 连接远程 REPL"></p>
-<p>Emacs 里面是：<code>M-x cider-connect</code><br>lein 里面是：<code>lein repl :connect 192.168.50.101:4343</code></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Clojure 在国内算是非常非常小众，介绍 Clojure 开发的文章也比较少，仅有的也只是一些简单的语法介绍或者概念阐述。<br>我从<a href="https://github.com/jiacai2050/sicp" target="_blank" rel="noopener">读完 SICP</a> 后就一直想把 Lisp 作为我的主力语言，正好趁着这次机会，希望能够弥补国内 Clojure 文档较匮乏的情况，之后我会陆陆续续把自己使用 Clojure 开发的经历分享出来，供后来的 Clojurians 参考，这也算是 17 年的第一个小目标吧。</p>
-<p><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2OEGwcmVmpuFjSZFFXXcZApXa_!!581166664.png" alt="关于 Clojure 的 RSS 收集 "></p>
+<p>其实，在使用第三方类库之余，多去了解其实现，代码从 Github 上 Clone 下来，慢慢看，Clojure 里面提供了很多实用的小方法，像<code>partition</code>, <code>juxt</code>, <code>group-by</code>等等不一而足，最好带着 issue 里面的问题去看代码，说不定你就从使用者变成了开发者呢，我第一个尝试给了 <a href="https://github.com/dakrone/clj-http/pull/341">http-clj</a>。</p>
+<h2 id="调试-debug">调试 debug</h2>
+<p>代码一次写对的几率基本为0，掌握一定的测试技能是每个同学的基本功，下面简单介绍下 Clojure里面常用的调试方法。</p>
+<h3 id="println">println</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(let [headers         (:headers ring-request)
+      header-names    (keys headers)
+      ;; The following underscore is a convention for &#34;unused variable&#34;
+      _               (println &#34;Headers:&#34; header-names)  ;; &lt;-- this
+      header-keywords (map keyword header-names)]
+;; etc
+)
+</code></pre></td></tr></table>
+</div>
+</div><p>最简单实用的 <code>println</code>，但问题是我们需要把要监控的变量打两次，这在变量比较多的时候比较麻烦，可以采用下面的 spyscope</p>
+<h3 id="spyscope">spyscope</h3>
+<p><a href="https://github.com/dgrnbrg/spyscope">Spyscope</a> 库可以解决上<code>println</code>的问题，他提供三个<code>reader tags</code>来监控变量，用法极为简单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(let [headers         (:headers ring-request)
+      header-names    #spy/p (keys headers)       ;; &lt;-- print out what header-names is
+      header-keywords (map keyword header-names)]
+;; etc
+)
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="debuxhttpsgithubcomphiloskimdebux"><a href="https://github.com/philoskim/debux">debux</a></h3>
+<p>一个非常好用的测试库，可以把嵌套函数调用的每一步打印出来。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(dbg (-&gt; &#34;a b c d&#34;
+         .toUpperCase
+         (.replace &#34;A&#34; &#34;X&#34;)
+         (.split &#34; &#34;)
+         first))
+;=&gt; &#34;X&#34;
+</code></pre></td></tr></table>
+</div>
+</div><p>REPL 中会打印：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">dbg: (-&gt; &#34;a b c d&#34; .toUpperCase (.replace &#34;A&#34; &#34;X&#34;) (.split &#34; &#34;) first)
+  &#34;a b c d&#34; =&gt;
+    &#34;a b c d&#34;
+  .toUpperCase =&gt;
+    &#34;A B C D&#34;
+  (.replace &#34;A&#34; &#34;X&#34;) =&gt;
+    &#34;X B C D&#34;
+  (.split &#34; &#34;) =&gt;
+    [&#34;X&#34;, &#34;B&#34;, &#34;C&#34;, &#34;D&#34;]
+  first =&gt;
+    &#34;X&#34;
+=&gt;
+  &#34;X&#34;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="toolstrace">tools.trace</h3>
+<p>上面介绍的方法都需要修改源代码，有没有不用修改的呢？答案是肯定的，<a href="https://github.com/clojure/tools.trace">clojure.tools.trace</a>，Github 上的 README 比较详细，大家可以可以去了解，我目前在自己的项目里面还没有采用过这个方法。</p>
+<h3 id="intellj-debug">Intellj Debug</h3>
+<p>借助于 IDE 的优势，我们可以打断点，一步一步调试，但是 Cursive 对宏的支持比较有限，目前出来把宏展开外，没找到好的调试宏的好方法。
+
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2HEWIcb4npuFjSZFmXXXl4FXa_!!581166664.png_620x10000.jpg" alt="Intellj debug">
+    <figcaption><center>Intellj debug</center></figcaption>
+  </figure>
+
+</p>
+<h3 id="nrepl">nrepl</h3>
+<p>Clojure 的 REPL 可以连接到远程服务器上的进程中，直接对进程中的函数或变量进行修改，这是非常便利的，对于很多运行时的错误可以采用这种方式解决，Emacs 与 Intellj 里面都提供了连接远程 REPL server 的方式。</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i1/581166664/TB2KcGIcbBmpuFjSZFuXXaG_XXa_!!581166664.png" alt="Intellj 连接远程 REPL">
+    <figcaption><center>Intellj 连接远程 REPL</center></figcaption>
+  </figure>
+
+</p>
+<p>Emacs 里面是：<code>M-x cider-connect</code>
+lein 里面是：<code>lein repl :connect 192.168.50.101:4343</code></p>
+<h2 id="总结">总结</h2>
+<p>Clojure 在国内算是非常非常小众，介绍 Clojure 开发的文章也比较少，仅有的也只是一些简单的语法介绍或者概念阐述。
+我从<a href="https://github.com/jiacai2050/sicp">读完 SICP</a> 后就一直想把 Lisp 作为我的主力语言，正好趁着这次机会，希望能够弥补国内 Clojure 文档较匮乏的情况，之后我会陆陆续续把自己使用 Clojure 开发的经历分享出来，供后来的 Clojurians 参考，这也算是 17 年的第一个小目标吧。</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2OEGwcmVmpuFjSZFFXXcZApXa_!!581166664.png" alt="关于 Clojure 的 RSS 收集 ">
+    <figcaption><center>关于 Clojure 的 RSS 收集 </center></figcaption>
+  </figure>
+
+</p>
 <p>上面是我目前收集关于 Clojure 的 RSS，大家可以根据标题去搜索，热爱 Clojure ，从不做伸手党开始。😊</p>
-<h2 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h2><ul>
-<li><a href="https://www.cis.upenn.edu/~matuszek/Concise%20Guides/Concise%20Clojure.html#basic_types" target="_blank" rel="noopener">A Concise Guide to Clojure</a></li>
-<li><a href="http://owenrh.me.uk/blog/2015/08/24/" target="_blank" rel="noopener">The Beauty of Clojure</a></li>
-<li><a href="https://www.infoq.com/articles/in-depth-look-clojure-collections" target="_blank" rel="noopener">An In-Depth Look at Clojure Collections</a></li>
-<li><a href="https://www.youtube.com/channel/UCaLlzGqiPE2QRj6sSOawJRg" target="_blank" rel="noopener">Clojure TV on YouTube</a> 里面有很多大牛分享 Clojure 实战，还能锻炼英文</li>
-<li><a href="http://blog.fnil.net/blog/categories/clojure/" target="_blank" rel="noopener">LeanCloud 工程师庄晓丹个人博客</a></li>
+<h2 id="扩展阅读">扩展阅读</h2>
+<ul>
+<li><a href="https://www.cis.upenn.edu/~matuszek/Concise%20Guides/Concise%20Clojure.html#basic_types">A Concise Guide to Clojure</a></li>
+<li><a href="http://owenrh.me.uk/blog/2015/08/24/">The Beauty of Clojure</a></li>
+<li><a href="https://www.infoq.com/articles/in-depth-look-clojure-collections">An In-Depth Look at Clojure Collections</a></li>
+<li><a href="https://www.youtube.com/channel/UCaLlzGqiPE2QRj6sSOawJRg">Clojure TV on YouTube</a> 里面有很多大牛分享 Clojure 实战，还能锻炼英文</li>
+<li><a href="http://blog.fnil.net/blog/categories/clojure/">LeanCloud 工程师庄晓丹个人博客</a></li>
 </ul>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2016/12/31/dev-in-clojure/" data-id="ckhxlinwu0041szlju7zurxn8" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKklEQVR42u3aS27DMAwFwNz/0u42RVHnUZSLmh6tgsJWNV4Q/Oj1itfxtt7/8vP3b8+f71x9a3FhYGDclnGcrnNG9bjnO6w9g4GB8RxGEgrP8clbedjNz4aBgYGRJ3Dn+yThGwMDA2NvwO0cN/9AGBgYGNVisprw5c21P63FMTAwbsjYVWRe8fuS+QYGBsatGEdx9ccJu07ybWcMDIzRjH6ButYgO+etnQcDA2M2Iy8y18rR6vizM4TAwMCYzaimcVccqzNCwMDAeAIjOVY1UasG3/yzRi05DAyMEYyOOEkik5FkHtZ/3QEDA2M0o5PqVS89rA0s84tiGBgYUxnlbtym0WO1eP7wCTAwMEYz+uH1/N1OeC1f48DAwBjK6KRo1eMWctW4iH31M00MDIx/z6g2y/Kj5wnfhhsiGBgYoxl5EMyfyWGdAP1hvoGBgTGIsTaq7FyVqF47K6SPGBgYQxmdSxJ5IpgPCdZ2w8DAmM1Ya8pXw3GniE0GDxgYGE9gJEfMb2FVA2USyqP/hYGB8QBGtU2fl6PVw7XabRgYGKMZu9pku0rZcjMOAwNjKOMorjyMVttql9ffGBgYt2VUw1xnMJDss/faGQYGxiRGHmTXmm45shVwMTAwHsDIq97O6HHt+ldUTmNgYGA0wuJaC6/c8sPAwMAoXoDIg/JakP0wwsTAwBjKqDbU8nCZNNeSLuC2dhsGBsYNGZ2Qlw8POofuh2wMDIzbMr4AMbFLqd5JWGUAAAAASUVORK5CYII=">分享</a><div class="tags"><a href="/tags/Clojure/">Clojure</a></div><div class="post-nav"><a class="pre" href="/blog/2017/01/08/review-2016/">2016 年终总结</a><a class="next" href="/blog/2016/12/07/hello-jeju/">韩国济州岛4日游</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2016/12/31/dev-in-clojure/';
-    this.page.identifier = 'blog/2016/12/31/dev-in-clojure/';
-    this.page.title = 'Clojure 开发那些事';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/clojure/">Clojure</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2017/01/08/review-2016/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">2016 年终总结</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2016/12/07/hello-jeju/">
+            <span class="next-text nav-default">韩国济州岛4日游</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

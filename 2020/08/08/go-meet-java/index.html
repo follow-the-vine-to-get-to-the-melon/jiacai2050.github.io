@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>实践总结：在 Java 中调用 Go 代码 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="在 Java 中调用 Go 的大致过程如下 1 go --&amp;gt; cgo --&amp;gt; jna --&amp;gt; java 整个过程要解决的问题主要两个： 数据类型在两种语言中如何转化 何时清理无用的数据 下面就围绕上述调用过程" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/2020/08/08/go-meet-java/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="实践总结：在 Java 中调用 Go 代码" />
+<meta property="og:description" content="在 Java 中调用 Go 的大致过程如下 1 go --&gt; cgo --&gt; jna --&gt; java 整个过程要解决的问题主要两个： 数据类型在两种语言中如何转化 何时清理无用的数据 下面就围绕上述调用过程" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/2020/08/08/go-meet-java/" />
+<meta property="article:published_time" content="2020-08-08T09:30:53+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="实践总结：在 Java 中调用 Go 代码">
+<meta itemprop="description" content="在 Java 中调用 Go 的大致过程如下 1 go --&gt; cgo --&gt; jna --&gt; java 整个过程要解决的问题主要两个： 数据类型在两种语言中如何转化 何时清理无用的数据 下面就围绕上述调用过程">
+<meta itemprop="datePublished" content="2020-08-08T09:30:53+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="1746">
+
+
+
+<meta itemprop="keywords" content="Go,Java," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="实践总结：在 Java 中调用 Go 代码"/>
+<meta name="twitter:description" content="在 Java 中调用 Go 的大致过程如下 1 go --&gt; cgo --&gt; jna --&gt; java 整个过程要解决的问题主要两个： 数据类型在两种语言中如何转化 何时清理无用的数据 下面就围绕上述调用过程"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">实践总结：在 Java 中调用 Go 代码</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-08-08 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            </div>
+          <span class="more-meta"> 约 1746 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#go---cgo">Go -&gt; Cgo</a></li>
+    <li><a href="#cgo---jna">Cgo -&gt; JNA</a></li>
+    <li><a href="#jna---java">JNA -&gt; Java</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在 Java 中调用 Go 的大致过程如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">go --&gt; cgo --&gt; jna --&gt; java
+</code></pre></td></tr></table>
+</div>
+</div><p>整个过程要解决的问题主要两个：</p>
+<ol>
+<li>数据类型在两种语言中如何转化</li>
+<li>何时清理无用的数据</li>
+</ol>
+<p>下面就围绕上述调用过程来阐述，本文涉及代码完整版可以下面链接找到：</p>
+<ul>
+<li><a href="https://github.com/jiacai2050/blog-snippets/tree/master/cgo-jna-demo">https://github.com/jiacai2050/blog-snippets/tree/master/cgo-jna-demo</a></li>
+</ul>
+<h1 id="go---cgo">Go -&gt; Cgo</h1>
+<p>这是跨语言调用的第一步，主要是借助 cgo，把 Go 代码编译 C 共享库。
+<a href="https://golang.org/cmd/cgo/">cgo</a> 是 Go 语言提供与 C 语言互调的一工具。提供一个名为 <code>C</code> 的伪 package，供 Go 访问 C 中的变量与函数，如 <code>C.size_t</code> <code>C.stdout</code> 等；同时提供 5 个特殊函数，用于两种语言间类型的转化：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Go string to C string
+</span><span class="c1">// The C string is allocated in the C heap using malloc.
+</span><span class="c1">// It is the caller&#39;s responsibility to arrange for it to be
+</span><span class="c1">// freed, such as by calling C.free (be sure to include stdlib.h
+</span><span class="c1">// if C.free is needed).
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span>
+
+<span class="c1">// Go []byte slice to C array
+</span><span class="c1">// The C array is allocated in the C heap using malloc.
+</span><span class="c1">// It is the caller&#39;s responsibility to arrange for it to be
+</span><span class="c1">// freed, such as by calling C.free (be sure to include stdlib.h
+</span><span class="c1">// if C.free is needed).
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CBytes</span><span class="p">([]</span><span class="kt">byte</span><span class="p">)</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+
+<span class="c1">// C string to Go string
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span><span class="p">)</span> <span class="kt">string</span>
+
+<span class="c1">// C data with explicit length to Go string
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoStringN</span><span class="p">(</span><span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span><span class="p">,</span> <span class="nx">C</span><span class="p">.</span><span class="kt">int</span><span class="p">)</span> <span class="kt">string</span>
+
+<span class="c1">// C data with explicit length to Go []byte
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoBytes</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">,</span> <span class="nx">C</span><span class="p">.</span><span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>需要注意一点，cgo 中函数不能直接返回 slice/map 等具有 go pointer （区别与 C pointer，由 go runtime 管理生命周期）的数据类型，否则会报下面的 panic 信息：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">panic: runtime error: cgo result has Go pointer
+</code></pre></td></tr></table>
+</div>
+</div><p>原因也很简单，go 是有 gc 的，假如允许返回具有 go pointer 的数据，那么 C 代码中得到的数据无法保证合法性，很有可能已经被 gc 了，即悬挂指针问题。解决的方式也很简单，就是采用 go 提供的特殊转化函数，将数据转为 <code>unsafe.Pointer</code>，在 C 中用 <code>void *</code> 的方式去使用。</p>
+<p>可以想象，这些特殊转化函数一定对数据进行了深拷贝，来保证数据的合法性，可参考 <a href="https://github.com/golang/go/blob/ba9e10889976025ee1d027db6b1cad383ec56de8/src/cmd/cgo/out.go#L1718">C.CBytes 的定义</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">const</span> <span class="nx">cBytesDef</span> <span class="p">=</span> <span class="s">`
+</span><span class="s">func _Cfunc_CBytes(b []byte) unsafe.Pointer {
+</span><span class="s">    p := _cgo_cmalloc(uint64(len(b)))
+</span><span class="s">    pp := (*[1&lt;&lt;30]byte)(p)
+</span><span class="s">    copy(pp[:], b)
+</span><span class="s">    return p
+</span><span class="s">}
+</span><span class="s">`</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>但这也意味着，Go/C 代码中需要负责 free 掉无用的数据（至于哪边 free，要看实际情况）。示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">cs</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="s">&#34;Hello from stdio&#34;</span><span class="p">)</span>
+    <span class="nx">C</span><span class="p">.</span><span class="nf">myprint</span><span class="p">(</span><span class="nx">cs</span><span class="p">)</span>
+    <span class="nx">C</span><span class="p">.</span><span class="nf">free</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">cs</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>将 Go 函数导出供 C 调用，需要用 <code>//export</code> 标示相关函数，并且 Go 文件需要在 <code>package main</code>下。然后用类似下面的 build 命令，即可得到与 C 互调的动态库，同时会生产一个头文件，里面有 export 函数的相关签名。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># linux 下可输出到 libawesome.so，这里以 Mac 下的动态库为例</span>
+go build -v -o libawesome.dylib -buildmode<span class="o">=</span>c-shared ./main.go
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">//export Hello
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Hello</span><span class="p">(</span><span class="nx">msg</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="s">&#34;hello &#34;</span> <span class="o">+</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">ToUpper</span><span class="p">(</span><span class="nx">msg</span><span class="p">))</span>
+
+<span class="p">}</span>
+
+<span class="c1">// 头文件中 Hello 的定义
+</span><span class="c1">// ptrdiff_t is the signed integer type of the result of subtracting two pointers.
+</span><span class="c1">// n 这里表示字符串的长度
+</span><span class="c1"></span><span class="nx">typedef</span> <span class="kd">struct</span> <span class="p">{</span> <span class="kd">const</span> <span class="nx">char</span> <span class="o">*</span><span class="nx">p</span><span class="p">;</span> <span class="nx">ptrdiff_t</span> <span class="nx">n</span><span class="p">;</span> <span class="p">}</span> <span class="nx">_GoString_</span><span class="p">;</span>
+<span class="nx">extern</span> <span class="nx">char</span><span class="o">*</span> <span class="nf">Hello</span><span class="p">(</span><span class="nx">GoString</span> <span class="nx">p0</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>完整代码可参考 <a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/resources/main.go">main.go</a> 、对应的头文件 <a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/libawesome.h">libawesome.h</a>。</p>
+<h1 id="cgo---jna">Cgo -&gt; JNA</h1>
+<p>这一步主要是 Java 中如何调用 C 代码，目前主要有两种方式，</p>
+<ul>
+<li><a href="https://github.com/java-native-access/jna">JNA</a>，优势是调用方便，只需要编写 Java 代码，JNA 框架负责在 C/Java 中进行数据类型转化</li>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/jniTOC.html">JNI</a>，优势是性能好，缺点是调用繁琐</li>
+</ul>
+<p>详细区别这里不展开叙述，感兴趣的读者可参考下面文章：</p>
+<ul>
+<li><a href="https://blog.caplin.com/2014/12/01/jnajni/">https://blog.caplin.com/2014/12/01/jnajni/</a></li>
+</ul>
+<h1 id="jna---java">JNA -&gt; Java</h1>
+<p>这一步主要是在 Java 代码中如何调用 JNA 框架提供的库进行跨语言调用，也是本文的重点。
+JNA 将 Java 基本类型直接映射为 C 中同等大小的类型，这里<a href="https://github.com/java-native-access/jna/blob/master/www/Mappings.md">摘抄</a>如下</p>
+<table>
+<thead>
+<tr>
+<th>Native Type</th>
+<th>Size</th>
+<th>Java Type</th>
+<th>Common Windows Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td>8-bit integer</td>
+<td>byte</td>
+<td>BYTE, TCHAR</td>
+</tr>
+<tr>
+<td>short</td>
+<td>16-bit integer</td>
+<td>short</td>
+<td>WORD</td>
+</tr>
+<tr>
+<td>wchar_t</td>
+<td>16/32-bit character</td>
+<td>char</td>
+<td>TCHAR</td>
+</tr>
+<tr>
+<td>int</td>
+<td>32-bit integer</td>
+<td>int</td>
+<td>DWORD</td>
+</tr>
+<tr>
+<td>int</td>
+<td>boolean value</td>
+<td>boolean</td>
+<td>BOOL</td>
+</tr>
+<tr>
+<td>long</td>
+<td>32/64-bit integer</td>
+<td>NativeLong</td>
+<td>LONG</td>
+</tr>
+<tr>
+<td>long long</td>
+<td>64-bit integer</td>
+<td>long</td>
+<td>__int64</td>
+</tr>
+<tr>
+<td>float</td>
+<td>32-bit FP</td>
+<td>float</td>
+<td></td>
+</tr>
+<tr>
+<td>double</td>
+<td>64-bit FP</td>
+<td>double</td>
+<td></td>
+</tr>
+<tr>
+<td>char*</td>
+<td>C string</td>
+<td>String</td>
+<td>LPCSTR</td>
+</tr>
+<tr>
+<td>void*</td>
+<td>pointer</td>
+<td>Pointer</td>
+<td>LPVOID, HANDLE, LPXXX</td>
+</tr>
+</tbody>
+</table>
+<p>对于 C 中的 struct/pointer，JNA 中也提供了 <a href="http://java-native-access.github.io/jna/5.6.0/javadoc/com/sun/jna/Structure.html">Structure</a>/<a href="http://java-native-access.github.io/jna/5.6.0/javadoc/com/sun/jna/Pointer.html">Pointer</a> 类来对应。JNA 的具体使用过程可参考：</p>
+<ul>
+<li><a href="https://github.com/java-native-access/jna/blob/master/www/GettingStarted.md">https://github.com/java-native-access/jna/blob/master/www/GettingStarted.md</a></li>
+<li><a href="http://java-native-access.github.io/jna/5.6.0/javadoc/overview-summary.html">http://java-native-access.github.io/jna/5.6.0/javadoc/overview-summary.html</a></li>
+</ul>
+<p>上述 GettingStarted 中第三种加载动态库的方式（即 resources 下的 <code>{OS}-{ARCH}/{LIBRARY}</code> 目录内）可以把动态库一起打包到 jar 中，这对于提供基础类库时比较方便，用户不需要再额外配置。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">resources/
+├── darwin
+│   └── libawesome.dylib
+├── linux-x86-64
+│   └── libawesome.so
+</code></pre></td></tr></table>
+</div>
+</div><p><a href="https://github.com/vladimirvivien/go-cshared-examples">vladimirvivien/go-cshared-examples</a> 这个仓库演示了四个函数 Add/Cosine/Sort/Log 的 JNA 调用，但这四个函数的返回类型都是基本类型（int/float64），没有 string/slice 等复杂类型，因此这里通过五个示例讲述复杂类型的返回问题：</p>
+<ol>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/BadStringDemo.java">BadStringDemo.java</a> 本示例演示了网络上一种常见，但有内存泄露问题的返回 string 的方式</li>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/GoodStringDemo.java">GoodStringDemo.java</a> 这个示例演示了如何正确的返回 string</li>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/AutoClosableStringDemo.java">AutoClosableStringDemo.java</a>  本示例在 GoodStringDemo 的基础上，利用 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html">AutoCloseable</a> 与 <a href="https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html">try-with-resource</a> 特性来释放内存</li>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/ReturnByteSliceDemo.java">ReturnByteSliceDemo.java</a> 本示例演示如何返回 slice，以及如何在 Java 中处理 Go 中的多个返回值</li>
+<li><a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/src/main/java/net/liujiacai/cgojna/ReturnInterfaceDemo.java">ReturnInterfaceDemo.java</a> 本示例演示返回具有 Go Pointer 的结构时的报错行为</li>
+</ol>
+<p>上述示例均使用 <a href="https://github.com/java-native-access/jna/blob/master/www/DirectMapping.md">direct mapping</a> 的方式做 JNA，读者可参考 <a href="https://github.com/vladimirvivien/go-cshared-examples">vladimirvivien/go-cshared-examples</a> 学习 interface mapping 的使用方式。
+这里对两种映射方式做了简单的<a href="https://github.com/jiacai2050/blog-snippets/blob/master/cgo-jna-demo/README.org#benchmark">性能测试</a>，压测数据如下</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>input</th>
+<th>output</th>
+<th>which is better</th>
+<th>rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Add</td>
+<td>two primitive ints</td>
+<td>int</td>
+<td>direct-mapping</td>
+<td>1.38</td>
+</tr>
+<tr>
+<td>Hello</td>
+<td>string</td>
+<td>FreeableString</td>
+<td>interface-mapping</td>
+<td>1.169</td>
+</tr>
+<tr>
+<td>Hello2</td>
+<td>string</td>
+<td>Pointer</td>
+<td>direct-mapping</td>
+<td>1.0083</td>
+</tr>
+</tbody>
+</table>
+<p>结论就是</p>
+<blockquote>
+<p>direct-mapping 对于基本类型（包括 Pointer）性能更好，interface-mapping 在复杂类型上略优。</p>
+</blockquote>
+<p>原因可参考：https://stackoverflow.com/a/38081251</p>
+<h1 id="总结">总结</h1>
+<p>C 语言作为连接不同高级语言的胶水语言，不具备垃圾回收功能，所以开发者在做 JNA 时要注意回收无用的内存结构。</p>
+<h1 id="参考">参考</h1>
+<ul>
+<li><a href="https://stackoverflow.com/questions/58759399/does-jna-free-memory-of-go-cstring-return-value">https://stackoverflow.com/questions/58759399/does-jna-free-memory-of-go-cstring-return-value</a></li>
+<li><a href="https://stackoverflow.com/questions/48267403/returning-const-char-from-native-code-and-getting-string-in-java/48270500">https://stackoverflow.com/questions/48267403/returning-const-char-from-native-code-and-getting-string-in-java/48270500</a></li>
+<li><a href="https://github.com/java-native-access/jna/blob/master/www/DirectMapping.md">https://github.com/java-native-access/jna/blob/master/www/DirectMapping.md</a></li>
+<li><a href="https://documentation.help/Golang/cgo.html">https://documentation.help/Golang/cgo.html</a></li>
+<li><a href="https://docs.yottadb.com/Presentations/DragonsofCGO.pdf">https://docs.yottadb.com/Presentations/DragonsofCGO.pdf</a></li>
+<li><a href="https://stackoverflow.com/questions/48686763/cgo-result-has-go-pointer">https://stackoverflow.com/questions/48686763/cgo-result-has-go-pointer</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/go/">Go</a>
+          <a href="/tags/java/">Java</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2020/11/25/why-emacs/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Emacs 入门指南</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2020/03/14/go-struct-interface/">
+            <span class="next-text nav-default">Go struct/interface 最佳实践</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>string on Keep Coding</title>
+    <link>https://liujiacai.net/tags/string/</link>
+    <description>Recent content in string on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 20 Nov 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/string/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>字符串，那些你不知道的事</title>
+      <link>https://liujiacai.net/blog/2015/11/20/strings/</link>
+      <pubDate>Fri, 20 Nov 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/11/20/strings/</guid>
+      <description>最近在看《Dive Into Python 3》，第四章讲了字符串相关知识，看后才发现，字符串远比我们想象的要复杂多。就像该书所说的 Everything you thought you knew about strings is wrong. 是的，我之前</description>
+    </item>
+    
+  </channel>
+</rss>

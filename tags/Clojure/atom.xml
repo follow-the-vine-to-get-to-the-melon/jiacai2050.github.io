@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Clojure on Keep Coding</title>
+    <link>https://liujiacai.net/tags/clojure/</link>
+    <description>Recent content in Clojure on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 21 Apr 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/clojure/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Clojure 开发经验总结</title>
+      <link>https://liujiacai.net/blog/2019/04/21/experience-in-clojure/</link>
+      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/04/21/experience-in-clojure/</guid>
+      <description>大概在两年半前，我开始陆陆续续写了一系列文章，来介绍如何上手、深入 Clojure，后来有幸加入 LeanCloud 写了两年的 Clojure，期间制作了一套七集</description>
+    </item>
+    
+    <item>
+      <title>使用 ClojureScript 开发浏览器插件的过程与收获</title>
+      <link>https://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</link>
+      <pubDate>Wed, 22 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</guid>
+      <description>随着 Firefox 57 的到来，之前维护的一个浏览器插件 gooreplacer 必须升级到 WebExtensions 才能继续使用，看了下之前写的 JS 代码，毫无修改的冲动，怕改了这个地方，那个地方突然就 broken 了</description>
+    </item>
+    
+    <item>
+      <title>由浅入深学习 Lisp 宏之实战篇</title>
+      <link>https://liujiacai.net/blog/2017/10/01/macro-in-action/</link>
+      <pubDate>Sun, 01 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/10/01/macro-in-action/</guid>
+      <description>本文是宏系列的第二篇文章，侧重于实战，对于新手建议先阅读宏系列的理论篇，之后再来看本文。当然如果你有一定基础，也可以直接阅读本文。 其次，希望</description>
+    </item>
+    
+    <item>
+      <title>由浅入深学习 Lisp 宏之理论篇</title>
+      <link>https://liujiacai.net/blog/2017/08/31/master-macro-theory/</link>
+      <pubDate>Thu, 31 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/08/31/master-macro-theory/</guid>
+      <description>宏（macro）是 Lisp 语言中最重要的武器，它可以自动生成运行时的代码。宏也是编写领域特定语言（DSL）的利器，可以在不改动语言本身的基础上，增</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</link>
+      <pubDate>Sun, 02 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</guid>
+      <description>在 Clojure 众多的 Web 框架中，Ring 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、</description>
+    </item>
+    
+    <item>
+      <title>“玩转” 技术面试——链表的函数表示法</title>
+      <link>https://liujiacai.net/blog/2017/03/22/ace-technical-interview/</link>
+      <pubDate>Wed, 22 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/03/22/ace-technical-interview/</guid>
+      <description>简介 《Acing the technical interview》，老外写的白板面试的调侃文，声色并茂，兼具叙述文的生动与技术文的抽象。文中用函数来模拟链表的表示法我</description>
+    </item>
+    
+    <item>
+      <title>Clojure 运行原理之字节码生成篇</title>
+      <link>https://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</link>
+      <pubDate>Thu, 09 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</guid>
+      <description>上一篇文章讲述了 Clojure 编译器工作的整体流程，主要涉及 LispReader 与 Compiler 这两个类，而且指出编译器并没有把 Clojure 转为相应的 Java 代码，而是直接使用 ASM 生成可运行在 JVM 中的 b</description>
+    </item>
+    
+    <item>
+      <title>Clojure 运行原理之编译器剖析篇</title>
+      <link>https://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</link>
+      <pubDate>Sun, 05 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</guid>
+      <description>Clojure is a compiled language, yet remains completely dynamic &amp;ndash; every feature supported by Clojure is supported at runtime. Rich Hickey https://clojure.org/ 这里的 runtime 指的是 JVM，JVM 之初是为运行 Java 语言而设计，而现在已经发展成一重量级平台，除了 Clojure 之外，</description>
+    </item>
+    
+    <item>
+      <title>Clojure 开发那些事</title>
+      <link>https://liujiacai.net/blog/2016/12/31/dev-in-clojure/</link>
+      <pubDate>Sat, 31 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/12/31/dev-in-clojure/</guid>
+      <description>Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 Storm，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员</description>
+    </item>
+    
+  </channel>
+</rss>

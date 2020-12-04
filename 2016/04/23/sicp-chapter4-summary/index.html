@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>SICP 第四章总结 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="本书的前三章分别讨论了数据抽象、过程抽象、模块化三种程序设计的技术，这些都是编程的问题，一直采用的是 Scheme 作为编程语言。如果遇到的问题更复杂，或" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/2016/04/23/sicp-chapter4-summary/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="SICP 第四章总结" />
+<meta property="og:description" content="本书的前三章分别讨论了数据抽象、过程抽象、模块化三种程序设计的技术，这些都是编程的问题，一直采用的是 Scheme 作为编程语言。如果遇到的问题更复杂，或" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/2016/04/23/sicp-chapter4-summary/" />
+<meta property="article:published_time" content="2016-04-23T19:50:56+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="SICP 第四章总结">
+<meta itemprop="description" content="本书的前三章分别讨论了数据抽象、过程抽象、模块化三种程序设计的技术，这些都是编程的问题，一直采用的是 Scheme 作为编程语言。如果遇到的问题更复杂，或">
+<meta itemprop="datePublished" content="2016-04-23T19:50:56+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="4864">
+
+
+
+<meta itemprop="keywords" content="sicp," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SICP 第四章总结"/>
+<meta name="twitter:description" content="本书的前三章分别讨论了数据抽象、过程抽象、模块化三种程序设计的技术，这些都是编程的问题，一直采用的是 Scheme 作为编程语言。如果遇到的问题更复杂，或"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">SICP 第四章总结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-04-23 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%A0%94%E4%B9%A0%E7%BB%8F%E5%85%B8/"> 研习经典 </a>
+            </div>
+          <span class="more-meta"> 约 4864 字 </span>
+          <span class="more-meta"> 预计阅读 10 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#元语言抽象">元语言抽象</a>
+          <ul>
+            <li><a href="#图灵机">图灵机</a></li>
+            <li><a href="#jit">JIT</a></li>
+          </ul>
+        </li>
+        <li><a href="#惰性求值">惰性求值</a></li>
+        <li><a href="#amb-非确定性计算">amb 非确定性计算</a>
+          <ul>
+            <li><a href="#非确定性计算与流处理">非确定性计算与流处理</a></li>
+            <li><a href="#continuation-继续">continuation 继续</a></li>
+          </ul>
+        </li>
+        <li><a href="#逻辑程序设计">逻辑程序设计</a>
+          <ul>
+            <li><a href="#查询系统">查询系统</a></li>
+            <li><a href="#将逻辑看作程序">将逻辑看作程序</a></li>
+            <li><a href="#查询系统原理">查询系统原理</a></li>
+            <li><a href="#逻辑程序设计和数理逻辑">逻辑程序设计和数理逻辑</a></li>
+            <li><a href="#not-问题">not 问题</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>本书的前三章分别讨论了<code>数据抽象</code>、<code>过程抽象</code>、<code>模块化</code>三种程序设计的技术，这些都是编程的问题，一直采用的是 Scheme 作为编程语言。如果遇到的问题更复杂，或者需要解决某领域的大量问题，有可能发现现实可用的语言(Lisp，或其他)都不够满意或不够方便，因此第四章主要就是讲述如何设计和实现一门新语言。</p>
+<p>第四章首先介绍了一个解释器（本书中文翻译为“求值器”）最核心的部分（eval与apply），然后基于这个核心，做了一系列的扩展，下面让我们一起回顾总结下。</p>
+<h2 id="元语言抽象">元语言抽象</h2>
+<p>4.1 小节告诉我们<code>语言的解释器自身也是一个过程</code>而已，送给它的输入是相应语言的表达式（即程序），它就会完成该表达式要求做的动作。所以我们完全可以用 Scheme 写出一个 Scheme 的解释器，学习求值器实现，有助于理解语言本身和语言实现中的问题。而且  Scheme 语言有强大的符号处理能力，特别适合用于做这种工作。</p>
+<p>在阅读4.1章节之前，我用 Java 尝试实现了一个 Scheme 解释器 JCScheme，之前也写过<a href="/blog/2015/10/03/first-toy-scheme/">文章</a>介绍，最核心的就是下面两个过程：</p>
+<ul>
+<li>eval 在一个环境里的求值一个表达式</li>
+<li>apply 将一个过程对象应用于一组实际参数</li>
+</ul>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2KjMVfFXXXXbOXpXXXXXXXXXX_!!581166664.png" alt="SICP-eval-apply"/>
+</center>
+eval、apply 这两个规则描述了求值过程的核心部分，这是任何解释器的基本循环。在这一循环中
+> 表达式在环境中的求值被规约到过程对实际参数的应用，而这种应用又被规约到新的表达式在新的环境中的求值，如此下去，直到下降到符号（其值可以在环境中找到）或者基本过程（它们可以直接应用）。
+<p>后面的 amb 解释器、查询语言的解释器都是在这个基本循环的基础上改造来的。</p>
+<h3 id="图灵机">图灵机</h3>
+<p>4.1.5 小节中，将程序看成一种抽象的机器的一个描述，按照这种观点，求值器可以看作一部非常特殊的机器，它要求以一部机器的描述作为输入，给定了一个输入后，求值器就能够规划自己的行为，模拟被描述机器的执行过程。</p>
+<center>
+<img src="https://img.alicdn.com/imgextra/i1/581166664/TB2PWTZnFXXXXaRXXXXXXXXXXXX_!!581166664.png" alt=" evaluator_machine"/>
+</center>
+这里的深刻思想是：
+> 任一求值器都能够模拟其他的求值器
+<p>这样，有关“原则上说什么可以计算（忽略掉时间与空间的实践性问题）”的概念就是与语言或者计算机无关了，它反映的是一个有关<code>可计算性</code>的基本概念。图灵1936年的论文阐述了这个问题，并声称：</p>
+<blockquote>
+<p>任何“有效过程”都可以描述为这种机器的一个程序</p>
+</blockquote>
+<p>而后图灵实现了一台通用机器，即一台图灵机，其行为就像是所有图灵机程序的求值器。</p>
+<p>这一求值器是违反直觉的，因为它是由一个相对简单的过程实现，却能去模拟可能比求值器本身还复杂的各种程序，通用求值器的存在是计算的一种深刻而美妙的性质。递归论是数理逻辑的一个分支，这一理论研究计算的逻辑极限，<a href="https://book.douban.com/subject/1291204/">《GEB》</a>里也探讨了一些思想，有兴趣的可以把这本书加入书单。</p>
+<p>其他领域中也有这种通用功能的东西，像电子书、音乐播放器等都属于“专用的通用设备”，计算机（一个编程语言就是一种抽象的计算机）比它们更进一步：它能模拟自己。</p>
+<p>这里比较有意思的是<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/04/4.15.md">习题4.15</a>的停机问题，本小节所有解释器的代码可以参考<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/04/lib/main.scm">main.scm</a>。</p>
+<h3 id="jit">JIT</h3>
+<p>4.1.7小节中将语法分析与执行分开，这里的做法类似于高级语言的解释和编译：</p>
+<ul>
+<li>直接解释,就是一遍遍分析程序代码,实现其语义。例如最早的 BASIC 语言实现</li>
+<li>编译把实现程序功能的工作分为两步:
+<ul>
+<li>通过一次分析生成一个可执行的程序</li>
+<li>在此之后可以任意地多次执行这个程序</li>
+</ul>
+</li>
+</ul>
+<p>这里做的是从 Scheme 源程序(元循环解释器/求值器处理的“数据”)到 Scheme 可执行程序的翻译，这是一种 <a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">Just In-time Translation，JIT(即时翻译)</a>，目前成熟的Java虚拟机都采用这种技术来提高执行效率。在实际中应用,还需进一步考虑整体效率问题。</p>
+<h2 id="惰性求值">惰性求值</h2>
+<p>4.1 小节实现的求值器采用的应用序求值（过程应用之前完成对所有参数的求值），4.2 小节修改之前的求值器，使之能够按照正则序求值，也称为惰性求值。惰性求值的可以用来实现第三章介绍的流，而且也可以避免下面的问题：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(define (try a b)
+  (if (= a 0)
+    1
+    b))
+
+(try 0 (/ 1 0))
+# 如果采用正则序，这里不会抱错，因为 try 函数中根本就没用的b的值
+</code></pre></td></tr></table>
+</div>
+</div><p>这里要做的修改不是很多，只是在过程的参数上包一层，加一个<code>trunk</code>，真正需要计算时在求值，核心代码可以参考 <a href="https://github.com/jiacai2050/sicp/blob/master/exercises/04/lib/trunk.scm">trunk.scm</a>，此外，处于性能方便的考虑，一般会对求过的参数进行缓存。</p>
+<p>我自己实现的 JCScheme 也支持这种正则序求值，感兴趣的<a href="https://github.com/jiacai2050/JCScheme/tree/normal-order">参考</a>。</p>
+<h2 id="amb-非确定性计算">amb 非确定性计算</h2>
+<p>amb 的名字来自 ambiguous(歧义,多义)，4.3小节在 Scheme 里扩充非确定性计算功能。非确定性计算里最关键的思想：</p>
+<ul>
+<li>
+<p>允许一个表达式有多个可能的值</p>
+</li>
+<li>
+<p>在求值这种表达式时,求值器可以自动选出一个值
+可能从可以选的值中任意选出一个。还需要维持与选择相关的轨迹(知道哪些元素已经选过,哪些没选过。在后续计算中要保证不出现重选的情况)</p>
+</li>
+<li>
+<p>如果已做选择不能满足后面的要求,求值器就会回到有关的表里再 次选择,直至求值成功;或者所有选择都已用完时求值失败</p>
+</li>
+</ul>
+<p>非确定性计算的过程将通过求值器自动进行的搜索实现，选择和重新选择的方法和实际过程都隐藏在求值器的实现里,程序员不需要关心,不需要做任何与之相关的事情，这一修改的意义深远,语言扩充了,语义有重要改变。</p>
+<h3 id="非确定性计算与流处理">非确定性计算与流处理</h3>
+<p>非确定性求值和流处理有相似的地方，现在比较一下非确定性求值和流处理中时间的表现形式：</p>
+<ul>
+<li>
+<p>流处理中,通过惰性求值,松解潜在的(有可能是无穷的)流和流元素 的实际产生时间之间的紧密联系</p>
+<ul>
+<li>造成的假象是整个流似乎都存在</li>
+<li>元素的产生并没有严格的时间顺序</li>
+</ul>
+</li>
+<li>
+<p>非确定性计算的表达式表示对一批“可能世界”的探索</p>
+<ul>
+<li>每个世界由一串选择确定</li>
+<li>求值器造成的假相：时间好像能分叉</li>
+<li>求值器保存着所有可能的执行历史</li>
+<li>计算遇到死路时退回前面选择点转到另一分支,换一个探索空间</li>
+</ul>
+</li>
+</ul>
+<h3 id="continuation-继续">continuation 继续</h3>
+<p>“继续”是一种过程参数，它总是在过程的最后一步调用。带有“继续”参数的过程不准备返回，过程的最后一步是调用某个“继续”过程。“继续”是“尾调用”,调用过程的代码已经全部执行完毕。</p>
+<p>amb 分析器产生的执行过程要求三个参数：</p>
+<ul>
+<li>一个环境</li>
+<li>一个成功继续</li>
+<li>一个失败继续</li>
+</ul>
+<p>执行过程的体求值结束前的最后一步总是调用这两个过程之一</p>
+<ul>
+<li>如果求值工作正常完成并得到结果,就调用由“成功继续”参数 得到的那个过程</li>
+<li>如果求值进入死胡同,就调用“失败继续”参数过程</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(lambda (env succeed fail)
+  ;; succeed is a (lambda (value fail) ...)
+  ;; fail is a (lambda () ...)
+...)
+</code></pre></td></tr></table>
+</div>
+</div><p>这里需要注意的是要恢复破坏性操作(如赋值等),必须设法保存恢复信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+(define (analyze-assignment exp)
+  (let ((var (assignment-variable exp))
+        (vproc (analyze (assignment-value exp))))
+    (lambda (env succeed fail)
+      (vproc env
+             (lambda (val fail2)
+               (let ((old-value (lookup-variable var env)))
+                 (set-variable-value! var val env)
+                 (succeed &#39;ok
+                          (lambda ()
+                            (set-variable-value! var
+                                                 old-value
+                                                 env)
+                            (fail2)))))
+             fail))))
+</code></pre></td></tr></table>
+</div>
+</div><p>amb 求值器的完整代码可以参考<a href="https://github.com/jiacai2050/sicp/blob/master/exercises/04/lib/main-amb.scm">main-amb.scm</a>。</p>
+<h2 id="逻辑程序设计">逻辑程序设计</h2>
+<p>本书一开始就强调了：</p>
+<blockquote>
+<p>数学处理说明式知识；计算机科学处理命令式知识</p>
+</blockquote>
+<p>程序语言要求用算法的方式描述解决问题的过程，大多数程序语言要求用定义数学函数的方式组织程序：</p>
+<ul>
+<li>程序要描述“怎么做”的过程</li>
+<li>所描述的计算有明确方向,从输入到输出</li>
+<li>描述经计算的表达式,给出了从一些值算出结果的方法(和过程)  </li>
+<li>定义过程描述如何从参数计算出结果</li>
+</ul>
+<p>但是也有例外，第三章介绍的约束传递系统中的计算对象是约束关系,没有明确计算方向和顺序，它的基础系统要做很多工作以支持相应的计算。4.3小节的非确定性程序求值器里的表达式可有多个值,求值器设法根据表达式描述的关系找出满足要求的值。</p>
+<p>逻辑程序设计可看作上面想法的推广，一个“是什么”的描述可能蕴涵许多“怎样做”的过程。考虑 append:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(define (append x y)
+  (if (null? x)
+    y
+    (cons (car x) (append (cdr x) y))))
+</code></pre></td></tr></table>
+</div>
+</div><p>可认为,这个程序表达了两条规则:</p>
+<ol>
+<li>对任何一个表 <code>y</code>，空表与其拼接得到的表是 <code>y</code> 本身</li>
+<li>任何表 <code>u</code>, <code>v</code>, <code>y</code>, <code>z</code>，<code>(cons u v)</code> 与 <code>y</code> 拼接得到 <code>(cons u z)</code> 的条件是 ￼<code>v</code>与<code>y</code>的拼接得到<code>z</code></li>
+</ol>
+<p>append 的过程定义和上述两条规则都可以回答下面问题:</p>
+<ul>
+<li>找出<code>(a b)</code>和<code>(c d)</code>的append</li>
+</ul>
+<p> 这两条规则还可以回答(但 append 过程不行):</p>
+<ul>
+<li>找出一个表<code>y</code>使<code>(a b)</code>与它的拼接得到<code>(a b c d)</code></li>
+<li>找出所有拼接起来将得到<code>(a b c d)</code>的表<code>x</code>和<code>y</code></li>
+</ul>
+<p>在逻辑式程序语言里,可以写出与上面两条规则直接对应的表达式,求值器可以基于它得到上面各问题的解。但各种逻辑语言(包括本小节介绍的)都有缺陷,简单提供“做什么” 知识 有时会使求值器陷入无穷循环,或产生了不是用户希望的行为，这个领域最新的方向是<a href="https://en.wikipedia.org/wiki/Constraint_programming">constraint programming</a>。</p>
+<h3 id="查询系统">查询系统</h3>
+<p>本系统所使用的语言为查询语言，该语言的三要素分别是：</p>
+<ul>
+<li>
+<p><code>基本元素</code>，简单查询</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(job ?persion (computer programmer))
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>组合手段</code>，复合查询</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(and
+  (job ?persion (computer programmer))
+  (address ?persion ?where))
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>抽象手段</code>，规则</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(rule ⟨conclusion⟩ ⟨body⟩)
+
+(rule (lives-near ?persion-1 ?persion-2)
+  (and (address ?persion-1 (?town . ?rest-1))
+       (address ?persion-2 (?town . ?rest-2))
+       (not (same ?persion-1 ?persion-2))))
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p>可以认为一条规则表示了很大(甚至无穷大)的一集断言,其元素是 由 <code>&lt;conclusion&gt;</code> 求出的所有满足 <code>&lt;body&gt;</code> 的赋值。对简单查询,如果其中变量的某个赋值满足某查询模式,那么用这个赋值实例化模式得到的断言一定在数据库里但满足规则的断言不一定实际存在在数据库里(推导出的事实)。</p>
+<h3 id="将逻辑看作程序">将逻辑看作程序</h3>
+<p>规则可看作逻辑蕴涵式:若对所有模式变量的赋值能满足一条规则的体, 则它就满足其结论。可认为查询语言就是基于规则做逻辑推理。还是用 <code>append</code> 为例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(rule (append-to-form () ?y ?y))
+(rule (append-to-form (?u . ?v) ?y (?u . ?z))
+  (append-to-form ?v ?y ?z))
+</code></pre></td></tr></table>
+</div>
+</div><p>有了上面的规则，可以做许多查询</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">;;; Query input:
+(append-to-form (a b) (c d) ?z)
+;;; Query results:
+(append-to-form (a b) (c d) (a b c d))
+
+
+;;; Query input:
+(append-to-form (a b) ?y (a b c d))
+;;; Query results:
+(append-to-form (a b) (c d) (a b c d))
+
+
+;;; Query input:
+(append-to-form ?x ?y (a b c d))
+;;; Query results:
+(append-to-form () (a b c d) (a b c d))
+(append-to-form (a) (b c d) (a b c d))
+(append-to-form (a b) (c d) (a b c d))
+(append-to-form (a b c) (d) (a b c d))
+(append-to-form (a b c d) () (a b c d))
+
+</code></pre></td></tr></table>
+</div>
+</div><p>这些例子展示了不同方向的计算,正是前面提出希望解决的问题。</p>
+<h3 id="查询系统原理">查询系统原理</h3>
+<p>查询系统的组织围绕着两个核心操作：</p>
+<ul>
+<li><code>模式匹配(pattern match)</code>，操作实现简单查询和复合查询</li>
+<li><code>合一(unification)</code>，是模式匹配的推广,用于实现规则</li>
+</ul>
+<h3 id="逻辑程序设计和数理逻辑">逻辑程序设计和数理逻辑</h3>
+<p>查询语言的组合符对应于常用逻辑连接词，查询操作看起来也具有逻辑 可靠性(例如，and 查询要经过两个子成分处理等)
+但这种对应关系并不严格，因为查询语言的基础是求值器，其中隐含着控制结构和控制流程，是采用过程的方式解释逻辑语句。</p>
+<p>这种隐含的控制结构我们有可能利用，例如,要找程序员的上司,下面两种写法都行:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(and (job ?x (computer programmer))
+     (supervisor ?x ?y))
+
+(and (supervisor ?x ?y)
+     (job ?x (computer programmer)))
+</code></pre></td></tr></table>
+</div>
+</div><p>如果公司里的有关上司关系的事实比有关程序员的事实更多,第一种写法的查询效率更高。</p>
+<p>逻辑程序设计的目标是开发一种技术,把计算问题分为“要计算什么”和 “怎样计算”两个相互独立的子问题,方法是:</p>
+<ul>
+<li>找出逻辑语言的一个子集,其
+<ul>
+<li>功能足够强,足以描述人们想考虑的某类计算</li>
+<li>又不过分的强,有可能为它定义一种过程式的解释</li>
+</ul>
+</li>
+<li>实现一个求值器(解释器),执行对用这种逻辑子集写出的规则和 断言的解释(实现其语义,形式上是做推理)</li>
+</ul>
+<p>上面提出的两方面性质保证了逻辑程序设计语言程序的有效性。</p>
+<p>本小节的查询语言是这种想法的一个具体实施:</p>
+<ul>
+<li>查询语言是数理逻辑的一个可以过程式解释的子集</li>
+<li>一个断言描述一个简单事实</li>
+<li>一条规则表示一个蕴涵,能使规则体成立的情况都使结论成立</li>
+<li>规则有自然的过程式解释:要得到其结论,只需确定其体成立</li>
+</ul>
+<h3 id="not-问题">not 问题</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(and (supervisor ?x ?y)
+     (not (job ?x (computer programmer))))
+
+(and (not (job ?x (computer programmer)))
+     (supervisor ?x ?y))
+</code></pre></td></tr></table>
+</div>
+</div><p>这两个查询会得到不同结果(与逻辑里的情况不同)：</p>
+<ul>
+<li>第一个查询找出所有与 <code>(supervisor ?x ?y)</code> 匹配的条目，从得到的框架中删去 ?x 满足 <code>(job ?x (computer programmer))</code> 的框架</li>
+<li>第二个查询从初始框架流(只包含一个空框架)开始检查能否扩展 出与 <code>(job ?x (computer programmer))</code> 匹配的框架。显然空框架可扩展，not 删除流中的空框架得到空流，查询最后返回空流</li>
+</ul>
+<p>逻辑程序语言里的 not 反映的是一种“封闭世界假说”，认为所有知识都包含在数据库里,凡是没有的东西其 not 都成立。这显然不符合形式化的数理逻辑,也不符合人们的直观推理。</p>
+<p>查询语言的完整代码，可以参考<a href="https://github.com/jiacai2050/sicp/tree/master/exercises/04/lib/ql">这里</a>.</p>
+<h2 id="总结">总结</h2>
+<p>首先恭喜我“完成”第四章，算算大概用了4个月，太多不定因素了，不过还好自己找到了当初的感觉，坚持了下来。</p>
+<p>这一章的内容很多，毕竟是设计一门语言，而且还介绍了两种大变种，把书上的代码调通就要花好久，不过也确实开了眼界，通过最基本的eval、apply 循环扩展出了 amb 非确定性求值器与逻辑语言求值器，其实这章的难度并不大，只是涉及的内容广而已。</p>
+<p>通过看完这章，发现了很多本质性的东西，像 Node.js 里面的 callback、Python 里面的 generator 不都是 continuation 的糖衣嘛，JIT 也不过尔尔，这章更偏向的是元编程领域，通过 <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL</a> 来减轻业务代码的逻辑，想象如果语言本身就支持分布式事务，程序员要少写多少代码呢。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/sicp/">sicp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2016/05/21/sicp-chapter5-summary/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">SICP 第五章总结</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2016/03/26/python-ruby-javascript/">
+            <span class="next-text nav-default">python, ruby, javascript 浅析</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

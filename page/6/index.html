@@ -1,19 +1,442 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>Keep Coding | Stay hungry, Stay foolish</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Keep Coding</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title"><a href="/blog/2015/02/24/javascript-datatype/">javascript中的数据类型</a></h1><div class="post-meta">2015-02-24 21:09</div><a class="disqus-comment-count" data-disqus-identifier="blog/2015/02/24/javascript-datatype/" href="/blog/2015/02/24/javascript-datatype/#disqus_thread"></a><div class="post-content"><p>学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上object。<br>语法只是语言设计者预先做的一套规则，不同语言语法不尽相同，但都有一些共通点，对于熟悉一两门编程语言的人，学其他的编程语言时，语法往往不是问题（当然，如果你一直学的是类C语言，那么首次接触lisp时肯定也要花些时间），学习的重点往往是数据类型及其相关操作上，不是有句老话：“数据结构＋算法＝程序”！其次，有些语言的语法本身就存在设计问题（javascript更甚），我们没必要深究这些点，当然，如果你自诩geek，可以把玩把玩。</p></div><p class="readmore"><a href="/blog/2015/02/24/javascript-datatype/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/blog/2015/02/01/javascript-oop/">javascript中的面向对象编程</a></h1><div class="post-meta">2015-02-01 12:53</div><a class="disqus-comment-count" data-disqus-identifier="blog/2015/02/01/javascript-oop/" href="/blog/2015/02/01/javascript-oop/#disqus_thread"></a><div class="post-content"><p>最近工作一直在用nodejs做开发，有了nodejs，前端、后端、脚本全都可以用javascript搞定，很是方便。但是javascript的很多语法，比如对象，就和我们常用的面向对象(object oriented programming)的编程语言不同；看某个javascript开源项目，也经常会看到使用this关键字，而这个this关键字在javascript中因上下文不同而意义不同；还有让人奇怪的原型链。这些零零碎碎的东西加起来就很容易让人不知所措，所以，有必要对javascript这门语言进行一下深入了解。</p></div><p class="readmore"><a href="/blog/2015/02/01/javascript-oop/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/blog/2014/12/29/review-2014/">2014 年终总结</a></h1><div class="post-meta">2014-12-29 22:06</div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/12/29/review-2014/" href="/blog/2014/12/29/review-2014/#disqus_thread"></a><div class="post-content"><p>不知不觉间，又到一年尾，想想自己这正式工作也有大半年了，加上之前的实习，也算是有一年半多“工作经验”的人了。在今年的六月份，大学也划上了圆满的句号，还记得当初大一刚去学校报道时的一个标语——“今天我以烟大为荣，明天烟大以我为荣”，我肯定是不达标了。</p>
-<p>“年年岁岁花相似，岁岁年年人不同。”这首诗我记得每年的寒假作业上都会有吧。想想这一年经历，很多事，酸甜苦辣，应有尽有。下面简单整理下，不仅仅是为了记住这些事，更重要的是能够在这些事中吸取经验，克服自身的缺点。</p></div><p class="readmore"><a href="/blog/2014/12/29/review-2014/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/blog/2014/12/07/regexp-favors/">正则表达式“派别”简述</a></h1><div class="post-meta">2014-12-07 19:07</div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/12/07/regexp-favors/" href="/blog/2014/12/07/regexp-favors/#disqus_thread"></a><div class="post-content"><p>相信大家对于正则表达式都不陌生，在文本处理中或多或少的都会使用到它。但是，我们在使用linux下的文本处理工具如awk、sed等时，正则表达式的语法貌似还不一样，在awk中能正常工作的正则，在sed中总是不起作用，这是为什么呢？</p>
-<p>这个问题产生的缘由是因为正则表达式不断演变的结果，为了弄清楚这些工具使用的正则语法的不同，我们有必要去简单了解下正则的演变过程，做到知己知彼。当然这个过程本身也是很精彩的，我这里抛砖引玉，希望对大家正确使用正则表达式有所帮助。</p></div><p class="readmore"><a href="/blog/2014/12/07/regexp-favors/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/blog/2014/11/23/first-taste-of-macbook/">MacBook 最佳实践</a></h1><div class="post-meta">2014-11-23 20:40</div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/11/23/first-taste-of-macbook/" href="/blog/2014/11/23/first-taste-of-macbook/#disqus_thread"></a><div class="post-content"><p>MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/cb49a18efb421a9624c5.png" alt="MacBook 你值得拥有"></p></div><p class="readmore"><a href="/blog/2014/11/23/first-taste-of-macbook/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/blog/2014/11/08/secret-of-firefox-prefs/">让firefox与chrome一样快</a></h1><div class="post-meta">2014-11-08 20:23</div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/11/08/secret-of-firefox-prefs/" href="/blog/2014/11/08/secret-of-firefox-prefs/#disqus_thread"></a><div class="post-content"><p>在如今这个Web时代，浏览器可以说是仅次于操作系统的软件了，各种应用都可以放到云端、移动端随时随地的使用，<a href="http://www.w3.org/TR/html5/" target="_blank" rel="noopener">HTML5标准</a>的最终版正式<a href="http://www.w3.org/blog/news/archives/4167" target="_blank" rel="noopener">发布</a>， 再次为使用Web技术开发跨平台应用奠定了基石。</p></div><p class="readmore"><a href="/blog/2014/11/08/secret-of-firefox-prefs/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/blog/2014/10/12/lambda-calculus-introduction/">编程语言的基石——Lambda calculus</a></h1><div class="post-meta">2014-10-12 10:16</div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/10/12/lambda-calculus-introduction/" href="/blog/2014/10/12/lambda-calculus-introduction/#disqus_thread"></a><div class="post-content"><p>Lambda calculus我们一般称为<a href="http://en.wikipedia.org/wiki/Lambda_calculus" target="_blank" rel="noopener">λ演算</a>，最早是由<a href="http://en.wikipedia.org/wiki/Alonzo_Church" target="_blank" rel="noopener">邱奇（Alonzo Church，图灵的博导）</a>在20世纪30年代引入，当时的背景是解决<a href="http://en.wikipedia.org/wiki/Computable_function" target="_blank" rel="noopener">函数可计算的本质</a>性问题，初期λ演算成功的解决了在可计算理论中的<a href="http://en.wikipedia.org/wiki/Entscheidungsproblem" target="_blank" rel="noopener">判定性问题</a>，后来根据<a href="http://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis" target="_blank" rel="noopener">Church–Turing thesis</a>，证明了λ演算与图灵机是等价的。</p></div><p class="readmore"><a href="/blog/2014/10/12/lambda-calculus-introduction/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/blog/2014/09/14/mozilla-history/">Mozilla 前世今生</a></h1><div class="post-meta">2014-09-14 00:14</div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/09/14/mozilla-history/" href="/blog/2014/09/14/mozilla-history/#disqus_thread"></a><div class="post-content"><p>用过 Firefox 的同学多多少少都应该对 Mozilla 有些了解，Mozilla 作为一老牌软件公司，诞生了很多传奇性的故事和人物，本篇文章将带来读者重新回顾上个世纪九十年代发生的那些激荡人心的时刻。</p>
-<p>Mozilla 这个词现在主要有三个含义:</p>
-<ol>
-<li>以开发 Firefox 浏览器出名的<a href="http://en.wikipedia.org/wiki/Mozilla" target="_blank" rel="noopener">软件套件</a>，除此之外，产品还有<a href="http://en.wikipedia.org/wiki/Mozilla_Thunderbird" target="_blank" rel="noopener">Thunderbird</a>、 <a href="http://en.wikipedia.org/wiki/Firefox_Mobile" target="_blank" rel="noopener">Firefox_Mobile</a>、<a href="http://en.wikipedia.org/wiki/Firefox_OS" target="_blank" rel="noopener">Firefox OS</a></li></ol></div><p class="readmore"><a href="/blog/2014/09/14/mozilla-history/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/blog/2014/09/07/yarn-intro/">Yarn概述</a></h1><div class="post-meta">2014-09-07 22:07</div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/09/07/yarn-intro/" href="/blog/2014/09/07/yarn-intro/#disqus_thread"></a><div class="post-content"><p>Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前hadoop中jobtracker（后面简写JT）的角色，因为以前JT的任务过重，负责任务的调度、跟踪、失败重启等过程，而且只能运行mapreduce作业，不支持其他编程模式，这也限制了JT使用范围，而yarn应运而生，解决了这两个问题。</p></div><p class="readmore"><a href="/blog/2014/09/07/yarn-intro/">阅读全文</a></p></div><div class="post"><h1 class="post-title"><a href="/blog/2014/08/16/two-pot-question/">两个水壶问题</a></h1><div class="post-meta">2014-08-16 13:04</div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/08/16/two-pot-question/" href="/blog/2014/08/16/two-pot-question/#disqus_thread"></a><div class="post-content"><p>问题描述是这样的：<br>假设有一个池塘，里面有无穷多的水。现有2个空水壶a，b，其容积分别为6升和5升。如何只用这2个水壶从池塘里取得3升的水**（最后，这三升水，在其中一个壶里）。</p>
-<p>这个问题不难，大家自己完成可以推理出来，但是如何让计算机程序自己推算出来呢？一般而言，想把计算机理解这些自然问题，需要某些数学理论作为支撑，这里突然想起前些天看<a href="http://www.ituring.com.cn/article/117596" target="_blank" rel="noopener">码农13期Lisp之父约翰•麦卡锡——不走寻常路的常识逻辑学家</a>的一段关于用逻辑描述事实的话：</p></div><p class="readmore"><a href="/blog/2014/08/16/two-pot-question/">阅读全文</a></p></div><nav class="page-navigator"><a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">下一页</a></nav><script id="dsq-count-scr" src="//jiacai2050.disqus.com/count.js" async></script></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="Do have faith in what you are doing." /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/" />
+  <link href="https://liujiacai.net/atom.xml" rel="alternate" type="application/rss+xml" title="Keep Coding" />
+  <link href="https://liujiacai.net/atom.xml" rel="feed" type="application/rss+xml" title="Keep Coding" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Keep Coding" />
+<meta property="og:description" content="Do have faith in what you are doing." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://liujiacai.net/" />
+<meta property="og:updated_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="Keep Coding">
+<meta itemprop="description" content="Do have faith in what you are doing.">
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Keep Coding"/>
+<meta name="twitter:description" content="Do have faith in what you are doing."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2015/02/24/javascript-datatype/">javascript中的数据类型</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-02-24 </span>
+      <div class="post-category">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+          </div>
+        <span class="more-meta"> 约 3455 字 </span>
+        <span class="more-meta"> 预计阅读 7 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上ob
+    </div>
+    <div class="read-more">
+      <a href="/blog/2015/02/24/javascript-datatype/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2015/02/01/javascript-oop/">javascript中的面向对象编程</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-02-01 </span>
+      <div class="post-category">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+          </div>
+        <span class="more-meta"> 约 5506 字 </span>
+        <span class="more-meta"> 预计阅读 11 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      最近工作一直在用nodejs做开发，有了nodejs，前端、后端、脚本全都可以用javascript搞定，很是方便。但是javascript
+    </div>
+    <div class="read-more">
+      <a href="/blog/2015/02/01/javascript-oop/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2014/12/29/review-2014/">2014 年终总结</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-12-29 </span>
+      <div class="post-category">
+          <a href="/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/"> 热爱生活 </a>
+          </div>
+        <span class="more-meta"> 约 2514 字 </span>
+        <span class="more-meta"> 预计阅读 6 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      不知不觉间，又到一年尾，想想自己这正式工作也有大半年了，加上之前的实习，也算是有一年半多“工作经验”的人了。在今年的六月份，大学也划上了圆满
+    </div>
+    <div class="read-more">
+      <a href="/blog/2014/12/29/review-2014/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2014/12/07/regexp-favors/">正则表达式“派别”简述</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-12-07 </span>
+      <div class="post-category">
+          <a href="/categories/%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA/"> 理解计算机 </a>
+          </div>
+        <span class="more-meta"> 约 3168 字 </span>
+        <span class="more-meta"> 预计阅读 7 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      相信大家对于正则表达式都不陌生，在文本处理中或多或少的都会使用到它。但是，我们在使用linux下的文本处理工具如awk、sed等时，正则表达
+    </div>
+    <div class="read-more">
+      <a href="/blog/2014/12/07/regexp-favors/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2014/11/23/first-taste-of-macbook/">MacBook 最佳实践</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-11-23 </span>
+      
+        <span class="more-meta"> 约 6120 字 </span>
+        <span class="more-meta"> 预计阅读 13 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。 MacBook 你值得拥
+    </div>
+    <div class="read-more">
+      <a href="/blog/2014/11/23/first-taste-of-macbook/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2014/11/08/secret-of-firefox-prefs/">让firefox与chrome一样快</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-11-08 </span>
+      
+        <span class="more-meta"> 约 3937 字 </span>
+        <span class="more-meta"> 预计阅读 8 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      在如今这个Web时代，浏览器可以说是仅次于操作系统的软件了，各种应用都可以放到云端、移动端随时随地的使用，HTML5标准的最终版正式发布， 再
+    </div>
+    <div class="read-more">
+      <a href="/blog/2014/11/08/secret-of-firefox-prefs/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2014/10/12/lambda-calculus-introduction/">编程语言的基石——Lambda calculus</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-10-12 </span>
+      <div class="post-category">
+          <a href="/categories/%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA/"> 理解计算机 </a>
+          </div>
+        <span class="more-meta"> 约 4598 字 </span>
+        <span class="more-meta"> 预计阅读 10 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Lambda calculus我们一般称为λ演算，最早是由邱奇（Alonzo Church，图灵的博导）在20世纪30年代引入，当时的背景是解决函数可计算
+    </div>
+    <div class="read-more">
+      <a href="/blog/2014/10/12/lambda-calculus-introduction/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2014/09/14/mozilla-history/">Mozilla 前世今生</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-09-14 </span>
+      
+        <span class="more-meta"> 约 3431 字 </span>
+        <span class="more-meta"> 预计阅读 7 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      用过 Firefox 的同学多多少少都应该对 Mozilla 有些了解，Mozilla 作为一老牌软件公司，诞生了很多传奇性的故事和人物，本篇文章将带来读者重新回顾上个世纪九
+    </div>
+    <div class="read-more">
+      <a href="/blog/2014/09/14/mozilla-history/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2014/09/07/yarn-intro/">Yarn概述</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-09-07 </span>
+      <div class="post-category">
+          <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"> 大数据 </a>
+          </div>
+        <span class="more-meta"> 约 2294 字 </span>
+        <span class="more-meta"> 预计阅读 5 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前had
+    </div>
+    <div class="read-more">
+      <a href="/blog/2014/09/07/yarn-intro/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/blog/2014/08/16/two-pot-question/">两个水壶问题</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-08-16 </span>
+      <div class="post-category">
+          <a href="/categories/%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA/"> 理解计算机 </a>
+          </div>
+        <span class="more-meta"> 约 2357 字 </span>
+        <span class="more-meta"> 预计阅读 5 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      问题描述是这样的： 假设有一个池塘，里面有无穷多的水。现有2个空水壶a，b，其容积分别为6升和5升。如何只用这2个水壶从池塘里取得3升的水**
+    </div>
+    <div class="read-more">
+      <a href="/blog/2014/08/16/two-pot-question/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    </section>
+  
+  <nav class="pagination">
+    <a class="prev" href="/page/5/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">上一页</span>
+      </a>
+    <a class="next" href="/page/7/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

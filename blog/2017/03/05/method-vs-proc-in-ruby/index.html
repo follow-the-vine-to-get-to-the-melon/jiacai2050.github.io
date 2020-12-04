@@ -1,107 +1,689 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>辨析 Ruby 中的 Method 与 Proc | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">辨析 Ruby 中的 Method 与 Proc</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">辨析 Ruby 中的 Method 与 Proc</h1><div class="post-meta">Mar 5, 2017<span> | </span><span class="category"><a href="/categories/langs/">编程语言</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.5k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 6</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2017/03/05/method-vs-proc-in-ruby/" href="/blog/2017/03/05/method-vs-proc-in-ruby/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Block-oriented-Programming"><span class="toc-number">1.</span> <span class="toc-text">Block-oriented Programming</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#面向函数式的-Proc"><span class="toc-number">2.</span> <span class="toc-text">面向函数式的 Proc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#proc-vs-lambda"><span class="toc-number">2.1.</span> <span class="toc-text">proc vs. lambda</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#面向对象的-Method"><span class="toc-number">3.</span> <span class="toc-text">面向对象的 Method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="post-content"><blockquote>
-<p>Ruby is simple in appearance, but is very complex inside, just like our human body.  </p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>辨析 Ruby 中的 Method 与 Proc - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="Ruby is simple in appearance, but is very complex inside, just like our human body. &amp;ndash; Matz https://www.ruby-lang.org/en/about Ruby 与 Python、Scala 类似，在一切皆是对象（Seeing Everything as an Object）的基础上，支持函数式编" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="辨析 Ruby 中的 Method 与 Proc" />
+<meta property="og:description" content="Ruby is simple in appearance, but is very complex inside, just like our human body. &ndash; Matz https://www.ruby-lang.org/en/about Ruby 与 Python、Scala 类似，在一切皆是对象（Seeing Everything as an Object）的基础上，支持函数式编" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/" />
+<meta property="article:published_time" content="2017-03-05T15:26:28+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="辨析 Ruby 中的 Method 与 Proc">
+<meta itemprop="description" content="Ruby is simple in appearance, but is very complex inside, just like our human body. &ndash; Matz https://www.ruby-lang.org/en/about Ruby 与 Python、Scala 类似，在一切皆是对象（Seeing Everything as an Object）的基础上，支持函数式编">
+<meta itemprop="datePublished" content="2017-03-05T15:26:28+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="1769">
+
+
+
+<meta itemprop="keywords" content="Ruby," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="辨析 Ruby 中的 Method 与 Proc"/>
+<meta name="twitter:description" content="Ruby is simple in appearance, but is very complex inside, just like our human body. &ndash; Matz https://www.ruby-lang.org/en/about Ruby 与 Python、Scala 类似，在一切皆是对象（Seeing Everything as an Object）的基础上，支持函数式编"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">辨析 Ruby 中的 Method 与 Proc</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-03-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            </div>
+          <span class="more-meta"> 约 1769 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#block-oriented-programming">Block-oriented Programming</a></li>
+        <li><a href="#面向函数式的-proc">面向函数式的 Proc</a>
+          <ul>
+            <li><a href="#proc-vs-lambda">proc vs. lambda</a></li>
+          </ul>
+        </li>
+        <li><a href="#面向对象的-method">面向对象的 Method</a></li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>Ruby is simple in appearance, but is very complex inside, just like our human body.</p>
 <blockquote>
-<p>– Matz  <a href="https://www.ruby-lang.org/en/about" target="_blank" rel="noopener">https://www.ruby-lang.org/en/about</a></p>
+<p>&ndash; Matz  <a href="https://www.ruby-lang.org/en/about">https://www.ruby-lang.org/en/about</a></p>
 </blockquote>
 </blockquote>
 <p>Ruby 与 Python、Scala 类似，在一切皆是对象（Seeing Everything as an Object）的基础上，支持函数式编程，这意味着函数是一等成员，可以作为参数传入，也可以作为函数值返回。</p>
-<p>但是，Ruby 中的函数并没有其他动态语言中那么简单，它提供了 <a href="http://ruby-doc.org/core-2.4.0/Method.html" target="_blank" rel="noopener">Method</a> 与 <a href="http://ruby-doc.org/core-2.4.0/Proc.html" target="_blank" rel="noopener">Proc</a> 两个类来表示函数的概念，对于这两个类的区别无论是官方文档还是 Stackoverflow 上的问题，解释的都非常模糊。在其他语言函数很习以为常的用法在 Ruby 中却行不通，就其原因还是不清楚这两个类的区别，希望这篇文章能够帮助大家理解好 Ruby 中的“函数”概念，做到深入浅出，与其他函数式语言融会贯通。</p>
-<h2 id="Block-oriented-Programming"><a href="#Block-oriented-Programming" class="headerlink" title="Block-oriented Programming"></a>Block-oriented Programming</h2><p>Ruby 中代码块最常见的形式既不是 Proc 也不是 Method，而是 <code>block</code>。比如：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 遍历 Range/Array 等</span></span><br><span class="line">(<span class="number">0</span>..<span class="number">10</span>).each <span class="keyword">do</span> <span class="params">|num|</span></span><br><span class="line">    puts num</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  读取文件</span></span><br><span class="line">File.foreach(<span class="string">'README.md'</span>).with_index <span class="keyword">do</span> <span class="params">|line, line_num|</span></span><br><span class="line">  puts <span class="string">"<span class="subst">#&#123;line_num&#125;</span>: <span class="subst">#&#123;line&#125;</span>"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">#  遍历文件</span></span><br><span class="line">Dir.glob(<span class="string">'*.rb'</span>) &#123;<span class="params">|ruby_src|</span> puts <span class="string">"found <span class="subst">#&#123;ruby_src&#125;</span>"</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面示例演示了<code>block</code>的两种字面量（literal）形式，非常方便简洁。但有一点需要注意，<code>block</code> 仅仅是 Ruby 提供的一语法糖衣，并不把其赋值给某一变量。如果自定义函数需要调用传入的<code>block</code>，需要采用<code>yield</code>方式。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 Array 类中添加自定义函数</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Array</span></span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">my_each</span></span></span><br><span class="line">    <span class="number">0</span>.upto(size) <span class="keyword">do</span> <span class="params">|i|</span></span><br><span class="line">      <span class="keyword">yield</span> <span class="keyword">self</span>[i]</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="string">%w(a b c)</span>.my_each <span class="keyword">do</span> <span class="params">|item|</span></span><br><span class="line">  puts item</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="面向函数式的-Proc"><a href="#面向函数式的-Proc" class="headerlink" title="面向函数式的 Proc"></a>面向函数式的 Proc</h2><p><code>block</code> 的优势是简洁，但是有个缺点就是无法复用，因为并不存在<code>block</code>类型。但在其他语言中，函数名可以随意传递，下面举一 Python 的例子：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myinc</span><span class="params">(x)</span></span><span class="symbol">:</span></span><br><span class="line">true<span class="keyword">return</span> x + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">map(myinc, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) <span class="comment"># =&gt; [2, 3, 4]</span></span><br><span class="line">map(myinc, [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>])	<span class="comment"># =&gt; [5, 6, 7]</span></span><br></pre></td></tr></table></figure></p>
-<p>Ruby 中与其对应的是<code>过程</code>（Proc），与上面功能等价的 Ruby 代码为：<br><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">myinc = Proc.<span class="built_in">new</span> &#123;|<span class="built_in">num</span>| <span class="built_in">num</span> + <span class="number">1</span>&#125;</span><br><span class="line"># 或下面两种方式</span><br><span class="line"># myinc = proc &#123;|<span class="built_in">num</span>| <span class="built_in">num</span> + <span class="number">1</span>&#125;</span><br><span class="line"># myinc = <span class="built_in">lambda</span> &#123;|<span class="built_in">num</span>| <span class="built_in">num</span> + <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].<span class="built_in">map</span>(&amp;myinc)</span><br></pre></td></tr></table></figure></p>
-<p>上面代码最关键的是<code>&amp;myinc</code>中的<code>&amp;</code>，由于 map 函数后面可以跟一个 block，所以需要把 Proc 转为 block。</p>
+<p>但是，Ruby 中的函数并没有其他动态语言中那么简单，它提供了 <a href="http://ruby-doc.org/core-2.4.0/Method.html">Method</a> 与 <a href="http://ruby-doc.org/core-2.4.0/Proc.html">Proc</a> 两个类来表示函数的概念，对于这两个类的区别无论是官方文档还是 Stackoverflow 上的问题，解释的都非常模糊。在其他语言函数很习以为常的用法在 Ruby 中却行不通，就其原因还是不清楚这两个类的区别，希望这篇文章能够帮助大家理解好 Ruby 中的“函数”概念，做到深入浅出，与其他函数式语言融会贯通。</p>
+<h2 id="block-oriented-programming">Block-oriented Programming</h2>
+<p>Ruby 中代码块最常见的形式既不是 Proc 也不是 Method，而是 <code>block</code>。比如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 遍历 Range/Array 等
+(0..10).each do |num|
+    puts num
+end
+
+#  读取文件
+File.foreach(&#39;README.md&#39;).with_index do |line, line_num|
+  puts &#34;#{line_num}: #{line}&#34;
+end
+#  遍历文件
+Dir.glob(&#39;*.rb&#39;) {|ruby_src| puts &#34;found #{ruby_src}&#34;}
+</code></pre></td></tr></table>
+</div>
+</div><p>上面示例演示了<code>block</code>的两种字面量（literal）形式，非常方便简洁。但有一点需要注意，<code>block</code> 仅仅是 Ruby 提供的一语法糖衣，并不把其赋值给某一变量。如果自定义函数需要调用传入的<code>block</code>，需要采用<code>yield</code>方式。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 在 Array 类中添加自定义函数
+class Array
+  def my_each
+    0.upto(size) do |i|
+      yield self[i]
+    end
+  end
+end
+
+%w(a b c).my_each do |item|
+  puts item
+end
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="面向函数式的-proc">面向函数式的 Proc</h2>
+<p><code>block</code> 的优势是简洁，但是有个缺点就是无法复用，因为并不存在<code>block</code>类型。但在其他语言中，函数名可以随意传递，下面举一 Python 的例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def myinc(x):
+	return x + 1
+
+map(myinc, [1,2,3]) # =&gt; [2, 3, 4]
+map(myinc, [4,5,6])	# =&gt; [5, 6, 7]
+</code></pre></td></tr></table>
+</div>
+</div><p>Ruby 中与其对应的是<code>过程</code>（Proc），与上面功能等价的 Ruby 代码为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">myinc = Proc.new {|num| num + 1}
+# 或下面两种方式
+# myinc = proc {|num| num + 1}
+# myinc = lambda {|num| num + 1}
+
+[1,2,3].map(&amp;myinc)
+
+</code></pre></td></tr></table>
+</div>
+</div><p>上面代码最关键的是<code>&amp;myinc</code>中的<code>&amp;</code>，由于 map 函数后面可以跟一个 block，所以需要把 Proc 转为 block。</p>
 <blockquote>
 <p>当<code>&amp;</code>符号出现在函数参数列表中时，会把其后面的参数转为 Proc，并且把转化后的参数作为 block 传递给调用者。</p>
 <blockquote>
-<p><a href="http://stackoverflow.com/a/9429972/2163429" target="_blank" rel="noopener">http://stackoverflow.com/a/9429972/2163429</a></p>
+<p><a href="http://stackoverflow.com/a/9429972/2163429">http://stackoverflow.com/a/9429972/2163429</a></p>
 </blockquote>
 </blockquote>
 <p>我这里有个更好的理解大家可以参考：</p>
 <blockquote>
 <p><code>&amp;</code>在C语言中为取地址符，Ruby 中的函数参数后面可以跟一个 block，由于这个 block 不是参数的一部分，所以没有名字，这很理所当然可以把 block 理解为一内存地址，<code>block_given?</code> 函数可以检查这个<code>block</code>是否存在。<code>&amp;myinc</code> 可以理解为取 Proc 的地址传给 map 函数。</p>
 </blockquote>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].map(myinc)</span><br><span class="line"><span class="meta"># 这种写法会报下面的错误</span></span><br><span class="line"><span class="meta"># in `map': wrong number of arguments (given 1, expected 0) (ArgumentError)</span></span><br></pre></td></tr></table></figure>
-<p>所以，Ruby 中的 Proc 和其他动态语言的函数是等价的，下面再举一例说明<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myfilter</span><span class="params">(arr, validator)</span></span></span><br><span class="line">  arr.each <span class="keyword">do</span> <span class="params">|item|</span></span><br><span class="line">    <span class="keyword">if</span> validator.call(item)</span><br><span class="line">      puts item</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">myfilter([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>], lambda &#123;<span class="params">|num|</span> num &gt; <span class="number">3</span>&#125;)  <span class="comment"># 输出 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 此外， 还可以在定义 myfilter 时，利用 &amp; 将最后的 block 转为 Proc</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myfilter</span><span class="params">(arr, &amp;validator)</span></span></span><br><span class="line">  arr.each <span class="keyword">do</span> <span class="params">|item|</span></span><br><span class="line">    <span class="keyword">if</span> validator.call(item)</span><br><span class="line">      puts item</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">myfilter([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]) &#123;<span class="params">|num|</span> num &gt; <span class="number">3</span>&#125;</span><br><span class="line"><span class="comment"># 输出 4</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="proc-vs-lambda"><a href="#proc-vs-lambda" class="headerlink" title="proc vs. lambda"></a>proc vs. lambda</h3><p>上面介绍过，Proc 有两种字面量形式：<br><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myinc = proc &#123;|<span class="built_in">num</span>| <span class="built_in">num</span> + <span class="number">1</span>&#125;   # 与 Proc.<span class="built_in">new</span> 等价</span><br><span class="line">myinc = <span class="built_in">lambda</span> &#123;|<span class="built_in">num</span>| <span class="built_in">num</span> + <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这两种形式的 Proc 有以下两点不同：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[1,2,3].map(myinc)
+# 这种写法会报下面的错误
+# in `map&#39;: wrong number of arguments (given 1, expected 0) (ArgumentError)
+
+</code></pre></td></tr></table>
+</div>
+</div><p>所以，Ruby 中的 Proc 和其他动态语言的函数是等价的，下面再举一例说明</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def myfilter(arr, validator)
+  arr.each do |item|
+    if validator.call(item)
+      puts item
+    end
+  end
+end
+
+myfilter([1,2,3,4], lambda {|num| num &gt; 3})  # 输出 4
+
+# 此外， 还可以在定义 myfilter 时，利用 &amp; 将最后的 block 转为 Proc
+
+def myfilter(arr, &amp;validator)
+  arr.each do |item|
+    if validator.call(item)
+      puts item
+    end
+  end
+end
+
+myfilter([1,2,3,4]) {|num| num &gt; 3}
+# 输出 4
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="proc-vs-lambda">proc vs. lambda</h3>
+<p>上面介绍过，Proc 有两种字面量形式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">myinc = proc {|num| num + 1}   # 与 Proc.new 等价
+myinc = lambda {|num| num + 1}
+</code></pre></td></tr></table>
+</div>
+</div><p>这两种形式的 Proc 有以下两点不同：</p>
 <ol>
-<li><p><code>proc</code>形式不限制参数个数；而<code>lambda</code>形式严格要求一致</p>
- <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">myadd = proc &#123;|x, y| puts x&#125;</span><br><span class="line"></span><br><span class="line">myadd.<span class="built_in">call</span>(<span class="number">1</span>)        <span class="meta"># ok</span></span><br><span class="line">myadd.<span class="built_in">call</span>(<span class="number">1</span>, <span class="number">2</span>)     <span class="meta"># ok</span></span><br><span class="line">myadd.<span class="built_in">call</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)  <span class="meta"># ok</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">myadd = lambda &#123;|x, y| puts x&#125;</span><br><span class="line"></span><br><span class="line">myadd.<span class="built_in">call</span>(<span class="number">1</span>)        <span class="meta"># ArgumentError</span></span><br><span class="line">myadd.<span class="built_in">call</span>(<span class="number">1</span>, <span class="number">2</span>)     <span class="meta"># ok</span></span><br><span class="line">myadd.<span class="built_in">call</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)  <span class="meta">#ArgumentError</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>proc</code>中的<code>return</code>语句对调用方有效；而<code>lambda</code>仅仅对其本身起作用</p>
- <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(some_proc)</span></span></span><br><span class="line">  some_proc.call</span><br><span class="line">  puts <span class="string">"foo over"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 正常输出 in lambda、foo over</span></span><br><span class="line">foo(lambda <span class="keyword">do</span></span><br><span class="line">  puts <span class="string">"in lambda"</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line"><span class="comment"># 2. 输出 in new 后报  unexpected return (LocalJumpError)</span></span><br><span class="line">foo(Proc.new <span class="keyword">do</span></span><br><span class="line">  puts <span class="string">"in new"</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line"><span class="keyword">end</span>)</span><br><span class="line"><span class="comment"># 3. 输出 in proc 后报  unexpected return (LocalJumpError)</span></span><br><span class="line">foo(proc <span class="keyword">do</span></span><br><span class="line">  puts <span class="string">"in proc"</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-</li>
+<li>
+<p><code>proc</code>形式不限制参数个数；而<code>lambda</code>形式严格要求一致</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">myadd = proc {|x, y| puts x}
+
+myadd.call(1)        # ok
+myadd.call(1, 2)     # ok
+myadd.call(1, 2, 3)  # ok
+
+
+myadd = lambda {|x, y| puts x}
+
+myadd.call(1)        # ArgumentError
+myadd.call(1, 2)     # ok
+myadd.call(1, 2, 3)  #ArgumentError
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>proc</code>中的<code>return</code>语句对调用方有效；而<code>lambda</code>仅仅对其本身起作用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def foo(some_proc)
+  some_proc.call
+  puts &#34;foo over&#34;
+end
+
+# 1. 正常输出 in lambda、foo over
+foo(lambda do
+  puts &#34;in lambda&#34;
+  return
+end)
+# 2. 输出 in new 后报  unexpected return (LocalJumpError)
+foo(Proc.new do
+  puts &#34;in new&#34;
+  return
+end)
+# 3. 输出 in proc 后报  unexpected return (LocalJumpError)
+foo(proc do
+  puts &#34;in proc&#34;
+  return
+end)
+</code></pre></td></tr></table>
+</div>
+</div></li>
 </ol>
-<h2 id="面向对象的-Method"><a href="#面向对象的-Method" class="headerlink" title="面向对象的 Method"></a>面向对象的 Method</h2><p>Ruby 中使用<code>def</code>定义的“函数”为<code>Method</code>类型，专为面向对象特性设计，面向对象更一般的说法是消息传递，通过给一对象发送不同消息，对象作出不同相应，这一点与 <a href="/blog/2015/12/26/sicp-chapter3-summary/#用变动的数据做模拟">SICP 第三章</a>的内容不谋而合。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span></span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(width, height)</span></span></span><br><span class="line">    @width = width</span><br><span class="line">    @height = height</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">area</span></span></span><br><span class="line">    @width * @height</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">rect = Rectangle.new <span class="number">10</span>, <span class="number">20</span></span><br><span class="line"><span class="comment"># 传统方式</span></span><br><span class="line">puts rect.area</span><br><span class="line"><span class="comment"># 消息传递方式</span></span><br><span class="line">puts rect.send <span class="symbol">:area</span></span><br></pre></td></tr></table></figure>
-<p>由于 Ruby 中方法名表示的是调用，所以一般可用与方法同名的 <a href="http://ruby-doc.org/core-2.4.0/Symbol.html" target="_blank" rel="noopener">Symbol</a> 来表示。<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">puts rect<span class="function">.<span class="keyword">method</span><span class="params">(:area)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">#&lt;<span class="title">Method</span>:</span> Rectangle#area&gt;</span><br></pre></td></tr></table></figure></p>
-<p>可以通过 <code>Method</code> 的 <code>to_proc</code> 方法可以将 Method 转为功能等价的 Proc。比如：</p>
-<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def myinc(num)</span><br><span class="line">  num + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].map(&amp;<span class="function"><span class="keyword">method</span><span class="params">(:myinc)</span>.<span class="title">to_proc</span>)</span></span><br><span class="line"><span class="function"># =&gt; [2,3,4]</span></span><br><span class="line"><span class="function"># 在 <span class="title">Ruby</span> 源文件的顶层定义的函数属于 <span class="title">main</span> 对象（<span class="title">Object</span> 类），所以上面的调用相当于：</span></span><br><span class="line"><span class="function"># [1,2,3].<span class="title">map</span><span class="params">(&amp;Object.<span class="keyword">method</span>(:myinc)</span>)</span></span><br></pre></td></tr></table></figure>
-<p>通过 <code>define_method</code> 可以将 Proc 转为某对象的实例方法<br><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Foo</span><br><span class="line">  define_method <span class="symbol">:pp</span> &#123; puts <span class="string">"p"</span> &#125;</span><br><span class="line">end</span><br><span class="line">Foo.new.pp</span><br><span class="line">=&gt; p</span><br></pre></td></tr></table></figure></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<h2 id="面向对象的-method">面向对象的 Method</h2>
+<p>Ruby 中使用<code>def</code>定义的“函数”为<code>Method</code>类型，专为面向对象特性设计，面向对象更一般的说法是消息传递，通过给一对象发送不同消息，对象作出不同相应，这一点与 <a href="/blog/2015/12/26/sicp-chapter3-summary/#%E7%94%A8%E5%8F%98%E5%8A%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E5%81%9A%E6%A8%A1%E6%8B%9F">SICP 第三章</a>的内容不谋而合。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">class Rectangle
+  def initialize(width, height)
+    @width = width
+    @height = height
+  end
+  def area
+    @width * @height
+  end
+end
+
+rect = Rectangle.new 10, 20
+# 传统方式
+puts rect.area
+# 消息传递方式
+puts rect.send :area
+</code></pre></td></tr></table>
+</div>
+</div><p>由于 Ruby 中方法名表示的是调用，所以一般可用与方法同名的 <a href="http://ruby-doc.org/core-2.4.0/Symbol.html">Symbol</a> 来表示。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">puts rect.method(:area)
+
+#&lt;Method: Rectangle#area&gt;    
+</code></pre></td></tr></table>
+</div>
+</div><p>可以通过 <code>Method</code> 的 <code>to_proc</code> 方法可以将 Method 转为功能等价的 Proc。比如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def myinc(num)
+  num + 1
+end
+
+[1,2,3].map(&amp;method(:myinc).to_proc)
+# =&gt; [2,3,4]
+# 在 Ruby 源文件的顶层定义的函数属于 main 对象（Object 类），所以上面的调用相当于：
+# [1,2,3].map(&amp;Object.method(:myinc))
+</code></pre></td></tr></table>
+</div>
+</div><p>通过 <code>define_method</code> 可以将 Proc 转为某对象的实例方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">class Foo
+  define_method :pp { puts &#34;p&#34; }
+end
+Foo.new.pp
+=&gt; p
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="总结">总结</h2>
+<ul>
 <li><code>block</code> 为 Proc 的语法糖衣，用于单次使用时</li>
 <li><code>Proc</code> 专为函数式编程设计，与其他动态语言的函数等价</li>
 <li><code>Method</code> 专为面向对象设计，消息传递的第一个参数</li>
 </ul>
 <p>弄清 Method 与 Proc 的区别后，不得不欣赏 Ruby 语言设计的巧妙，兼具函数式与面向对象的精髓。实在是程序员必备利器。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls" target="_blank" rel="noopener">https://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls</a></li>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls">https://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Method_Calls</a></li>
 </ul>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/" data-id="ckhxlinwy0047szljhgcv776q" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIUlEQVR42u3aQY7DMAxD0dz/0um2RRGXpJwCkb5Xg0Ea+2UhmLaOQx7n23j/j/78+kn3V+GAAQPGYxnncujP6AtdA8J5YcCAMYCRTa8X0PUs7lwwYMCAkb3u+xmlvCoFFwYMGDCygutu7PZGZRgwYMxkKCG2fkDmBtRbsjgMGDAeyMim/8/ft9xvwIAB41GM0xx7qZWVfKwKBgwYrRl6gXM3jsrRmxFQlWYOGDBgNGVUAmQlamYHeZdUGDBgDGBkgTY7pMs+zQ8wDBgwWjOU5q2wCJavJO0LABgwYDRluC+tt0pk28cfHx0GDBitGfoGzq14WYitNIrBgAGjN0MvslmhdLeeOuOyxw0GDBiNGPrS3bRYibv2RSkMGDAGM9yGiezYzo3NUrcIDBgw2jH0GJm1XLgB1T7sgwEDxhiGu010D8sq0VfaGsKAAaM1Y121lEiZFeisfsKAAWMao15GK00SyixhswUMGDDGMIzN2dYsGZZ7GDBgDGaEvRsCWynExuUBDBgwBjAqgba+EdQLunGRCQMGjKaMrGGiUnwVnhSwYcCA0ZRxmkMPvbtaLpQPBAMGjN4Mt8zpx23ue9alWY/EMGDA6MqoFFk3fLoNYUbBhQEDxgCGEjsrTWAVqpHFYcCAAUNpzzIvL+3l7i24MGDAGMDIYrCbpJUrChgwYExgKBu7O47YdN624zYYMGA8kOGWvMoBmb5cvdUDBgwYrRkv1hDbGbjNG5IAAAAASUVORK5CYII=">分享</a><div class="tags"><a href="/tags/ruby/">Ruby</a></div><div class="post-nav"><a class="pre" href="/blog/2017/03/22/ace-technical-interview/">“玩转” 技术面试——链表的函数表示法</a><a class="next" href="/blog/2017/02/09/clojure-compiler-analyze-2/">Clojure 运行原理之字节码生成篇</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/';
-    this.page.identifier = 'blog/2017/03/05/method-vs-proc-in-ruby/';
-    this.page.title = '辨析 Ruby 中的 Method 与 Proc';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ruby/">Ruby</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2017/03/22/ace-technical-interview/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">“玩转” 技术面试——链表的函数表示法</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2017/02/09/clojure-compiler-analyze-2/">
+            <span class="next-text nav-default">Clojure 运行原理之字节码生成篇</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

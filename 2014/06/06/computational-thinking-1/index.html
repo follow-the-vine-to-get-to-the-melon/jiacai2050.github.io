@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>计算思维之一序言篇 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="这一系列笔记是我在上一个mooc课大学计算机—计算思维导论上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。
+##1. 学习三种境界
+" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/2014/06/06/computational-thinking-1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="计算思维之一序言篇" />
+<meta property="og:description" content="这一系列笔记是我在上一个mooc课大学计算机—计算思维导论上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。
+##1. 学习三种境界" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/2014/06/06/computational-thinking-1/" />
+<meta property="article:published_time" content="2014-06-06T11:58:43+08:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="计算思维之一序言篇">
+<meta itemprop="description" content="这一系列笔记是我在上一个mooc课大学计算机—计算思维导论上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。
+##1. 学习三种境界">
+<meta itemprop="datePublished" content="2014-06-06T11:58:43+08:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="1202">
+
+
+
+<meta itemprop="keywords" content="mooc," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="计算思维之一序言篇"/>
+<meta name="twitter:description" content="这一系列笔记是我在上一个mooc课大学计算机—计算思维导论上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。
+##1. 学习三种境界"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">计算思维之一序言篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-06-06 </span>
+        
+          <span class="more-meta"> 约 1202 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>这一系列笔记是我在上一个mooc课<a href="http://www.icourse163.org/course/hit/hit001?tid=7001">大学计算机—计算思维导论</a>上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。</p>
+<p>##1. 学习三种境界</p>
+<p>首先，老师讲了一下王国维关于学习三种境界的总结，这三个境界我姐在我上高中的时候也给我说过，如今再次提及，有种醍醐灌顶的感觉，具体内容如下：</p>
+<ul>
+<li>看山是山，看水是水 <strong>概念与知识</strong></li>
+<li>看山不是山，看水不是水 <strong>联想与贯通</strong></li>
+<li>看山还是山，看水还是水 <strong>训练与实践</strong></li>
+</ul>
+<p>也就是说对一个知识先从基本概念入手，有个大概了解;然后通过不断实践与验证，对自己先前的理解产生质疑;最后是通过一段时间的总结与归纳，对这个新知识点有了自己的理解方式。</p>
+<p>很合理的学习进阶方式，希望自己在今后的学习过程中严格按照上述三个步骤来进行，把看过的每个知识点都转化为自己的东西。</p>
+<p>##2. 三种思维</p>
+<p>讲完了学习的三种境界后，老师讲了现在社会中人们应该具备的三种思维：</p>
+<ul>
+<li>实验思维：实验—&gt;观察—&gt;发现、推断总结。  <strong>归纳与观察</strong></li>
+<li>理论思维：假设/预设—&gt;定义/性质/定理—&gt;证明。  <strong>推理和演绎</strong></li>
+<li>计算思维：设计，构造与计算  <strong>设计与构造</strong></li>
+</ul>
+<p>这个mooc课主要讲解计算思维，实验思维与理论思维我们在中学阶段的化学与数学课程中已经接触过了。</p>
+<p>计算思维的本质是抽象（abstraction）与自动化（automation），即在<strong>不同层面</strong>进行抽象，以及将这些抽象“机器化”。</p>
+<p>##3. 自动计算的探索（数据表示——自动存储——自动执行的角度）</p>
+<ul>
+<li>Pascal（1623-1662）机：告诉人们“用纯机械装置可代替人的思维与记忆”，开辟了“自动计算”的道路。</li>
+<li>Leibniz莱布尼茨（1646-1716）机：连续重复自动执行。提出二进制及其计算规则。数理逻辑创始人。</li>
+<li>1834年，巴贝奇——分析机</li>
+<li>1805年，杰卡德——打孔卡</li>
+<li>1854年，布尔创立了布尔代数，为数字计算机的电路设计提供了理论基础</li>
+<li>……</li>
+</ul>
+<p>冯.诺依曼的创新：将运算与存储分离why、how？？</p>
+<p>###3.1 自动计算过程中元器件的发展</p>
+<ul>
+<li>电子管：可自动控制0和1变化的元件</li>
+<li>晶体管：体积变小</li>
+<li>集成电路：元件直接的连接性问题</li>
+</ul>
+<p>电子管—&gt;晶体管
+体积更小、可靠性更高、可控制性更灵活 why、how？</p>
+<p>晶体管—&gt;集成电路1959年 J.Kilby—&gt;超大规模集成电路（Intel的摩尔发明，more摩尔定律）—&gt;1981年，第一台个人计算机诞生。</p>
+<p>##4. 计算机系统要解决的几个问题</p>
+<ul>
+<li>控制与计算——微处理器</li>
+</ul>
+<blockquote>
+<p>字长：8为—&gt;16—&gt;32—&gt;64<br>
+主频：几十MHz—&gt;几百MHz<br>
+晶体管数量与功能规模：微处理器—&gt;微处理器+协处理器（浮点运算）—&gt;微处理器+图形运算单元GPU—&gt;微处理器+3D处理器+多媒体处理器—&gt;多核微处理器</p>
+</blockquote>
+<ul>
+<li>输入——外部信息如何输入到计算机中</li>
+<li>输出——计算机如何将信息输出到外部</li>
+<li>永久性存储与临时性存储——计算机的信息如何永久保持或临时保持</li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mooc/">mooc</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2014/07/12/order-of-initialization-in-java/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">JVM 的类初始化机制</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2014/06/06/computational-thinking-3/">
+            <span class="next-text nav-default">计算思维之三语义符号化表达与计算</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

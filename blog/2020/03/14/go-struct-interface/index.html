@@ -1,44 +1,365 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>Go struct/interface 最佳实践 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Go struct/interface 最佳实践</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Go struct/interface 最佳实践</h1><div class="post-meta">Mar 14, 2020<span> | </span><span class="category"><a href="/categories/langs/">编程语言</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.6k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 11</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2020/03/14/go-struct-interface/" href="/blog/2020/03/14/go-struct-interface/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#值类型的-struct"><span class="toc-number">1.</span> <span class="toc-text">值类型的 struct</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#逃逸分析"><span class="toc-number">1.1.</span> <span class="toc-text">逃逸分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#value-vs-pointer"><span class="toc-number">1.2.</span> <span class="toc-text">value vs pointer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存对齐"><span class="toc-number">1.3.</span> <span class="toc-text">内存对齐</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基于组合的-interface"><span class="toc-number">2.</span> <span class="toc-text">基于组合的 interface</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Embedded-struct"><span class="toc-number">2.1.</span> <span class="toc-text">Embedded struct</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#New-func-type"><span class="toc-number">2.2.</span> <span class="toc-text">New func type</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="post-content"><p>使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的：</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go struct/interface 最佳实践 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的： Go is expressive, concise, clean, and efficient. It&amp;rsquo;s a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language. Rob Pike 在 Simplicity is Complicated 中也提到 Go 的简洁是其流行" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2020/03/14/go-struct-interface/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go struct/interface 最佳实践" />
+<meta property="og:description" content="使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的： Go is expressive, concise, clean, and efficient. It&rsquo;s a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language. Rob Pike 在 Simplicity is Complicated 中也提到 Go 的简洁是其流行" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2020/03/14/go-struct-interface/" />
+<meta property="article:published_time" content="2020-03-14T22:52:26+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="Go struct/interface 最佳实践">
+<meta itemprop="description" content="使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的： Go is expressive, concise, clean, and efficient. It&rsquo;s a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language. Rob Pike 在 Simplicity is Complicated 中也提到 Go 的简洁是其流行">
+<meta itemprop="datePublished" content="2020-03-14T22:52:26+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="2841">
+
+
+
+<meta itemprop="keywords" content="Go," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go struct/interface 最佳实践"/>
+<meta name="twitter:description" content="使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的： Go is expressive, concise, clean, and efficient. It&rsquo;s a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language. Rob Pike 在 Simplicity is Complicated 中也提到 Go 的简洁是其流行"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go struct/interface 最佳实践</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-03-14 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            </div>
+          <span class="more-meta"> 约 2841 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#值类型的-struct">值类型的 struct</a>
+          <ul>
+            <li><a href="#逃逸分析">逃逸分析</a></li>
+            <li><a href="#value-vs-pointer">value vs pointer</a></li>
+            <li><a href="#内存对齐">内存对齐</a></li>
+          </ul>
+        </li>
+        <li><a href="#基于组合的-interface">基于组合的 interface</a>
+          <ul>
+            <li><a href="#embedded-struct">Embedded struct</a></li>
+            <li><a href="#new-func-type">New func type</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的：</p>
 <blockquote>
-<p>Go is expressive, concise, clean, and efficient. It’s a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language.</p>
+<p>Go is expressive, concise, clean, and efficient. It&rsquo;s a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language.</p>
 </blockquote>
-<p>Rob Pike 在 <a href="https://talks.golang.org/2015/simplicity-is-complicated.slide" target="_blank" rel="noopener">Simplicity is Complicated</a> 中也提到 Go 的简洁是其流行的重要原因。简洁并不意味着简单，Go 有着诸多设计确保了把复杂性隐藏在背后。本文就结合笔者自身经验，来讨论 Go 中 struct/interface 的设计理念与最佳实践，帮助读者写出健壮、高效的 Go 程序。</p>
-<h2 id="值类型的-struct"><a href="#值类型的-struct" class="headerlink" title="值类型的 struct"></a>值类型的 struct</h2><p>Go 的设计目标是取代 C/C++，所以 Go 里面的 struct 和 C 的类似，与 int/float 一样属于<strong>值类型</strong>，值类型最重要的特点是在进行赋值时，新变量会得到一份拷贝后的值，这和 Java 中以引用赋值的 Object 有着本质区别。</p>
-<p><img src="https://img.alicdn.com/imgextra/i4/581166664/O1CN01Dgr4Ek1z69yFADCwq_!!581166664.png" alt="Go_struct_vs_Java_object"></p>
+<p>Rob Pike 在 <a href="https://talks.golang.org/2015/simplicity-is-complicated.slide">Simplicity is Complicated</a> 中也提到 Go 的简洁是其流行的重要原因。简洁并不意味着简单，Go 有着诸多设计确保了把复杂性隐藏在背后。本文就结合笔者自身经验，来讨论 Go 中 struct/interface 的设计理念与最佳实践，帮助读者写出健壮、高效的 Go 程序。</p>
+<h2 id="值类型的-struct">值类型的 struct</h2>
+<p>Go 的设计目标是取代 C/C++，所以 Go 里面的 struct 和 C 的类似，与 int/float 一样属于<strong>值类型</strong>，值类型最重要的特点是在进行赋值时，新变量会得到一份拷贝后的值，这和 Java 中以引用赋值的 Object 有着本质区别。</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/O1CN01Dgr4Ek1z69yFADCwq_!!581166664.png" alt="Go_struct_vs_Java_object">
+    <figcaption><center>Go_struct_vs_Java_object</center></figcaption>
+  </figure>
+
+</p>
 <p>这意味着，如果要改变 struct 的内部状态，需要将其定义为指针类型<code>*struct</code>。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> student <span class="keyword">struct</span> &#123;</span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo := student&#123;name: <span class="string">"foo"</span>&#125;</span><br><span class="line">bar := foo</span><br><span class="line">bar.name = <span class="string">"bar"</span></span><br><span class="line">fmt.Println(foo.name)  <span class="comment">// 输出 foo</span></span><br><span class="line"></span><br><span class="line">bar2 := &amp;foo</span><br><span class="line">bar2.name = <span class="string">"bar"</span></span><br><span class="line">fmt.Println(foo.name)  <span class="comment">// 输出 bar</span></span><br></pre></td></tr></table></figure>
-<p>与之类似的，使用<code>for range</code> 遍历 <code>[]struct</code> <code>map[xx]struct</code> 时，得到的也是一份拷贝。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">m := <span class="keyword">map</span>[<span class="keyword">int</span>]student&#123;</span><br><span class="line">    <span class="number">1</span>: &#123;name: <span class="string">"1"</span>&#125;,</span><br><span class="line">&#125;</span><br><span class="line">m[<span class="number">1</span>].name = <span class="string">"2"</span> <span class="comment">// 编译错误： cannot assign to struct field m[1].name in map</span></span><br></pre></td></tr></table></figure>
-<p>可以看到，无法直接对 map 中的 struct 进行赋值，这是由于<code>m[1]</code>得到的是原有 struct 的拷贝，即使编译器允许这里的赋值，map 中的 struct 值也不会改变，所以编译器直接不允许这种情况。其次，<br>这里的赋值操作是个 <code>read-modify-write</code> 操作，无法保证原子性，更多讨论可参考 <a href="https://github.com/golang/go/issues/3117" target="_blank" rel="noopener">#3117</a>。解决方式有两种：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 使用临时变量</span></span><br><span class="line">m := <span class="keyword">map</span>[<span class="keyword">int</span>]student&#123;<span class="number">1</span>: &#123;name: <span class="string">"1"</span>&#125;&#125;</span><br><span class="line">tmp := m[<span class="number">1</span>]</span><br><span class="line">tmp.name = <span class="string">"2"</span></span><br><span class="line">m[<span class="number">1</span>] = tmp</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 使用指针类型</span></span><br><span class="line">m := <span class="keyword">map</span>[<span class="keyword">int</span>]*student&#123;<span class="number">1</span>: &#123;name: <span class="string">"1"</span>&#125;&#125;</span><br><span class="line">m[<span class="number">1</span>].name = <span class="string">"2"</span></span><br></pre></td></tr></table></figure>
-<p>笔者多次遇到这个“坑”，那是不是说把所有的 struct 都定义为指针就好了呢？这里需要了解下 Go 的逃逸分析才能回答这个问题。</p>
-<h3 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h3><p>逃逸分析的主要作用是决定对象分配在内存中的位置，Go 会尽量分配在 stack 上，这样的好处显而易见：回收简单，减轻 GC 压力。可以通过 <code>go build -gcflags -m xx.go</code> 查看</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">returnByValue</span><span class="params">(name <span class="keyword">string</span>)</span> <span class="title">student</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> student&#123;name&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">returnByPointer</span><span class="params">(name <span class="keyword">string</span>)</span> *<span class="title">student</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;student&#123;name&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">./snippet.<span class="keyword">go</span>:<span class="number">6</span>:<span class="number">18</span>: &amp;student literal escapes to heap</span><br></pre></td></tr></table></figure>
-<p>可以看到，<code>returnByPointer</code> 方法的返回值会逃逸，最终分配在 heap 上，关于变量分配在 stack / heap 上的性能差距，可参考：<a href="https://github.com/jiacai2050/blog-snippets/blob/master/go-struct-interface/bench_test.go" target="_blank" rel="noopener">bench_test.go</a></p>
-<p>测试结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">go <span class="built_in">test</span> -run ^NOTHING -bench Struct *.go</span><br><span class="line">goos: darwin</span><br><span class="line">goarch: amd64</span><br><span class="line">BenchmarkPointerVSStruct/return_pointer-8               33634951                34.3 ns/op            16 B/op          1 allocs/op</span><br><span class="line">BenchmarkPointerVSStruct/return__value-8                530202802                2.23 ns/op            0 B/op          0 allocs/op</span><br><span class="line">BenchmarkPointerVSStruct/value_receiver-8               433067940                2.77 ns/op            0 B/op          0 allocs/op</span><br><span class="line">BenchmarkPointerVSStruct/pointer_receiver-8             431380804                2.72 ns/op            0 B/op          0 allocs/op</span><br><span class="line">PASS</span><br><span class="line">ok      <span class="built_in">command</span>-line-arguments  5.889s</span><br></pre></td></tr></table></figure></p>
-<p>可以看到，方法返回 pointer 时，会有一次 heap 分配，占 16 个字节，这正好是 name 字段（string 类型）的大小，8 个字节表示指向数据的指针，8 个字节表示长度（笔者为 64 位系统），类似下面的结构</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> StringHeader <span class="keyword">struct</span> &#123;</span><br><span class="line">    Data <span class="keyword">uintptr</span></span><br><span class="line">    Len  <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>方法返回 value 时，则没有 heap 分配，说明所有变量都分配在 stack 上。<br>对于 receiver 为 pointer 或 value 性能差别不大，这是因为 s 在两种情况下均无逃逸，并且拷贝 struct value 本身与拷贝指针（8 字节）的代价差不多；如果增加 struct 的大小，拷贝指针的代价就会小于 value 本身了。<br>这个测试也说明变量分配在内存中的位置，与是否为指针无关。</p>
-<h3 id="value-vs-pointer"><a href="#value-vs-pointer" class="headerlink" title="value vs pointer"></a>value vs pointer</h3><p>结合上面的实验，可以按照下述流程确定选用 value/pointer：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go">    <span class="kd">type</span> <span class="nx">student</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">name</span> <span class="kt">string</span>
+    <span class="p">}</span>
+
+    <span class="nx">foo</span> <span class="o">:=</span> <span class="nx">student</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="s">&#34;foo&#34;</span><span class="p">}</span>
+    <span class="nx">bar</span> <span class="o">:=</span> <span class="nx">foo</span>
+    <span class="nx">bar</span><span class="p">.</span><span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;bar&#34;</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">foo</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>  <span class="c1">// 输出 foo
+</span><span class="c1"></span>
+    <span class="nx">bar2</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">foo</span>
+    <span class="nx">bar2</span><span class="p">.</span><span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;bar&#34;</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">foo</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>  <span class="c1">// 输出 bar
+</span></code></pre></td></tr></table>
+</div>
+</div><p>与之类似的，使用<code>for range</code> 遍历 <code>[]struct</code> <code>map[xx]struct</code> 时，得到的也是一份拷贝。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go">    <span class="nx">m</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="nx">student</span><span class="p">{</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="s">&#34;1&#34;</span><span class="p">},</span>
+    <span class="p">}</span>
+    <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;2&#34;</span> <span class="c1">// 编译错误： cannot assign to struct field m[1].name in map
+</span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到，无法直接对 map 中的 struct 进行赋值，这是由于<code>m[1]</code>得到的是原有 struct 的拷贝，即使编译器允许这里的赋值，map 中的 struct 值也不会改变，所以编译器直接不允许这种情况。其次，
+这里的赋值操作是个 <code>read-modify-write</code> 操作，无法保证原子性，更多讨论可参考 <a href="https://github.com/golang/go/issues/3117">#3117</a>。解决方式有两种：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 1. 使用临时变量
+</span><span class="c1"></span><span class="nx">m</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="nx">student</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="s">&#34;1&#34;</span><span class="p">}}</span>
+<span class="nx">tmp</span> <span class="o">:=</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nx">tmp</span><span class="p">.</span><span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;2&#34;</span>
+<span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">=</span> <span class="nx">tmp</span>
+
+<span class="c1">// 2. 使用指针类型
+</span><span class="c1"></span><span class="nx">m</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="o">*</span><span class="nx">student</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="s">&#34;1&#34;</span><span class="p">}}</span>
+<span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;2&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>笔者多次遇到这个“坑”，那是不是说把所有的 struct 都定义为指针就好了呢？这里需要了解下 Go 的逃逸分析才能回答这个问题。</p>
+<h3 id="逃逸分析">逃逸分析</h3>
+<p>逃逸分析的主要作用是决定对象分配在内存中的位置，Go 会尽量分配在 stack 上，这样的好处显而易见：回收简单，减轻 GC 压力。可以通过 <code>go build -gcflags -m xx.go</code> 查看</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">returnByValue</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">student</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">student</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">returnByPointer</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">student</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="nx">student</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="o">/</span><span class="nx">snippet</span><span class="p">.</span><span class="k">go</span><span class="p">:</span><span class="mi">6</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">student</span> <span class="nx">literal</span> <span class="nx">escapes</span> <span class="nx">to</span> <span class="nx">heap</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，<code>returnByPointer</code> 方法的返回值会逃逸，最终分配在 heap 上，关于变量分配在 stack / heap 上的性能差距，可参考：<a href="https://github.com/jiacai2050/blog-snippets/blob/master/go-struct-interface/bench_test.go">bench_test.go</a></p>
+<p>测试结果：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">go <span class="nb">test</span> -run ^NOTHING -bench Struct *.go
+goos: darwin
+goarch: amd64
+BenchmarkPointerVSStruct/return_pointer-8               <span class="m">33634951</span>                34.3 ns/op            <span class="m">16</span> B/op          <span class="m">1</span> allocs/op
+BenchmarkPointerVSStruct/return__value-8                <span class="m">530202802</span>                2.23 ns/op            <span class="m">0</span> B/op          <span class="m">0</span> allocs/op
+BenchmarkPointerVSStruct/value_receiver-8               <span class="m">433067940</span>                2.77 ns/op            <span class="m">0</span> B/op          <span class="m">0</span> allocs/op
+BenchmarkPointerVSStruct/pointer_receiver-8             <span class="m">431380804</span>                2.72 ns/op            <span class="m">0</span> B/op          <span class="m">0</span> allocs/op
+PASS
+ok      command-line-arguments  5.889s
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，方法返回 pointer 时，会有一次 heap 分配，占 16 个字节，这正好是 name 字段（string 类型）的大小，8 个字节表示指向数据的指针，8 个字节表示长度（笔者为 64 位系统），类似下面的结构</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">StringHeader</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Data</span> <span class="kt">uintptr</span>
+    <span class="nx">Len</span>  <span class="kt">int</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>方法返回 value 时，则没有 heap 分配，说明所有变量都分配在 stack 上。
+对于 receiver 为 pointer 或 value 性能差别不大，这是因为 s 在两种情况下均无逃逸，并且拷贝 struct value 本身与拷贝指针（8 字节）的代价差不多；如果增加 struct 的大小，拷贝指针的代价就会小于 value 本身了。
+这个测试也说明变量分配在内存中的位置，与是否为指针无关。</p>
+<h3 id="value-vs-pointer">value vs pointer</h3>
+<p>结合上面的实验，可以按照下述流程确定选用 value/pointer：</p>
 <ol>
 <li>如果 struct 需要改变状态（比如包含 waitgroup/sync.Poll/sync.Mutex 等），则需要 pointer</li>
 <li>作为函数返回值，<code>unsafe.Sizeof(struct)</code> 大于一定阈值时，拷贝 value 的时间大于在 heap 上分配的时间，考虑用 pointer</li>
 <li>作为函数参数，可以把指针看成 8 字节的 value，如果 struct 大小远大于 8 字节，考虑用 pointer</li>
 <li>除此之外，struct 即可</li>
 </ol>
-<p>为了确定出 2 中的阈值，可以在 struct 中添加一数组元素，之后再来跑上述测试即可，在笔者机器中，这个阈值大概为 72K。<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> student <span class="keyword">struct</span> &#123;</span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">    dummy  [<span class="number">9000</span>]<span class="keyword">int64</span>  <span class="comment">// 添加一数组元素</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BenchmarkPointerVSStruct/return_pointer<span class="number">-8</span>                 <span class="number">150147</span>              <span class="number">8147</span> ns/op           <span class="number">73728</span> B/op          <span class="number">1</span> allocs/op</span><br><span class="line">BenchmarkPointerVSStruct/return__value<span class="number">-8</span>                  <span class="number">138591</span>              <span class="number">8146</span> ns/op               <span class="number">0</span> B/op          <span class="number">0</span> allocs/op</span><br></pre></td></tr></table></figure></p>
-<p>很少有 struct 会达到这个量级，这是由于 Go 中常用的 slice/map/string 均为复合类型（可认为由 header+data 两部分组成），类似上面的 StringHeader，header 部分是固定的，header 里面有指向数据的指针。</p>
+<p>为了确定出 2 中的阈值，可以在 struct 中添加一数组元素，之后再来跑上述测试即可，在笔者机器中，这个阈值大概为 72K。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">student</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">name</span> <span class="kt">string</span>
+    <span class="nx">dummy</span>  <span class="p">[</span><span class="mi">9000</span><span class="p">]</span><span class="kt">int64</span>  <span class="c1">// 添加一数组元素
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="nx">BenchmarkPointerVSStruct</span><span class="o">/</span><span class="nx">return_pointer</span><span class="o">-</span><span class="mi">8</span>                 <span class="mi">150147</span>              <span class="mi">8147</span> <span class="nx">ns</span><span class="o">/</span><span class="nx">op</span>           <span class="mi">73728</span> <span class="nx">B</span><span class="o">/</span><span class="nx">op</span>          <span class="mi">1</span> <span class="nx">allocs</span><span class="o">/</span><span class="nx">op</span>
+<span class="nx">BenchmarkPointerVSStruct</span><span class="o">/</span><span class="nx">return__value</span><span class="o">-</span><span class="mi">8</span>                  <span class="mi">138591</span>              <span class="mi">8146</span> <span class="nx">ns</span><span class="o">/</span><span class="nx">op</span>               <span class="mi">0</span> <span class="nx">B</span><span class="o">/</span><span class="nx">op</span>          <span class="mi">0</span> <span class="nx">allocs</span><span class="o">/</span><span class="nx">op</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>很少有 struct 会达到这个量级，这是由于 Go 中常用的 slice/map/string 均为复合类型（可认为由 header+data 两部分组成），类似上面的 StringHeader，header 部分是固定的，header 里面有指向数据的指针。</p>
 <table>
 <thead>
 <tr>
@@ -73,80 +394,398 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 </tr>
 </tbody>
 </table>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">uint64</span>&#123;</span><br><span class="line">    <span class="string">"ptr"</span>:       <span class="keyword">uint64</span>(unsafe.Sizeof(&amp;<span class="keyword">struct</span>&#123;&#125;&#123;&#125;)),</span><br><span class="line">    <span class="string">"map"</span>:       <span class="keyword">uint64</span>(unsafe.Sizeof(<span class="keyword">map</span>[<span class="keyword">bool</span>]<span class="keyword">bool</span>&#123;&#125;)),</span><br><span class="line">    <span class="string">"slice"</span>:     <span class="keyword">uint64</span>(unsafe.Sizeof([]<span class="keyword">struct</span>&#123;&#125;&#123;&#125;)),</span><br><span class="line">    <span class="string">"chan"</span>:      <span class="keyword">uint64</span>(unsafe.Sizeof(<span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;))),</span><br><span class="line">    <span class="string">"func"</span>:      <span class="keyword">uint64</span>(unsafe.Sizeof(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;&#125;)),</span><br><span class="line">    <span class="string">"interface"</span>: <span class="keyword">uint64</span>(unsafe.Sizeof(<span class="keyword">interface</span>&#123;&#125;(<span class="number">0</span>))),</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line"><span class="keyword">map</span>[<span class="keyword">chan</span>:<span class="number">8</span> <span class="function"><span class="keyword">func</span>:8 <span class="title">interface</span>:16 <span class="title">map</span>:8 <span class="title">ptr</span>:8 <span class="title">slice</span>:24]</span></span><br></pre></td></tr></table></figure>
-<p>可以看到，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">uint64</span><span class="p">{</span>
+        <span class="s">&#34;ptr&#34;</span><span class="p">:</span>       <span class="nb">uint64</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="o">&amp;</span><span class="kd">struct</span><span class="p">{}{})),</span>
+        <span class="s">&#34;map&#34;</span><span class="p">:</span>       <span class="nb">uint64</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">bool</span><span class="p">]</span><span class="kt">bool</span><span class="p">{})),</span>
+        <span class="s">&#34;slice&#34;</span><span class="p">:</span>     <span class="nb">uint64</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">([]</span><span class="kd">struct</span><span class="p">{}{})),</span>
+        <span class="s">&#34;chan&#34;</span><span class="p">:</span>      <span class="nb">uint64</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">struct</span><span class="p">{}))),</span>
+        <span class="s">&#34;func&#34;</span><span class="p">:</span>      <span class="nb">uint64</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="p">{})),</span>
+        <span class="s">&#34;interface&#34;</span><span class="p">:</span> <span class="nb">uint64</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="kd">interface</span><span class="p">{}(</span><span class="mi">0</span><span class="p">))),</span>
+    <span class="p">})</span>
+
+    <span class="c1">// 输出
+</span><span class="c1"></span>    <span class="kd">map</span><span class="p">[</span><span class="kd">chan</span><span class="p">:</span><span class="mi">8</span> <span class="kd">func</span><span class="p">:</span><span class="mi">8</span> <span class="kd">interface</span><span class="p">:</span><span class="mi">16</span> <span class="kd">map</span><span class="p">:</span><span class="mi">8</span> <span class="nx">ptr</span><span class="p">:</span><span class="mi">8</span> <span class="nx">slice</span><span class="p">:</span><span class="mi">24</span><span class="p">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，</p>
 <ul>
 <li>chan/func/map/ptr 均为 8 个字节，即一个指向具体数据的指针</li>
-<li>interface 为 16，两个指针，一个指向具体类型，一个指向具体数据。细节可参考 Russ Cox 的 <a href="https://research.swtch.com/interfaces" target="_blank" rel="noopener">Go Data Structures: Interfaces </a></li>
+<li>interface 为 16，两个指针，一个指向具体类型，一个指向具体数据。细节可参考 Russ Cox 的 <a href="https://research.swtch.com/interfaces">Go Data Structures: Interfaces </a></li>
 <li>slice 为 24，包括一个指向底层 array 的指针，两个整型，分布表示 cap、len</li>
 </ul>
 <p>上文中提到无法直接修改 map 中的 struct，那么下面的程序是否合法？为什么？</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">m := <span class="keyword">map</span>[<span class="keyword">int</span>][]<span class="keyword">int</span>&#123;<span class="number">1</span>: &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;&#125;</span><br><span class="line">m[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">11</span></span><br><span class="line">fmt.Println(m)</span><br></pre></td></tr></table></figure>
-<h3 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h3><p>struct 中的字段会按照机器字长进行对齐，所以在性能要求比较高的地方，可以尽量把相同类型的字段放一起。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println(</span><br><span class="line">    unsafe.Sizeof(<span class="keyword">struct</span> &#123;</span><br><span class="line">        a <span class="keyword">bool</span></span><br><span class="line">        b <span class="keyword">string</span></span><br><span class="line">        c <span class="keyword">bool</span></span><br><span class="line">    &#125;&#123;&#125;),</span><br><span class="line">    unsafe.Sizeof(<span class="keyword">struct</span> &#123;</span><br><span class="line">        a <span class="keyword">bool</span></span><br><span class="line">        c <span class="keyword">bool</span></span><br><span class="line">        b <span class="keyword">string</span></span><br><span class="line">    &#125;&#123;&#125;),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>上述代码会依次输出 <code>32 24</code>，下面的图示清晰的展示了两个顺序的 struct 在内存中的布局：（<a href="https://stackoverflow.com/a/38034334/2163429" target="_blank" rel="noopener">图片来源</a>）<br><img src="https://img.alicdn.com/imgextra/i2/581166664/O1CN018aBsFK1z69yFIcVSO_!!581166664.png" alt="field_align"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go">    <span class="nx">m</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">][]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}}</span>
+    <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">=</span> <span class="mi">11</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="内存对齐">内存对齐</h3>
+<p>struct 中的字段会按照机器字长进行对齐，所以在性能要求比较高的地方，可以尽量把相同类型的字段放一起。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span>
+        <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="kd">struct</span> <span class="p">{</span>
+            <span class="nx">a</span> <span class="kt">bool</span>
+            <span class="nx">b</span> <span class="kt">string</span>
+            <span class="nx">c</span> <span class="kt">bool</span>
+        <span class="p">}{}),</span>
+        <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="kd">struct</span> <span class="p">{</span>
+            <span class="nx">a</span> <span class="kt">bool</span>
+            <span class="nx">c</span> <span class="kt">bool</span>
+            <span class="nx">b</span> <span class="kt">string</span>
+        <span class="p">}{}),</span>
+    <span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上述代码会依次输出 <code>32 24</code>，下面的图示清晰的展示了两个顺序的 struct 在内存中的布局：（<a href="https://stackoverflow.com/a/38034334/2163429">图片来源</a>）
+
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/O1CN018aBsFK1z69yFIcVSO_!!581166664.png" alt="field_align">
+    <figcaption><center>field_align</center></figcaption>
+  </figure>
+
+</p>
 <p>最后，读者可以思考下面代码的运行结果：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fmt.Println(</span><br><span class="line">    unsafe.Sizeof(<span class="keyword">interface</span>&#123;&#125;(<span class="number">0</span>)),</span><br><span class="line">    unsafe.Sizeof(<span class="keyword">struct</span>&#123;&#125;&#123;&#125;),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h2 id="基于组合的-interface"><a href="#基于组合的-interface" class="headerlink" title="基于组合的 interface"></a>基于组合的 interface</h2><p>如果说 struct 是对状态的封装，那么 interface 就是对行为的封装，是 Go 中构造抽象的基础。由于 Go 中没有 oop 的概念，主要是通过组合，而非继承来实现不同组件的整合，比如 io 包下的 Reader/Writer。<br>但就组合来说，并没有什么优势，Java 中也可以实现，但 Go 中的隐式“继承” 让组合变得十分灵活。</p>
-<h3 id="Embedded-struct"><a href="#Embedded-struct" class="headerlink" title="Embedded struct"></a>Embedded struct</h3><p>下面通过一示例进行说明：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> RecordWriter <span class="keyword">struct</span> &#123;</span><br><span class="line">    code <span class="keyword">int</span></span><br><span class="line">    http.ResponseWriter</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rw *RecordWriter)</span> <span class="title">WriteHeader</span><span class="params">(statusCode <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    rw.code = statusCode</span><br><span class="line">    rw.ResponseWriter.WriteHeader(statusCode)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">URLStat</span><span class="params">(w http.ResponseWriter, r *http.Request, next http.HandlerFunc)</span></span> &#123;</span><br><span class="line">    <span class="comment">// if w.WriteHeader isn't called inside handlerFunc, 200 is the default code.</span></span><br><span class="line">    rw := &amp;RecordWriter&#123;ResponseWriter: w, code: <span class="number">200</span>&#125;</span><br><span class="line">    next(rw, r)</span><br><span class="line">    metrics.HTTPReqs.WithLabelValues(r.URL.Path, r.Method, strconv.FormatInt(<span class="keyword">int64</span>(rw.code), <span class="number">10</span>)).Inc()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上述代码片段为 <a href="https://github.com/urfave/negroni" target="_blank" rel="noopener">negroni</a> 中的一个 middleware，用来记录 http code。自定义 Writer 通过嵌入 ResponseWriter，实现了 ResponseWriter 接口，然后通过重写 WriteHeader 的方式来实现业务需求，由于需要改变状态，所以采用指针类型 <code>*RecordWriter</code> 来作为 receiver，整个实现非常简洁扼要。</p>
-<h3 id="New-func-type"><a href="#New-func-type" class="headerlink" title="New func type"></a>New func type</h3><p>第二个示例是关于如何通过自定义 type，来达到简化 err 处理的目的。在 net/http 中，handlerFunc 没有返回值，这就导致在每个异常处理的后面加上一个空的 return 来中止逻辑处理，这样不仅繁琐，还容易遗漏，</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">viewRecord</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    c := appengine.NewContext(r)</span><br><span class="line">    key := datastore.NewKey(c, <span class="string">"Record"</span>, r.FormValue(<span class="string">"id"</span>), <span class="number">0</span>, <span class="literal">nil</span>)</span><br><span class="line">    record := <span class="built_in">new</span>(Record)</span><br><span class="line">    <span class="keyword">if</span> err := datastore.Get(c, key, record); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        http.Error(w, err.Error(), <span class="number">500</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> err := viewTemplate.Execute(w, record); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        http.Error(w, err.Error(), <span class="number">500</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这时便可通过自定义新类型来解决这个问题：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> appError <span class="keyword">struct</span> &#123;</span><br><span class="line">    Error   error</span><br><span class="line">    Message <span class="keyword">string</span></span><br><span class="line">    Code    <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> appHandler <span class="function"><span class="keyword">func</span><span class="params">(http.ResponseWriter, *http.Request)</span> <span class="title">appError</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(fn appHandler)</span> <span class="title">ServeHTTP</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> e := fn(w, r); e != <span class="literal">nil</span> &#123; <span class="comment">// e is *appError, not os.Error.</span></span><br><span class="line">        c := appengine.NewContext(r)</span><br><span class="line">        c.Errorf(<span class="string">"%v"</span>, e.Error)</span><br><span class="line">        http.Error(w, e.Message, e.Code)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">viewRecord</span><span class="params">(w http.ResponseWriter, r *http.Request)</span> <span class="title">appError</span></span> &#123;</span><br><span class="line">    c := appengine.NewContext(r)</span><br><span class="line">    key := datastore.NewKey(c, <span class="string">"Record"</span>, r.FormValue(<span class="string">"id"</span>), <span class="number">0</span>, <span class="literal">nil</span>)</span><br><span class="line">    record := <span class="built_in">new</span>(Record)</span><br><span class="line">    <span class="keyword">if</span> err := datastore.Get(c, key, record); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> appError&#123;err, <span class="string">"Record not found"</span>, <span class="number">404</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> err := viewTemplate.Execute(w, record); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> appError&#123;err, <span class="string">"Can't display record"</span>, <span class="number">500</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> appError&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mux.HandleFunc(<span class="string">"/view"</span>, appHandler(viewRecord))</span><br></pre></td></tr></table></figure>
-<p>可以看到，上述示例通过定义 appHandler 新函数类型，并隐式“继承” <a href="https://golang.org/pkg/net/http/#Handler" target="_blank" rel="noopener">http.Handler</a> 接口来达到了统一集中处理 err 的需求。<br>该实现漂亮的地方为函数增加新类型，且函数签名与 ServeHTTP 一致，这样就可以直接复用参数。对于初学者来说，可能没想到也可以给 func 类型来定义方法，但是在 Go 中，可以给任何类型增加方法。</p>
-<p>之前在网上看到一些框架，采用 <a href="https://github.com/gogf/gf/blob/506552c3a93a9094c96699bdf62c533b5b4f42c6/net/ghttp/ghttp_request.go#L84" target="_blank" rel="noopener">panic</a> 的方式来简化 err 处理，感觉这属于对 panic 的滥用，先不说对性能是否有损耗，更主要的是破坏了 <code>if err != nil</code> 的处理方式。希望读者在后续处理繁琐的逻辑时，多去考虑如何抽象新类型来解决。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Go 的精妙设计保证了其简洁的特性，而且这些特性可能和传统的 oop 不同，这对于从这些语言转过来的读者来说会采用旧思维去思考问题，这无可厚非，但作为优秀的 Go 程序员，更多的需要从 Go 自身特点来考虑问题，这样就不至于产生“为什么 XX 特性在 Go 中没有”的疑惑，要知道 Go 的作者可是 Rob Pike, Ken Thompson :-)<br>如果读者阅读/实现过基于 interface 的精巧设计，欢迎留言分享。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://go101.org/article/value-part.html" target="_blank" rel="noopener">https://go101.org/article/value-part.html</a></li>
-<li><a href="https://github.com/tyranron/golang-sizeof.tips/blob/master/internal/parser/types.go" target="_blank" rel="noopener">https://github.com/tyranron/golang-sizeof.tips/blob/master/internal/parser/types.go</a></li>
-<li><a href="https://blog.golang.org/error-handling-and-go" target="_blank" rel="noopener">https://blog.golang.org/error-handling-and-go</a></li>
-<li><a href="https://medium.com/a-journey-with-go/go-should-i-use-a-pointer-instead-of-a-copy-of-my-struct-44b43b104963" target="_blank" rel="noopener">https://medium.com/a-journey-with-go/go-should-i-use-a-pointer-instead-of-a-copy-of-my-struct-44b43b104963</a></li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span>
+        <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="kd">interface</span><span class="p">{}(</span><span class="mi">0</span><span class="p">)),</span>
+        <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="kd">struct</span><span class="p">{}{}),</span>
+    <span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="基于组合的-interface">基于组合的 interface</h2>
+<p>如果说 struct 是对状态的封装，那么 interface 就是对行为的封装，是 Go 中构造抽象的基础。由于 Go 中没有 oop 的概念，主要是通过组合，而非继承来实现不同组件的整合，比如 io 包下的 Reader/Writer。
+但就组合来说，并没有什么优势，Java 中也可以实现，但 Go 中的隐式“继承” 让组合变得十分灵活。</p>
+<h3 id="embedded-struct">Embedded struct</h3>
+<p>下面通过一示例进行说明：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">RecordWriter</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">code</span> <span class="kt">int</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">rw</span> <span class="o">*</span><span class="nx">RecordWriter</span><span class="p">)</span> <span class="nf">WriteHeader</span><span class="p">(</span><span class="nx">statusCode</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">rw</span><span class="p">.</span><span class="nx">code</span> <span class="p">=</span> <span class="nx">statusCode</span>
+    <span class="nx">rw</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">.</span><span class="nf">WriteHeader</span><span class="p">(</span><span class="nx">statusCode</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">URLStat</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">,</span> <span class="nx">next</span> <span class="nx">http</span><span class="p">.</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// if w.WriteHeader isn&#39;t called inside handlerFunc, 200 is the default code.
+</span><span class="c1"></span>    <span class="nx">rw</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">RecordWriter</span><span class="p">{</span><span class="nx">ResponseWriter</span><span class="p">:</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">code</span><span class="p">:</span> <span class="mi">200</span><span class="p">}</span>
+    <span class="nf">next</span><span class="p">(</span><span class="nx">rw</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
+    <span class="nx">metrics</span><span class="p">.</span><span class="nx">HTTPReqs</span><span class="p">.</span><span class="nf">WithLabelValues</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nx">Path</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">FormatInt</span><span class="p">(</span><span class="nb">int64</span><span class="p">(</span><span class="nx">rw</span><span class="p">.</span><span class="nx">code</span><span class="p">),</span> <span class="mi">10</span><span class="p">)).</span><span class="nf">Inc</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上述代码片段为 <a href="https://github.com/urfave/negroni">negroni</a> 中的一个 middleware，用来记录 http code。自定义 Writer 通过嵌入 ResponseWriter，实现了 ResponseWriter 接口，然后通过重写 WriteHeader 的方式来实现业务需求，由于需要改变状态，所以采用指针类型 <code>*RecordWriter</code> 来作为 receiver，整个实现非常简洁扼要。</p>
+<h3 id="new-func-type">New func type</h3>
+<p>第二个示例是关于如何通过自定义 type，来达到简化 err 处理的目的。在 net/http 中，handlerFunc 没有返回值，这就导致在每个异常处理的后面加上一个空的 return 来中止逻辑处理，这样不仅繁琐，还容易遗漏，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">viewRecord</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">c</span> <span class="o">:=</span> <span class="nx">appengine</span><span class="p">.</span><span class="nf">NewContext</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
+    <span class="nx">key</span> <span class="o">:=</span> <span class="nx">datastore</span><span class="p">.</span><span class="nf">NewKey</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="s">&#34;Record&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nf">FormValue</span><span class="p">(</span><span class="s">&#34;id&#34;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+    <span class="nx">record</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">Record</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">datastore</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">record</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">(),</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">viewTemplate</span><span class="p">.</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">record</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">(),</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>这时便可通过自定义新类型来解决这个问题：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">appError</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Error</span>   <span class="kt">error</span>
+    <span class="nx">Message</span> <span class="kt">string</span>
+    <span class="nx">Code</span>    <span class="kt">int</span>
+<span class="p">}</span>
+<span class="kd">type</span> <span class="nx">appHandler</span> <span class="kd">func</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="nx">appError</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">fn</span> <span class="nx">appHandler</span><span class="p">)</span> <span class="nf">ServeHTTP</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nf">fn</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">r</span><span class="p">);</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span> <span class="c1">// e is *appError, not os.Error.
+</span><span class="c1"></span>        <span class="nx">c</span> <span class="o">:=</span> <span class="nx">appengine</span><span class="p">.</span><span class="nf">NewContext</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
+        <span class="nx">c</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;%v&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Error</span><span class="p">)</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Message</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Code</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">viewRecord</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="nx">appError</span> <span class="p">{</span>
+    <span class="nx">c</span> <span class="o">:=</span> <span class="nx">appengine</span><span class="p">.</span><span class="nf">NewContext</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
+    <span class="nx">key</span> <span class="o">:=</span> <span class="nx">datastore</span><span class="p">.</span><span class="nf">NewKey</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="s">&#34;Record&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nf">FormValue</span><span class="p">(</span><span class="s">&#34;id&#34;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+    <span class="nx">record</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">Record</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">datastore</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">record</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">appError</span><span class="p">{</span><span class="nx">err</span><span class="p">,</span> <span class="s">&#34;Record not found&#34;</span><span class="p">,</span> <span class="mi">404</span><span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">viewTemplate</span><span class="p">.</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">record</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">appError</span><span class="p">{</span><span class="nx">err</span><span class="p">,</span> <span class="s">&#34;Can&#39;t display record&#34;</span><span class="p">,</span> <span class="mi">500</span><span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">appError</span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="nx">mux</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/view&#34;</span><span class="p">,</span> <span class="nf">appHandler</span><span class="p">(</span><span class="nx">viewRecord</span><span class="p">))</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，上述示例通过定义 appHandler 新函数类型，并隐式“继承” <a href="https://golang.org/pkg/net/http/#Handler">http.Handler</a> 接口来达到了统一集中处理 err 的需求。
+该实现漂亮的地方为函数增加新类型，且函数签名与 ServeHTTP 一致，这样就可以直接复用参数。对于初学者来说，可能没想到也可以给 func 类型来定义方法，但是在 Go 中，可以给任何类型增加方法。</p>
+<p>之前在网上看到一些框架，采用 <a href="https://github.com/gogf/gf/blob/506552c3a93a9094c96699bdf62c533b5b4f42c6/net/ghttp/ghttp_request.go#L84">panic</a> 的方式来简化 err 处理，感觉这属于对 panic 的滥用，先不说对性能是否有损耗，更主要的是破坏了 <code>if err != nil</code> 的处理方式。希望读者在后续处理繁琐的逻辑时，多去考虑如何抽象新类型来解决。</p>
+<h2 id="总结">总结</h2>
+<p>Go 的精妙设计保证了其简洁的特性，而且这些特性可能和传统的 oop 不同，这对于从这些语言转过来的读者来说会采用旧思维去思考问题，这无可厚非，但作为优秀的 Go 程序员，更多的需要从 Go 自身特点来考虑问题，这样就不至于产生“为什么 XX 特性在 Go 中没有”的疑惑，要知道 Go 的作者可是 Rob Pike, Ken Thompson :-)
+如果读者阅读/实现过基于 interface 的精巧设计，欢迎留言分享。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://go101.org/article/value-part.html">https://go101.org/article/value-part.html</a></li>
+<li><a href="https://github.com/tyranron/golang-sizeof.tips/blob/master/internal/parser/types.go">https://github.com/tyranron/golang-sizeof.tips/blob/master/internal/parser/types.go</a></li>
+<li><a href="https://blog.golang.org/error-handling-and-go">https://blog.golang.org/error-handling-and-go</a></li>
+<li><a href="https://medium.com/a-journey-with-go/go-should-i-use-a-pointer-instead-of-a-copy-of-my-struct-44b43b104963">https://medium.com/a-journey-with-go/go-should-i-use-a-pointer-instead-of-a-copy-of-my-struct-44b43b104963</a></li>
 </ul>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2020/03/14/go-struct-interface/" data-id="ckhxlinxl0060szljuvw62tuw" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIklEQVR42u3aQW7DMAwEwPz/0+m5aOvuUkkAS6NTYMSSxgdCJPV4xOP5Y8ye/zXzz7ce7xgYGBi3ZTwvx/UCyVt/zdCu+8+nwcDAOICRhMI8UOYB93qtZG8YGBgYOSkJuNdsDAwMjM8woiWDPBQDAwNjlsTmAbdNej+ai2NgYNyQkYfCz/9+S38DAwPjVoxnOdp3k1LdbCffVsHAwNiakQe4a0z+z9nRM9oPBgbGAYzrwlZeUMuDddsKLcptGBgY2zHa4n4+6ex62QyMgYGxKyOZLt/KSvBdan9iYGBszUgmmgXWWfDNj6F1EouBgXFbxmzS9gDXNkeTJ8MpMDAwbstY2XqboK4fDX/ZFQYGxtaMvLmYNy8T6sotr6iFiYGBsREjSRpXNp2TVpoNGBgYJzBmBf2c9KoGZ5EHY2BgbMdoD3CvPT7mz+ujIQYGxhaMPIGcFcLawL1y0MTAwNiVkZS02tDZwqKif3LZAgMDY1PGUsuwJLUFuJX8FAMDYz9Ge4V0VmjLW6RtOo2BgXEOYz2Y5m2GWQnvn+MpBgbGAYwV0uwa64vLcBgYGJsynuVIAussyOaHyKKbgYGBsQVjVhqbtTbzzbWfCQMD4wRGG2RXCm2zT1b0NDAwMLZmtOWz9a3Pjn3FBQsMDIyDGfnCbTNg6QIHBgYGxijtnKXBswYnBgbGCYwkiW3/0wbWayQGBsbJjKXU8Q2HwjbsYmBgbM34AmfLvCrDS0rZAAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/Go/">Go</a></div><div class="post-nav"><a class="pre" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a><a class="next" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2020/03/14/go-struct-interface/';
-    this.page.identifier = 'blog/2020/03/14/go-struct-interface/';
-    this.page.title = 'Go struct/interface 最佳实践';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/go/">Go</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2020/08/08/go-meet-java/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">实践总结：在 Java 中调用 Go 代码</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2020/02/02/review-2019/">
+            <span class="next-text nav-default">2019 年终总结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

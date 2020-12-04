@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on Keep Coding</title>
+    <link>https://liujiacai.net/tags/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 Aug 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/%E7%AE%97%E6%B3%95/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>两个水壶问题</title>
+      <link>https://liujiacai.net/blog/2014/08/16/two-pot-question/</link>
+      <pubDate>Sat, 16 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/08/16/two-pot-question/</guid>
+      <description>问题描述是这样的： 假设有一个池塘，里面有无穷多的水。现有2个空水壶a，b，其容积分别为6升和5升。如何只用这2个水壶从池塘里取得3升的水**</description>
+    </item>
+    
+  </channel>
+</rss>

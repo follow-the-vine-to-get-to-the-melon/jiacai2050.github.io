@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>效率工具 on Keep Coding</title>
+    <link>https://liujiacai.net/categories/%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/</link>
+    <description>Recent content in 效率工具 on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 25 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/categories/%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Emacs 入门指南</title>
+      <link>https://liujiacai.net/blog/2020/11/25/why-emacs/</link>
+      <pubDate>Wed, 25 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/11/25/why-emacs/</guid>
+      <description>提到 Emacs，每个程序员应该或多或少听过其大名，毕竟 Emacs 已经有将近四十多年的悠久历史。不过由于 Emacs “入道”门槛较高，导致很多初学者还没领略其精</description>
+    </item>
+    
+  </channel>
+</rss>

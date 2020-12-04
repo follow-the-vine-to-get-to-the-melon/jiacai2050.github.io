@@ -1,17 +1,181 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>Clojure Web 开发-- Ring 使用指南 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Clojure Web 开发-- Ring 使用指南</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Clojure Web 开发-- Ring 使用指南</h1><div class="post-meta">Apr 2, 2017<span> | </span><span class="category"><a href="/categories/Web/">Web</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.3k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 10</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2017/04/02/clojure-web-dev-ring-usage/" href="/blog/2017/04/02/clojure-web-dev-ring-usage/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ring-SPEC"><span class="toc-number">1.</span> <span class="toc-text">Ring SPEC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hello-World"><span class="toc-number">1.1.</span> <span class="toc-text">Hello World</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Middleware"><span class="toc-number">2.</span> <span class="toc-text">Middleware</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RESTful-实战"><span class="toc-number">3.</span> <span class="toc-text">RESTful 实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Compojure-路由分发"><span class="toc-number">3.1.</span> <span class="toc-text">Compojure 路由分发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Middleware-功能扩展"><span class="toc-number">3.2.</span> <span class="toc-text">Middleware 功能扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#参数解析"><span class="toc-number">3.2.1.</span> <span class="toc-text">参数解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JSON-序列化"><span class="toc-number">3.2.2.</span> <span class="toc-text">JSON 序列化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#纪录请求时间"><span class="toc-number">3.2.3.</span> <span class="toc-text">纪录请求时间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#封装异常"><span class="toc-number">3.2.4.</span> <span class="toc-text">封装异常</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#顺序！顺序！顺序！"><span class="toc-number">3.2.5.</span> <span class="toc-text">顺序！顺序！顺序！</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展阅读"><span class="toc-number">5.</span> <span class="toc-text">扩展阅读</span></a></li></ol></div></div><div class="post-content"><p>在 Clojure 众多的 Web 框架中，<a href="https://github.com/ring-clojure/ring" target="_blank" rel="noopener">Ring</a> 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、扩展的 HTTP 处理链。</p>
-<p>本篇文章首先介绍 Ring 核心概念及其实现原理，然后介绍如何基于 Ring + <a href="https://github.com/weavejester/compojure" target="_blank" rel="noopener">Compojure</a> 实现一 RESTful 服务。</p>
-<h2 id="Ring-SPEC"><a href="#Ring-SPEC" class="headerlink" title="Ring SPEC"></a><a href="https://github.com/ring-clojure/ring/blob/master/SPEC" target="_blank" rel="noopener">Ring SPEC</a></h2><p>Ring 规范里面有如下5个核心概念：</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title> - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="在 Clojure 众多的 Web 框架中，Ring 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="" />
+<meta property="og:description" content="在 Clojure 众多的 Web 框架中，Ring 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/" />
+<meta property="article:published_time" content="2017-04-02T23:56:30+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="">
+<meta itemprop="description" content="在 Clojure 众多的 Web 框架中，Ring 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、">
+<meta itemprop="datePublished" content="2017-04-02T23:56:30+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="2682">
+
+
+
+<meta itemprop="keywords" content="Clojure," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="在 Clojure 众多的 Web 框架中，Ring 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title"></h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-04-02 </span>
+        <div class="post-category">
+            <a href="/categories/web/"> Web </a>
+            </div>
+          <span class="more-meta"> 约 2682 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#ring-spechttpsgithubcomring-clojureringblobmasterspec"><a href="https://github.com/ring-clojure/ring/blob/master/SPEC">Ring SPEC</a></a>
+          <ul>
+            <li><a href="#hello-world">Hello World</a></li>
+          </ul>
+        </li>
+        <li><a href="#middlewarehttpsgithubcomring-clojureringwikimiddleware-patterns"><a href="https://github.com/ring-clojure/ring/wiki/Middleware-Patterns">Middleware</a></a></li>
+        <li><a href="#restful-实战">RESTful 实战</a>
+          <ul>
+            <li><a href="#compojure-路由分发">Compojure 路由分发</a></li>
+            <li><a href="#middleware-功能扩展">Middleware 功能扩展</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#扩展阅读">扩展阅读</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在 Clojure 众多的 Web 框架中，<a href="https://github.com/ring-clojure/ring">Ring</a> 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、扩展的 HTTP 处理链。</p>
+<p>本篇文章首先介绍 Ring 核心概念及其实现原理，然后介绍如何基于 Ring + <a href="https://github.com/weavejester/compojure">Compojure</a> 实现一 RESTful 服务。</p>
+<h2 id="ring-spechttpsgithubcomring-clojureringblobmasterspec"><a href="https://github.com/ring-clojure/ring/blob/master/SPEC">Ring SPEC</a></h2>
+<p>Ring 规范里面有如下5个核心概念：</p>
 <ol>
 <li>handlers，应用逻辑处理的主要单元，由一个普通的 Clojure 函数实现</li>
 <li>middleware，为 handler 增加额外功能</li>
@@ -19,93 +183,705 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 <li>request map，HTTP 请求的 map 表示</li>
 <li>response map，HTTP 相应的 map 表示</li>
 </ol>
-<p>这5个组件的关系可用下图表示（By <a href="https://github.com/ring-clojure/ring-defaults/issues/20" target="_blank" rel="noopener">Ring 作者</a>）：<br><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+---------------+</span><br><span class="line">|<span class="string">  Middleware   </span>|</span><br><span class="line">|<span class="string">  +---------+  </span>|<span class="string">             +---------+      +--------+</span></span><br><span class="line">|<span class="string">  </span>|<span class="string">         </span>|<span class="string">&lt;-- request ----</span>|<span class="string">         </span>|<span class="string">      </span>|<span class="string">        </span>|</span><br><span class="line">|<span class="string">  </span>|<span class="string"> Handler </span>|<span class="string">  </span>|<span class="string">             </span>|<span class="string"> Adapter </span>|<span class="string">&lt;----&gt;</span>|<span class="string"> Client </span>|</span><br><span class="line">|<span class="string">  </span>|<span class="string">         </span>|<span class="string">--- response --&gt;</span>|<span class="string">         </span>|<span class="string">      </span>|<span class="string">        </span>|</span><br><span class="line">|<span class="string">  +---------+  </span>|<span class="string">             +---------+      +--------+</span></span><br><span class="line"><span class="string">+---------------+</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h3><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">ns</span></span> learn-ring.core</span><br><span class="line">  (<span class="symbol">:require</span> [ring.adapter.jetty <span class="symbol">:refer</span> [run-jetty]]))</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> handler [req]</span><br><span class="line">  &#123;<span class="symbol">:headers</span> &#123;&#125;</span><br><span class="line">   <span class="symbol">:status</span> <span class="number">200</span></span><br><span class="line">   <span class="symbol">:body</span> <span class="string">"Hello World"</span>&#125;)</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> middleware [handler]</span><br><span class="line">  <span class="string">"Audit a log per request"</span></span><br><span class="line">  (<span class="name"><span class="builtin-name">fn</span></span> [req]</span><br><span class="line">    (<span class="name">println</span> (<span class="symbol">:uri</span> req))</span><br><span class="line">    (<span class="name">handler</span> req)))</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">def</span></span> app</span><br><span class="line">  (<span class="name"><span class="builtin-name">-&gt;</span></span> handler</span><br><span class="line">      middleware))</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> -main [&amp; _]</span><br><span class="line">  (<span class="name">run-jetty</span> app &#123;<span class="symbol">:port</span> <span class="number">3000</span>&#125;))</span><br></pre></td></tr></table></figure>
-<p>运行上面的程序，就可以启动一 Web 应用，然后在浏览器访问就可以返回<code>Hello World</code>，同时在控制台里面会打印出请求的 uri。</p>
+<p>这5个组件的关系可用下图表示（By <a href="https://github.com/ring-clojure/ring-defaults/issues/20">Ring 作者</a>）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"> +---------------+
+ |  Middleware   |
+ |  +---------+  |             +---------+      +--------+
+ |  |         |&lt;-- request ----|         |      |        |
+ |  | Handler |  |             | Adapter |&lt;----&gt;| Client |
+ |  |         |--- response --&gt;|         |      |        |
+ |  +---------+  |             +---------+      +--------+
+ +---------------+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="hello-world">Hello World</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(ns learn-ring.core
+  (:require [ring.adapter.jetty :refer [run-jetty]]))
+
+(defn handler [req]
+  {:headers {}
+   :status 200
+   :body &#34;Hello World&#34;})
+
+(defn middleware [handler]
+  &#34;Audit a log per request&#34;
+  (fn [req]
+    (println (:uri req))
+    (handler req)))
+
+(def app
+  (-&gt; handler
+      middleware))
+
+(defn -main [&amp; _]
+  (run-jetty app {:port 3000}))
+</code></pre></td></tr></table>
+</div>
+</div><p>运行上面的程序，就可以启动一 Web 应用，然后在浏览器访问就可以返回<code>Hello World</code>，同时在控制台里面会打印出请求的 uri。</p>
 <p><code>run-jetty</code> 是 Ring 提供的基于 jetty 的 adapter，方便开发测试。其主要功能是两个转换：</p>
 <ol>
-<li><code>HttpServletRequest</code> —&gt; <code>request map</code></li>
-<li><code>response map</code> —&gt; <code>HttpServletResponse</code></li>
+<li><code>HttpServletRequest</code> &mdash;&gt; <code>request map</code></li>
+<li><code>response map</code> &mdash;&gt; <code>HttpServletResponse</code></li>
 </ol>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">;; ring.adapter.jetty</span></span><br><span class="line">(<span class="name"><span class="builtin-name">defn-</span></span> <span class="comment">^AbstractHandler</span> proxy-handler [handler]</span><br><span class="line">  (<span class="name"><span class="builtin-name">proxy</span></span> [AbstractHandler] []</span><br><span class="line">    (<span class="name">handle</span> [_ <span class="comment">^Request</span> base-request request response]</span><br><span class="line">      (<span class="name"><span class="builtin-name">let</span></span> [request-map  (<span class="name">servlet/build-request-map</span> request)</span><br><span class="line">            response-map (<span class="name">handler</span> request-map)]</span><br><span class="line">        (<span class="name">servlet/update-servlet-response</span> response response-map)</span><br><span class="line">        (<span class="name">.setHandled</span> base-request <span class="literal">true</span>)))))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; ring.util.servlet</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; HttpServletRequest --&gt; request map</span></span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> build-request-map</span><br><span class="line">  <span class="string">"Create the request map from the HttpServletRequest object."</span></span><br><span class="line">  [<span class="comment">^HttpServletRequest</span> request]</span><br><span class="line">  &#123;<span class="symbol">:server-port</span>        (<span class="name">.getServerPort</span> request)</span><br><span class="line">   <span class="symbol">:server-name</span>        (<span class="name">.getServerName</span> request)</span><br><span class="line">   <span class="symbol">:remote-addr</span>        (<span class="name">.getRemoteAddr</span> request)</span><br><span class="line">   <span class="symbol">:uri</span>                (<span class="name">.getRequestURI</span> request)</span><br><span class="line">   <span class="symbol">:query-string</span>       (<span class="name">.getQueryString</span> request)</span><br><span class="line">   <span class="symbol">:scheme</span>             (<span class="name"><span class="builtin-name">keyword</span></span> (<span class="name">.getScheme</span> request))</span><br><span class="line">   <span class="symbol">:request-method</span>     (<span class="name"><span class="builtin-name">keyword</span></span> (<span class="name">.toLowerCase</span> (<span class="name">.getMethod</span> request) Locale/ENGLISH))</span><br><span class="line">   <span class="symbol">:protocol</span>           (<span class="name">.getProtocol</span> request)</span><br><span class="line">   <span class="symbol">:headers</span>            (<span class="name">get-headers</span> request)</span><br><span class="line">   <span class="symbol">:content-type</span>       (<span class="name">.getContentType</span> request)</span><br><span class="line">   <span class="symbol">:content-length</span>     (<span class="name">get-content-length</span> request)</span><br><span class="line">   <span class="symbol">:character-encoding</span> (<span class="name">.getCharacterEncoding</span> request)</span><br><span class="line">   <span class="symbol">:ssl-client-cert</span>    (<span class="name">get-client-cert</span> request)</span><br><span class="line">   <span class="symbol">:body</span>               (<span class="name">.getInputStream</span> request)&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; response map --&gt; HttpServletResponse</span></span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> update-servlet-response</span><br><span class="line">  <span class="string">"Update the HttpServletResponse using a response map. Takes an optional</span></span><br><span class="line"><span class="string">  AsyncContext."</span></span><br><span class="line">  ([response response-map]</span><br><span class="line">   (<span class="name">update-servlet-response</span> response <span class="literal">nil</span> response-map))</span><br><span class="line">  ([<span class="comment">^HttpServletResponse</span> response context response-map]</span><br><span class="line">   (<span class="name"><span class="builtin-name">let</span></span> [&#123;<span class="symbol">:keys</span> [status headers body]&#125; response-map]</span><br><span class="line">     (<span class="name"><span class="builtin-name">when</span></span> (<span class="name"><span class="builtin-name">nil?</span></span> response)</span><br><span class="line">       (<span class="name"><span class="builtin-name">throw</span></span> (<span class="name">NullPointerException.</span> <span class="string">"HttpServletResponse is nil"</span>)))</span><br><span class="line">     (<span class="name"><span class="builtin-name">when</span></span> (<span class="name"><span class="builtin-name">nil?</span></span> response-map)</span><br><span class="line">       (<span class="name"><span class="builtin-name">throw</span></span> (<span class="name">NullPointerException.</span> <span class="string">"Response map is nil"</span>)))</span><br><span class="line">     (<span class="name"><span class="builtin-name">when</span></span> status</span><br><span class="line">       (<span class="name">.setStatus</span> response status))</span><br><span class="line">     (<span class="name">set-headers</span> response headers)</span><br><span class="line">     (<span class="name"><span class="builtin-name">let</span></span> [output-stream (<span class="name">make-output-stream</span> response context)]</span><br><span class="line">       (<span class="name">protocols/write-body-to-stream</span> body response-map output-stream)))))</span><br></pre></td></tr></table></figure>
-<h2 id="Middleware"><a href="#Middleware" class="headerlink" title="Middleware"></a><a href="https://github.com/ring-clojure/ring/wiki/Middleware-Patterns" target="_blank" rel="noopener">Middleware</a></h2><p>Ring 里面采用 Middleware 模式去扩展 handler 的功能，这其实是函数式编程中常用的技巧，用高阶函数去组合函数，实现更复杂的功能。在 Clojure 里面，函数组合更常见的是用 <code>comp</code>，比如<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">((<span class="name"><span class="builtin-name">comp</span></span> #(<span class="name"><span class="builtin-name">*</span></span> % <span class="number">2</span>) inc) <span class="number">1</span>)</span><br><span class="line"><span class="comment">;; 4</span></span><br></pre></td></tr></table></figure></p>
-<p>这对一些简单的函数非常合适，但是如果逻辑比较复杂，Middleware 模式就比较合适了。例如可以进行一些逻辑判断决定是否需要调用某函数：<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> middleware-comp [handler]</span><br><span class="line">  (<span class="name"><span class="builtin-name">fn</span></span> [x]</span><br><span class="line">    (<span class="name"><span class="builtin-name">if</span></span> (<span class="name"><span class="builtin-name">zero?</span></span> <span class="number">0</span>)</span><br><span class="line">      (<span class="name">handler</span> (<span class="name"><span class="builtin-name">inc</span></span> x))</span><br><span class="line">      (<span class="name">handler</span> x))))</span><br><span class="line"></span><br><span class="line">((<span class="name"><span class="builtin-name">-&gt;</span></span> #(<span class="name"><span class="builtin-name">*</span></span> <span class="number">2</span> %)</span><br><span class="line">      middleware-comp) <span class="number">1</span>)</span><br><span class="line"><span class="comment">;; 4</span></span><br><span class="line">((<span class="name"><span class="builtin-name">-&gt;</span></span> #(<span class="name"><span class="builtin-name">*</span></span> <span class="number">2</span> %)</span><br><span class="line">      middleware-comp) <span class="number">0</span>)</span><br><span class="line"><span class="comment">;; 2</span></span><br></pre></td></tr></table></figure></p>
-<p>虽然 Middleware 使用非常方便，但是有一点需要注意：多个 middleware 组合的顺序。后面在讲解 RESTful 示例时会演示不同顺序的 middleware 对请求的影响。</p>
-<p>Middleware 这一模式在函数式编程中非常常见，Clojure 生态里面新的构建工具 <a href="https://github.com/boot-clj/boot" target="_blank" rel="noopener">boot-clj</a> 里面的 task 也是通过这种模式组合的。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ cat build.boot</span><br><span class="line">(deftask inc-if-zero-else-dec</span><br><span class="line">  [n number NUM int "number to test"]</span><br><span class="line">  (fn [<span class="keyword">handler</span>]</span><br><span class="line">    (fn [fileset]</span><br><span class="line">      (<span class="keyword">if</span> (zero? <span class="built_in">number</span>)</span><br><span class="line">        (<span class="keyword">handler</span> (<span class="keyword">merge</span> fileset &#123;:<span class="built_in">number</span> (inc <span class="built_in">number</span>)&#125;))</span><br><span class="line">        (<span class="keyword">handler</span> (<span class="keyword">merge</span> fileset &#123;:<span class="built_in">number</span> (<span class="built_in">dec</span> <span class="built_in">number</span>)&#125;))))))</span><br><span class="line"></span><br><span class="line">(deftask printer</span><br><span class="line">  []</span><br><span class="line">  (fn [<span class="keyword">handler</span>]</span><br><span class="line">    (fn [fileset]</span><br><span class="line">      (println (<span class="keyword">str</span> <span class="string">"number is "</span> (:<span class="built_in">number</span> fileset)))</span><br><span class="line">      fileset)))</span><br><span class="line"></span><br><span class="line">$ boot inc-<span class="keyword">if</span>-zero-<span class="keyword">else</span>-<span class="built_in">dec</span> -n <span class="number">0</span>    printer</span><br><span class="line"><span class="built_in">number</span> <span class="keyword">is</span> <span class="number">1</span></span><br><span class="line">$ boot inc-<span class="keyword">if</span>-zero-<span class="keyword">else</span>-<span class="built_in">dec</span> -n <span class="number">1</span>    printer</span><br><span class="line"><span class="built_in">number</span> <span class="keyword">is</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<h2 id="RESTful-实战"><a href="#RESTful-实战" class="headerlink" title="RESTful 实战"></a>RESTful 实战</h2><p>由于 Ring 只是提供了一个 Web 服务最基本的抽象功能，很多其他功能，像 url 路由规则，参数解析等均需通过其他模块实现。<a href="https://github.com/weavejester/compojure" target="_blank" rel="noopener">Compojure</a> 是 Ring 生态里面默认的路由器，同样短小精悍，功能强大。基本用法如下：</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">def</span></span> handlers</span><br><span class="line">  (<span class="name">routes</span></span><br><span class="line">   (<span class="name">GET</span> <span class="string">"/"</span> [] <span class="string">"Hello World"</span>)</span><br><span class="line">   (<span class="name">GET</span> <span class="string">"/about"</span> [] <span class="string">"about page"</span>)</span><br><span class="line">   (<span class="name">route/not-found</span> <span class="string">"Page not found!"</span>)))</span><br></pre></td></tr></table></figure>
-<p>使用这里的 handlers 代替上面 Hello World 的示例中的 handler 即可得到一个具有2条路由规则的 Web 应用，同时针对其他路由返回 <code>Page not found!</code>。</p>
-<p>Compojure 里面使用了大量宏来简化路由的定义，像上面例子中的<code>GET</code>、<code>not-found</code>等。Compojure 底层使用 <a href="https://github.com/weavejester/clout" target="_blank" rel="noopener">clout</a> 这个库实现，而 clout 本身是基于一个 parser generator（<a href="https://github.com/Engelberg/instaparse" target="_blank" rel="noopener">instaparse</a>） 定义的“路由”领域特定语言。<a href="https://github.com/weavejester/clout/blob/master/src/clout/core.clj#L56" target="_blank" rel="noopener">核心规则</a>如下：<br><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(def ^:private route-parser</span><br><span class="line">  (insta/parser</span><br><span class="line">   "route    = (scheme / part) part*</span><br><span class="line">    scheme   = #'(https?:)?//'</span><br><span class="line">    &lt;part&gt;   = literal | escaped | wildcard | param</span><br><span class="line">    literal  = #'(:[^<span class="symbol">\\</span>p&#123;L&#125;_*&#123;&#125;<span class="symbol">\\</span><span class="symbol">\\</span>]|[^:*&#123;&#125;<span class="symbol">\\</span><span class="symbol">\\</span>])+'</span><br><span class="line">    escaped  = #'<span class="symbol">\\</span><span class="symbol">\\</span>.'</span><br><span class="line">    wildcard = '*'</span><br><span class="line">    param    = key pattern?</span><br><span class="line">    key      = &lt;':'&gt; #'([<span class="symbol">\\</span>p&#123;L&#125;_][<span class="symbol">\\</span>p&#123;L&#125;_0-9-]*)'</span><br><span class="line">    pattern  = '&#123;' (#'(?:[^&#123;&#125;<span class="symbol">\\</span><span class="symbol">\\</span>]|<span class="symbol">\\</span><span class="symbol">\\</span>.)+' | pattern)* '&#125;'"</span><br><span class="line">   :no-slurp true))</span><br></pre></td></tr></table></figure></p>
-<p>Compojure 中路由匹配的方式也非常巧妙，这里详细介绍一下。</p>
-<h3 id="Compojure-路由分发"><a href="#Compojure-路由分发" class="headerlink" title="Compojure 路由分发"></a>Compojure 路由分发</h3><p>Compojure 通过 routes 把一系列 handler 封装起来，其内部调用 routing 方法找到正确的 handler。这两个方法代码非常简洁：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(defn routing</span><br><span class="line">  <span class="string">"Apply a list of routes to a Ring request map."</span></span><br><span class="line">  [request &amp; handlers]</span><br><span class="line">  (some #(% request) handlers))</span><br><span class="line"></span><br><span class="line">(defn routes</span><br><span class="line">  <span class="string">"Create a Ring handler by combining several handlers into one."</span></span><br><span class="line">  [&amp; handlers]</span><br><span class="line">  #(apply<span class="built_in"> routing </span>% handlers))</span><br></pre></td></tr></table></figure></p>
-<p>routing 里面通过调用 <code>some</code> 函数返回第一个非 nil 调用，这样就解决了路由匹配的问题。由这个例子可以看出 Clojure 语言的表达力。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">;; ring.adapter.jetty
+(defn- ^AbstractHandler proxy-handler [handler]
+  (proxy [AbstractHandler] []
+    (handle [_ ^Request base-request request response]
+      (let [request-map  (servlet/build-request-map request)
+            response-map (handler request-map)]
+        (servlet/update-servlet-response response response-map)
+        (.setHandled base-request true)))))
+
+;; ring.util.servlet
+
+;; HttpServletRequest --&gt; request map
+
+(defn build-request-map
+  &#34;Create the request map from the HttpServletRequest object.&#34;
+  [^HttpServletRequest request]
+  {:server-port        (.getServerPort request)
+   :server-name        (.getServerName request)
+   :remote-addr        (.getRemoteAddr request)
+   :uri                (.getRequestURI request)
+   :query-string       (.getQueryString request)
+   :scheme             (keyword (.getScheme request))
+   :request-method     (keyword (.toLowerCase (.getMethod request) Locale/ENGLISH))
+   :protocol           (.getProtocol request)
+   :headers            (get-headers request)
+   :content-type       (.getContentType request)
+   :content-length     (get-content-length request)
+   :character-encoding (.getCharacterEncoding request)
+   :ssl-client-cert    (get-client-cert request)
+   :body               (.getInputStream request)})
+
+;; response map --&gt; HttpServletResponse
+
+(defn update-servlet-response
+  &#34;Update the HttpServletResponse using a response map. Takes an optional
+  AsyncContext.&#34;
+  ([response response-map]
+   (update-servlet-response response nil response-map))
+  ([^HttpServletResponse response context response-map]
+   (let [{:keys [status headers body]} response-map]
+     (when (nil? response)
+       (throw (NullPointerException. &#34;HttpServletResponse is nil&#34;)))
+     (when (nil? response-map)
+       (throw (NullPointerException. &#34;Response map is nil&#34;)))
+     (when status
+       (.setStatus response status))
+     (set-headers response headers)
+     (let [output-stream (make-output-stream response context)]
+       (protocols/write-body-to-stream body response-map output-stream)))))
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="middlewarehttpsgithubcomring-clojureringwikimiddleware-patterns"><a href="https://github.com/ring-clojure/ring/wiki/Middleware-Patterns">Middleware</a></h2>
+<p>Ring 里面采用 Middleware 模式去扩展 handler 的功能，这其实是函数式编程中常用的技巧，用高阶函数去组合函数，实现更复杂的功能。在 Clojure 里面，函数组合更常见的是用 <code>comp</code>，比如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">((comp #(* % 2) inc) 1)
+;; 4
+</code></pre></td></tr></table>
+</div>
+</div><p>这对一些简单的函数非常合适，但是如果逻辑比较复杂，Middleware 模式就比较合适了。例如可以进行一些逻辑判断决定是否需要调用某函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn middleware-comp [handler]
+  (fn [x]
+    (if (zero? 0)
+      (handler (inc x))
+      (handler x))))
+
+((-&gt; #(* 2 %)
+      middleware-comp) 1)
+;; 4
+((-&gt; #(* 2 %)
+      middleware-comp) 0)
+;; 2
+</code></pre></td></tr></table>
+</div>
+</div><p>虽然 Middleware 使用非常方便，但是有一点需要注意：多个 middleware 组合的顺序。后面在讲解 RESTful 示例时会演示不同顺序的 middleware 对请求的影响。</p>
+<p>Middleware 这一模式在函数式编程中非常常见，Clojure 生态里面新的构建工具 <a href="https://github.com/boot-clj/boot">boot-clj</a> 里面的 task 也是通过这种模式组合的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ cat build.boot
+(deftask inc-if-zero-else-dec
+  [n number NUM int &#34;number to test&#34;]
+  (fn [handler]
+    (fn [fileset]
+      (if (zero? number)
+        (handler (merge fileset {:number (inc number)}))
+        (handler (merge fileset {:number (dec number)}))))))
+
+(deftask printer
+  []
+  (fn [handler]
+    (fn [fileset]
+      (println (str &#34;number is &#34; (:number fileset)))
+      fileset)))
+
+$ boot inc-if-zero-else-dec -n 0    printer
+number is 1
+$ boot inc-if-zero-else-dec -n 1    printer
+number is 0
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="restful-实战">RESTful 实战</h2>
+<p>由于 Ring 只是提供了一个 Web 服务最基本的抽象功能，很多其他功能，像 url 路由规则，参数解析等均需通过其他模块实现。<a href="https://github.com/weavejester/compojure">Compojure</a> 是 Ring 生态里面默认的路由器，同样短小精悍，功能强大。基本用法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(def handlers
+  (routes
+   (GET &#34;/&#34; [] &#34;Hello World&#34;)
+   (GET &#34;/about&#34; [] &#34;about page&#34;)
+   (route/not-found &#34;Page not found!&#34;)))
+
+</code></pre></td></tr></table>
+</div>
+</div><p>使用这里的 handlers 代替上面 Hello World 的示例中的 handler 即可得到一个具有2条路由规则的 Web 应用，同时针对其他路由返回 <code>Page not found!</code>。</p>
+<p>Compojure 里面使用了大量宏来简化路由的定义，像上面例子中的<code>GET</code>、<code>not-found</code>等。Compojure 底层使用 <a href="https://github.com/weavejester/clout">clout</a> 这个库实现，而 clout 本身是基于一个 parser generator（<a href="https://github.com/Engelberg/instaparse">instaparse</a>） 定义的“路由”领域特定语言。<a href="https://github.com/weavejester/clout/blob/master/src/clout/core.clj#L56">核心规则</a>如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(def ^:private route-parser
+  (insta/parser
+   &#34;route    = (scheme / part) part*
+    scheme   = #&#39;(https?:)?//&#39;
+    &lt;part&gt;   = literal | escaped | wildcard | param
+    literal  = #&#39;(:[^\\p{L}_*{}\\\\]|[^:*{}\\\\])+&#39;
+    escaped  = #&#39;\\\\.&#39;
+    wildcard = &#39;*&#39;
+    param    = key pattern?
+    key      = &lt;&#39;:&#39;&gt; #&#39;([\\p{L}_][\\p{L}_0-9-]*)&#39;
+    pattern  = &#39;{&#39; (#&#39;(?:[^{}\\\\]|\\\\.)+&#39; | pattern)* &#39;}&#39;&#34;
+   :no-slurp true))
+</code></pre></td></tr></table>
+</div>
+</div><p>Compojure 中路由匹配的方式也非常巧妙，这里详细介绍一下。</p>
+<h3 id="compojure-路由分发">Compojure 路由分发</h3>
+<p>Compojure 通过 routes 把一系列 handler 封装起来，其内部调用 routing 方法找到正确的 handler。这两个方法代码非常简洁：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn routing
+  &#34;Apply a list of routes to a Ring request map.&#34;
+  [request &amp; handlers]
+  (some #(% request) handlers))
+
+(defn routes
+  &#34;Create a Ring handler by combining several handlers into one.&#34;
+  [&amp; handlers]
+  #(apply routing % handlers))
+</code></pre></td></tr></table>
+</div>
+</div><p>routing 里面通过调用 <code>some</code> 函数返回第一个非 nil 调用，这样就解决了路由匹配的问题。由这个例子可以看出 Clojure 语言的表达力。</p>
 <p>在使用 <code>GET</code> 等这类宏定义 handler 时，会调用<code>wrap-route-matches</code> 来包装真正的处理逻辑，逻辑如下：</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">defn-</span></span> wrap-route-matches [handler method path]</span><br><span class="line">  (<span class="name"><span class="builtin-name">fn</span></span> [request]</span><br><span class="line">     (<span class="name"><span class="builtin-name">if</span></span> (<span class="name">method-matches?</span> request method)</span><br><span class="line">       (<span class="name"><span class="builtin-name">if-let</span></span> [request (<span class="name">route-request</span> request path)]</span><br><span class="line">         (<span class="name"><span class="builtin-name">-&gt;</span></span> (<span class="name">handler</span> request)</span><br><span class="line">             (<span class="name">head-response</span> request method))))))</span><br></pre></td></tr></table></figure>
-<p>这里看到只有在 url 与 http method 均匹配时，才会去调用 handler 处理 http 请求，其他情况直接返回 nil，这与前面讲的 some 联合起来就形成了完整的路由功能。</p>
-<p>由于 <code>routes</code> 的返回值与 handler 一样，是一个接受 request map 返回 response map 的函数，所以可以像堆积木一样进行任意组合，实现类似于 <a href="http://flask.pocoo.org/docs/0.12/blueprints/" target="_blank" rel="noopener">Flask 中 blueprints</a> 的模块化功能。例如：</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">;; cat student.clj</span></span><br><span class="line">(<span class="name"><span class="builtin-name">ns</span></span> demo.student</span><br><span class="line">  (<span class="symbol">:require</span> [compojure.core <span class="symbol">:refer</span> [GET POST defroutes context]])</span><br><span class="line"></span><br><span class="line">(<span class="name">defroutes</span> handlers</span><br><span class="line">  (<span class="name">context</span> <span class="string">"/student"</span> []</span><br><span class="line">    (<span class="name">GET</span> <span class="string">"/"</span> [] <span class="string">"student index"</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment">;;cat demo.teacher</span></span><br><span class="line">(<span class="name"><span class="builtin-name">ns</span></span> demo.teacher</span><br><span class="line">  (<span class="symbol">:require</span> [compojure.core <span class="symbol">:refer</span> [GET POST defroutes context]])</span><br><span class="line"></span><br><span class="line">(<span class="name">defroutes</span> handlers</span><br><span class="line">  (<span class="name">context</span> <span class="string">"/teacher"</span> []</span><br><span class="line">    (<span class="name">GET</span> <span class="string">"/"</span> [] <span class="string">"teacher index"</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; cat demo.core.clj</span></span><br><span class="line">(<span class="name"><span class="builtin-name">ns</span></span> demo.core</span><br><span class="line">  (<span class="symbol">:require</span> [demo.student <span class="symbol">:as</span> stu]</span><br><span class="line">            [demo.teacher <span class="symbol">:as</span> tea])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">;; core 里面进行 handler 的组合</span></span><br><span class="line">(<span class="name">defroutes</span> handlers</span><br><span class="line">  (<span class="name">GET</span> <span class="string">"/"</span> [] <span class="string">"index"</span>)</span><br><span class="line">  (<span class="name">stu/handlers</span>)</span><br><span class="line">  (<span class="name">tea/handlers</span>))</span><br></pre></td></tr></table></figure>
-<h3 id="Middleware-功能扩展"><a href="#Middleware-功能扩展" class="headerlink" title="Middleware 功能扩展"></a>Middleware 功能扩展</h3><h4 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h4><p>Compojure 解决了路由问题，参数获取是通过定制不能的 middleware 实现的，<code>compojure.handler</code> 命名空间提供了常用的 middleware 的组合，针对 RESTful 可以使用 <a href="https://github.com/weavejester/compojure/blob/master/src/compojure/handler.clj#L22" target="_blank" rel="noopener">api</a> 这个组合函数，它会把 QueryString 中的参数解析到 request map 中的<code>:query-params</code> key 中，表单中的参数解析到 request map 中的 <code>:form-params</code>。<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">def</span></span> app</span><br><span class="line">  (<span class="name"><span class="builtin-name">-&gt;</span></span> handlers</span><br><span class="line">      handler/api))</span><br></pre></td></tr></table></figure></p>
-<h4 id="JSON-序列化"><a href="#JSON-序列化" class="headerlink" title="JSON 序列化"></a>JSON 序列化</h4><p>由于 RESTful 服务中，请求的数据与返回的数据通常都是 JSON 格式，所以需要增加两个额外的功能来实现 JSON 的序列化。<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">;; 首先引用 ring.middleware.json</span></span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">def</span></span> app</span><br><span class="line">  (<span class="name"><span class="builtin-name">-&gt;</span></span> handlers</span><br><span class="line">      wrap-json-response</span><br><span class="line">      wrap-json-body</span><br><span class="line">      handler/api))</span><br></pre></td></tr></table></figure></p>
-<h4 id="纪录请求时间"><a href="#纪录请求时间" class="headerlink" title="纪录请求时间"></a>纪录请求时间</h4><p>通常，我们需要纪录每个请求的处理时间，这很简单，实现个 <code>record-response-time</code> 即可：</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> record-response-time [handler]</span><br><span class="line">  (<span class="name"><span class="builtin-name">fn</span></span> [req]</span><br><span class="line">    (<span class="name"><span class="builtin-name">let</span></span> [start-date (<span class="name">System/currentTimeMillis</span>)]</span><br><span class="line">      (<span class="name">handler</span> req)</span><br><span class="line">      (<span class="name"><span class="builtin-name">let</span></span> [res-time (<span class="name"><span class="builtin-name">-</span></span> (<span class="name">System/currentTimeMillis</span>) start-date)]</span><br><span class="line">        (<span class="name">println</span> (<span class="name"><span class="builtin-name">format</span></span>  <span class="string">"%s took %d ms"</span> (<span class="symbol">:uri</span> req) res-time))))))</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">def</span></span> app</span><br><span class="line">  (<span class="name"><span class="builtin-name">-&gt;</span></span> handlers</span><br><span class="line">      wrap-json-response</span><br><span class="line">      wrap-json-body</span><br><span class="line">      handler/api</span><br><span class="line">      record-response-time))</span><br></pre></td></tr></table></figure>
-<p>需要注意的是 <code>record-response-time</code> 需要放在 middleware 最外层，这样它才能纪录一个请求经过所有 middleware + handler 处理的时间。</p>
-<h4 id="封装异常"><a href="#封装异常" class="headerlink" title="封装异常"></a>封装异常</h4><p>其次，另一个很常见的需求就是封装异常，当服务端出现错误时返回给客户端友好的错误信息，而不是服务端的错误堆栈。<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> wrap-exception</span><br><span class="line">  [handler]</span><br><span class="line">  (<span class="name"><span class="builtin-name">fn</span></span> [request]</span><br><span class="line">    (<span class="name"><span class="builtin-name">try</span></span></span><br><span class="line">      (<span class="name">handler</span> request)</span><br><span class="line">      (<span class="name">catch</span> Throwable e</span><br><span class="line">        (<span class="name">response</span> &#123;<span class="symbol">:code</span> <span class="number">20001</span></span><br><span class="line">                   <span class="symbol">:msg</span>  <span class="string">"inner error&#125;)))))</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">(def app</span></span><br><span class="line"><span class="string">  (-&gt; handlers</span></span><br><span class="line"><span class="string">      wrap-json-response</span></span><br><span class="line"><span class="string">      wrap-json-body</span></span><br><span class="line"><span class="string">      handler/api</span></span><br><span class="line"><span class="string">      wrap-exception</span></span><br><span class="line"><span class="string">      record-response-time))</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="顺序！顺序！顺序！"><a href="#顺序！顺序！顺序！" class="headerlink" title="顺序！顺序！顺序！"></a>顺序！顺序！顺序！</h4><p>一个 App 中的 middleware 调用顺序非常重要，因为不同的 middleware 之间 request map 与 response map 是相互依赖的，所以在定义 middleware 时一定要注意顺序。一图胜千言：</p>
-<p><img src="https://img.alicdn.com/imgextra/i4/581166664/TB2BkmmmohnpuFjSZFEXXX0PFXa_!!581166664.png" alt="middleware 应用顺序图"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在 Java EE 中，编写 Web 项目通常是配置各种 XML 文件，代码还没开始写就配置了一大堆jar包依赖，这些 jar 包很有可能会冲突，然后需要花大量时间处理这些依赖冲突，真心麻烦。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn- wrap-route-matches [handler method path]
+  (fn [request]
+     (if (method-matches? request method)
+       (if-let [request (route-request request path)]
+         (-&gt; (handler request)
+             (head-response request method))))))
+</code></pre></td></tr></table>
+</div>
+</div><p>这里看到只有在 url 与 http method 均匹配时，才会去调用 handler 处理 http 请求，其他情况直接返回 nil，这与前面讲的 some 联合起来就形成了完整的路由功能。</p>
+<p>由于 <code>routes</code> 的返回值与 handler 一样，是一个接受 request map 返回 response map 的函数，所以可以像堆积木一样进行任意组合，实现类似于 <a href="http://flask.pocoo.org/docs/0.12/blueprints/">Flask 中 blueprints</a> 的模块化功能。例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">;; cat student.clj
+(ns demo.student
+  (:require [compojure.core :refer [GET POST defroutes context]])
+
+(defroutes handlers
+  (context &#34;/student&#34; []
+    (GET &#34;/&#34; [] &#34;student index&#34;)))
+
+;;cat demo.teacher
+(ns demo.teacher
+  (:require [compojure.core :refer [GET POST defroutes context]])
+
+(defroutes handlers
+  (context &#34;/teacher&#34; []
+    (GET &#34;/&#34; [] &#34;teacher index&#34;)))
+
+;; cat demo.core.clj
+(ns demo.core
+  (:require [demo.student :as stu]
+            [demo.teacher :as tea])
+
+
+;; core 里面进行 handler 的组合
+(defroutes handlers
+  (GET &#34;/&#34; [] &#34;index&#34;)
+  (stu/handlers)
+  (tea/handlers))
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="middleware-功能扩展">Middleware 功能扩展</h3>
+<h4 id="参数解析">参数解析</h4>
+<p>Compojure 解决了路由问题，参数获取是通过定制不能的 middleware 实现的，<code>compojure.handler</code> 命名空间提供了常用的 middleware 的组合，针对 RESTful 可以使用 <a href="https://github.com/weavejester/compojure/blob/master/src/compojure/handler.clj#L22">api</a> 这个组合函数，它会把 QueryString 中的参数解析到 request map 中的<code>:query-params</code> key 中，表单中的参数解析到 request map 中的 <code>:form-params</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(def app
+  (-&gt; handlers
+      handler/api))
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="json-序列化">JSON 序列化</h4>
+<p>由于 RESTful 服务中，请求的数据与返回的数据通常都是 JSON 格式，所以需要增加两个额外的功能来实现 JSON 的序列化。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">;; 首先引用 ring.middleware.json
+
+(def app
+  (-&gt; handlers
+      wrap-json-response
+      wrap-json-body
+      handler/api))
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="纪录请求时间">纪录请求时间</h4>
+<p>通常，我们需要纪录每个请求的处理时间，这很简单，实现个 <code>record-response-time</code> 即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn record-response-time [handler]
+  (fn [req]
+    (let [start-date (System/currentTimeMillis)]
+      (handler req)
+      (let [res-time (- (System/currentTimeMillis) start-date)]
+        (println (format  &#34;%s took %d ms&#34; (:uri req) res-time))))))
+
+(def app
+  (-&gt; handlers
+      wrap-json-response
+      wrap-json-body
+      handler/api
+      record-response-time))
+</code></pre></td></tr></table>
+</div>
+</div><p>需要注意的是 <code>record-response-time</code> 需要放在 middleware 最外层，这样它才能纪录一个请求经过所有 middleware + handler 处理的时间。</p>
+<h4 id="封装异常">封装异常</h4>
+<p>其次，另一个很常见的需求就是封装异常，当服务端出现错误时返回给客户端友好的错误信息，而不是服务端的错误堆栈。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn wrap-exception
+  [handler]
+  (fn [request]
+    (try
+      (handler request)
+      (catch Throwable e
+        (response {:code 20001
+                   :msg  &#34;inner error})))))
+
+(def app
+  (-&gt; handlers
+      wrap-json-response
+      wrap-json-body
+      handler/api
+      wrap-exception
+      record-response-time))
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="顺序顺序顺序">顺序！顺序！顺序！</h4>
+<p>一个 App 中的 middleware 调用顺序非常重要，因为不同的 middleware 之间 request map 与 response map 是相互依赖的，所以在定义 middleware 时一定要注意顺序。一图胜千言：</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2BkmmmohnpuFjSZFEXXX0PFXa_!!581166664.png" alt="middleware 应用顺序图">
+    <figcaption><center>middleware 应用顺序图</center></figcaption>
+  </figure>
+
+</p>
+<h2 id="总结">总结</h2>
+<p>在 Java EE 中，编写 Web 项目通常是配置各种 XML 文件，代码还没开始写就配置了一大堆jar包依赖，这些 jar 包很有可能会冲突，然后需要花大量时间处理这些依赖冲突，真心麻烦。</p>
 <p>Ring 与其说是一个框架，不如说是由各个短小精悍的函数组成的 lib，充分展示了 Clojure 语言的威力，通过函数的组合定义出一套完整的 HTTP 抽象机制，通过宏来实现“路由”特定领域语言，极大简化了路由的定义，方便了模块的分解。</p>
-<p>除了上面的介绍，Ring 生态里面还有 <a href="https://github.com/weavejester/lein-ring" target="_blank" rel="noopener">lein-ring</a> ，它可以在不重启服务的情况下重新加载有修改的命名空间（以及其影响的），开发从未如何顺畅。</p>
+<p>除了上面的介绍，Ring 生态里面还有 <a href="https://github.com/weavejester/lein-ring">lein-ring</a> ，它可以在不重启服务的情况下重新加载有修改的命名空间（以及其影响的），开发从未如何顺畅。</p>
 <p>Ring + Compojure + lein-ring 你值得拥有。</p>
-<h2 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h2><ul>
-<li><a href="http://www.braveclojure.com/appendix-b/" target="_blank" rel="noopener">Boot, the Fancy Clojure Build Framework</a></li>
-<li><a href="http://www.lispcast.com/what-web-framework-should-i-use" target="_blank" rel="noopener">http://www.lispcast.com/what-web-framework-should-i-use</a></li>
-<li><a href="https://github.com/luminus-framework/luminus/blob/master/resources/md/html_templating.md" target="_blank" rel="noopener">https://github.com/luminus-framework/luminus/blob/master/resources/md/html_templating.md</a></li>
-<li><a href="https://stackoverflow.com/questions/3488353/whats-the-big-idea-behind-compojure-routes" target="_blank" rel="noopener">https://stackoverflow.com/questions/3488353/whats-the-big-idea-behind-compojure-routes</a></li>
+<h2 id="扩展阅读">扩展阅读</h2>
+<ul>
+<li><a href="http://www.braveclojure.com/appendix-b/">Boot, the Fancy Clojure Build Framework</a></li>
+<li><a href="http://www.lispcast.com/what-web-framework-should-i-use">http://www.lispcast.com/what-web-framework-should-i-use</a></li>
+<li><a href="https://github.com/luminus-framework/luminus/blob/master/resources/md/html_templating.md">https://github.com/luminus-framework/luminus/blob/master/resources/md/html_templating.md</a></li>
+<li><a href="https://stackoverflow.com/questions/3488353/whats-the-big-idea-behind-compojure-routes">https://stackoverflow.com/questions/3488353/whats-the-big-idea-behind-compojure-routes</a></li>
 </ul>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/" data-id="ckhxlinx1004gszljmiyo1f4p" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvElEQVR42u3aQW7jMAwF0Ln/pTvbAQIn/5NSJ4vnVZG4tp4KiCzJP3/i6+ef6/Xz/M7Xb58+f33+67fHLjw8PLzF0pNFtL/79ISn5ebU5L14eHh493hPr8nvSULF4yLewjbrwcPDw/se3vuDPgHk1Dao4OHh4X0nb5ZSJz8nJDw8PLxv4G0enZRl88/z7T5ca8HDw8OLeXkX6Xt+vtLfw8PDw1t31fMDd5ZYt62verV4eHh4F3j5gZuXU9ukeTNMEN2Jh4eHd5SXD1rlLahZkyyH5aNgeHh4ePd4s2JEGyry4NFu1of6NB4eHt4FXnv45stqU+Fo0fkIFx4eHt413qwN1gLyAkf+3g8KPDw8vAu8uuI7SnDzBLptoa1Gr/Dw8PDWvFkiu4G1JYxVOQMPDw/vKG+2iCRgbK42VER/Nzw8PLw1r82189dvBg42Iwh4eHh4t3ntEZ8UUtsSw6aEEW0iHh4e3lFefkxv2v/tPW3j7UB/Dw8PD2/EawsBSXssf8s+xf8wdIWHh4d3gdc2qNo0dxYYkuc83o+Hh4f3K7zZsT5bdHvQt0EFDw8P7wavbc/nZYj2iJ8l69EK8fDw8K7xNgXZorQ6Khnnpd6iJIGHh4e34LXjAsnQwCwVnoHrASw8PDy8Q7xZWWEWPPIufx60PgQGPDw8vKO8pN2VFyw2peHkCflG4OHh4d3m5Ud5Hm3yReel3voteHh4eNd4eRNrXybIC75tORgPDw/vNu+nvNqiQBJa2qS82BQ8PDy8C7z2wN2nyG0bbNjHm00r4OHh4cW8JBjkh/UmDORDBsVgFh4eHt41XtuymjXyD8erYfkFDw8P7//w8mR3U6pox7k+9Pfw8PDwvoDXDkLNMO2deHh4eL/Dyxf9npHceSoYFIEBDw8P7yiv/Y8+b1zNNijf9CsFCzw8PLx311+E0nOoQsPv6wAAAABJRU5ErkJggg==">分享</a><div class="tags"><a href="/tags/Clojure/">Clojure</a></div><div class="post-nav"><a class="pre" href="/blog/2017/05/11/review-of-secret-of-silicon-valley/">《硅谷之谜》读后感</a><a class="next" href="/blog/2017/03/22/ace-technical-interview/">“玩转” 技术面试——链表的函数表示法</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/';
-    this.page.identifier = 'blog/2017/04/02/clojure-web-dev-ring-usage/';
-    this.page.title = 'Clojure Web 开发-- Ring 使用指南';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/clojure/">Clojure</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2017/05/11/review-of-secret-of-silicon-valley/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">《硅谷之谜》读后感</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2017/03/22/ace-technical-interview/">
+            <span class="next-text nav-default">“玩转” 技术面试——链表的函数表示法</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

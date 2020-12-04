@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>最佳实践 on Keep Coding</title>
+    <link>https://liujiacai.net/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link>
+    <description>Recent content in 最佳实践 on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 23 Nov 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MacBook 最佳实践</title>
+      <link>https://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/</link>
+      <pubDate>Sun, 23 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/</guid>
+      <description>MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。 MacBook 你值得拥</description>
+    </item>
+    
+    <item>
+      <title>让firefox与chrome一样快</title>
+      <link>https://liujiacai.net/blog/2014/11/08/secret-of-firefox-prefs/</link>
+      <pubDate>Sat, 08 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/11/08/secret-of-firefox-prefs/</guid>
+      <description>在如今这个Web时代，浏览器可以说是仅次于操作系统的软件了，各种应用都可以放到云端、移动端随时随地的使用，HTML5标准的最终版正式发布， 再</description>
+    </item>
+    
+  </channel>
+</rss>

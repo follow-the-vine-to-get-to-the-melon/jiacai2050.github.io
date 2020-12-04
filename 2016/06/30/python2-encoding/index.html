@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python2 中的编码问题 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="先来看一个异常信息： UnicodeEncodeError: &amp;lsquo;ascii&amp;rsquo; codec can&amp;rsquo;t encode characters in position 51-52: ordinal not in range(128) 相信每个 Python 程序员对上面这个错误都再熟悉不过了，也许你这个问题的根源以及解决方法不是很清楚，那么" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/2016/06/30/python2-encoding/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python2 中的编码问题" />
+<meta property="og:description" content="先来看一个异常信息： UnicodeEncodeError: &lsquo;ascii&rsquo; codec can&rsquo;t encode characters in position 51-52: ordinal not in range(128) 相信每个 Python 程序员对上面这个错误都再熟悉不过了，也许你这个问题的根源以及解决方法不是很清楚，那么" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/2016/06/30/python2-encoding/" />
+<meta property="article:published_time" content="2016-06-30T16:13:17+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="Python2 中的编码问题">
+<meta itemprop="description" content="先来看一个异常信息： UnicodeEncodeError: &lsquo;ascii&rsquo; codec can&rsquo;t encode characters in position 51-52: ordinal not in range(128) 相信每个 Python 程序员对上面这个错误都再熟悉不过了，也许你这个问题的根源以及解决方法不是很清楚，那么">
+<meta itemprop="datePublished" content="2016-06-30T16:13:17+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="3981">
+
+
+
+<meta itemprop="keywords" content="Python," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python2 中的编码问题"/>
+<meta name="twitter:description" content="先来看一个异常信息： UnicodeEncodeError: &lsquo;ascii&rsquo; codec can&rsquo;t encode characters in position 51-52: ordinal not in range(128) 相信每个 Python 程序员对上面这个错误都再熟悉不过了，也许你这个问题的根源以及解决方法不是很清楚，那么"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python2 中的编码问题</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-06-30 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            </div>
+          <span class="more-meta"> 约 3981 字 </span>
+          <span class="more-meta"> 预计阅读 8 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#什么是字符串">什么是字符串</a></li>
+        <li><a href="#python-2-中的字符类型">Python 2 中的字符类型</a></li>
+        <li><a href="#python-2-中的默认编码">Python 2 中的默认编码</a></li>
+        <li><a href="#python-2-中编码问题出现根源">Python 2 中编码问题出现根源</a></li>
+        <li><a href="#实战演练">实战演练</a>
+          <ul>
+            <li><a href="#字符串拼接比较">字符串拼接、比较</a></li>
+            <li><a href="#读写文件">读写文件</a></li>
+            <li><a href="#print">print</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#coding-utf-8">coding: utf-8</a></li>
+    <li><a href="#coding-utf-8-1">coding: utf-8</a></li>
+    <li><a href="#coding-utf-8-2">coding: utf-8</a></li>
+    <li><a href="#coding-utf-8-3">coding: utf-8</a></li>
+    <li><a href="#false">False</a></li>
+    <li><a href="#true">True</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>先来看一个异常信息：</p>
+<blockquote>
+<p>UnicodeEncodeError: &lsquo;ascii&rsquo; codec can&rsquo;t encode characters in position 51-52: ordinal not in range(128)</p>
+</blockquote>
+<p>相信每个 Python 程序员对上面这个错误都再熟悉不过了，也许你这个问题的根源以及解决方法不是很清楚，那么这篇文章将尝试解答你心中的疑惑。</p>
+<h2 id="什么是字符串">什么是字符串</h2>
+<blockquote>
+<p>Everything you thought you knew about strings is wrong.</p>
+</blockquote>
+<p>计算机中，处理字符串是一个看似简单但及其复杂的问题。推荐我之前写的一文章<a href="/blog/2015/11/20/strings/">《字符串，那些你不知道的事》</a>。</p>
+<h2 id="python-2-中的字符类型">Python 2 中的字符类型</h2>
+<p>Python 2 中有两种字符类型：<code>str</code>与<code>unicode</code>，其<a href="http://stackoverflow.com/a/10288345/2163429">区别</a>是：</p>
+<blockquote>
+<p>str is text representation in bytes, unicode is text representation in characters.</p>
+</blockquote>
+<p>字符字面量是<code>str</code>类型，也就是说<code>foo = &quot;你好&quot;</code>这一赋值语句表示的是把<code>你好</code>所对应的二进制字节（这里的字节就是Python解释器读取源文件时读取到的）赋值给变量<code>foo</code>，在 Python 2 中的<code>str</code>类型相当于其他语言的<code>byte</code>类型。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; &#34;你好&#34;
+&#39;\xe4\xbd\xa0\xe5\xa5\xbd&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p><code>unicode</code>对象保存的是字符的<a href="https://pythonhosted.org/kitchen/glossary.html#term-code-point">code point</a>。在 Python 2 如果想表示 <code>unicode</code> 类型，有下面三种方式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; u&#34;你好&#34;
+u&#39;\u4f60\u597d&#39;
+&gt;&gt;&gt; &#34;你好&#34;.decode(&#34;utf8&#34;)
+u&#39;\u4f60\u597d&#39;
+&gt;&gt;&gt; unicode(&#34;你好&#34;, &#34;utf8&#34;)
+u&#39;\u4f60\u597d&#39;
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="python-2-中的默认编码">Python 2 中的默认编码</h2>
+<p><code>sys.getdefaultencoding()</code>可以得到当前 Python 环境的默认编码，Python 2 中为<code>ascii</code>。<code>str</code>与<code>unicode</code>两种字符类型中转化时，如果没有明确指定编码方式，就会用这个默认编码。</p>
+<center>
+<img src="https://img.alicdn.com/imgextra/i1/581166664/TB2A3eksXXXXXaqXpXXXXXXXXXX_!!581166664.png" alt=" str与unicode转化方式"/>
+</center>
+<h2 id="python-2-中编码问题出现根源">Python 2 中编码问题出现根源</h2>
+<p>了解了 Python 2 中的两种字符类型以及默认编码，现在就可以分析与编码相关的问题出现的原因了。</p>
+<p>在 Python 2 的世界中，很多 API 对这两种字符类型的使用比较混乱，有的可以混用这两种，有的只能使用其中之一，如果在调用 API 时传入了错误的字符类型，Python 2 会自动去转为正确的字符类型，问题就出现在自动转化时用的编码默认是<code>ascii</code>，所以经常会出现<code>UnicodeDecodeError</code>或<code>UnicodeEncodeError</code>错误了。</p>
+<p>随着 unicode 的普及，Python 2 中越来越多的 API 使用 <code>unicode</code> 类型的字符串作为参数与返回值，我们在设计 API 时，也尽可能要使用<code>unicode</code>类型。那是不是说，把程序里面的所有字符串都用<code>unicode</code>类型表示，就不会出错了呢？也不尽然，一般有如下准则：</p>
+<ul>
+<li>在进行文本处理（如查找一个字符串中字符的个数，分割字符串等）时，使用<code>unicode</code>类型</li>
+<li>在进行<code>I/O</code>处理（如，读写磁盘上的文件，打印一个字符串，网络通信等）时，使用<code>str</code>类型</li>
+</ul>
+<p>想想也很好理解，因为 Python 2 中的<code>str</code>类型相当于其他语言的<code>byte</code>类型，在进行<code>I/O</code>时操作的是一个个的字节。</p>
+<h2 id="实战演练">实战演练</h2>
+<p>知道了问题出现的原因，下面举一些常见的与编码相关的错误代码，演示如何正确的使用。</p>
+<h3 id="字符串拼接比较">字符串拼接、比较</h3>
+<p>Python 中字符串在进行拼接与比较时，如果一个是<code>str</code>类型，另一个是<code>unicode</code>类型，那么会把<code>str</code>隐式转为<code>unicode</code>类型。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; &#34;%s, %s&#34; % (u&#34;你好&#34;, &#34;中国&#34;)
+Traceback (most recent call last):
+  File &#34;&lt;stdin&gt;&#34;, line 1, in &lt;module&gt;
+UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe4 in position 0: ordinal not in range(128)
+&gt;&gt;&gt; u&#34;你好&#34; &gt; &#34;中国&#34;
+Traceback (most recent call last):
+  File &#34;&lt;stdin&gt;&#34;, line 1, in &lt;module&gt;
+UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe4 in position 0: ordinal not in range(128)
+</code></pre></td></tr></table>
+</div>
+</div><p>解决方法也很简单，就像上面说的，只要不涉及到<code>I/O</code>操作，一律用<code>unicode</code>类型。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; u&#34;%s, %s&#34; % (u&#34;你好&#34;, u&#34;中国&#34;)
+u&#39;\u4f60\u597d, \u4e2d\u56fd&#39;
+&gt;&gt;&gt; u&#34;你好&#34; &gt; u&#34;中国&#34;
+True
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="读写文件">读写文件</h3>
+<p>内置函数 <a href="https://docs.python.org/2/library/functions.html#open">open(name[, mode[, buffering]])</a> 可以返回一个文件类型的对象，这里返回的文件对象操作的是<code>str</code>类型的字符，我们可以手动将读到的内容转为<code>unicode</code>类型，但是这里有个问题， 对于多字节编码来说，一个 unicode 字符可能被数目不同的字节表示，如果我们读取了任意固定大小（比如1K，或4K）的数据块，这个数据快的最后几个字节很可能是某个 unicode 字符的前几个字节，我们需要去处理这种异常，一个比较笨的解决方式是把所有数据读取到内存中，然后再去转码，显然这不适合大数据的情况。一个比较好的方法是使用<code>codecs</code>模块的<code> open(filename, mode='rb', encoding=None, errors='strict', buffering=1)</code>方法，这个方法返回的文件对象操作的是<code>unicode</code>类型的字符，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># cat /tmp/debug.log
+你好
+
+&gt;&gt;&gt; with open(&#39;/tmp/debug.log&#39;) as f:
+&gt;&gt;&gt;     s = f.read(1)    # 读一个字节
+&gt;&gt;&gt;     print type(s)    # str
+&gt;&gt;&gt;     print s          # 无意义的一个符号
+&gt;&gt;&gt;
+&gt;&gt;&gt; import codecs
+&gt;&gt;&gt;
+&gt;&gt;&gt; with codecs.open(&#39;/tmp/debug.log&#39;, encoding=&#39;utf-8&#39;) as f:
+&gt;&gt;&gt;     s = f.read(1)    # 读一个字符
+&gt;&gt;&gt;     print type(s)    # unicode
+&gt;&gt;&gt;     print s          # 你
+
+</code></pre></td></tr></table>
+</div>
+</div><p>如果我们用内置的<code>open</code>进行写文件，必须将<code>unicode</code>字符转为<code>str</code>字符，否则会报错。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; with open(&#39;/tmp/debug.log&#39;, &#39;w&#39;) as f:
+&gt;&gt;&gt;     f.write(u&#39;你好&#39;)
+Traceback (most recent call last):
+  File &#34;&lt;stdin&gt;&#34;, line 1, in &lt;module&gt;
+UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 0-1: ordinal not in range(128)
+</code></pre></td></tr></table>
+</div>
+</div><p>这个错误很典型，就是因为用默认的<code>ascii</code>去编码<code>你好</code>导致的，显然<code>你好</code>不在<code>ascii</code>字符集内，正确的方式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; with open(&#39;/tmp/debug.log&#39;, &#39;w&#39;) as f:
+&gt;&gt;&gt;     f.write(u&#39;你好&#39;.encode(&#39;utf-8&#39;))
+
+$ cat /tmp/debug.log
+你好
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="print">print</h3>
+<p>首先需要注意的是 <a href="https://docs.python.org/2/reference/simple_stmts.html#print">print</a> 在 Python 2 中是一个表达式（和if、return同一级别），而不是一个函数。
+<code>print</code>有两种语法形式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">print_stmt ::=  &#34;print&#34; ([expression (&#34;,&#34; expression)* [&#34;,&#34;]]
+                | &#34;&gt;&gt;&#34; expression [(&#34;,&#34; expression)+ [&#34;,&#34;]])
+</code></pre></td></tr></table>
+</div>
+</div><p>默认情况下<code>print</code>打印到标准输出<code>sys.stdout</code>中，可以使用<code>&gt;&gt;</code>后跟一个<code>file-like</code>的对象（具有<code>write</code>方法）进行重定向。例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">with open(&#39;/tmp/debug.log&#39;, &#39;w&#39;) as f:
+    print &gt;&gt; f, &#39;你好&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p>因为<code>print</code>的参数为<code>str</code>类型的字符，所以在打印到标准输出（一般为终端，例如Mac的iTerm2）时有个隐式转码的过程，这个转码过程默认用的编码在类unix系统上是通过环境变量<code>LC_ALL</code>指定的，在 Windows 系统中，终端默认只能显示256个字符（<a href="http://en.wikipedia.org/wiki/Code_page_437">cp437</a> 指定）。</p>
+<center>
+<img src="https://img.alicdn.com/imgextra/i4/581166664/TB2DlbxsXXXXXcyXpXXXXXXXXXX_!!581166664.png" alt="Python 解释器内部 print 数据流程"/>
+</center>
+自 Python 2.6 起，Python 解释器在启动时可以通过指定 [PYTHONIOENCODING](https://docs.python.org/2.7/using/cmdline.html#envvar-PYTHONIOENCODING) 这个环境变量来指定。
+在程序里面，我们可以通过只读属性`sys.stdout.encoding`查看。
+```
+$ cat encode.py
+# coding: utf-8
+import sys
+print sys.stdout.encoding
+print u"你好"
+<p>$ python encode.py
+UTF-8
+你好</p>
+<p>$ LC_ALL=C python encode.py
+US-ASCII
+Traceback (most recent call last):
+File &ldquo;encode.py&rdquo;, line 21, in <module>
+print u&quot;你好&quot;
+UnicodeEncodeError: &lsquo;ascii&rsquo; codec can&rsquo;t encode characters in position 0-1: ordinal not in range(128)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+当 `print` 通过重定向，不是打印到标准输出`sys.stdout`时，由于它不知道目标文件的`locale`，所以它又会用默认的`ascii`进行编码了。
+
+</code></pre></td></tr></table>
+</div>
+</div><p>$ python encode.py &gt; abc
+Traceback (most recent call last):
+File &ldquo;encode.py&rdquo;, line 21, in <module>
+print u&quot;你好&quot;
+UnicodeEncodeError: &lsquo;ascii&rsquo; codec can&rsquo;t encode characters in position 0-1: ordinal not in range(128)</p>
+<p>$ cat abc
+None</p>
+<p>$ PYTHONIOENCODING=UTF-8 python encode.py &gt; abc
+$ cat abc
+UTF-8
+你好</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">可以看到，在不指定`PYTHONIOENCODING`时，`sys.stdout.encoding`输出`None`了，并且执行`print u&#34;你好&#34;`时报错了。
+
+为了解决打印unicode字符的问题，我们可以通过[codecs.StreamWriter](http://docs.python.org/library/codecs.html#codecs.StreamWriter)来包装一次`sys.stdout`对象。例如：
+</code></pre></td></tr></table>
+</div>
+</div><p>$ cat encode2.py</p>
+<h1 id="coding-utf-8">coding: utf-8</h1>
+<p>import codecs
+import sys</p>
+<p>UTF8Writer = codecs.getwriter(&lsquo;utf8&rsquo;)
+sys.stdout = UTF8Writer(sys.stdout)
+print u&rsquo;你好'</p>
+<p>$ python encode2.py &gt; abc
+$ cat abc
+你好</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">需要注意的是，通过`codecs.StreamWriter`包装后的`print`，在输出`str`类型的字符时，会先把这个字符转为`unicode`类型，然后再转为`str`类型，这两个转化过程用的也是默认的`ascii`编码， 所以很有可能又会出错。
+</code></pre></td></tr></table>
+</div>
+</div><p>$ cat encode3.py</p>
+<h1 id="coding-utf-8-1">coding: utf-8</h1>
+<p>import codecs
+import sys</p>
+<p>UTF8Writer = codecs.getwriter(&lsquo;utf8&rsquo;)
+sys.stdout = UTF8Writer(sys.stdout)
+print &lsquo;你好&rsquo;</p>
+<p>$ python encode3.py &gt; abc
+Traceback (most recent call last):
+File &ldquo;encode3.py&rdquo;, line 7, in <module>
+print &lsquo;你好&rsquo;
+File &ldquo;/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/codecs.py&rdquo;, line 351, in write
+data, consumed = self.encode(object, self.errors)
+UnicodeDecodeError: &lsquo;ascii&rsquo; codec can&rsquo;t decode byte 0xe4 in position 0: ordinal not in range(128)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">你可能会问，有没有一劳永逸的解决方法，第三方模块[kitchen](https://pypi.python.org/pypi/kitchen)可以解决这个问题。
+
+</code></pre></td></tr></table>
+</div>
+</div><p>$ pip install kitchen
+$ cat encode4.py</p>
+<h1 id="coding-utf-8-2">coding: utf-8</h1>
+<p>import sys
+from kitchen.text.converters import getwriter
+UTF8Writer = getwriter(&lsquo;utf8&rsquo;)
+sys.stdout = UTF8Writer(sys.stdout)
+print u&rsquo;你好'
+print &lsquo;你好&rsquo;</p>
+<p>$ python encode4.py &gt; abc
+$ cat abc
+你好
+你好</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">可以看到，两种类型的`你好`均被正确重定向到文件中。
+
+### 其他
+
+我上面重点讲解了输入输出时的常见编码错误，其他的编码错误基本上就是 API 参数类型不匹配的参数。自己代码推荐还比较好解决，第三方模块里面的就不好调试了，如果遇到了，只能通过hack的方式来修改第三方模块的源代码了。
+
+一个比较好的建议是，`str`类型的变量名前面用`b_`标示，比如`b_search_hits`，表示返回的搜索结果的类型是`str`。
+
+## never reload(sys)
+
+互联网上比较常见的一个解决编码的方式是：
+</code></pre></td></tr></table>
+</div>
+</div><p>reload(sys)
+sys.setdefaultencoding(&ldquo;utf-8&rdquo;)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">这种解决方式带来的弊远远大于利，下面一个简单的例子：
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="coding-utf-8-3">coding: utf-8</h1>
+<p>import sys</p>
+<p>print &ldquo;你好&rdquo; == u&quot;你好&quot;</p>
+<h1 id="false">False</h1>
+<p>reload(sys)
+sys.setdefaultencoding(&ldquo;utf-8&rdquo;)</p>
+<p>print &ldquo;你好&rdquo; == u&quot;你好&quot;</p>
+<h1 id="true">True</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">可以看到，设置默认编码之后，程序的逻辑已经发生了改变，最主要的是，如果我们改变了默认编码，我们所引用的所有第三方模块，也都会改变，就像这里举的例子，程序的逻辑很有可能会改变。关于这个问题的详尽解释，可以参考[Dangers of sys.setdefaultencoding(&#39;utf-8&#39;)](http://stackoverflow.com/q/28657010/2163429)。
+
+
+## 总结
+
+通过上面的分析，想象大家对 Python 2 中为什么会出现那么多的编码错误有所了解，根本原因就在于 Python 设计早期混淆了`byte`类型与`str`类型，好歹在 Python 3 解决了这个设计错误。
+在另一方面，这里的编码问题对我们理解计算机的运行原理很有帮助，也反映出`copy &amp; paste`的危害，希望大家看了我这篇文章之后，严禁`reload(sys)`这种做法，推荐使用`from __future__ import unicode_literals`来将所有字符字面量表示为 unicode。
+
+如果大家对 Python 2 中的编码问题，还有任何疑问，欢迎留言讨论。
+
+## 参考
+
+- [Should I import unicode_literals?](http://python-future.org/unicode_literals.html)
+- [Overcoming frustration: Correctly using unicode in python2](https://pythonhosted.org/kitchen/unicode-frustrations.html)
+- [PrintFails](https://wiki.python.org/moin/PrintFails)
+- [Unicode HOWTO](https://docs.python.org/2/howto/unicode.html)
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">Python</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2016/10/31/socket-programming/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Socket 编程实战</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2016/05/28/scope-closure/">
+            <span class="next-text nav-default">编程语言中的变量作用域与闭包</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

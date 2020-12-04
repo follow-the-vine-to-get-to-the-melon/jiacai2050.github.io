@@ -1,26 +1,194 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>python, ruby, javascript 浅析 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">python, ruby, javascript 浅析</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">python, ruby, javascript 浅析</h1><div class="post-meta">Mar 26, 2016<span> | </span><span class="category"><a href="/categories/langs/">编程语言</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.7k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 15</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2016/03/26/python-ruby-javascript/" href="/blog/2016/03/26/python-ruby-javascript/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#讨论范围"><span class="toc-number">1.</span> <span class="toc-text">讨论范围</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#语言定义"><span class="toc-number">2.</span> <span class="toc-text">语言定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设计理念"><span class="toc-number">3.</span> <span class="toc-text">设计理念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#语法"><span class="toc-number">4.</span> <span class="toc-text">语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#面向对象"><span class="toc-number">4.1.</span> <span class="toc-text">面向对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lambda-表达式"><span class="toc-number">4.2.</span> <span class="toc-text">lambda 表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yield"><span class="toc-number">4.3.</span> <span class="toc-text">yield</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串"><span class="toc-number">4.4.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#immutable-vs-mutable"><span class="toc-number">4.4.1.</span> <span class="toc-text">immutable vs mutable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#拼接"><span class="toc-number">4.4.2.</span> <span class="toc-text">拼接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Python"><span class="toc-number">4.4.2.1.</span> <span class="toc-text">Python</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Javascript"><span class="toc-number">4.4.2.2.</span> <span class="toc-text">Javascript</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看值类型"><span class="toc-number">4.5.</span> <span class="toc-text">查看值类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#包管理"><span class="toc-number">5.</span> <span class="toc-text">包管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="post-content"><p>最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面、实现层面有很多共同的地方，但是它们也在很多设计理念上存在重要差异，通过对比这些相同点、异同点，更加有助于理解这两门语言。同时，Node.js、React Native 的出现，将 javascript 这门“前端”语言推向了全栈，同样作为一门动态语言，javascript 与 ruby、python 在很多概念上也存在很多相同点、异同点。</p>
-<p>本篇文章着重从编程语言设计的角度进行阐述，希望对编程语言爱好者理解这三门语言有所帮助，做到融会贯通。</p>
-<center><br><img src="https://img.alicdn.com/imgextra/i4/581166664/TB2kVcxcByN.eBjSZFgXXXmGXXa_!!581166664.png" alt=" js_python_ruby"><br></center>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>python, ruby, javascript 浅析 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-<h2 id="讨论范围"><a href="#讨论范围" class="headerlink" title="讨论范围"></a>讨论范围</h2><p>Python、Ruby、Javascript(ECMAScript) 准确说是一种语言规范，规范可以有多种实现，这体现在不同的解释器上。</p>
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2016/03/26/python-ruby-javascript/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="python, ruby, javascript 浅析" />
+<meta property="og:description" content="最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2016/03/26/python-ruby-javascript/" />
+<meta property="article:published_time" content="2016-03-26T17:03:40+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="python, ruby, javascript 浅析">
+<meta itemprop="description" content="最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面">
+<meta itemprop="datePublished" content="2016-03-26T17:03:40+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="4550">
+
+
+
+<meta itemprop="keywords" content="Python,Ruby,JavaScript," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="python, ruby, javascript 浅析"/>
+<meta name="twitter:description" content="最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">python, ruby, javascript 浅析</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-03-26 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            </div>
+          <span class="more-meta"> 约 4550 字 </span>
+          <span class="more-meta"> 预计阅读 10 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#讨论范围">讨论范围</a></li>
+        <li><a href="#语言定义">语言定义</a></li>
+        <li><a href="#设计理念">设计理念</a></li>
+        <li><a href="#语法">语法</a>
+          <ul>
+            <li><a href="#面向对象">面向对象</a></li>
+            <li><a href="#lambda-表达式">lambda 表达式</a></li>
+            <li><a href="#yield">yield</a></li>
+            <li><a href="#字符串">字符串</a></li>
+            <li><a href="#查看值类型">查看值类型</a></li>
+          </ul>
+        </li>
+        <li><a href="#包管理">包管理</a></li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面、实现层面有很多共同的地方，但是它们也在很多设计理念上存在重要差异，通过对比这些相同点、异同点，更加有助于理解这两门语言。同时，Node.js、React Native 的出现，将 javascript 这门“前端”语言推向了全栈，同样作为一门动态语言，javascript 与 ruby、python 在很多概念上也存在很多相同点、异同点。</p>
+<p>本篇文章着重从编程语言设计的角度进行阐述，希望对编程语言爱好者理解这三门语言有所帮助，做到融会贯通。</p>
+<center>
+<img src="https://img.alicdn.com/imgextra/i4/581166664/TB2kVcxcByN.eBjSZFgXXXmGXXa_!!581166664.png" alt=" js_python_ruby"/>
+</center>
+<h2 id="讨论范围">讨论范围</h2>
+<p>Python、Ruby、Javascript(ECMAScript) 准确说是一种语言规范，规范可以有多种实现，这体现在不同的解释器上。</p>
 <ul>
 <li>Python 的解释器主要有 CPython、IronPython、Jython、PyPy</li>
 <li>Ruby 的解释器主要有 Ruby MRI(CRuby)、JRuby、MacRuby、IronRuby</li>
 <li>Javascript 的解释器主要有 Chakra, SpiderMonkey, V8</li>
 </ul>
-<p>本文主要讨论的是 CPython、CRuby，它们是其语言作者亲自设计的，也是应用场景最广的。<br>Javascript 在语言设计之初根本没考虑到其应用范围会如此之广，所以相比其他语言，它语言内置的功能要弱很多，<a href="http://es6-features.org/" target="_blank" rel="noopener">ES6</a> 的出现就是为了解决这个问题，本文所涉及的 javascript 运行在基于 V8 引擎的 Node.js 中，且具备 ES6 语法。</p>
-<h2 id="语言定义"><a href="#语言定义" class="headerlink" title="语言定义"></a>语言定义</h2><p>首先看一下 wikipedia 上对这三门语言的定义：</p>
+<p>本文主要讨论的是 CPython、CRuby，它们是其语言作者亲自设计的，也是应用场景最广的。
+Javascript 在语言设计之初根本没考虑到其应用范围会如此之广，所以相比其他语言，它语言内置的功能要弱很多，<a href="http://es6-features.org/">ES6</a> 的出现就是为了解决这个问题，本文所涉及的 javascript 运行在基于 V8 引擎的 Node.js 中，且具备 ES6 语法。</p>
+<h2 id="语言定义">语言定义</h2>
+<p>首先看一下 wikipedia 上对这三门语言的定义：</p>
 <ul>
 <li>Python is a widely used <code>high-level</code>, <code>general-purpose</code>, <code>interpreted</code>, <code>dynamic</code> programming language</li>
 <li>Ruby is a <code>dynamic</code>, <code>reflective</code>, <code>object-oriented</code>, <code>general-purpose</code> programming language.</li>
@@ -28,87 +196,646 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 </ul>
 <p>其实上面标红的关键字对于这三门语言来说都适用，只是每个语言的强调点不一样而已。</p>
 <p>通常会称这三门语言为<code>动态语言</code>，支持<code>函数式</code>、<code>面向对象</code>两种编程范式，这两点其实是最重要的。</p>
-<h2 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h2><p><code>既轻量又强大</code>是大多数动态语言相通的设计理念，关于 javascript 设计理念更多的介绍可以参考我的<a href="http://liujiacai.net/blog/2015/02/01/javascript-oop/#设计理念">这篇文章介绍</a>。至于 Python 与 Ruby 设计理念的区别，一句话即可概括：</p>
+<h2 id="设计理念">设计理念</h2>
+<p><code>既轻量又强大</code>是大多数动态语言相通的设计理念，关于 javascript 设计理念更多的介绍可以参考我的<a href="http://liujiacai.net/blog/2015/02/01/javascript-oop/#%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5">这篇文章介绍</a>。至于 Python 与 Ruby 设计理念的区别，一句话即可概括：</p>
 <ul>
 <li>Python: 一件事情只有一种方法做</li>
 <li>Ruby: 一件事情有多种方法做</li>
 </ul>
-<p>比如，Python 中 Tuple, Array, String 没有相应获取大小的方法，而是提供了统一的<code>len</code>来解决这个问题<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; len([<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="number">2</span></span><br><span class="line">&gt;&gt;&gt; len(<span class="string">"hello world"</span>)</span><br><span class="line"><span class="number">11</span></span><br><span class="line">&gt;&gt;&gt; len((<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure></p>
-<p>至于 Ruby 的<code>一件事情有多种方法做</code>的理念，后面我在讲解 lambda 与字符串拼接时再介绍。</p>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>如果你之前没接触过 ruby、python 的语法，推荐先去了解下：</p>
+<p>比如，Python 中 Tuple, Array, String 没有相应获取大小的方法，而是提供了统一的<code>len</code>来解决这个问题</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; len([1,2])
+2
+&gt;&gt;&gt; len(&#34;hello world&#34;)
+11
+&gt;&gt;&gt; len((1,2))
+2
+</code></pre></td></tr></table>
+</div>
+</div><p>至于 Ruby 的<code>一件事情有多种方法做</code>的理念，后面我在讲解 lambda 与字符串拼接时再介绍。</p>
+<h2 id="语法">语法</h2>
+<p>如果你之前没接触过 ruby、python 的语法，推荐先去了解下：</p>
 <ul>
-<li>官方文档 <a href="https://www.ruby-lang.org/en/documentation/quickstart/" target="_blank" rel="noopener">Ruby in Twenty Minutes</a></li>
-<li><a href="http://www.techotopia.com/index.php/Ruby_Essentials" target="_blank" rel="noopener">Ruby Essentials</a>，两个小时绝对看完了</li>
-<li><a href="http://python-best-practice.liujiacai.net" target="_blank" rel="noopener">python 最佳实践</a>，应该用不了半个小时</li>
+<li>官方文档 <a href="https://www.ruby-lang.org/en/documentation/quickstart/">Ruby in Twenty Minutes</a></li>
+<li><a href="http://www.techotopia.com/index.php/Ruby_Essentials">Ruby Essentials</a>，两个小时绝对看完了</li>
+<li><a href="http://python-best-practice.liujiacai.net">python 最佳实践</a>，应该用不了半个小时</li>
 </ul>
 <p>javascript 实在是太简单了，就不用特别看了。</p>
-<p>综合来说，python、javascript 还是比较中规中矩的，即使 ES6 里面加了<a href="https://github.com/lukehoban/es6features" target="_blank" rel="noopener">很多花哨的语法糖衣</a>，但是也比较直观，但是 ruby 这个语言就比较变态了，各种符号，像<code>class Son &lt; Father</code>表示类的基础，<code>&quot;hello&quot; &lt;&lt; &quot; world&quot;</code>表示字符串的拼接，<code>@var</code>表示对象的成员变量，<code>@@var</code>表示类的成员变量，<code>$var</code>表示全局变量。</p>
-<p>而且在 ruby 中，方法调用时的括号可有可无，即使有参数也可以省略：<br><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; def add(a, b)</span><br><span class="line">&gt;     a + b</span><br><span class="line">&gt; end</span><br><span class="line">&gt;</span><br><span class="line">&gt; add <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">=&gt; <span class="number">3</span></span><br></pre></td></tr></table></figure></p>
-<p>如果你对 Scheme 熟悉，上面的代码还能像下面这么写，是不是很亲切<br><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; (def add a, b</span><br><span class="line">&gt;     a + b</span><br><span class="line">&gt; end)</span><br><span class="line"></span><br><span class="line">&gt; (add <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">=&gt; <span class="number">3</span></span><br></pre></td></tr></table></figure></p>
-<p>这也就是充分说明，括号在 ruby 中只是起到了“分割”的作用，并没有什么语法含义。</p>
-<h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><p>面向对象主要的核心是用<code>对象</code>来达到数据封装的目的。</p>
+<p>综合来说，python、javascript 还是比较中规中矩的，即使 ES6 里面加了<a href="https://github.com/lukehoban/es6features">很多花哨的语法糖衣</a>，但是也比较直观，但是 ruby 这个语言就比较变态了，各种符号，像<code>class Son &lt; Father</code>表示类的基础，<code>&quot;hello&quot; &lt;&lt; &quot; world&quot;</code>表示字符串的拼接，<code>@var</code>表示对象的成员变量，<code>@@var</code>表示类的成员变量，<code>$var</code>表示全局变量。</p>
+<p>而且在 ruby 中，方法调用时的括号可有可无，即使有参数也可以省略：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt; def add(a, b)
+&gt;     a + b
+&gt; end
+&gt;
+&gt; add 1, 2
+=&gt; 3
+</code></pre></td></tr></table>
+</div>
+</div><p>如果你对 Scheme 熟悉，上面的代码还能像下面这么写，是不是很亲切</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt; (def add a, b
+&gt;     a + b
+&gt; end)
+
+&gt; (add 1, 2)
+=&gt; 3
+</code></pre></td></tr></table>
+</div>
+</div><p>这也就是充分说明，括号在 ruby 中只是起到了“分割”的作用，并没有什么语法含义。</p>
+<h3 id="面向对象">面向对象</h3>
+<p>面向对象主要的核心是用<code>对象</code>来达到数据封装的目的。</p>
 <ul>
 <li>javascript 基于原型链实现面向对象，更详细的介绍可以参考<a href="http://liujiacai.net/blog/2015/02/01/javascript-oop/">《javascript中的面向对象编程》</a></li>
 <li>python、ruby 基于类来实现面向对象，和 java 类似，但是更纯粹些。</li>
 </ul>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ python</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span></span>: return <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; type(func)</span><br><span class="line">&lt;type <span class="string">'function'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; func2 = lambda <span class="symbol">x:</span> x</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; type(func2)</span><br><span class="line">&lt;type <span class="string">'function'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; type(<span class="number">1</span>)</span><br><span class="line">&lt;type <span class="string">'int'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; dir(<span class="number">1</span>)</span><br><span class="line">[<span class="string">'__abs__'</span>, <span class="string">'__add__'</span>, .....]</span><br><span class="line"><span class="comment">#--------------------------------------------------#</span></span><br><span class="line">$ irb</span><br><span class="line">&gt; <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span></span></span><br><span class="line">&gt;    a + b</span><br><span class="line">&gt; <span class="keyword">end</span></span><br><span class="line">&gt; method(<span class="symbol">:add</span>)</span><br><span class="line">=&gt; #&lt;Method: Object#add&gt;</span><br><span class="line"><span class="comment"># 上面 ruby 的例子中，使用了 Symbol 来表示 add 方法，这是由于 ruby 中直接写 add 表示函数调用</span></span><br><span class="line">&gt; <span class="number">1</span>.methods</span><br><span class="line">=&gt; [<span class="symbol">:%</span>, <span class="symbol">:&amp;</span>, <span class="symbol">:*</span>, <span class="symbol">:+</span>, <span class="symbol">:-</span>, <span class="symbol">:/</span>, .....]</span><br></pre></td></tr></table></figure>
-<p>可以看到，在 python、ruby 中，像<code>1</code>这样的数字字面量也是对象。</p>
-<h3 id="lambda-表达式"><a href="#lambda-表达式" class="headerlink" title="lambda 表达式"></a>lambda 表达式</h3><p>lambda 表达式表示的是匿名函数。由于在这三门语言中，函数均是一等成员，所以可以很方便的进行函数式编程<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">$</span> <span class="string">node</span></span><br><span class="line"><span class="string">&gt;</span> <span class="string">[1,2,3].map((x)</span> <span class="string">=&gt;</span> <span class="string">x</span> <span class="string">+</span> <span class="number">1</span><span class="string">)</span></span><br><span class="line"><span class="string">[</span> <span class="number">2</span><span class="string">,</span> <span class="number">3</span><span class="string">,</span> <span class="number">4</span> <span class="string">]</span></span><br><span class="line"><span class="comment">#--------------------------------------------------#</span></span><br><span class="line"><span class="string">$</span> <span class="string">python</span></span><br><span class="line"><span class="string">&gt;&gt;&gt;</span> <span class="string">map(lambda</span> <span class="attr">x:</span> <span class="string">x+1,</span> <span class="string">[1,2,3])</span></span><br><span class="line"><span class="string">[2,</span> <span class="number">3</span><span class="string">,</span> <span class="number">4</span><span class="string">]</span></span><br><span class="line"><span class="comment">#--------------------------------------------------#</span></span><br><span class="line"><span class="string">$</span> <span class="string">irb</span></span><br><span class="line"><span class="string">&gt;</span> <span class="string">[1,2,3].map</span> <span class="string">&amp;(lambda</span> <span class="string">&#123;|x|</span> <span class="string">x+1&#125;)</span></span><br><span class="line"> <span class="string">=&gt;</span> <span class="string">[2,</span> <span class="number">3</span><span class="string">,</span> <span class="number">4</span><span class="string">]</span></span><br></pre></td></tr></table></figure></p>
-<p>Python 的 lambda 表达式是这三者中最弱的一个，只能包含一个表达式，javascript 与 ruby 的则没有这种限制。</p>
-<p>细心的读者会发现上面 ruby 版本的 lambda 前有个<code>&amp;</code>，这是必须的，否则会报下面的错误<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ArgumentError:</span> <span class="string">wrong</span> <span class="string">number</span> <span class="string">of</span> <span class="string">arguments</span> <span class="string">(given</span> <span class="number">1</span><span class="string">,</span> <span class="string">expected</span> <span class="number">0</span><span class="string">)</span></span><br></pre></td></tr></table></figure></p>
-<p>这是因为在 ruby 中，方法除了接受参数外，还可以接受一个代码块(block)，代码块在 ruby 中有两种写法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ python
+&gt;&gt;&gt; def func(): return 1
+&gt;&gt;&gt; type(func)
+&lt;type &#39;function&#39;&gt;
+&gt;&gt;&gt; func2 = lambda x: x
+&gt;&gt;&gt; type(func2)
+&lt;type &#39;function&#39;&gt;
+&gt;&gt;&gt; type(1)
+&lt;type &#39;int&#39;&gt;
+&gt;&gt;&gt; dir(1)
+[&#39;__abs__&#39;, &#39;__add__&#39;, .....]
+#--------------------------------------------------#
+$ irb
+&gt; def add(a, b)
+&gt;    a + b
+&gt; end
+&gt; method(:add)
+=&gt; #&lt;Method: Object#add&gt;
+# 上面 ruby 的例子中，使用了 Symbol 来表示 add 方法，这是由于 ruby 中直接写 add 表示函数调用
+&gt; 1.methods
+=&gt; [:%, :&amp;, :*, :+, :-, :/, .....]
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，在 python、ruby 中，像<code>1</code>这样的数字字面量也是对象。</p>
+<h3 id="lambda-表达式">lambda 表达式</h3>
+<p>lambda 表达式表示的是匿名函数。由于在这三门语言中，函数均是一等成员，所以可以很方便的进行函数式编程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ node
+&gt; [1,2,3].map((x) =&gt; x + 1)
+[ 2, 3, 4 ]
+#--------------------------------------------------#
+$ python
+&gt;&gt;&gt; map(lambda x: x+1, [1,2,3])
+[2, 3, 4]
+#--------------------------------------------------#
+$ irb
+&gt; [1,2,3].map &amp;(lambda {|x| x+1})
+ =&gt; [2, 3, 4]
+</code></pre></td></tr></table>
+</div>
+</div><p>Python 的 lambda 表达式是这三者中最弱的一个，只能包含一个表达式，javascript 与 ruby 的则没有这种限制。</p>
+<p>细心的读者会发现上面 ruby 版本的 lambda 前有个<code>&amp;</code>，这是必须的，否则会报下面的错误</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ArgumentError: wrong number of arguments (given 1, expected 0)
+</code></pre></td></tr></table>
+</div>
+</div><p>这是因为在 ruby 中，方法除了接受参数外，还可以接受一个代码块(block)，代码块在 ruby 中有两种写法：</p>
 <ul>
 <li>一行的话用<code>{}</code></li>
-<li>多行的话用<code>do ... end</code>    <figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].each &#123; |num| print <span class="string">"#&#123;num&#125;! "</span> &#125;</span><br><span class="line"><span class="number">1</span>! <span class="number">2</span>! <span class="number">3</span>!</span><br><span class="line">=&gt;[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">&gt; [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].each do |num|</span><br><span class="line">&gt;    print <span class="string">"#&#123;num&#125;!"</span></span><br><span class="line">&gt; end</span><br><span class="line"><span class="number">1</span>! <span class="number">2</span>! <span class="number">3</span>!</span><br><span class="line"> =&gt;[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]         # Identical to the first case.</span><br></pre></td></tr></table></figure>
-</li>
+<li>多行的话用<code>do ... end</code></li>
 </ul>
-<p><code>&amp;</code> 的作用是告诉解释器，现在传入的不是正常的参数，而是一个代码块。这个传入的代码块在方法内通过<code>yield</code>进行调用。这里可以做个演示：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Array</span></span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">my_each</span></span></span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i &lt; <span class="keyword">self</span>.size</span><br><span class="line">        <span class="keyword">yield</span>(<span class="keyword">self</span>[i])  </span><br><span class="line">        i+=<span class="number">1</span>      </span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">self</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">&gt; [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].my_each &#123; <span class="params">|num|</span> print <span class="string">"<span class="subst">#&#123;num&#125;</span>!"</span> &#125;</span><br><span class="line"><span class="number">1</span>! <span class="number">2</span>! <span class="number">3</span>!</span><br><span class="line">=&gt; [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure></p>
-<p>Ruby 中 lambda 表达式属于 <a href="http://ruby-doc.org/core-2.2.0/Proc.html" target="_blank" rel="noopener">Proc 类型</a>，<br><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; lambda &#123;|x| x&#125;.class</span><br><span class="line">=&gt; Proc</span><br></pre></td></tr></table></figure></p>
-<p>这里可以看到，只是对于闭包的支持，Ruby 就提供了多种方案。更多可以参考：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt; [1,2,3].each { |num| print &#34;#{num}! &#34; }
+1! 2! 3!
+=&gt;[1,2,3]
+&gt; [1,2,3].each do |num|
+&gt;    print &#34;#{num}!&#34;
+&gt; end
+1! 2! 3!
+ =&gt;[1,2,3]         # Identical to the first case.
+</code></pre></td></tr></table>
+</div>
+</div><p><code>&amp;</code> 的作用是告诉解释器，现在传入的不是正常的参数，而是一个代码块。这个传入的代码块在方法内通过<code>yield</code>进行调用。这里可以做个演示：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">class Array
+  def my_each
+    i = 0
+    while i &lt; self.size
+        yield(self[i])  
+        i+=1      
+    end
+    self
+  end
+end
+
+&gt; [1,2,3].my_each { |num| print &#34;#{num}!&#34; }
+1! 2! 3!
+=&gt; [1,2,3]
+</code></pre></td></tr></table>
+</div>
+</div><p>Ruby 中 lambda 表达式属于 <a href="http://ruby-doc.org/core-2.2.0/Proc.html">Proc 类型</a>，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt; lambda {|x| x}.class
+=&gt; Proc
+</code></pre></td></tr></table>
+</div>
+</div><p>这里可以看到，只是对于闭包的支持，Ruby 就提供了多种方案。更多可以参考：</p>
 <ul>
-<li><a href="http://www.eriktrautman.com/posts/ruby-explained-blocks-procs-and-lambdas-aka-closures" target="_blank" rel="noopener">Ruby Explained: Blocks, Procs, and Lambdas, aka “Closures”</a></li>
-<li><a href="https://blog.newrelic.com/2015/04/30/weird-ruby-part-4-code-pods/" target="_blank" rel="noopener">Weird Ruby Part 4: Code Pods (Blocks, Procs, and Lambdas)</a></li>
+<li><a href="http://www.eriktrautman.com/posts/ruby-explained-blocks-procs-and-lambdas-aka-closures">Ruby Explained: Blocks, Procs, and Lambdas, aka &ldquo;Closures&rdquo;</a></li>
+<li><a href="https://blog.newrelic.com/2015/04/30/weird-ruby-part-4-code-pods/">Weird Ruby Part 4: Code Pods (Blocks, Procs, and Lambdas)</a></li>
 </ul>
-<h3 id="yield"><a href="#yield" class="headerlink" title="yield"></a>yield</h3><p>就像上面说的，ruby 中 <code>yield</code> 就是表示代码块的调用，没有其他含义。而在 python 与 javascript <code>yield</code> 是用来构造<a href="https://wiki.python.org/moin/Generators" target="_blank" rel="noopener">生成器（generator）</a>的，都是用来控制程序运行流程，相当于用户态的“线程”：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ python</span><br><span class="line">def iter():</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">10</span>):</span><br><span class="line">        <span class="built_in">yield</span> x</span><br><span class="line"></span><br><span class="line">foo = iter()</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">next</span>(foo)</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">next</span>(foo)</span><br><span class="line">#<span class="comment">--------------------------------------------------#</span></span><br><span class="line"></span><br><span class="line">$ node</span><br><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">iter</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="keyword">for</span> (var i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">    <span class="built_in">yield</span> i</span><br><span class="line">&#125;</span><br><span class="line">var foo = iter()</span><br><span class="line">console.<span class="built_in">log</span>(foo.<span class="built_in">next</span>().value)</span><br><span class="line">console.<span class="built_in">log</span>(foo.<span class="built_in">next</span>().value)</span><br></pre></td></tr></table></figure></p>
-<p>上面两份代码都依次打印出<code>0</code>, <code>1</code>。</p>
+<h3 id="yield">yield</h3>
+<p>就像上面说的，ruby 中 <code>yield</code> 就是表示代码块的调用，没有其他含义。而在 python 与 javascript <code>yield</code> 是用来构造<a href="https://wiki.python.org/moin/Generators">生成器（generator）</a>的，都是用来控制程序运行流程，相当于用户态的“线程”：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ python
+def iter():
+    for x in xrange(10):
+        yield x
+
+foo = iter()
+print next(foo)
+print next(foo)
+#--------------------------------------------------#
+
+$ node
+function* iter() {
+ for (var i = 0; i &lt; 10; i++)
+    yield i
+}
+var foo = iter()
+console.log(foo.next().value)
+console.log(foo.next().value)
+
+</code></pre></td></tr></table>
+</div>
+</div><p>上面两份代码都依次打印出<code>0</code>, <code>1</code>。</p>
 <p>关于生成器的更多资料，可以参考：</p>
 <ul>
-<li><a href="https://strongloop.com/strongblog/how-to-generators-node-js-yield-use-cases/" target="_blank" rel="noopener">Generators in Node.js: Common Misconceptions and Three Good Use Cases</a></li>
-<li><a href="http://www.dabeaz.com/coroutines/Coroutines.pdf" target="_blank" rel="noopener">More details on Python generators and coroutines</a>（强烈推荐 Python 读者看）</li>
+<li><a href="https://strongloop.com/strongblog/how-to-generators-node-js-yield-use-cases/">Generators in Node.js: Common Misconceptions and Three Good Use Cases</a></li>
+<li><a href="http://www.dabeaz.com/coroutines/Coroutines.pdf">More details on Python generators and coroutines</a>（强烈推荐 Python 读者看）</li>
 </ul>
-<p>在 ruby 中，与生成器对应的概念是 <a href="http://ruby-doc.org/core-2.2.0/Fiber.html" target="_blank" rel="noopener">Fiber</a>，例如：<br><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iter = Fiber.<span class="keyword">new</span> <span class="keyword">do</span></span><br><span class="line">  (<span class="number">0.</span><span class="number">.10</span>).<span class="keyword">each</span> <span class="keyword">do</span> |x|</span><br><span class="line">    Fiber.<span class="keyword">yield</span> x</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts iter.<span class="keyword">resume</span></span><br><span class="line">puts iter.<span class="keyword">resume</span></span><br></pre></td></tr></table></figure></p>
-<p>上面的代码也依次打印出<code>0</code>, <code>1</code>。</p>
+<p>在 ruby 中，与生成器对应的概念是 <a href="http://ruby-doc.org/core-2.2.0/Fiber.html">Fiber</a>，例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">iter = Fiber.new do
+  (0..10).each do |x|
+    Fiber.yield x
+  end
+end
+
+puts iter.resume
+puts iter.resume
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的代码也依次打印出<code>0</code>, <code>1</code>。</p>
 <p>关于生成器与 Fiber 的关系，可以参考：</p>
 <ul>
-<li><a href="https://nikolaygrozev.wordpress.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/comment-page-1" target="_blank" rel="noopener">Overview of Modern Concurrency and Parallelism Concepts</a> （需翻墙，强烈推荐读者看）</li>
-<li><a href="http://merbist.com/2011/02/22/concurrency-in-ruby-explained/" target="_blank" rel="noopener">http://merbist.com/2011/02/22/concurrency-in-ruby-explained/</a></li>
+<li><a href="https://nikolaygrozev.wordpress.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/comment-page-1">Overview of Modern Concurrency and Parallelism Concepts</a> （需翻墙，强烈推荐读者看）</li>
+<li><a href="http://merbist.com/2011/02/22/concurrency-in-ruby-explained/">http://merbist.com/2011/02/22/concurrency-in-ruby-explained/</a></li>
 </ul>
-<p>其实，生成器、Fiber 以及相关概念背后的理论基础是 <a href="https://en.wikipedia.org/wiki/Continuation" target="_blank" rel="noopener">continuation</a>，continuation 的应用场景非常广泛，各种编程语言中的<a href="https://en.wikipedia.org/wiki/Exception_handling" target="_blank" rel="noopener">异常处理</a>也是基于它来实现的。鉴于这个话题比较大，这里不再展开叙述，感兴趣的读者可以参考<a href="http://matt.might.net/articles/programming-with-continuations--exceptions-backtracking-search-threads-generators-coroutines/" target="_blank" rel="noopener">这篇文章</a>，后面我也会单独再写一篇文章进行介绍。<br>这里仅仅给出 continuation 的一个简单示例以飨读者：<br><figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">; Scheme 语言中没有 return 语句，利用 continuation 可以模拟 return</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">f</span> return)</span><br><span class="line">  (<span class="name">return</span> <span class="number">2</span>)</span><br><span class="line">  <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">display</span></span> (<span class="name">f</span> (<span class="name"><span class="builtin-name">lambda</span></span> (x) x))) <span class="comment">; displays 3</span></span><br><span class="line">(<span class="name"><span class="builtin-name">display</span></span> (<span class="name"><span class="builtin-name">call-with-current-continuation</span></span> f)) <span class="comment">; displays 2</span></span><br></pre></td></tr></table></figure></p>
-<p>关于这里例子详细的解释可以参考<a href="https://en.wikipedia.org/wiki/Call-with-current-continuation#Examples" target="_blank" rel="noopener">WIKI Call-with-current-continuation</a>。</p>
-<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><h4 id="immutable-vs-mutable"><a href="#immutable-vs-mutable" class="headerlink" title="immutable vs mutable"></a>immutable vs mutable</h4><p><a href="/blog/2015/11/20/strings/">字符串</a>作为对字符的一种抽象，实现时有两种选择：可变的与不可变的。这两种实现的优缺点如下：</p>
+<p>其实，生成器、Fiber 以及相关概念背后的理论基础是 <a href="https://en.wikipedia.org/wiki/Continuation">continuation</a>，continuation 的应用场景非常广泛，各种编程语言中的<a href="https://en.wikipedia.org/wiki/Exception_handling">异常处理</a>也是基于它来实现的。鉴于这个话题比较大，这里不再展开叙述，感兴趣的读者可以参考<a href="http://matt.might.net/articles/programming-with-continuations--exceptions-backtracking-search-threads-generators-coroutines/">这篇文章</a>，后面我也会单独再写一篇文章进行介绍。
+这里仅仅给出 continuation 的一个简单示例以飨读者：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">; Scheme 语言中没有 return 语句，利用 continuation 可以模拟 return
+(define (f return)
+  (return 2)
+  3)
+
+(display (f (lambda (x) x))) ; displays 3
+(display (call-with-current-continuation f)) ; displays 2
+</code></pre></td></tr></table>
+</div>
+</div><p>关于这里例子详细的解释可以参考<a href="https://en.wikipedia.org/wiki/Call-with-current-continuation#Examples">WIKI Call-with-current-continuation</a>。</p>
+<h3 id="字符串">字符串</h3>
+<h4 id="immutable-vs-mutable">immutable vs mutable</h4>
+<p><a href="/blog/2015/11/20/strings/">字符串</a>作为对字符的一种抽象，实现时有两种选择：可变的与不可变的。这两种实现的优缺点如下：</p>
 <ul>
-<li><p>可变的字符串，这意味着对字符串进行修改、追加等操作时可在原有字符串基础上直接操作，比较节省空间。但是可变的特点会导致如下几个问题：</p>
+<li>
+<p>可变的字符串，这意味着对字符串进行修改、追加等操作时可在原有字符串基础上直接操作，比较节省空间。但是可变的特点会导致如下几个问题：</p>
 <ul>
-<li><p>相等性（equality）。如果一个对象是可变的，我们应该如何判断两个对象是相等的呢？这里还有个容易混淆的概念：同一性（identity），同一性是指两个变量指向同一个对象，相等性指两个变量指向不同的两个对象，但这两个对象的值是一样的。<br>  <img src="https://img.alicdn.com/imgextra/i3/581166664/TB29NApmFXXXXbvXpXXXXXXXXXX_!!581166664.png" alt="string_identity_equal"></p>
+<li>
+<p>相等性（equality）。如果一个对象是可变的，我们应该如何判断两个对象是相等的呢？这里还有个容易混淆的概念：同一性（identity），同一性是指两个变量指向同一个对象，相等性指两个变量指向不同的两个对象，但这两个对象的值是一样的。
+
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i3/581166664/TB29NApmFXXXXbvXpXXXXXXXXXX_!!581166664.png" alt="string_identity_equal">
+    <figcaption><center>string_identity_equal</center></figcaption>
+  </figure>
+
+</p>
 </li>
-<li><p>并发性（concurrence）。在多线程的环境中，需要对可变对象进行各种复杂的锁机制来保障其正确性。</p>
+<li>
+<p>并发性（concurrence）。在多线程的环境中，需要对可变对象进行各种复杂的锁机制来保障其正确性。</p>
 </li>
 </ul>
 </li>
-<li><p>不可变字符串没有上面的两个问题，但是不可变字符串在进行修改时由于会新生成一个对象，所以会比较消耗空间，所以这采用不可变字符串实现的语言一般都会提供一个具备 buffer 的字符串构造对象来生成字符串，像 Java 中的 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/StringBuffer.html" target="_blank" rel="noopener">StringBuffer</a>，Python 中的 <a href="https://docs.python.org/2/library/stringio.html" target="_blank" rel="noopener">StringIO</a>。</p>
+<li>
+<p>不可变字符串没有上面的两个问题，但是不可变字符串在进行修改时由于会新生成一个对象，所以会比较消耗空间，所以这采用不可变字符串实现的语言一般都会提供一个具备 buffer 的字符串构造对象来生成字符串，像 Java 中的 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/StringBuffer.html">StringBuffer</a>，Python 中的 <a href="https://docs.python.org/2/library/stringio.html">StringIO</a>。</p>
 </li>
 </ul>
 <p>Ruby 中字符串是<code>可变</code>的，但是 Ruby 中提供了不可变字符串的替代品 Symbol，而且 Ruby 2.3 也提供了<code>--enable-frozen-string-literal</code> 选项用以声明字符串是不可变的。具体可参考：</p>
 <ul>
-<li><a href="https://wyeworks.com/blog/2015/12/1/-strings-in-ruby-2-dot-3" target="_blank" rel="noopener">https://wyeworks.com/blog/2015/12/1/-strings-in-ruby-2-dot-3</a></li>
+<li><a href="https://wyeworks.com/blog/2015/12/1/-strings-in-ruby-2-dot-3">https://wyeworks.com/blog/2015/12/1/-strings-in-ruby-2-dot-3</a></li>
 </ul>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ irb</span><br><span class="line">&gt; <span class="string">"a"</span>.equal? <span class="string">"a"</span>   <span class="comment"># equals?--- identity comparison</span></span><br><span class="line"> =&gt; false</span><br><span class="line">&gt; <span class="string">"a"</span>.eql? <span class="string">"a"</span>     <span class="comment"># eql?   --- hash equality</span></span><br><span class="line"> =&gt; true</span><br><span class="line">&gt; <span class="string">"a"</span> == <span class="string">"a"</span>       <span class="comment"># ==     --- generic "equality"</span></span><br><span class="line"> =&gt; true</span><br><span class="line">&gt; str = <span class="string">"hello"</span></span><br><span class="line"> =&gt; <span class="string">"hello"</span></span><br><span class="line">&gt; str.__id_<span class="number">_</span></span><br><span class="line"> =&gt; <span class="number">70099860517540</span></span><br><span class="line">&gt; <span class="string">"hello"</span>.__id_<span class="number">_</span></span><br><span class="line"> =&gt; <span class="number">70099856137920</span></span><br><span class="line">&gt; str &lt;&lt; <span class="string">" world"</span></span><br><span class="line"> =&gt; <span class="string">"hello world"</span></span><br><span class="line">&gt; str.__id_<span class="number">_</span></span><br><span class="line"> =&gt; <span class="number">70099860517540</span>     <span class="comment"># 与之前的 id 一样，说明 str 所指向的对象没变</span></span><br><span class="line"></span><br><span class="line">&gt; str = <span class="string">"hello"</span></span><br><span class="line"> =&gt; <span class="string">"hello"</span></span><br><span class="line">&gt; str.__id_<span class="number">_</span></span><br><span class="line"> =&gt; <span class="number">70099860630880</span></span><br><span class="line">&gt; str += <span class="string">" world"</span></span><br><span class="line"> =&gt; <span class="string">"hello world"</span></span><br><span class="line">&gt; str.__id_<span class="number">_</span></span><br><span class="line"> =&gt; <span class="number">70099856250160</span>    <span class="comment"># 与之前的 id 不一样，说明 += 在进行字符串拼接时，会生成一新对象</span></span><br></pre></td></tr></table></figure>
-<p>Python、Javascript 中字符串都是<code>不可变</code>的。</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ python</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; str = <span class="string">"hello world"</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; str2 = str.replace(<span class="string">"o"</span>, <span class="string">"oo"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; str</span><br><span class="line"><span class="string">'hello world'</span></span><br><span class="line"><span class="meta">&gt;&gt;</span>&gt; str2</span><br><span class="line"><span class="string">'helloo woorld'</span></span><br><span class="line"></span><br><span class="line">$ node</span><br><span class="line">&gt; str = <span class="string">"hello world"</span></span><br><span class="line"><span class="string">'hello world'</span></span><br><span class="line">&gt; str2 = str.replace(<span class="string">"o"</span>, <span class="string">"oo"</span>)</span><br><span class="line"><span class="string">'helloo world'</span></span><br><span class="line">&gt; str</span><br><span class="line"><span class="string">'hello world'</span></span><br><span class="line">&gt; str2</span><br><span class="line"><span class="string">'helloo world'</span></span><br></pre></td></tr></table></figure>
-<h4 id="拼接"><a href="#拼接" class="headerlink" title="拼接"></a>拼接</h4><p>大多数语言都可以直接通过<code>+</code>进行字符串的拼接，但是这样做既不优雅，效率也低，所以一些语言会有些替代方案。<br>Ruby 与 Python 中对这块的支持比较强大，ES6 中借鉴了以上两门语言的语法，引入了 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals" target="_blank" rel="noopener">template_string</a>，这在极大程度上方便了字符串的拼接。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> node</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> var a = 5;</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> var b = 10;</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> console.log(`Fifteen is <span class="variable">$&#123;a + b&#125;</span> and\nnot <span class="variable">$&#123;2 * a + b&#125;</span>.`);</span></span><br><span class="line">// "Fifteen is 15 and</span><br><span class="line">// not 20."</span><br><span class="line"><span class="meta">#</span><span class="bash">--------------------------------------------------<span class="comment">#</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> long_string = <span class="string">""</span><span class="string">"</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> my name is &#123;username&#125;,</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> my age is &#123;age&#125;</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="string">""</span><span class="string">".format(username="</span>zhangsan<span class="string">", age=10)</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">--------------------------------------------------<span class="comment">#</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> irb</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> long_string = <span class="string">""</span><span class="string">"</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> my name is %&#123;username&#125;,</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> my age is %&#123;age&#125;</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="string">""</span><span class="string">" % &#123;username: "</span>zhangsan<span class="string">", age:10&#125;</span></span></span><br></pre></td></tr></table></figure></p>
-<p>就是上面不可变字符串缺点中说的，对字符串进行追加时效率比较低，那么在 Python 与 Javascript 中进行大量字符串拼接时该采用什么方式呢？下面给出我的两组测试：</p>
-<h5 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h5><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">import <span class="built_in">time</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">from</span> StringIO import StringIO</span><br><span class="line">except ImportError:</span><br><span class="line">    <span class="built_in">from</span> io import StringIO  <span class="comment"># StringIO is in package io in python 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    xrange</span><br><span class="line">except NameError:</span><br><span class="line">    xrange = range  <span class="comment"># xrange is gone in python 3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def method1(loop_count):</span><br><span class="line">    <span class="built_in">start</span> = <span class="built_in">time</span>.<span class="built_in">time</span>()</span><br><span class="line">    out_str = <span class="string">''</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">num</span> <span class="keyword">in</span> xrange(loop_count):</span><br><span class="line">        out_str += repr(<span class="built_in">num</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"+= : %f seconds"</span> % (<span class="built_in">time</span>.<span class="built_in">time</span>() - <span class="built_in">start</span>))</span><br><span class="line">    <span class="literal">return</span> out_str</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def method2(loop_count):</span><br><span class="line">    <span class="built_in">start</span> = <span class="built_in">time</span>.<span class="built_in">time</span>()</span><br><span class="line">    str_list = []</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">num</span> <span class="keyword">in</span> xrange(loop_count):</span><br><span class="line">        str_list.append(repr(<span class="built_in">num</span>))</span><br><span class="line">    out_str = <span class="string">''</span>.join(str_list)</span><br><span class="line">    print(<span class="string">"list + join : %f seconds"</span> % (<span class="built_in">time</span>.<span class="built_in">time</span>() - <span class="built_in">start</span>))</span><br><span class="line">    <span class="literal">return</span> out_str</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def method3(loop_count):</span><br><span class="line">    <span class="built_in">start</span> = <span class="built_in">time</span>.<span class="built_in">time</span>()</span><br><span class="line">    out_str = <span class="string">''</span>.join([repr(<span class="built_in">num</span>) <span class="keyword">for</span> <span class="built_in">num</span> <span class="keyword">in</span> xrange(loop_count)])</span><br><span class="line">    print(<span class="string">"list comprehension + join : %f seconds"</span> % (<span class="built_in">time</span>.<span class="built_in">time</span>() - <span class="built_in">start</span>))</span><br><span class="line">    <span class="literal">return</span> out_str</span><br><span class="line"></span><br><span class="line">def method4(loop_count):</span><br><span class="line">    <span class="built_in">start</span> = <span class="built_in">time</span>.<span class="built_in">time</span>()</span><br><span class="line">    file_str = StringIO()</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">num</span> <span class="keyword">in</span> xrange(loop_count):</span><br><span class="line">        file_str.<span class="built_in">write</span>(repr(<span class="built_in">num</span>))</span><br><span class="line"></span><br><span class="line">    out_str = file_str.getvalue()</span><br><span class="line">    print(<span class="string">"StringIO : %f seconds"</span> % (<span class="built_in">time</span>.<span class="built_in">time</span>() - <span class="built_in">start</span>))</span><br><span class="line">    <span class="literal">return</span> out_str</span><br><span class="line"></span><br><span class="line">loop_count = <span class="number">1000000</span></span><br><span class="line">method1(loop_count)</span><br><span class="line">method2(loop_count)</span><br><span class="line">method3(loop_count)</span><br><span class="line">method4(loop_count)</span><br></pre></td></tr></table></figure>
-<p>下面给出统计结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ irb
+&gt; &#34;a&#34;.equal? &#34;a&#34;   # equals?--- identity comparison
+ =&gt; false
+&gt; &#34;a&#34;.eql? &#34;a&#34;     # eql?   --- hash equality
+ =&gt; true
+&gt; &#34;a&#34; == &#34;a&#34;       # ==     --- generic &#34;equality&#34;
+ =&gt; true
+&gt; str = &#34;hello&#34;
+ =&gt; &#34;hello&#34;
+&gt; str.__id__
+ =&gt; 70099860517540
+&gt; &#34;hello&#34;.__id__
+ =&gt; 70099856137920
+&gt; str &lt;&lt; &#34; world&#34;
+ =&gt; &#34;hello world&#34;
+&gt; str.__id__
+ =&gt; 70099860517540     # 与之前的 id 一样，说明 str 所指向的对象没变
+
+&gt; str = &#34;hello&#34;
+ =&gt; &#34;hello&#34;
+&gt; str.__id__
+ =&gt; 70099860630880
+&gt; str += &#34; world&#34;
+ =&gt; &#34;hello world&#34;
+&gt; str.__id__
+ =&gt; 70099856250160    # 与之前的 id 不一样，说明 += 在进行字符串拼接时，会生成一新对象
+</code></pre></td></tr></table>
+</div>
+</div><p>Python、Javascript 中字符串都是<code>不可变</code>的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ python
+&gt;&gt;&gt; str = &#34;hello world&#34;
+&gt;&gt;&gt; str2 = str.replace(&#34;o&#34;, &#34;oo&#34;)
+&gt;&gt;&gt; str
+&#39;hello world&#39;
+&gt;&gt;&gt; str2
+&#39;helloo woorld&#39;
+
+$ node
+&gt; str = &#34;hello world&#34;
+&#39;hello world&#39;
+&gt; str2 = str.replace(&#34;o&#34;, &#34;oo&#34;)
+&#39;helloo world&#39;
+&gt; str
+&#39;hello world&#39;
+&gt; str2
+&#39;helloo world&#39;
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="拼接">拼接</h4>
+<p>大多数语言都可以直接通过<code>+</code>进行字符串的拼接，但是这样做既不优雅，效率也低，所以一些语言会有些替代方案。
+Ruby 与 Python 中对这块的支持比较强大，ES6 中借鉴了以上两门语言的语法，引入了 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">template_string</a>，这在极大程度上方便了字符串的拼接。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ node
+&gt; var a = 5;
+&gt; var b = 10;
+&gt; console.log(`Fifteen is ${a + b} and\nnot ${2 * a + b}.`);
+// &#34;Fifteen is 15 and
+// not 20.&#34;
+#--------------------------------------------------#
+$ python
+&gt; long_string = &#34;&#34;&#34;
+&gt; my name is {username},
+&gt; my age is {age}
+&gt; &#34;&#34;&#34;.format(username=&#34;zhangsan&#34;, age=10)
+#--------------------------------------------------#
+$ irb
+&gt; long_string = &#34;&#34;&#34;
+&gt; my name is %{username},
+&gt; my age is %{age}
+&gt; &#34;&#34;&#34; % {username: &#34;zhangsan&#34;, age:10}
+</code></pre></td></tr></table>
+</div>
+</div><p>就是上面不可变字符串缺点中说的，对字符串进行追加时效率比较低，那么在 Python 与 Javascript 中进行大量字符串拼接时该采用什么方式呢？下面给出我的两组测试：</p>
+<h5 id="python">Python</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">import</span> <span class="nx">time</span>
+<span class="nx">try</span><span class="p">:</span>
+    <span class="nx">from</span> <span class="nx">StringIO</span> <span class="kn">import</span> <span class="nx">StringIO</span>
+<span class="nx">except</span> <span class="nx">ImportError</span><span class="p">:</span>
+    <span class="nx">from</span> <span class="nx">io</span> <span class="kn">import</span> <span class="nx">StringIO</span>  <span class="err">#</span> <span class="nx">StringIO</span> <span class="nx">is</span> <span class="nx">in</span> <span class="kn">package</span> <span class="nx">io</span> <span class="nx">in</span> <span class="nx">python</span> <span class="mi">3</span>
+
+<span class="nx">try</span><span class="p">:</span>
+    <span class="nx">xrange</span>
+<span class="nx">except</span> <span class="nx">NameError</span><span class="p">:</span>
+    <span class="nx">xrange</span> <span class="p">=</span> <span class="k">range</span>  <span class="err">#</span> <span class="nx">xrange</span> <span class="nx">is</span> <span class="nx">gone</span> <span class="nx">in</span> <span class="nx">python</span> <span class="mi">3</span>
+
+
+<span class="nx">def</span> <span class="nf">method1</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">):</span>
+    <span class="nx">start</span> <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+    <span class="nx">out_str</span> <span class="p">=</span> <span class="err">&#39;&#39;</span>
+    <span class="k">for</span> <span class="nx">num</span> <span class="nx">in</span> <span class="nf">xrange</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">):</span>
+        <span class="nx">out_str</span> <span class="o">+=</span> <span class="nf">repr</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#34;+= : %f seconds&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nx">out_str</span>
+
+
+<span class="nx">def</span> <span class="nf">method2</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">):</span>
+    <span class="nx">start</span> <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+    <span class="nx">str_list</span> <span class="p">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="nx">num</span> <span class="nx">in</span> <span class="nf">xrange</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">):</span>
+        <span class="nx">str_list</span><span class="p">.</span><span class="nb">append</span><span class="p">(</span><span class="nf">repr</span><span class="p">(</span><span class="nx">num</span><span class="p">))</span>
+    <span class="nx">out_str</span> <span class="p">=</span> <span class="err">&#39;&#39;</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="nx">str_list</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#34;list + join : %f seconds&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nx">out_str</span>
+
+
+<span class="nx">def</span> <span class="nf">method3</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">):</span>
+    <span class="nx">start</span> <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+    <span class="nx">out_str</span> <span class="p">=</span> <span class="err">&#39;&#39;</span><span class="p">.</span><span class="nf">join</span><span class="p">([</span><span class="nf">repr</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="k">for</span> <span class="nx">num</span> <span class="nx">in</span> <span class="nf">xrange</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">)])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#34;list comprehension + join : %f seconds&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nx">out_str</span>
+
+<span class="nx">def</span> <span class="nf">method4</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">):</span>
+    <span class="nx">start</span> <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+    <span class="nx">file_str</span> <span class="p">=</span> <span class="nf">StringIO</span><span class="p">()</span>
+    <span class="k">for</span> <span class="nx">num</span> <span class="nx">in</span> <span class="nf">xrange</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">):</span>
+        <span class="nx">file_str</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="nf">repr</span><span class="p">(</span><span class="nx">num</span><span class="p">))</span>
+
+    <span class="nx">out_str</span> <span class="p">=</span> <span class="nx">file_str</span><span class="p">.</span><span class="nf">getvalue</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#34;StringIO : %f seconds&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nx">out_str</span>
+
+<span class="nx">loop_count</span> <span class="p">=</span> <span class="mi">1000000</span>
+<span class="nf">method1</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">)</span>
+<span class="nf">method2</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">)</span>
+<span class="nf">method3</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">)</span>
+<span class="nf">method4</span><span class="p">(</span><span class="nx">loop_count</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>下面给出统计结果</p>
 <table>
 <thead>
 <tr>
@@ -137,8 +864,82 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 </tbody>
 </table>
 <p>从上面的比较可以看出，<code>list comprehension + join</code> 的方式时最快，而且写法也比较优雅的。</p>
-<h5 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">method1</span>(<span class="params">loop_count</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> out_str = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">var</span> start = <span class="built_in">Date</span>.now()</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;loop_count;i++) &#123;</span><br><span class="line">        out_str += i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`+= cost : <span class="subst">$&#123;<span class="built_in">Date</span>.now() - start&#125;</span> ms`</span>);</span><br><span class="line">    <span class="keyword">return</span> out_str;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">method2</span>(<span class="params">loop_count</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = []</span><br><span class="line">    <span class="keyword">var</span> start = <span class="built_in">Date</span>.now()</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;loop_count;i++) &#123;</span><br><span class="line">        arr.push(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> out_str = arr.join(<span class="string">""</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`arr + join cost : <span class="subst">$&#123;<span class="built_in">Date</span>.now() - start&#125;</span> ms`</span>);</span><br><span class="line">    <span class="keyword">return</span> out_str;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">method3</span>(<span class="params">loop_count</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> out_str = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">var</span> start = <span class="built_in">Date</span>.now()</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;loop_count;i++) &#123;</span><br><span class="line">        out_str.concat(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`str.concat cost: <span class="subst">$&#123;<span class="built_in">Date</span>.now() - start&#125;</span> ms`</span>);</span><br><span class="line">    <span class="keyword">return</span> out_str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> loop_count = <span class="number">1000000</span>;</span><br><span class="line">method1(loop_count)</span><br><span class="line">method2(loop_count)</span><br><span class="line">method3(loop_count)</span><br></pre></td></tr></table></figure>
-<table>
+<h5 id="javascript">Javascript</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">function method1(loop_count) {
+    var out_str = &#34;&#34;;
+    var start = Date.now()
+    for (i=0;i&lt;loop_count;i++) {
+        out_str += i;
+    }
+    console.log(`+= cost : ${Date.now() - start} ms`);
+    return out_str;
+}
+function method2(loop_count) {
+    var arr = []
+    var start = Date.now()
+    for (i=0;i&lt;loop_count;i++) {
+        arr.push(i);
+    }
+    var out_str = arr.join(&#34;&#34;);
+    console.log(`arr + join cost : ${Date.now() - start} ms`);
+    return out_str;
+}
+function method3(loop_count) {
+    var out_str = &#34;&#34;;
+    var start = Date.now()
+    for (i=0;i&lt;loop_count;i++) {
+        out_str.concat(i);
+    }
+    console.log(`str.concat cost: ${Date.now() - start} ms`);
+    return out_str;
+}
+
+var loop_count = 1000000;
+method1(loop_count)
+method2(loop_count)
+method3(loop_count)
+
+</code></pre></td></tr></table>
+</div>
+</div><table>
 <thead>
 <tr>
 <th></th>
@@ -157,66 +958,197 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 </tbody>
 </table>
 <p>上面的测试结果使用 Node v5.9.1 测试出来的，从结果来看，<code>str.concat</code> 是速度最快的。</p>
-<h3 id="查看值类型"><a href="#查看值类型" class="headerlink" title="查看值类型"></a>查看值类型</h3><p>动态语言最主要的特点就是<code>变量无类型</code>，利用<a href="https://en.wikipedia.org/wiki/Reflection_%28computer_programming%29" target="_blank" rel="noopener">反射机制</a>可以查看<code>运行时变量的值的类型</code>。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> node</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> str = <span class="string">"hello world"</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> typeof str     </span></span><br><span class="line">'string'</span><br><span class="line"><span class="meta">#</span><span class="bash">------------------------------<span class="comment">#</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> irb</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> str = <span class="string">"hello world"</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> str.class</span></span><br><span class="line">String</span><br><span class="line"><span class="meta">#</span><span class="bash">------------------------------<span class="comment">#</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> str = <span class="string">"hello world"</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">type</span>(str)</span></span><br><span class="line">&lt;type 'str'&gt;</span><br></pre></td></tr></table></figure></p>
-<h2 id="包管理"><a href="#包管理" class="headerlink" title="包管理"></a>包管理</h2><ul>
-<li>Python，<a href="https://pypi.python.org/pypi" target="_blank" rel="noopener">PyPI</a>，多版本兼容推荐使用 <a href="https://virtualenv.pypa.io" target="_blank" rel="noopener">virtualenv</a> 管理</li>
-<li>Ruby， <a href="https://rubygems.org/" target="_blank" rel="noopener">GEMS</a>，多版本兼容，推荐使用 <a href="https://rvm.io/" target="_blank" rel="noopener">rvm</a> + <a href="http://bundler.io/" target="_blank" rel="noopener">bundler</a> 管理</li>
+<h3 id="查看值类型">查看值类型</h3>
+<p>动态语言最主要的特点就是<code>变量无类型</code>，利用<a href="https://en.wikipedia.org/wiki/Reflection_%28computer_programming%29">反射机制</a>可以查看<code>运行时变量的值的类型</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ node
+&gt; str = &#34;hello world&#34;
+&gt; typeof str     
+&#39;string&#39;
+#------------------------------#
+$ irb
+&gt; str = &#34;hello world&#34;
+&gt; str.class
+String
+#------------------------------#
+$ python
+&gt; str = &#34;hello world&#34;
+&gt; type(str)
+&lt;type &#39;str&#39;&gt;
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="包管理">包管理</h2>
+<ul>
+<li>Python，<a href="https://pypi.python.org/pypi">PyPI</a>，多版本兼容推荐使用 <a href="https://virtualenv.pypa.io">virtualenv</a> 管理</li>
+<li>Ruby， <a href="https://rubygems.org/">GEMS</a>，多版本兼容，推荐使用 <a href="https://rvm.io/">rvm</a> + <a href="http://bundler.io/">bundler</a> 管理</li>
 <li>Node.js，由于 Node.js 出现较晚，它避免了Python、Ruby 包全局污染的问题，而是选择将第三份模块安装在项目内的<code>node_modules</code>文件夹内</li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>经过上面简短的介绍，我相信大家对这三门语言有了全面的理解，多了解一门语言，也就是多个解决问题的思路。</p>
+<h2 id="总结">总结</h2>
+<p>经过上面简短的介绍，我相信大家对这三门语言有了全面的理解，多了解一门语言，也就是多个解决问题的思路。</p>
 <p>个人感觉，Python、Javascript 的语法比较中规中矩，适合大部分程序员学习。Ruby 更适合 geek 去学，因为它的很多奇特语法会让你思考语言的设计细节，而不仅仅是使用这么简单。</p>
-<p>最近我在看<a href="https://book.douban.com/subject/7056800/" target="_blank" rel="noopener">Ruby元编程</a>，里面的很多内容就很有意思，一些内容在看 SICP 时就已经遇到，这种似曾相识的感觉很棒，我相信对编程语言的了解又加深了一步。谢谢 <a href="https://en.wikipedia.org/wiki/Yukihiro_Matsumoto" target="_blank" rel="noopener">Yukihiro Matsumoto</a>大叔，带给我们 ruby 这么美妙的语言。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="http://stackoverflow.com/questions/7299010/why-is-string-concatenation-faster-than-array-join" target="_blank" rel="noopener">http://stackoverflow.com/questions/7299010/why-is-string-concatenation-faster-than-array-join</a></li>
-<li><a href="https://waymoot.org/home/python_string/" target="_blank" rel="noopener">https://waymoot.org/home/python_string/</a></li>
-<li><a href="https://wyeworks.com/blog/2015/12/1/immutable-strings-in-ruby-2-dot-3" target="_blank" rel="noopener">https://wyeworks.com/blog/2015/12/1/immutable-strings-in-ruby-2-dot-3</a></li>
-<li><a href="http://stackoverflow.com/questions/7156955/whats-the-difference-between-equal-eql-and" target="_blank" rel="noopener">http://stackoverflow.com/questions/7156955/whats-the-difference-between-equal-eql-and</a></li>
-<li><a href="http://stackoverflow.com/questions/214714/mutable-vs-immutable-objects" target="_blank" rel="noopener">http://stackoverflow.com/questions/214714/mutable-vs-immutable-objects</a></li>
-<li><a href="https://kentreis.wordpress.com/2007/02/08/identity-and-equality-in-ruby-and-smalltalk/" target="_blank" rel="noopener">https://kentreis.wordpress.com/2007/02/08/identity-and-equality-in-ruby-and-smalltalk/</a></li>
+<p>最近我在看<a href="https://book.douban.com/subject/7056800/">Ruby元编程</a>，里面的很多内容就很有意思，一些内容在看 SICP 时就已经遇到，这种似曾相识的感觉很棒，我相信对编程语言的了解又加深了一步。谢谢 <a href="https://en.wikipedia.org/wiki/Yukihiro_Matsumoto">Yukihiro Matsumoto</a>大叔，带给我们 ruby 这么美妙的语言。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://stackoverflow.com/questions/7299010/why-is-string-concatenation-faster-than-array-join">http://stackoverflow.com/questions/7299010/why-is-string-concatenation-faster-than-array-join</a></li>
+<li><a href="https://waymoot.org/home/python_string/">https://waymoot.org/home/python_string/</a></li>
+<li><a href="https://wyeworks.com/blog/2015/12/1/immutable-strings-in-ruby-2-dot-3">https://wyeworks.com/blog/2015/12/1/immutable-strings-in-ruby-2-dot-3</a></li>
+<li><a href="http://stackoverflow.com/questions/7156955/whats-the-difference-between-equal-eql-and">http://stackoverflow.com/questions/7156955/whats-the-difference-between-equal-eql-and</a></li>
+<li><a href="http://stackoverflow.com/questions/214714/mutable-vs-immutable-objects">http://stackoverflow.com/questions/214714/mutable-vs-immutable-objects</a></li>
+<li><a href="https://kentreis.wordpress.com/2007/02/08/identity-and-equality-in-ruby-and-smalltalk/">https://kentreis.wordpress.com/2007/02/08/identity-and-equality-in-ruby-and-smalltalk/</a></li>
 </ul>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2016/03/26/python-ruby-javascript/" data-id="ckhxlinwi0038szlj6lgv1ou7" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aSW7DMBAEwPz/0w6QUy6Sujm2AVHFk+FFZvEw4Cw/P/F6/a2jd44+/b+SJyffHy0MDIzbMl6n62ijR398tJX8yUdPuzgaDAyMBzDWQuH5X56H5va3F3vGwMDAWHp0smkMDAyMTwTcSYA+Z0yODAMD4wmMJIldez8vz30pF8fAwLgho20MfPP1B/sbGBgYN2G8ytU2A+YXx2hXGBgYWzOSi1pbUGtT0PaADg8LAwNja0b7iDzJzBufa6MbGBgYz2HkX203965Rs+hTDAyMTRntkNb5FpOQ2iarUQKMgYHxGEYSfHPeJMVtd4KBgbE3o01i3zVM9oYgm6eyGBgYN2fkATdPbteGUEeJLgYGxgMYkyLavM2ZXPsu3sHAwNiasRYQ8ySzveRNmp0YGBi7MtqL4ByWl9uKmj8GBsZjGGtXurZ5udYoLQIuBgbG1ox2tGuCzJ8cNS8xMDAexmhL/wl77bpZtBYwMDC2ZrQNyKihGFwK1w7rYicYGBibMpJy26Rh8N4mwcWGMDAwtmashby1ols+3lGEXQwMjK0Z7S0yL4flYXoS7ouZMgwMjNsyXuWaD4Tlbc68sYqBgbE3Y564tvi10JwX9TAwMHZlrG2iZbdHVp89BgbGAxhtAyBPYpNfTer/GBgYGJMxi3xQrA39h0U3DAwMjEGJf5JJJzwMDIwnMCbNgPwq2Q5bFG1UDAyMrRmjSY2lFHctlLdJNQYGxhaMXxtOx2V+yv1bAAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/javascript/">JavaScript</a><a href="/tags/python/">Python</a><a href="/tags/ruby/">Ruby</a></div><div class="post-nav"><a class="pre" href="/blog/2016/04/23/sicp-chapter4-summary/">SICP 第四章总结</a><a class="next" href="/blog/2016/02/22/recursion-without-name/">如何实现一个没有名字的递归函数</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2016/03/26/python-ruby-javascript/';
-    this.page.identifier = 'blog/2016/03/26/python-ruby-javascript/';
-    this.page.title = 'python, ruby, javascript 浅析';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">Python</a>
+          <a href="/tags/ruby/">Ruby</a>
+          <a href="/tags/javascript/">JavaScript</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2016/04/23/sicp-chapter4-summary/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">SICP 第四章总结</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2016/02/22/recursion-without-name/">
+            <span class="next-text nav-default">如何实现一个没有名字的递归函数</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

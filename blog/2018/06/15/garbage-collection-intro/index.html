@@ -1,23 +1,199 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>深入浅出垃圾回收（一）简介篇 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">深入浅出垃圾回收（一）简介篇</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">深入浅出垃圾回收（一）简介篇</h1><div class="post-meta">Jun 15, 2018<span> | </span><span class="category"><a href="/categories/aha-computer/">理解计算机</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.5k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 13</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2018/06/15/garbage-collection-intro/" href="/blog/2018/06/15/garbage-collection-intro/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么需要-GC"><span class="toc-number">1.</span> <span class="toc-text">为什么需要 GC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图灵机模型"><span class="toc-number">1.1.</span> <span class="toc-text">图灵机模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GC-的定义"><span class="toc-number">2.</span> <span class="toc-text">GC 的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GC-常用策略"><span class="toc-number">3.</span> <span class="toc-text">GC 常用策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#追踪（Tracing）"><span class="toc-number">3.1.</span> <span class="toc-text">追踪（Tracing）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#对象的可到达行"><span class="toc-number">3.1.1.</span> <span class="toc-text">对象的可到达行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#强引用与弱引用"><span class="toc-number">3.1.2.</span> <span class="toc-text">强引用与弱引用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#基本算法-mark-and-sweep"><span class="toc-number">3.1.3.</span> <span class="toc-text">基本算法 mark-and-sweep</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用计数（Reference-counting）"><span class="toc-number">3.2.</span> <span class="toc-text">引用计数（Reference counting）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逃逸分析（Escape-analysis）"><span class="toc-number">3.3.</span> <span class="toc-text">逃逸分析（Escape_analysis）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="post-content"><p>GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当时的 GC 实现相对简单，对程序的影响（overhead）比较严重。经过几十年的发展，GC 算法已经很成熟了，可以完全摆脱「速度慢」这个让人望而却步的标签。</p>
-<p>单就 JVM 这个平台来说，GC 算法一直在优化、演变，从最初的串行到高吞吐量的并行，为了解决高延迟又演化出了 <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html" target="_blank" rel="noopener">CMS（Concurrent Mark Sweep）</a>，为了解决碎片问题，又开发了 <a href="http://www.oracle.com/technetwork/tutorials/tutorials-1876574.html" target="_blank" rel="noopener">G1</a>，Oracle 内部还在不断尝试新算法，比如 <a href="http://openjdk.java.net/projects/zgc/" target="_blank" rel="noopener">ZGC</a>。</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>深入浅出垃圾回收（一）简介篇 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年1，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2018/06/15/garbage-collection-intro/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="深入浅出垃圾回收（一）简介篇" />
+<meta property="og:description" content="GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年1，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2018/06/15/garbage-collection-intro/" />
+<meta property="article:published_time" content="2018-06-15T21:28:41+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="深入浅出垃圾回收（一）简介篇">
+<meta itemprop="description" content="GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年1，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当">
+<meta itemprop="datePublished" content="2018-06-15T21:28:41+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="4381">
+
+
+
+<meta itemprop="keywords" content="GC," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="深入浅出垃圾回收（一）简介篇"/>
+<meta name="twitter:description" content="GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年1，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">深入浅出垃圾回收（一）简介篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-06-15 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA/"> 理解计算机 </a>
+            </div>
+          <span class="more-meta"> 约 4381 字 </span>
+          <span class="more-meta"> 预计阅读 9 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#为什么需要-gc">为什么需要 GC</a>
+          <ul>
+            <li><a href="#图灵机模型">图灵机模型</a></li>
+          </ul>
+        </li>
+        <li><a href="#gc-的定义">GC 的定义</a></li>
+        <li><a href="#gc-常用策略">GC 常用策略</a>
+          <ul>
+            <li><a href="#追踪tracing">追踪（Tracing）</a></li>
+            <li><a href="#引用计数reference-counting">引用计数（Reference counting）</a></li>
+            <li><a href="#逃逸分析escape_analysis">逃逸分析（Escape_analysis）</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当时的 GC 实现相对简单，对程序的影响（overhead）比较严重。经过几十年的发展，GC 算法已经很成熟了，可以完全摆脱「速度慢」这个让人望而却步的标签。</p>
+<p>单就 JVM 这个平台来说，GC 算法一直在优化、演变，从最初的串行到高吞吐量的并行，为了解决高延迟又演化出了 <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html">CMS（Concurrent Mark Sweep）</a>，为了解决碎片问题，又开发了 <a href="http://www.oracle.com/technetwork/tutorials/tutorials-1876574.html">G1</a>，Oracle 内部还在不断尝试新算法，比如 <a href="http://openjdk.java.net/projects/zgc/">ZGC</a>。</p>
 <p>对于这么一个庞大但有趣的话题，我决定写一系列文章来介绍，首先会介绍 GC 的必要性、常见回收策略，这些是语言无关的；然后会重点介绍 JVM 上的 GC 实现；再之后会对现较为流行的脚本语言（js/python/ruby）所用的 GC 算法做一些探索。每个语言在实现 GC 算法时都有其独特之处，所以最后希望能深入到源代码级别，做到真正的深入浅出（inside out）。我所参考的资料主要来自 wikipedia 以及一些前辈的总结（Google 检索），当然对于能实践的部分我会给上相关测试代码。</p>
 <p>所以如果读者发现文中有错误，麻烦指出，我会及时更新，保证不对后面学习者产生误导。好了，进入正题。</p>
-<h2 id="为什么需要-GC"><a href="#为什么需要-GC" class="headerlink" title="为什么需要 GC"></a>为什么需要 GC</h2><p>在计算机诞生初期，在程序运行过程中没有栈帧（stack frame）需要去维护，所以内存采取的是静态分配策略，这虽然比动态分配要快，但是其一明显的缺点是程序所需的数据结构大小必须在编译期确定，而且不具备运行时分配的能力，这在现在来看是不可思议的。在 1958 年，Algol-58 语言首次提出了<a href="https://en.wikipedia.org/wiki/Block_%28programming%29" target="_blank" rel="noopener">块结构（block-structured）</a>，块结构语言通过在内存中申请栈帧来实现按需分配的动态策略。在过程被调用时，帧（frame）会被压到栈的最上面，调用结束时弹出。栈分配策略赋予程序员极大的自由度，局部变量在不同的调用过程中具有不同的值，这为递归提供了基础。但是后进先出（Last-In-First-Out, LIFO）的栈限制了栈帧的生命周期不能超过其调用者，而且由于每个栈帧是固定大小，所以一个过程的返回值也必须在编译期确定。所以诞生了新的内存管理策略——堆（heap）管理。</p>
-<p>堆分配运行程序员按任意顺序分配/释放程序所需的数据结构——动态分配的数据结构可以脱离其调用者生命周期的限制，这种便利性带来的问题是垃圾对象的回收管理。C/C++/Pascal 把这个任务交给了程序员，但事实证明这非常容易出错，野指针（wild pointer）、悬挂指针（dangling pointer）是比较典型的错误。在另一些场景中，动态分配的对象传入了其他过程中，这时程序员或编译器就无法预测这个对象什么时刻不再需要，现如今的面向对象语言，这种场景更是频繁，这也就间接促进了自动内存管理技术的发展。而且即便是 C/C++ ，也有类似 <a href="http://www.hboehm.info/gc/" target="_blank" rel="noopener">Boehm GC</a> 这样的第三方库来实现内存的自动管理。可以毫不夸张的说，GC 已经是现代语言的标配了。</p>
-<h3 id="图灵机模型"><a href="#图灵机模型" class="headerlink" title="图灵机模型"></a>图灵机模型</h3><p><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2FiZbALuSBuNkHFqDXXXfhVXa_!!581166664.png" alt="假象中的图灵机"><br>现在的计算机相较图灵机，最本质的不同在于<strong>资源有限性</strong>，所以在使用完各种资源（memory/socket/file handler等）后，需要将其释放（release）。<br>GC 并不适应于 socket/file handler 等资源的回收，究其原因是 GC 的不确定性<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>。比如，A 应用占用了 TCP 8080 端口，当其使用完后，GC 并不会立刻对其进行回收，这时如果 A 应用其它部分再使用这个 socket 时，程序就会报错。<br>也许有些 GC 系统在清理这些资源的引用时，回去将其释放（这称为finalization），但这同样具有不确定性，所以我们并不能依赖这些机制，需要显式对其回收（一般调用 close/destroy 方法）。内存适合于 GC 回收还有一重要原因：独占性。也就是说操作系统给每个运行的程序分配的内存是相互独立的，所以可以完全由 GC 来决定什么时刻去对其进行释放，只需保证在报 OutOfMemory 异常之前就可以了。</p>
+<h2 id="为什么需要-gc">为什么需要 GC</h2>
+<p>在计算机诞生初期，在程序运行过程中没有栈帧（stack frame）需要去维护，所以内存采取的是静态分配策略，这虽然比动态分配要快，但是其一明显的缺点是程序所需的数据结构大小必须在编译期确定，而且不具备运行时分配的能力，这在现在来看是不可思议的。在 1958 年，Algol-58 语言首次提出了<a href="https://en.wikipedia.org/wiki/Block_%28programming%29">块结构（block-structured）</a>，块结构语言通过在内存中申请栈帧来实现按需分配的动态策略。在过程被调用时，帧（frame）会被压到栈的最上面，调用结束时弹出。栈分配策略赋予程序员极大的自由度，局部变量在不同的调用过程中具有不同的值，这为递归提供了基础。但是后进先出（Last-In-First-Out, LIFO）的栈限制了栈帧的生命周期不能超过其调用者，而且由于每个栈帧是固定大小，所以一个过程的返回值也必须在编译期确定。所以诞生了新的内存管理策略——堆（heap）管理。</p>
+<p>堆分配运行程序员按任意顺序分配/释放程序所需的数据结构——动态分配的数据结构可以脱离其调用者生命周期的限制，这种便利性带来的问题是垃圾对象的回收管理。C/C++/Pascal 把这个任务交给了程序员，但事实证明这非常容易出错，野指针（wild pointer）、悬挂指针（dangling pointer）是比较典型的错误。在另一些场景中，动态分配的对象传入了其他过程中，这时程序员或编译器就无法预测这个对象什么时刻不再需要，现如今的面向对象语言，这种场景更是频繁，这也就间接促进了自动内存管理技术的发展。而且即便是 C/C++ ，也有类似 <a href="http://www.hboehm.info/gc/">Boehm GC</a> 这样的第三方库来实现内存的自动管理。可以毫不夸张的说，GC 已经是现代语言的标配了。</p>
+<h3 id="图灵机模型">图灵机模型</h3>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2FiZbALuSBuNkHFqDXXXfhVXa_!!581166664.png" alt="假象中的图灵机">
+    <figcaption><center>假象中的图灵机</center></figcaption>
+  </figure>
+
+
+现在的计算机相较图灵机，最本质的不同在于<strong>资源有限性</strong>，所以在使用完各种资源（memory/socket/file handler等）后，需要将其释放（release）。
+GC 并不适应于 socket/file handler 等资源的回收，究其原因是 GC 的不确定性<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。比如，A 应用占用了 TCP 8080 端口，当其使用完后，GC 并不会立刻对其进行回收，这时如果 A 应用其它部分再使用这个 socket 时，程序就会报错。
+也许有些 GC 系统在清理这些资源的引用时，回去将其释放（这称为finalization），但这同样具有不确定性，所以我们并不能依赖这些机制，需要显式对其回收（一般调用 close/destroy 方法）。内存适合于 GC 回收还有一重要原因：独占性。也就是说操作系统给每个运行的程序分配的内存是相互独立的，所以可以完全由 GC 来决定什么时刻去对其进行释放，只需保证在报 OutOfMemory 异常之前就可以了。</p>
 <p>我们选择 GC 而不是手动释放资源的原因很简单：靠人来约束很容易出问题。当然对于实时性较高（炒股）、资源相对紧张（比如嵌入式设备）的程序，手工释放资源还是首选。</p>
-<h2 id="GC-的定义"><a href="#GC-的定义" class="headerlink" title="GC 的定义"></a>GC 的定义</h2><p>上面一小节介绍了 GC 的对象是内存，但内存在一运行的程序中通常会划分为多个区域，其中最常见的是栈（stack） 与堆（heap）。栈的空间一般较小，在一个函数调用时用以分配其内部变量，在函数调用结束时自动回收，这里并不涉及到 GC；而堆的空间一般较大，可以在多个函数间共享数据，程序可根据需要进行<strong>动态申请</strong>，GC 主要是工作在这个区域。所以我们可以这么定义 GC：</p>
+<h2 id="gc-的定义">GC 的定义</h2>
+<p>上面一小节介绍了 GC 的对象是内存，但内存在一运行的程序中通常会划分为多个区域，其中最常见的是栈（stack） 与堆（heap）。栈的空间一般较小，在一个函数调用时用以分配其内部变量，在函数调用结束时自动回收，这里并不涉及到 GC；而堆的空间一般较大，可以在多个函数间共享数据，程序可根据需要进行<strong>动态申请</strong>，GC 主要是工作在这个区域。所以我们可以这么定义 GC：</p>
 <blockquote>
 <p>GC 是一种自动管理内存的技术，用来回收（释放） heap 中不再使用的对象。</p>
 </blockquote>
@@ -26,21 +202,67 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 <li>区分活对象（live object）与垃圾对象（garbage）</li>
 <li>回收垃圾对象的内存，使得程序可以重复使用这些内存</li>
 </ol>
-<h2 id="GC-常用策略"><a href="#GC-常用策略" class="headerlink" title="GC 常用策略"></a>GC 常用策略</h2><h3 id="追踪（Tracing）"><a href="#追踪（Tracing）" class="headerlink" title="追踪（Tracing）"></a>追踪（Tracing）</h3><p>这是目前使用范围最广的技术，一般我们提到 GC 都是指这类，实现这种机制的系统有：JVM/.NET/OCaml。<br>这类 GC 从某些被称为 root 的对象开始，不断追踪可以被引用到的对象，这些对象被称为<strong>可到达的</strong>（reachable），其他剩余的对象就被称为 garbage，并且会被释放。</p>
-<h4 id="对象的可到达行"><a href="#对象的可到达行" class="headerlink" title="对象的可到达行"></a>对象的可到达行</h4><p>一般来说，可到达的对象主要包含下面两类情况：</p>
+<h2 id="gc-常用策略">GC 常用策略</h2>
+<h3 id="追踪tracing">追踪（Tracing）</h3>
+<p>这是目前使用范围最广的技术，一般我们提到 GC 都是指这类，实现这种机制的系统有：JVM/.NET/OCaml。
+这类 GC 从某些被称为 root 的对象开始，不断追踪可以被引用到的对象，这些对象被称为<strong>可到达的</strong>（reachable），其他剩余的对象就被称为 garbage，并且会被释放。</p>
+<h4 id="对象的可到达行">对象的可到达行</h4>
+<p>一般来说，可到达的对象主要包含下面两类情况：</p>
 <ol>
 <li>root 对象，这包括全局对象、调用栈（call stack）上的对象（包括内部变量与参数）</li>
 <li>从 root 对象开始，间接引用的对象</li>
 </ol>
-<p>采用可到达行来区分一个对象是否为 garbage 有一定的局限性，因为程序中真正使用一个对象时距其创建可能需要很久。比如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Object x = <span class="keyword">new</span> Foo();</span><br><span class="line">Object y = <span class="keyword">new</span> Bar();</span><br><span class="line">x = <span class="keyword">new</span> Quux();</span><br><span class="line"><span class="comment">/* 这这里，x 之前为赋值的 Foo 对象以及不可到达，可以被 GC 回收</span></span><br><span class="line"><span class="comment"> * 这种情况称为： syntactic garbage</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(x.check_something()) &#123;</span><br><span class="line"> x.do_something(y);</span><br><span class="line">&#125;</span><br><span class="line">System.exit(<span class="number">0</span>);</span><br><span class="line"><span class="comment">/* 在这里，y 是否能回收取决于 if 条件里面的函数执行结果，而这个函数可能会发生死循环或者返回false</span></span><br><span class="line"><span class="comment"> * 这种情况被称为： semantic garbage</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure></p>
-<p>要确定 semantic garbage 是否能被回收，需要去分析代码，这和<a href="https://en.wikipedia.org/wiki/Halting_problem" target="_blank" rel="noopener">停机问题</a>类似，没有固定的算法；而对于 syntactic garbage，只需要分析引用链就可以了。</p>
-<h4 id="强引用与弱引用"><a href="#强引用与弱引用" class="headerlink" title="强引用与弱引用"></a>强引用与弱引用</h4><p>追踪类 GC 使用引用来决定一个对象的可到达性，但是在程序中有时会希望能以弱引用的方式指向一个对象，弱引用不会保护该对象被 GC 回收。如果该对象被回收了，那么这个弱引用会被赋予一个安全值（一般为NULL）。使用弱引用可以解决很多问题，比如：</p>
+<p>采用可到达行来区分一个对象是否为 garbage 有一定的局限性，因为程序中真正使用一个对象时距其创建可能需要很久。比如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Object</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Foo</span><span class="o">();</span>
+<span class="n">Object</span> <span class="n">y</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Bar</span><span class="o">();</span>
+<span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Quux</span><span class="o">();</span>
+<span class="cm">/* 这这里，x 之前为赋值的 Foo 对象以及不可到达，可以被 GC 回收
+</span><span class="cm"> * 这种情况称为： syntactic garbage
+</span><span class="cm"> */</span>
+
+<span class="k">if</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="na">check_something</span><span class="o">())</span> <span class="o">{</span>
+ <span class="n">x</span><span class="o">.</span><span class="na">do_something</span><span class="o">(</span><span class="n">y</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="n">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
+<span class="cm">/* 在这里，y 是否能回收取决于 if 条件里面的函数执行结果，而这个函数可能会发生死循环或者返回false
+</span><span class="cm"> * 这种情况被称为： semantic garbage
+</span><span class="cm"> */</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>要确定 semantic garbage 是否能被回收，需要去分析代码，这和<a href="https://en.wikipedia.org/wiki/Halting_problem">停机问题</a>类似，没有固定的算法；而对于 syntactic garbage，只需要分析引用链就可以了。</p>
+<h4 id="强引用与弱引用">强引用与弱引用</h4>
+<p>追踪类 GC 使用引用来决定一个对象的可到达性，但是在程序中有时会希望能以弱引用的方式指向一个对象，弱引用不会保护该对象被 GC 回收。如果该对象被回收了，那么这个弱引用会被赋予一个安全值（一般为NULL）。使用弱引用可以解决很多问题，比如：</p>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/Reference_cycle" target="_blank" rel="noopener">循环引用</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Reference_cycle">循环引用</a></li>
 <li>在 Map 中，如果允许 key 为弱引用，那么 GC 就可以回收用不到对象，而不会因为 Map 中的引用让其一直留在内存中，适用于做缓存</li>
 </ul>
 <p>在一些实现中，弱引用被分成了几个类别。比如在 JVM 中，提供了三类，soft、phantom、常规的弱引用，其区别可参考我之前的文章<a href="/blog/2015/09/27/java-weakhashmap/#%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B">Java WeakHashMap 源码解析</a>。</p>
-<h4 id="基本算法-mark-and-sweep"><a href="#基本算法-mark-and-sweep" class="headerlink" title="基本算法 mark-and-sweep"></a>基本算法 mark-and-sweep</h4><p><img src="https://img.alicdn.com/imgextra/i3/581166664/TB2mWTqqm8YBeNkSnb4XXaevFXa_!!581166664.gif" alt="Mark-and-Sweep 过程图示"></p>
+<h4 id="基本算法-mark-and-sweep">基本算法 mark-and-sweep</h4>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i3/581166664/TB2mWTqqm8YBeNkSnb4XXaevFXa_!!581166664.gif" alt="Mark-and-Sweep 过程图示">
+    <figcaption><center>Mark-and-Sweep 过程图示</center></figcaption>
+  </figure>
+
+</p>
 <p>该算法主要包括两步，</p>
 <ol>
 <li>mark，从 root 开始进行树遍历，每个访问的对象标注为「使用中」</li>
@@ -54,85 +276,210 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 <li>回收时间与 heap 大小成正比</li>
 </ol>
 <p>原始版的 mark-sweep 问题虽然比较多，但是有一系列的优化措施来解决（mark-compact/copying/non-copying..），后面会涉及到。</p>
-<h3 id="引用计数（Reference-counting）"><a href="#引用计数（Reference-counting）" class="headerlink" title="引用计数（Reference counting）"></a>引用计数（Reference counting）</h3><p><img src="https://img.alicdn.com/imgextra/i3/581166664/TB2arI8yv1TBuNjy0FjXXajyXXa_!!581166664.png" alt="Reference counting 过程图示"></p>
-<p>引用计数类 GC 会记录每个对象的引用次数，当引用次数为0时，就会被回收，这类 GC 实现起来较为简单。采用这类 GC 的主流语言有：Python/PHP/<a href="https://stackoverflow.com/questions/2972021/garbage-collection-in-perl" target="_blank" rel="noopener">Perl</a>/TCL/Objective-C。<br>与追踪类 GC 相比，有以下两处优势：</p>
+<h3 id="引用计数reference-counting">引用计数（Reference counting）</h3>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i3/581166664/TB2arI8yv1TBuNjy0FjXXajyXXa_!!581166664.png" alt="Reference counting 过程图示">
+    <figcaption><center>Reference counting 过程图示</center></figcaption>
+  </figure>
+
+</p>
+<p>引用计数类 GC 会记录每个对象的引用次数，当引用次数为0时，就会被回收，这类 GC 实现起来较为简单。采用这类 GC 的主流语言有：Python/PHP/<a href="https://stackoverflow.com/questions/2972021/garbage-collection-in-perl">Perl</a>/TCL/Objective-C。
+与追踪类 GC 相比，有以下两处优势：</p>
 <ol>
 <li>可以保证对象引用为0时立马得到清理，无不确定行</li>
 <li>大多数操作具有增量特性（incremental），GC 可与应用交替运行，不需要暂停应用即可完成回收功能</li>
-<li>可以用来优化运行时性能。比如函数式编程中所推崇的「<a href="https://en.wikipedia.org/wiki/Immutable_object" target="_blank" rel="noopener">不可变数据结构</a>」的更新就能收益：运行时知道某个对象的引用为1，这时对这个对象进行修改，类似 <code>str &lt;- str+&quot;a&quot;</code>，那么这个修改就可以在本地进行，而不必进行额外的 copy</li>
+<li>可以用来优化运行时性能。比如函数式编程中所推崇的「<a href="https://en.wikipedia.org/wiki/Immutable_object">不可变数据结构</a>」的更新就能收益：运行时知道某个对象的引用为1，这时对这个对象进行修改，类似 <code>str &lt;- str+&quot;a&quot;</code>，那么这个修改就可以在本地进行，而不必进行额外的 copy</li>
 </ol>
 <p>除了上面介绍的优势，引用计数具有以下几处劣势：</p>
 <ol>
-<li>无法解决循环引用。CPython 使用独特的环检测算法规避<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>，后面文章再分析该算法；此外也可以用弱引用的方式解决</li>
-<li>实现一个高效率的引用计数 GC 比较困难。主要包括下面两方面<ul>
+<li>无法解决循环引用。CPython 使用独特的环检测算法规避<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>，后面文章再分析该算法；此外也可以用弱引用的方式解决</li>
+<li>实现一个高效率的引用计数 GC 比较困难。主要包括下面两方面
+<ul>
 <li>space overhead，每个对象需要额外的空间来存储其引用次数，在追踪类 GC 中，用以标注对象是否在使用中的flag 位一般放在引用变量里面</li>
-<li>speed overhead，在增加/减少对象的引用时，需要修改引用次数。这对于栈上的赋值（on-stack assignment，比如函数调用是的参数、函数内部变量等）影响是非常大的，因为之前只需要简单修改寄存器里面的值，现在需要一个原子操作（这涉及到加锁，会浪费几百个 CPU cycles）<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup></li>
+<li>speed overhead，在增加/减少对象的引用时，需要修改引用次数。这对于栈上的赋值（on-stack assignment，比如函数调用是的参数、函数内部变量等）影响是非常大的，因为之前只需要简单修改寄存器里面的值，现在需要一个原子操作（这涉及到加锁，会浪费几百个 CPU cycles）<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup></li>
 </ul>
 </li>
 <li>减少一个对象的引用计数时，会级联减少其引用对象的计数，这就可能造成同时删除过多的对象。在实现中一般会把要回收的对象放入一队列，当程序申请大小为 N 的内存时，从这个队列取出总体积不小于 N 的一个或多个对象将其回收。</li>
 </ol>
-<p>由于以上缺陷，对性能要求较高的系统在实现 GC 时一般不会选择引用计数，而会转向追踪类（追踪类 GC 虽然有 stop-the-world 的问题，但是可以通过各种措施优化，后面会介绍到）。<br>但由于引用计数实现较为简单，除了用在 GC 领域，还广泛用在管理系统资源上。比如：大多数文件系统会维持特定文件/block的引用数（inode里面的link count），这些引用被称为 hard links。当引用数为0时，这个文件就可以被安全的删除了。</p>
-<h3 id="逃逸分析（Escape-analysis）"><a href="#逃逸分析（Escape-analysis）" class="headerlink" title="逃逸分析（Escape_analysis）"></a>逃逸分析（Escape_analysis）</h3><p>这里主要是指通过逃逸分析，来将在 heap 中分配的对象分配到 stack 中。如果一个对象的使用只出现在某一函数内（即没有 escape），那么这个对象就完全可以分配在该函数的 stack 中，减少 GC 的工作量。</p>
+<p>由于以上缺陷，对性能要求较高的系统在实现 GC 时一般不会选择引用计数，而会转向追踪类（追踪类 GC 虽然有 stop-the-world 的问题，但是可以通过各种措施优化，后面会介绍到）。
+但由于引用计数实现较为简单，除了用在 GC 领域，还广泛用在管理系统资源上。比如：大多数文件系统会维持特定文件/block的引用数（inode里面的link count），这些引用被称为 hard links。当引用数为0时，这个文件就可以被安全的删除了。</p>
+<h3 id="逃逸分析escape_analysis">逃逸分析（Escape_analysis）</h3>
+<p>这里主要是指通过逃逸分析，来将在 heap 中分配的对象分配到 stack 中。如果一个对象的使用只出现在某一函数内（即没有 escape），那么这个对象就完全可以分配在该函数的 stack 中，减少 GC 的工作量。</p>
 <p>JVM 中有相关实现，后面文章也会涉及到，感兴趣的朋友可以先参考：</p>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/Java_performance#Escape_analysis_and_lock_coarsening" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Java_performance#Escape_analysis_and_lock_coarsening</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Java_performance#Escape_analysis_and_lock_coarsening">https://en.wikipedia.org/wiki/Java_performance#Escape_analysis_and_lock_coarsening</a></li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>「追踪」与「引用计数」这两类 GC 各有千秋，真正的工业级实现一般是这两者的结合，不同的语言有所偏重而已。可以参考下面几处提问：</p>
+<h2 id="总结">总结</h2>
+<p>「追踪」与「引用计数」这两类 GC 各有千秋，真正的工业级实现一般是这两者的结合，不同的语言有所偏重而已。可以参考下面几处提问：</p>
 <ul>
-<li><a href="https://www.quora.com/Why-doesnt-Apple-Swift-adopt-the-memory-management-method-of-garbage-collection-like-Java-uses" target="_blank" rel="noopener">Why doesn’t Apple Swift adopt the memory management method of garbage collection like Java uses?</a></li>
-<li><a href="https://softwareengineering.stackexchange.com/questions/285333/how-does-garbage-collection-compare-to-reference-counting" target="_blank" rel="noopener">How does garbage collection compare to reference counting?</a></li>
-<li><a href="https://www.quora.com/Why-doesnt-Java-use-reference-counting-based-GC" target="_blank" rel="noopener">Why doesn’t Java use reference counting based GC?</a></li>
+<li><a href="https://www.quora.com/Why-doesnt-Apple-Swift-adopt-the-memory-management-method-of-garbage-collection-like-Java-uses">Why doesn&rsquo;t Apple Swift adopt the memory management method of garbage collection like Java uses?</a></li>
+<li><a href="https://softwareengineering.stackexchange.com/questions/285333/how-does-garbage-collection-compare-to-reference-counting">How does garbage collection compare to reference counting?</a></li>
+<li><a href="https://www.quora.com/Why-doesnt-Java-use-reference-counting-based-GC">Why doesn&rsquo;t Java use reference counting based GC?</a></li>
 </ul>
-<p>总体来说，追踪类 GC 是效率最高的算法<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>，其变种也比较多，后面的文章也会重点讲述此类 GC，这里面有趣的内容非常多，比如：semispace（用以提高 sweep 的速度与减少内存碎片）、<a href="https://en.wikipedia.org/wiki/Cheney%27s_algorithm" target="_blank" rel="noopener">Cheney’s algorithm</a> / <a href="https://en.wikipedia.org/wiki/Lamport%27s_bakery_algorithm" target="_blank" rel="noopener">Baker’s Algorithm</a>（这两算法都是对 semispace 的优化）、generational GC（减少 GC 作用范围）、incremental/concurrent GC（减少 stop-the-world 时间）。<br>Stay Tuned!</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Reference_counting" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Reference_counting</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Tracing_garbage_collection" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Tracing_garbage_collection</a></li>
-<li><a href="http://www.goodmath.org/blog/2017/12/22/a-beginners-guide-to-garbage-collection/" target="_blank" rel="noopener">http://www.goodmath.org/blog/2017/12/22/a-beginners-guide-to-garbage-collection/</a></li>
+<p>总体来说，追踪类 GC 是效率最高的算法<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup>，其变种也比较多，后面的文章也会重点讲述此类 GC，这里面有趣的内容非常多，比如：semispace（用以提高 sweep 的速度与减少内存碎片）、<a href="https://en.wikipedia.org/wiki/Cheney%27s_algorithm">Cheney&rsquo;s algorithm</a> / <a href="https://en.wikipedia.org/wiki/Lamport%27s_bakery_algorithm">Baker&rsquo;s Algorithm</a>（这两算法都是对 semispace 的优化）、generational GC（减少 GC 作用范围）、incremental/concurrent GC（减少 stop-the-world 时间）。
+Stay Tuned!</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29">https://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Reference_counting">https://en.wikipedia.org/wiki/Reference_counting</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Tracing_garbage_collection">https://en.wikipedia.org/wiki/Tracing_garbage_collection</a></li>
+<li><a href="http://www.goodmath.org/blog/2017/12/22/a-beginners-guide-to-garbage-collection/">http://www.goodmath.org/blog/2017/12/22/a-beginners-guide-to-garbage-collection/</a></li>
 </ul>
-<div id="footnotes"><hr><div id="footnotelist"><ol style="list-style:none; padding-left: 0;"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px;">1.</span><span style="display: inline-block; vertical-align: top;"><a href="http://www.informit.com/articles/article.aspx?p=1671639" target="_blank" rel="noopener">http://www.informit.com/articles/article.aspx?p=1671639</a></span><a href="#fnref:1" rev="footnote"> ↩</a></li><li id="fn:2"><span style="display: inline-block; vertical-align: top; padding-right: 10px;">2.</span><span style="display: inline-block; vertical-align: top;"><a href="https://cs.stackexchange.com/questions/52735/why-does-garbage-collection-extend-only-to-memory-and-not-other-resource-types" target="_blank" rel="noopener">https://cs.stackexchange.com/questions/52735/why-does-garbage-collection-extend-only-to-memory-and-not-other-resource-types</a></span><a href="#fnref:2" rev="footnote"> ↩</a></li><li id="fn:3"><span style="display: inline-block; vertical-align: top; padding-right: 10px;">3.</span><span style="display: inline-block; vertical-align: top;"><a href="https://docs.python.org/release/2.5.2/ext/refcounts.html" target="_blank" rel="noopener">https://docs.python.org/release/2.5.2/ext/refcounts.html</a></span><a href="#fnref:3" rev="footnote"> ↩</a></li><li id="fn:4"><span style="display: inline-block; vertical-align: top; padding-right: 10px;">4.</span><span style="display: inline-block; vertical-align: top;"><a href="http://www.informit.com/articles/article.aspx?p=1745749&amp;seqNum=2" target="_blank" rel="noopener">http://www.informit.com/articles/article.aspx?p=1745749&amp;seqNum=2</a></span><a href="#fnref:4" rev="footnote"> ↩</a></li><li id="fn:5"><span style="display: inline-block; vertical-align: top; padding-right: 10px;">5.</span><span style="display: inline-block; vertical-align: top;"><a href="http://flyingfrogblog.blogspot.com/2011/01/boosts-sharedptr-up-to-10-slower-than.html" target="_blank" rel="noopener">http://flyingfrogblog.blogspot.com/2011/01/boosts-sharedptr-up-to-10-slower-than.html</a></span><a href="#fnref:5" rev="footnote"> ↩</a></li></ol></div></div></div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2018/06/15/garbage-collection-intro/" data-id="ckhxlinx5004qszljvrshd6uv" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3aOXLDMBAEQP3/03LqKlvwDAAHBJqRSwfIVrDe6/WKr/eP6/vr488nZ+bfWrowMDAey3gPrzEjPz9nj+/78RkwMDAuYOS3/3TQp1fy4NuyMTAwMMbHzeHHSSEGBgbGXkZbmiahFgMDA2PMSIrYPBHMk8W2eN5Qi2NgYDyQsdIy+++//2W+gYGB8SjGu7xWTmgHA8XJGBgYRzPyAJcnZO2DzgVcDAyMexhzY8i2TF0ZjkbjUgwMjKMZ46OTtbB2hWIl+Ut4GBgYpzLaEWMeXttiOE9Gi0ksBgbGoYz80dsbryxh/FHuYmBgHMpYD5HryxB5SVyHWgwMjCMY622y9dQweTdnY2BgnM1og2C7tbUy5swHBhgYGDcwkq/NBcF2wSI/BwMD405G2/RvU8xtqxUYGBgXMNrQuV5wJgG3XrbAwMC4gDHXRMvLzqJBNpdoYmBgXMBoS8S5ZYu5xDE6AQMD42jGrnK0Hi7GRWwRuDEwMC5gJGGuLW7zVtpcKvlLwMXAwDiakReic5h84Wxu5ImBgXEDY32pIh95Jj9TW9xiYGCcyniXVxsc51pvdZqIgYFxNKNdF8sbZHmZmhfM7c+EgYFxEmPXksRc8J1r3tX/PTAwMI5gtIEvXxdr391Qi2NgYFzPaIeLyYJX8bi7Ai4GBsaVjLa5thJkPxaxGBgYRzOSInbcvs8/05bQm9ttGBgYD2Ss511zS2BtUrhhqImBgfE8xhfF6nRyiWwr3QAAAABJRU5ErkJggg==">分享</a><div class="tags"><a href="/tags/gc/">GC</a></div><div class="post-nav"><a class="pre" href="/blog/2018/07/08/mark-sweep/">深入浅出垃圾回收（二）Mark-Sweep 详析及其优化</a><a class="next" href="/blog/2018/01/21/review-2017/">2017 年终总结</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2018/06/15/garbage-collection-intro/';
-    this.page.identifier = 'blog/2018/06/15/garbage-collection-intro/';
-    this.page.title = '深入浅出垃圾回收（一）简介篇';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p><a href="http://www.informit.com/articles/article.aspx?p=1671639">http://www.informit.com/articles/article.aspx?p=1671639</a> <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p><a href="https://cs.stackexchange.com/questions/52735/why-does-garbage-collection-extend-only-to-memory-and-not-other-resource-types">https://cs.stackexchange.com/questions/52735/why-does-garbage-collection-extend-only-to-memory-and-not-other-resource-types</a> <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p><a href="https://docs.python.org/release/2.5.2/ext/refcounts.html">https://docs.python.org/release/2.5.2/ext/refcounts.html</a> <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p><a href="http://www.informit.com/articles/article.aspx?p=1745749&amp;seqNum=2">http://www.informit.com/articles/article.aspx?p=1745749&amp;seqNum=2</a> <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5" role="doc-endnote">
+<p><a href="http://flyingfrogblog.blogspot.com/2011/01/boosts-sharedptr-up-to-10-slower-than.html">http://flyingfrogblog.blogspot.com/2011/01/boosts-sharedptr-up-to-10-slower-than.html</a> <a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/gc/">GC</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2018/07/08/mark-sweep/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">深入浅出垃圾回收（二）Mark-Sweep 详析及其优化</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2018/01/21/review-2017/">
+            <span class="next-text nav-default">2017 年终总结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

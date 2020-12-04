@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lambda on Keep Coding</title>
+    <link>https://liujiacai.net/tags/lambda/</link>
+    <description>Recent content in Lambda on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 22 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/lambda/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何实现一个没有名字的递归函数</title>
+      <link>https://liujiacai.net/blog/2016/02/22/recursion-without-name/</link>
+      <pubDate>Mon, 22 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/02/22/recursion-without-name/</guid>
+      <description>递归 作为计算机科学中很重要的一个概念，应用范围非常广泛。比较重要的数据结构，像树、图，本身就是递归定义的。 比较常见的递归算法有阶乘、斐波那契</description>
+    </item>
+    
+    <item>
+      <title>编程语言的基石——Lambda calculus</title>
+      <link>https://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</link>
+      <pubDate>Sun, 12 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</guid>
+      <description>Lambda calculus我们一般称为λ演算，最早是由邱奇（Alonzo Church，图灵的博导）在20世纪30年代引入，当时的背景是解决函数可计算</description>
+    </item>
+    
+  </channel>
+</rss>

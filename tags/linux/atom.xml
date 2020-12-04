@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Keep Coding</title>
+    <link>https://liujiacai.net/tags/linux/</link>
+    <description>Recent content in Linux on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 10 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/linux/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>形单影只的 Socket</title>
+      <link>https://liujiacai.net/blog/2018/11/10/damn-single-socket/</link>
+      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/11/10/damn-single-socket/</guid>
+      <description>最近工作上遇到过几次因 http client 没有配置超时相关参数，导致线程数占满或应用卡住的情况，出问题时线程的堆栈大致是这样的： 1 2 3 4 5 6 7 8 9 10 11 12 13 14</description>
+    </item>
+    
+    <item>
+      <title>正则表达式“派别”简述</title>
+      <link>https://liujiacai.net/blog/2014/12/07/regexp-favors/</link>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/12/07/regexp-favors/</guid>
+      <description>相信大家对于正则表达式都不陌生，在文本处理中或多或少的都会使用到它。但是，我们在使用linux下的文本处理工具如awk、sed等时，正则表达</description>
+    </item>
+    
+  </channel>
+</rss>

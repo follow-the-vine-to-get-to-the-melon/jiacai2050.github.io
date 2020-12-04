@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on Keep Coding</title>
+    <link>https://liujiacai.net/tags/go/</link>
+    <description>Recent content in Go on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 08 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/go/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>实践总结：在 Java 中调用 Go 代码</title>
+      <link>https://liujiacai.net/blog/2020/08/08/go-meet-java/</link>
+      <pubDate>Sat, 08 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/08/08/go-meet-java/</guid>
+      <description>在 Java 中调用 Go 的大致过程如下 1 go --&amp;gt; cgo --&amp;gt; jna --&amp;gt; java 整个过程要解决的问题主要两个： 数据类型在两种语言中如何转化 何时清理无用的数据 下面就围绕上述调用过程</description>
+    </item>
+    
+    <item>
+      <title>Go struct/interface 最佳实践</title>
+      <link>https://liujiacai.net/blog/2020/03/14/go-struct-interface/</link>
+      <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/03/14/go-struct-interface/</guid>
+      <description>使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的： Go is expressive, concise, clean, and efficient. It&amp;rsquo;s a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language. Rob Pike 在 Simplicity is Complicated 中也提到 Go 的简洁是其流行</description>
+    </item>
+    
+    <item>
+      <title>何处安放我们的 Go 代码</title>
+      <link>https://liujiacai.net/blog/2019/10/24/go-modules/</link>
+      <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/10/24/go-modules/</guid>
+      <description>用了近半年的 Go，真是有种相见恨晚的感觉。简洁的语法、完善并强大的开发工具链，省去新手不少折腾的时间，可以专注写代码。 这期间也掌握了不少技巧</description>
+    </item>
+    
+    <item>
+      <title>写给新手的 Go 开发指南</title>
+      <link>https://liujiacai.net/blog/2019/07/17/hello-golang/</link>
+      <pubDate>Wed, 17 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/07/17/hello-golang/</guid>
+      <description>转眼加入蚂蚁已经三个多月，这期间主要维护一 Go 写的服务器。虽然用的时间不算长，但还是积累了一些心得体会，这里总结归纳一下，供想尝试 Go 的同学参考</description>
+    </item>
+    
+  </channel>
+</rss>

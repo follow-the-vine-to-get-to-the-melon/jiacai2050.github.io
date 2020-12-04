@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ruby on Keep Coding</title>
+    <link>https://liujiacai.net/tags/ruby/</link>
+    <description>Recent content in Ruby on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 05 Mar 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/ruby/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>辨析 Ruby 中的 Method 与 Proc</title>
+      <link>https://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</link>
+      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</guid>
+      <description>Ruby is simple in appearance, but is very complex inside, just like our human body. &amp;ndash; Matz https://www.ruby-lang.org/en/about Ruby 与 Python、Scala 类似，在一切皆是对象（Seeing Everything as an Object）的基础上，支持函数式编</description>
+    </item>
+    
+    <item>
+      <title>python, ruby, javascript 浅析</title>
+      <link>https://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</link>
+      <pubDate>Sat, 26 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</guid>
+      <description>最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面</description>
+    </item>
+    
+  </channel>
+</rss>

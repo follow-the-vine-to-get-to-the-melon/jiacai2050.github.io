@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web on Keep Coding</title>
+    <link>https://liujiacai.net/categories/web/</link>
+    <description>Recent content in Web on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 02 Apr 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/categories/web/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</link>
+      <pubDate>Sun, 02 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</guid>
+      <description>在 Clojure 众多的 Web 框架中，Ring 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、</description>
+    </item>
+    
+  </channel>
+</rss>

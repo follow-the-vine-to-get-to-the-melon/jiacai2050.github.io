@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nodejs on Keep Coding</title>
+    <link>https://liujiacai.net/tags/nodejs/</link>
+    <description>Recent content in nodejs on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 27 Oct 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/tags/nodejs/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SF 黑客马拉松赛后回顾</title>
+      <link>https://liujiacai.net/blog/2015/10/27/sf-hackathon/</link>
+      <pubDate>Tue, 27 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/10/27/sf-hackathon/</guid>
+      <description>上个周末，也就是10月24、25号，参加了人生中第一次黑客马拉松（hackathon），虽然最终没有获奖，但是这个比赛过程中还是 hack 的挺爽，趁</description>
+    </item>
+    
+  </channel>
+</rss>

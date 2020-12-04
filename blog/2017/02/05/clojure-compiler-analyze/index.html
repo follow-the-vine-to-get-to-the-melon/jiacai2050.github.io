@@ -1,121 +1,584 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>Clojure 运行原理之编译器剖析篇 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Clojure 运行原理之编译器剖析篇</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Clojure 运行原理之编译器剖析篇</h1><div class="post-meta">Feb 5, 2017<span> | </span><span class="category"><a href="/categories/langs/">编程语言</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.7k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 7</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2017/02/05/clojure-compiler-analyze/" href="/blog/2017/02/05/clojure-compiler-analyze/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#编译型-VS-解释型"><span class="toc-number">1.</span> <span class="toc-text">编译型 VS. 解释型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译器工作流程"><span class="toc-number">2.</span> <span class="toc-text">编译器工作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LispReader-java"><span class="toc-number">2.1.</span> <span class="toc-text">LispReader.java</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Compiler-java"><span class="toc-number">2.2.</span> <span class="toc-text">Compiler.java</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#macroexpand"><span class="toc-number">2.2.1.</span> <span class="toc-text">macroexpand</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#analyze"><span class="toc-number">2.2.2.</span> <span class="toc-text">analyze</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#emit"><span class="toc-number">2.2.3.</span> <span class="toc-text">emit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#eval"><span class="toc-number">2.2.4.</span> <span class="toc-text">eval</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="post-content"><blockquote>
-<p>Clojure is a compiled language, yet remains completely dynamic – every feature supported by Clojure is supported at runtime.        </p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Clojure 运行原理之编译器剖析篇 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="Clojure is a compiled language, yet remains completely dynamic &amp;ndash; every feature supported by Clojure is supported at runtime. Rich Hickey https://clojure.org/ 这里的 runtime 指的是 JVM，JVM 之初是为运行 Java 语言而设计，而现在已经发展成一重量级平台，除了 Clojure 之外，" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Clojure 运行原理之编译器剖析篇" />
+<meta property="og:description" content="Clojure is a compiled language, yet remains completely dynamic &ndash; every feature supported by Clojure is supported at runtime. Rich Hickey https://clojure.org/ 这里的 runtime 指的是 JVM，JVM 之初是为运行 Java 语言而设计，而现在已经发展成一重量级平台，除了 Clojure 之外，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/" />
+<meta property="article:published_time" content="2017-02-05T08:53:24+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="Clojure 运行原理之编译器剖析篇">
+<meta itemprop="description" content="Clojure is a compiled language, yet remains completely dynamic &ndash; every feature supported by Clojure is supported at runtime. Rich Hickey https://clojure.org/ 这里的 runtime 指的是 JVM，JVM 之初是为运行 Java 语言而设计，而现在已经发展成一重量级平台，除了 Clojure 之外，">
+<meta itemprop="datePublished" content="2017-02-05T08:53:24+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="2497">
+
+
+
+<meta itemprop="keywords" content="Clojure," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Clojure 运行原理之编译器剖析篇"/>
+<meta name="twitter:description" content="Clojure is a compiled language, yet remains completely dynamic &ndash; every feature supported by Clojure is supported at runtime. Rich Hickey https://clojure.org/ 这里的 runtime 指的是 JVM，JVM 之初是为运行 Java 语言而设计，而现在已经发展成一重量级平台，除了 Clojure 之外，"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Clojure 运行原理之编译器剖析篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-02-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            </div>
+          <span class="more-meta"> 约 2497 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#编译型-vs-解释型">编译型 VS. 解释型</a></li>
+        <li><a href="#编译器工作流程">编译器工作流程</a>
+          <ul>
+            <li><a href="#lispreaderjavahttpsgithubcomclojureclojureblobclojure-180srcjvmclojurelanglispreaderjava"><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/LispReader.java">LispReader.java</a></a></li>
+            <li><a href="#compilerjavahttpsgithubcomclojureclojureblobclojure-180srcjvmclojurelangcompilerjava"><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java">Compiler.java</a></a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>Clojure is a compiled language, yet remains completely dynamic &ndash; every feature supported by Clojure is supported at runtime.</p>
 <blockquote>
-<p>Rich Hickey   <a href="https://clojure.org/" target="_blank" rel="noopener">https://clojure.org/</a></p>
+<p>Rich Hickey   <a href="https://clojure.org/">https://clojure.org/</a></p>
 </blockquote>
 </blockquote>
-<p>这里的 runtime 指的是 JVM，JVM 之初是为运行 Java 语言而设计，而现在已经发展成一重量级平台，除了 Clojure 之外，<a href="https://en.wikipedia.org/wiki/List_of_JVM_languages" target="_blank" rel="noopener">很多动态语言</a>也都选择基于 JVM 去实现。<br>为了更加具体描述 Clojure 运行原理，会分两篇文章来介绍。<br>本文为第一篇，涉及到的主要内容有：编译器工作流程、Lisp 的宏机制。<br>第二篇将主要讨论 Clojure 编译成的 bytecode 如何实现动态运行时以及为什么 Clojure 程序启动慢，这会涉及到 JVM 的类加载机制。</p>
-<h2 id="编译型-VS-解释型"><a href="#编译型-VS-解释型" class="headerlink" title="编译型 VS. 解释型"></a>编译型 VS. 解释型</h2><p>SO 上有个问题 <a href="http://stackoverflow.com/questions/5669933/is-clojure-compiled-or-interpreted" target="_blank" rel="noopener">Is Clojure compiled or interpreted</a>，根据本文开始部分的官网引用，说明 Clojure 是门编译型语言，就像 Java、Scala。但是 Clojure 与 Java 不一样的地方在于，Clojure 可以在运行时进行编译然后加载，而 Java 明确区分编译期与运行期。</p>
-<p><img src="https://img.alicdn.com/imgextra/i3/581166664/TB26GwHd4xmpuFjSZFNXXXrRXXa_!!581166664.png" alt><br><img src="https://img.alicdn.com/imgextra/i4/581166664/TB2WNsBd.hnpuFjSZFPXXb_4XXa_!!581166664.png" alt></p>
-<h2 id="编译器工作流程"><a href="#编译器工作流程" class="headerlink" title="编译器工作流程"></a>编译器工作流程</h2><p>与解释型语言里的解释器类似，编译型语言通过编译器（Compiler）来将源程序编译为字节码。一般来说，编译器包括<a href="https://en.wikipedia.org/wiki/Compiler#Three_phases_compiler_structure" target="_blank" rel="noopener">两个部分</a>：</p>
+<p>这里的 runtime 指的是 JVM，JVM 之初是为运行 Java 语言而设计，而现在已经发展成一重量级平台，除了 Clojure 之外，<a href="https://en.wikipedia.org/wiki/List_of_JVM_languages">很多动态语言</a>也都选择基于 JVM 去实现。
+为了更加具体描述 Clojure 运行原理，会分两篇文章来介绍。
+本文为第一篇，涉及到的主要内容有：编译器工作流程、Lisp 的宏机制。
+第二篇将主要讨论 Clojure 编译成的 bytecode 如何实现动态运行时以及为什么 Clojure 程序启动慢，这会涉及到 JVM 的类加载机制。</p>
+<h2 id="编译型-vs-解释型">编译型 VS. 解释型</h2>
+<p>SO 上有个问题 <a href="http://stackoverflow.com/questions/5669933/is-clojure-compiled-or-interpreted">Is Clojure compiled or interpreted</a>，根据本文开始部分的官网引用，说明 Clojure 是门编译型语言，就像 Java、Scala。但是 Clojure 与 Java 不一样的地方在于，Clojure 可以在运行时进行编译然后加载，而 Java 明确区分编译期与运行期。</p>
+<p>
+  <img src="https://img.alicdn.com/imgextra/i3/581166664/TB26GwHd4xmpuFjSZFNXXXrRXXa_!!581166664.png" alt="">
+
+
+
+  <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2WNsBd.hnpuFjSZFPXXb_4XXa_!!581166664.png" alt="">
+
+</p>
+<h2 id="编译器工作流程">编译器工作流程</h2>
+<p>与解释型语言里的解释器类似，编译型语言通过编译器（Compiler）来将源程序编译为字节码。一般来说，编译器包括<a href="https://en.wikipedia.org/wiki/Compiler#Three_phases_compiler_structure">两个部分</a>：</p>
 <ul>
-<li>前端：<a href="https://en.wikipedia.org/wiki/Lexical_analysis" target="_blank" rel="noopener">词法分析</a> –&gt; <a href="https://en.wikipedia.org/wiki/Parsing" target="_blank" rel="noopener">语法分析</a> –&gt; <a href="https://en.wikipedia.org/wiki/Semantic_analysis_%28compilers%29" target="_blank" rel="noopener">语义分析</a></li>
-<li>后端：<a href="https://en.wikipedia.org/wiki/Optimizing_compiler" target="_blank" rel="noopener">分析、优化</a> –&gt; <a href="https://en.wikipedia.org/wiki/Code_generation_%28compilers%29" target="_blank" rel="noopener">目标代码生成</a></li>
+<li>前端：<a href="https://en.wikipedia.org/wiki/Lexical_analysis">词法分析</a> &ndash;&gt; <a href="https://en.wikipedia.org/wiki/Parsing">语法分析</a> &ndash;&gt; <a href="https://en.wikipedia.org/wiki/Semantic_analysis_%28compilers%29">语义分析</a></li>
+<li>后端：<a href="https://en.wikipedia.org/wiki/Optimizing_compiler">分析、优化</a> &ndash;&gt; <a href="https://en.wikipedia.org/wiki/Code_generation_%28compilers%29">目标代码生成</a></li>
 </ul>
 <p>Clojure 的编译器也遵循这个模式，大致可以分为以下两个模块：</p>
 <ul>
-<li>读取 Clojure 源程序 –&gt; 分词 –&gt; 构造 S-表达式，由 <a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/LispReader.java#L223-L294" target="_blank" rel="noopener">LispReader.java</a> 类实现</li>
-<li>宏扩展 –&gt; 语义分析 –&gt; 生成 JVM 字节码，由 <a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L7446-L7481" target="_blank" rel="noopener">Compiler.java</a> 类实现</li>
+<li>读取 Clojure 源程序 &ndash;&gt; 分词 &ndash;&gt; 构造 S-表达式，由 <a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/LispReader.java#L223-L294">LispReader.java</a> 类实现</li>
+<li>宏扩展 &ndash;&gt; 语义分析 &ndash;&gt; 生成 JVM 字节码，由 <a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L7446-L7481">Compiler.java</a> 类实现</li>
 </ul>
-<center><br><img src="https://img.alicdn.com/imgextra/i3/581166664/TB2j7k3dZtnpuFjSZFKXXalFFXa_!!581166664.png" alt="Clojure 编译器工作流"><br></center>
-
+<center>
+![Clojure 编译器工作流](https://img.alicdn.com/imgextra/i3/581166664/TB2j7k3dZtnpuFjSZFKXXalFFXa_!!581166664.png)
+</center>
 <p>上图给出了不同阶段的输入输出，具体实现下面一一讲解。</p>
-<h3 id="LispReader-java"><a href="#LispReader-java" class="headerlink" title="LispReader.java"></a><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/LispReader.java" target="_blank" rel="noopener">LispReader.java</a></h3><p>一般来说，具有复杂语法的编程语言会把词法分析与语法分析分开实现为 Lexer 与 Parser，但在 Lisp 家族中，源程序的语法就已经是 AST 了，所以会把 Lexer 与 Parser 合并为一个过程 Reader，<a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/LispReader.java#L223-L294" target="_blank" rel="noopener">核心代码</a>实现如下：</p>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">for (<span class="comment">; ; ) &#123;</span></span><br><span class="line"></span><br><span class="line">    if (<span class="name">pendingForms</span> instanceof List <span class="symbol">&amp;&amp;</span> !((<span class="name">List</span>) pendingForms).isEmpty())</span><br><span class="line">        return ((<span class="name">List</span>) pendingForms).remove(<span class="number">0</span>)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    int ch = read1(<span class="name">r</span>)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    while (<span class="name">isWhitespace</span>(<span class="name">ch</span>))</span><br><span class="line">        ch = read1(<span class="name">r</span>)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    if (<span class="name">ch</span> == <span class="number">-1</span>) &#123;</span><br><span class="line">        if (<span class="name">eofIsError</span>)</span><br><span class="line">            throw Util.runtimeException(<span class="string">"EOF while reading"</span>)<span class="comment">;</span></span><br><span class="line">        return eofValue<span class="comment">;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (<span class="name">returnOn</span> != null <span class="symbol">&amp;&amp;</span> (<span class="name">returnOn</span>.charValue() == ch)) &#123;</span><br><span class="line">        return returnOnValue<span class="comment">;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (<span class="name">Character</span>.isDigit(<span class="name">ch</span>)) &#123;</span><br><span class="line">        Object n = readNumber(<span class="name">r</span>, (<span class="name">char</span>) ch)<span class="comment">;</span></span><br><span class="line">        return n<span class="comment">;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IFn macroFn = getMacro(<span class="name">ch</span>)<span class="comment">;</span></span><br><span class="line">    if (<span class="name">macroFn</span> != null) &#123;</span><br><span class="line">        Object ret = macroFn.invoke(<span class="name">r</span>, (<span class="name">char</span>) ch, opts, pendingForms)<span class="comment">;</span></span><br><span class="line">        //no op macros return the reader</span><br><span class="line">        if (<span class="name">ret</span> == r)</span><br><span class="line">            continue<span class="comment">;</span></span><br><span class="line">        return ret<span class="comment">;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (<span class="name">ch</span> == '+' || ch == '-') &#123;</span><br><span class="line">        int ch2 = read1(<span class="name">r</span>)<span class="comment">;</span></span><br><span class="line">        if (<span class="name">Character</span>.isDigit(<span class="name">ch2</span>)) &#123;</span><br><span class="line">            unread(<span class="name">r</span>, ch2)<span class="comment">;</span></span><br><span class="line">            Object n = readNumber(<span class="name">r</span>, (<span class="name">char</span>) ch)<span class="comment">;</span></span><br><span class="line">            return n<span class="comment">;</span></span><br><span class="line">        &#125;</span><br><span class="line">        unread(<span class="name">r</span>, ch2)<span class="comment">;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String token = readToken(<span class="name">r</span>, (<span class="name">char</span>) ch)<span class="comment">;</span></span><br><span class="line">    return interpretToken(<span class="name">token</span>)<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Reader 的行为是由内置构造器（目前有数字、字符、Symbol 这三类）与一个称为<code>read table</code>的扩展机制（getMacro）驱动的，<code>read table</code> 里面每项记录提供了由特性符号（称为<code>macro characters</code>）到特定读取行为（称为<code>reader macros</code>）的映射。</p>
-<p>与 Common Lisp 不同，普通用户无法扩展 Clojure 里面的<code>read table</code>。关于扩展<code>read table</code>的好处，可以参考 StackOverflow 上的 <a href="http://stackoverflow.com/questions/5746801/what-advantage-does-common-lisp-reader-macros-have-that-clojure-does-not-have" target="_blank" rel="noopener">What advantage does common lisp reader macros have that Clojure does not have?</a>。Rich Hickey 在<a href="https://groups.google.com/forum/#!topic/clojure/8RSLNWno0nU" target="_blank" rel="noopener">一 Google Group</a>里面有阐述不开放 <code>read table</code> 的理由，这里摘抄如下：</p>
+<h3 id="lispreaderjavahttpsgithubcomclojureclojureblobclojure-180srcjvmclojurelanglispreaderjava"><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/LispReader.java">LispReader.java</a></h3>
+<p>一般来说，具有复杂语法的编程语言会把词法分析与语法分析分开实现为 Lexer 与 Parser，但在 Lisp 家族中，源程序的语法就已经是 AST 了，所以会把 Lexer 与 Parser 合并为一个过程 Reader，<a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/LispReader.java#L223-L294">核心代码</a>实现如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">for (; ; ) {
+
+    if (pendingForms instanceof List &amp;&amp; !((List) pendingForms).isEmpty())
+        return ((List) pendingForms).remove(0);
+
+    int ch = read1(r);
+
+    while (isWhitespace(ch))
+        ch = read1(r);
+
+    if (ch == -1) {
+        if (eofIsError)
+            throw Util.runtimeException(&#34;EOF while reading&#34;);
+        return eofValue;
+    }
+
+    if (returnOn != null &amp;&amp; (returnOn.charValue() == ch)) {
+        return returnOnValue;
+    }
+
+    if (Character.isDigit(ch)) {
+        Object n = readNumber(r, (char) ch);
+        return n;
+    }
+
+    IFn macroFn = getMacro(ch);
+    if (macroFn != null) {
+        Object ret = macroFn.invoke(r, (char) ch, opts, pendingForms);
+        //no op macros return the reader
+        if (ret == r)
+            continue;
+        return ret;
+    }
+
+    if (ch == &#39;+&#39; || ch == &#39;-&#39;) {
+        int ch2 = read1(r);
+        if (Character.isDigit(ch2)) {
+            unread(r, ch2);
+            Object n = readNumber(r, (char) ch);
+            return n;
+        }
+        unread(r, ch2);
+    }
+
+    String token = readToken(r, (char) ch);
+    return interpretToken(token);
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>Reader 的行为是由内置构造器（目前有数字、字符、Symbol 这三类）与一个称为<code>read table</code>的扩展机制（getMacro）驱动的，<code>read table</code> 里面每项记录提供了由特性符号（称为<code>macro characters</code>）到特定读取行为（称为<code>reader macros</code>）的映射。</p>
+<p>与 Common Lisp 不同，普通用户无法扩展 Clojure 里面的<code>read table</code>。关于扩展<code>read table</code>的好处，可以参考 StackOverflow 上的 <a href="http://stackoverflow.com/questions/5746801/what-advantage-does-common-lisp-reader-macros-have-that-clojure-does-not-have">What advantage does common lisp reader macros have that Clojure does not have?</a>。Rich Hickey 在<a href="https://groups.google.com/forum/#!topic/clojure/8RSLNWno0nU">一 Google Group</a>里面有阐述不开放 <code>read table</code> 的理由，这里摘抄如下：</p>
 <blockquote>
-<p>I am unconvinced that reader macros are needed in Clojure at this<br>time. They greatly reduce the readability of code that uses them (by<br>people who otherwise know Clojure), encourage incompatible custom mini-<br>languages and dialects (vs namespace-partitioned macros), and<br>complicate loading and evaluation.<br>To the extent I’m willing to accommodate common needs different from<br>my own (e.g. regexes), I think many things that would otherwise have<br>forced people to reader macros may end up in Clojure, where everyone<br>can benefit from a common approach.<br>Clojure is arguably a very simple language, and in that simplicity<br>lies a different kind of power.<br>I’m going to pass on pursuing this for now,</p>
+<p>I am unconvinced that reader macros are needed in Clojure at this
+time. They greatly reduce the readability of code that uses them (by
+people who otherwise know Clojure), encourage incompatible custom mini-
+languages and dialects (vs namespace-partitioned macros), and
+complicate loading and evaluation.
+To the extent I&rsquo;m willing to accommodate common needs different from
+my own (e.g. regexes), I think many things that would otherwise have
+forced people to reader macros may end up in Clojure, where everyone
+can benefit from a common approach.
+Clojure is arguably a very simple language, and in that simplicity
+lies a different kind of power.
+I&rsquo;m going to pass on pursuing this for now,</p>
 </blockquote>
-<p>截止到 Clojure 1.8 版本，共有如下九个<code>macro characters</code>:<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">Quote</span> (')</span><br><span class="line"><span class="selector-tag">Character</span> (\)</span><br><span class="line"><span class="selector-tag">Comment</span> (;)</span><br><span class="line"><span class="selector-tag">Deref</span> (@)</span><br><span class="line"><span class="selector-tag">Metadata</span> (^)</span><br><span class="line"><span class="selector-tag">Dispatch</span> (#)</span><br><span class="line"><span class="selector-tag">Syntax-quote</span> (`)</span><br><span class="line"><span class="selector-tag">Unquote</span> (~)</span><br><span class="line"><span class="selector-tag">Unquote-splicing</span> (~@)</span><br></pre></td></tr></table></figure></p>
-<p>它们的具体含义可参考<a href="https://clojure.org/reference/reader#macrochars" target="_blank" rel="noopener">官方文档 reader#macrochars</a>。</p>
-<h3 id="Compiler-java"><a href="#Compiler-java" class="headerlink" title="Compiler.java"></a><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java" target="_blank" rel="noopener">Compiler.java</a></h3><p>Compiler 类主要有三个入口函数：</p>
+<p>截止到 Clojure 1.8 版本，共有如下九个<code>macro characters</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Quote (&#39;)
+Character (\)
+Comment (;)
+Deref (@)
+Metadata (^)
+Dispatch (#)
+Syntax-quote (`)
+Unquote (~)
+Unquote-splicing (~@)
+</code></pre></td></tr></table>
+</div>
+</div><p>它们的具体含义可参考<a href="https://clojure.org/reference/reader#macrochars">官方文档 reader#macrochars</a>。</p>
+<h3 id="compilerjavahttpsgithubcomclojureclojureblobclojure-180srcjvmclojurelangcompilerjava"><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java">Compiler.java</a></h3>
+<p>Compiler 类主要有三个入口函数：</p>
 <ul>
-<li><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L7483-L7646" target="_blank" rel="noopener">compile</a>，当调用<code>clojure.core/compile</code>时使用</li>
-<li><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L7344-L7399" target="_blank" rel="noopener">load</a>，当调用<code>clojure.core/require</code>、<code>clojure.core/use</code>时使用</li>
-<li><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L6893-L6946" target="_blank" rel="noopener">eval</a>，当调用<code>clojure.core/eval</code>时使用</li>
+<li><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L7483-L7646">compile</a>，当调用<code>clojure.core/compile</code>时使用</li>
+<li><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L7344-L7399">load</a>，当调用<code>clojure.core/require</code>、<code>clojure.core/use</code>时使用</li>
+<li><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L6893-L6946">eval</a>，当调用<code>clojure.core/eval</code>时使用</li>
 </ul>
-<center><br><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2i5Medl0kpuFjSsziXXa.oVXa_!!581166664.png" alt="Compiler 类的 UML"><br></center>
-
-<p>这三个入口函数都会依次调用 <a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L6836-L6841" target="_blank" rel="noopener">macroexpand</a>、<a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L6628-L6692" target="_blank" rel="noopener">analyze</a> 方法，生成<code>Expr</code>对象，compile 函数还会额外调用 emit 方法生成 bytecode。</p>
-<h4 id="macroexpand"><a href="#macroexpand" class="headerlink" title="macroexpand"></a>macroexpand</h4><p>Macro 毫无疑问是 Lisp 中的屠龙刀，可以在<code>编译时</code>自动生成代码：<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">Object</span> macroexpand(<span class="built_in">Object</span> form) &#123;</span><br><span class="line">    <span class="built_in">Object</span> exf = macroexpand1(form);</span><br><span class="line">    <span class="keyword">if</span> (exf != form)</span><br><span class="line">        <span class="keyword">return</span> macroexpand(exf);</span><br><span class="line">    <span class="keyword">return</span> form;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L6763-L6834" target="_blank" rel="noopener">macroexpand1</a> 函数进行主要的扩展工作，它会调用<code>isMacro</code>判断当前<code>Var</code>是否为一个宏，而这又是通过检查<code>var</code>是否为一个函数，并且元信息中<code>macro</code>是否为<code>true</code>。<br>Clojure 里面通过<code>defmacro</code>函数创建宏，它会调用<code>var</code>的<code>setMacro</code>函数来设置元信息<code>macro</code>为<code>true</code>。</p>
-<h4 id="analyze"><a href="#analyze" class="headerlink" title="analyze"></a>analyze</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Expr</span> </span>&#123;</span><br><span class="line">    <span class="function">Object <span class="title">eval</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">emit</span><span class="params">(C context, ObjExpr objx, GeneratorAdapter gen)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasJavaClass</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">Class <span class="title">getJavaClass</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Expr <span class="title">analyze</span><span class="params">(C context, Object form, String name)</span></span></span><br></pre></td></tr></table></figure>
-<p>analyze 进行主要的语义分析，<code>form</code>参数即是宏展开后的各种数据结构（String/ISeq/IPersistentList 等），返回值类型为<code>Expr</code>，可以猜测出，<code>Expr</code>的子类是程序的主体，遵循模块化的编程风格，每个子类都知道如何对其自身求值（eval）或输出 bytecode（emit）。</p>
-<center><br><img src="https://img.alicdn.com/imgextra/i1/581166664/TB2M8IrdbtlpuFjSspoXXbcDpXa_!!581166664.png" alt="Expr 类继承关系（部分）"><br></center>
-
-<h4 id="emit"><a href="#emit" class="headerlink" title="emit"></a>emit</h4><p>这里需要明确一点的是，Clojure 编译器并没有把 Clojure 代码转为相应的 Java 代码，而是借助 bytecode 操作库 <a href="http://asm.ow2.org/" target="_blank" rel="noopener">ASM</a> 直接生成可运行在 JVM 上的 bytecode。</p>
-<p>根据 JVM bytecode 的规范，每个<code>.class</code>文件都必须由类组成，而 Clojure 作为一个函数式语言，主体是函数，通过 namespace 来封装、隔离函数，你可能会想当然的认为每个 namespace 对应一个类，namespace 里面的每个函数对应类里面的方法，而实际上并不是这样的，根据 <a href="https://clojure.org/reference/compilation" target="_blank" rel="noopener">Clojure 官方文档</a>，对应关系是这样的：</p>
+<center>
+![Compiler 类的 UML](https://img.alicdn.com/imgextra/i2/581166664/TB2i5Medl0kpuFjSsziXXa.oVXa_!!581166664.png)
+</center>
+<p>这三个入口函数都会依次调用 <a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L6836-L6841">macroexpand</a>、<a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L6628-L6692">analyze</a> 方法，生成<code>Expr</code>对象，compile 函数还会额外调用 emit 方法生成 bytecode。</p>
+<h4 id="macroexpand">macroexpand</h4>
+<p>Macro 毫无疑问是 Lisp 中的屠龙刀，可以在<code>编译时</code>自动生成代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">static Object macroexpand(Object form) {
+    Object exf = macroexpand1(form);
+    if (exf != form)
+        return macroexpand(exf);
+    return form;
+}
+</code></pre></td></tr></table>
+</div>
+</div><p><a href="https://github.com/clojure/clojure/blob/clojure-1.8.0/src/jvm/clojure/lang/Compiler.java#L6763-L6834">macroexpand1</a> 函数进行主要的扩展工作，它会调用<code>isMacro</code>判断当前<code>Var</code>是否为一个宏，而这又是通过检查<code>var</code>是否为一个函数，并且元信息中<code>macro</code>是否为<code>true</code>。
+Clojure 里面通过<code>defmacro</code>函数创建宏，它会调用<code>var</code>的<code>setMacro</code>函数来设置元信息<code>macro</code>为<code>true</code>。</p>
+<h4 id="analyze">analyze</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">interface Expr {
+    Object eval();
+    void emit(C context, ObjExpr objx, GeneratorAdapter gen);
+    boolean hasJavaClass();
+    Class getJavaClass();
+}
+private static Expr analyze(C context, Object form, String name)
+</code></pre></td></tr></table>
+</div>
+</div><p>analyze 进行主要的语义分析，<code>form</code>参数即是宏展开后的各种数据结构（String/ISeq/IPersistentList 等），返回值类型为<code>Expr</code>，可以猜测出，<code>Expr</code>的子类是程序的主体，遵循模块化的编程风格，每个子类都知道如何对其自身求值（eval）或输出 bytecode（emit）。</p>
+<center>
+![Expr 类继承关系（部分）](https://img.alicdn.com/imgextra/i1/581166664/TB2M8IrdbtlpuFjSspoXXbcDpXa_!!581166664.png)
+</center>
+<h4 id="emit">emit</h4>
+<p>这里需要明确一点的是，Clojure 编译器并没有把 Clojure 代码转为相应的 Java 代码，而是借助 bytecode 操作库 <a href="http://asm.ow2.org/">ASM</a> 直接生成可运行在 JVM 上的 bytecode。</p>
+<p>根据 JVM bytecode 的规范，每个<code>.class</code>文件都必须由类组成，而 Clojure 作为一个函数式语言，主体是函数，通过 namespace 来封装、隔离函数，你可能会想当然的认为每个 namespace 对应一个类，namespace 里面的每个函数对应类里面的方法，而实际上并不是这样的，根据 <a href="https://clojure.org/reference/compilation">Clojure 官方文档</a>，对应关系是这样的：</p>
 <ul>
 <li>函数生成一个类</li>
 <li>每个文件（相当于一个命名空间）生成一个<code>&lt;filename&gt;__init</code> 的加载类</li>
 <li><code>gen-class</code> 生成固定名字的类，方便与 Java 交互</li>
 </ul>
 <p>生成的 bytecode 会在本系列第二篇文章中详细介绍，敬请期待。</p>
-<h4 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h4><p>每个 <code>Expr</code> 的子类都有 eval 方法的相应实现。下面的代码片段为 <code>LispExpr.eval</code> 的实现，其余子类实现也类似，这里不在赘述。</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public Object eval() &#123;</span><br><span class="line">    IPersistentVector <span class="keyword">ret</span> = PersistentVector.EMPTY;</span><br><span class="line">    <span class="keyword">for</span> (int i = 0; i &lt; <span class="keyword">args</span>.<span class="keyword">count</span>(); i++)</span><br><span class="line">        <span class="comment">// 这里递归的求列表中每项的值</span></span><br><span class="line">        <span class="keyword">ret</span> = (IPersistentVector) <span class="keyword">ret</span>.<span class="keyword">cons</span>(((Expr) <span class="keyword">args</span>.nth(i)).eval());</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">ret</span>.seq();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>之前看 SICP 后实现过几个解释器，但是相对来说都比较简单，通过分析 Clojure 编译器的实现，加深了对 <a href="/blog/2015/10/03/first-toy-scheme/#求值过程">eval-apply 循环</a>的理解，还有一点就是揭开了宏的真实面貌，之前一直认为宏是个很神奇的东西，其实它只不过是<code>编译时运行的函数</code>而已，输入与输出的内容既是构成程序的数据结构，同时也是程序内在的 AST。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="http://blog.guillermowinkler.com/blog/2014/04/21/decompiling-clojure-ii/" target="_blank" rel="noopener">Decompiling Clojure II, the Compiler</a></li>
-<li><a href="http://blog.ndk.io/clojure-compilation.html" target="_blank" rel="noopener">Clojure Compilation: Parenthetical Prose to Bewildering Bytecode</a></li>
-<li><a href="http://blog.fogus.me/2012/04/25/the-clojurescript-compilation-pipeline/" target="_blank" rel="noopener">The ClojureScript Compilation Pipeline</a></li>
-<li><a href="https://clojure.org/reference/compilation" target="_blank" rel="noopener">Ahead-of-time Compilation and Class Generation</a></li>
-<li><a href="https://clojure.org/reference/reader" target="_blank" rel="noopener">The Reader</a></li>
-</ul>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/" data-id="ckhxlinww0043szlj6pesht86" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJ0lEQVR42u3aUU7DMBAE0N7/0uUAEDNjp6DYL19VSRs/Ko28u3694usdX1f3j7/z6p2bLwwMjMcy2mV9/+z31+NnJWvI14aBgXEOY/zIMWD8TstL/jUYGBgYOeMqIpMITj6FgYGBscJINpctBgMDA2PMyJeStNLyJbZtuxtqcQwMjAcy8q7737/+yHwDAwPjUYx3ea2EaTsYKFaFgYGxNaMdPa4PO9ebdJdPwcDA2JQx96Vt663daLaHPDAwME5gzB2PWBkYzG1AL3kYGBgHMNpitR0DzEVwfj8GBgbGSkE7R2obcxgYGHsz8qBMto9zhyHaIvbymzEwMDZlrBSTbXS2g4R8UIqBgbE3o/2ifIRZp/4w0CM8BgbGpow8BO8NypVB6S+/AwYGxgGMlSba3JGL+mjF+qQUAwPjUYy5MG3Hn+ONYxKvyaYTAwNjV8ZcXL6Xr1d8RWGNgYFxDCMpKZOid+WwRR7BGBgY5zDyIxftnZ8YANxwcgQDA+OxjBww11BrG3N5oftDLY6BgXEMIx9wtnHcNuaK9hwGBsbBjHY7mBeoc224Ym+LgYGxBeOuwxZzi2sD/ZffAQMDY1NGO0rMY3Su6M0PZMwNRDEwMJ7LSEI2D9b1oJwMXAwMjAMYbRGbt/uTuPy3WhwDA2NTxifub/+KgYGBMVdMts21lZC9LGIxMDC2ZrSl6fgB6+VxPoTAwMA4gbESeXnhmgd0XjBjYGAcwPgCaRb6CFwBkRkAAAAASUVORK5CYII=">分享</a><div class="tags"><a href="/tags/Clojure/">Clojure</a></div><div class="post-nav"><a class="pre" href="/blog/2017/02/09/clojure-compiler-analyze-2/">Clojure 运行原理之字节码生成篇</a><a class="next" href="/blog/2017/01/08/review-2016/">2016 年终总结</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/';
-    this.page.identifier = 'blog/2017/02/05/clojure-compiler-analyze/';
-    this.page.title = 'Clojure 运行原理之编译器剖析篇';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
+<h4 id="eval">eval</h4>
+<p>每个 <code>Expr</code> 的子类都有 eval 方法的相应实现。下面的代码片段为 <code>LispExpr.eval</code> 的实现，其余子类实现也类似，这里不在赘述。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">public Object eval() {
+    IPersistentVector ret = PersistentVector.EMPTY;
+    for (int i = 0; i &lt; args.count(); i++)
+        // 这里递归的求列表中每项的值
+        ret = (IPersistentVector) ret.cons(((Expr) args.nth(i)).eval());
+    return ret.seq();
 }
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="总结">总结</h2>
+<p>之前看 SICP 后实现过几个解释器，但是相对来说都比较简单，通过分析 Clojure 编译器的实现，加深了对 <a href="/blog/2015/10/03/first-toy-scheme/#%E6%B1%82%E5%80%BC%E8%BF%87%E7%A8%8B">eval-apply 循环</a>的理解，还有一点就是揭开了宏的真实面貌，之前一直认为宏是个很神奇的东西，其实它只不过是<code>编译时运行的函数</code>而已，输入与输出的内容既是构成程序的数据结构，同时也是程序内在的 AST。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://blog.guillermowinkler.com/blog/2014/04/21/decompiling-clojure-ii/">Decompiling Clojure II, the Compiler</a></li>
+<li><a href="http://blog.ndk.io/clojure-compilation.html">Clojure Compilation: Parenthetical Prose to Bewildering Bytecode</a></li>
+<li><a href="http://blog.fogus.me/2012/04/25/the-clojurescript-compilation-pipeline/">The ClojureScript Compilation Pipeline</a></li>
+<li><a href="https://clojure.org/reference/compilation">Ahead-of-time Compilation and Class Generation</a></li>
+<li><a href="https://clojure.org/reference/reader">The Reader</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/clojure/">Clojure</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2017/02/09/clojure-compiler-analyze-2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Clojure 运行原理之字节码生成篇</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2017/01/08/review-2016/">
+            <span class="next-text nav-default">2016 年终总结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

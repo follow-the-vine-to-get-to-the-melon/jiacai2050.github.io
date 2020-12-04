@@ -1,117 +1,703 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>MacBook 最佳实践 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">MacBook 最佳实践</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">MacBook 最佳实践</h1><div class="post-meta">Nov 23, 2014<span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 4.6k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 19</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/11/23/first-taste-of-macbook/" href="/blog/2014/11/23/first-taste-of-macbook/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Mac-OS-简介"><span class="toc-number">1.</span> <span class="toc-text">Mac OS 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mac-开发环境部署"><span class="toc-number">2.</span> <span class="toc-text">Mac 开发环境部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#包管理器-Homebrew"><span class="toc-number">2.1.</span> <span class="toc-text">包管理器 Homebrew</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文本编辑器-VSCode"><span class="toc-number">2.2.</span> <span class="toc-text">文本编辑器 VSCode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#神之编辑器-Emacs"><span class="toc-number">2.3.</span> <span class="toc-text">神之编辑器 Emacs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#API-查阅工具Dash"><span class="toc-number">2.4.</span> <span class="toc-text">API 查阅工具Dash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#抓包工具-Wireshark"><span class="toc-number">2.5.</span> <span class="toc-text">抓包工具 Wireshark</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#终端-iTerm-2"><span class="toc-number">2.6.</span> <span class="toc-text">终端 iTerm 2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bashrc"><span class="toc-number">2.7.</span> <span class="toc-text">~/.bashrc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssh-config"><span class="toc-number">2.8.</span> <span class="toc-text">~/.ssh/config</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java"><span class="toc-number">2.9.</span> <span class="toc-text">Java</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker"><span class="toc-number">2.10.</span> <span class="toc-text">Docker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库-GUI-客户端"><span class="toc-number">2.11.</span> <span class="toc-text">数据库 GUI 客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#科学上网-Shadowsocks"><span class="toc-number">2.12.</span> <span class="toc-text">科学上网 Shadowsocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟机-Virtualbox"><span class="toc-number">2.13.</span> <span class="toc-text">虚拟机 Virtualbox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统快捷键"><span class="toc-number">2.14.</span> <span class="toc-text">系统快捷键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实用命令"><span class="toc-number">2.15.</span> <span class="toc-text">实用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用软件"><span class="toc-number">3.</span> <span class="toc-text">常用软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览器"><span class="toc-number">3.1.</span> <span class="toc-text">浏览器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片截屏、合并"><span class="toc-number">3.2.</span> <span class="toc-text">图片截屏、合并</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#录屏-gif"><span class="toc-number">3.3.</span> <span class="toc-text">录屏 gif</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#流程图制作工具"><span class="toc-number">3.4.</span> <span class="toc-text">流程图制作工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Calibre-mobi-转化器"><span class="toc-number">3.5.</span> <span class="toc-text">Calibre mobi 转化器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视频播放器、截取"><span class="toc-number">3.6.</span> <span class="toc-text">视频播放器、截取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#音乐频播放器"><span class="toc-number">3.7.</span> <span class="toc-text">音乐频播放器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webarchive"><span class="toc-number">3.8.</span> <span class="toc-text">*.webarchive</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见问题"><span class="toc-number">4.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不能写-NTFS"><span class="toc-number">4.1.</span> <span class="toc-text">不能写 NTFS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Wi-Fi-时常中断"><span class="toc-number">4.2.</span> <span class="toc-text">Wi-Fi 时常中断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新日志"><span class="toc-number">7.</span> <span class="toc-text">更新日志</span></a></li></ol></div></div><div class="post-content"><p>MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。</p>
-<p><img src="https://dn-mhke0kuv.qbox.me/cb49a18efb421a9624c5.png" alt="MacBook 你值得拥有"></p>
-<h2 id="Mac-OS-简介"><a href="#Mac-OS-简介" class="headerlink" title="Mac OS 简介"></a>Mac OS 简介</h2><p>Mac OS可以被分成操作系统的两个系列：</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MacBook 最佳实践 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。 MacBook 你值得拥" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MacBook 最佳实践" />
+<meta property="og:description" content="MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。 MacBook 你值得拥" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/" />
+<meta property="article:published_time" content="2014-11-23T20:40:07+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="MacBook 最佳实践">
+<meta itemprop="description" content="MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。 MacBook 你值得拥">
+<meta itemprop="datePublished" content="2014-11-23T20:40:07+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="6120">
+
+
+
+<meta itemprop="keywords" content="最佳实践," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MacBook 最佳实践"/>
+<meta name="twitter:description" content="MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。 MacBook 你值得拥"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MacBook 最佳实践</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-11-23 </span>
+        
+          <span class="more-meta"> 约 6120 字 </span>
+          <span class="more-meta"> 预计阅读 13 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#mac-os-简介">Mac OS 简介</a></li>
+        <li><a href="#mac-开发环境部署">Mac 开发环境部署</a>
+          <ul>
+            <li><a href="#包管理器-homebrewhttpbrewsh">包管理器 <a href="http://brew.sh/">Homebrew</a></a></li>
+            <li><a href="#文本编辑器-vscodehttpscodevisualstudiocom">文本编辑器 <a href="https://code.visualstudio.com/">VSCode</a></a></li>
+            <li><a href="#神之编辑器-emacshttpswwwemacswikiorgemacsinterfaceen">神之编辑器 <a href="https://www.emacswiki.org/emacs?interface=en">Emacs</a></a></li>
+            <li><a href="#api-查阅工具dashhttpskapelicomdash">API 查阅工具<a href="https://kapeli.com/dash">Dash</a></a></li>
+            <li><a href="#抓包工具-wiresharkhttpswwwwiresharkorg">抓包工具 <a href="https://www.wireshark.org/">Wireshark</a></a></li>
+            <li><a href="#终端-iterm-2httpiterm2com">终端 <a href="http://iterm2.com/">iTerm 2</a></a></li>
+            <li><a href="#bashrc">~/.bashrc</a></li>
+            <li><a href="#sshconfig">~/.ssh/config</a></li>
+            <li><a href="#java">Java</a></li>
+            <li><a href="#docker">Docker</a></li>
+            <li><a href="#数据库-gui-客户端">数据库 GUI 客户端</a></li>
+            <li><a href="#科学上网-shadowsocks">科学上网 Shadowsocks</a></li>
+            <li><a href="#虚拟机-virtualboxhttpswwwvirtualboxorg">虚拟机 <a href="https://www.virtualbox.org/">Virtualbox</a></a></li>
+            <li><a href="#系统快捷键">系统快捷键</a></li>
+            <li><a href="#实用命令">实用命令</a></li>
+          </ul>
+        </li>
+        <li><a href="#常用软件">常用软件</a>
+          <ul>
+            <li><a href="#浏览器">浏览器</a></li>
+            <li><a href="#图片截屏合并">图片截屏、合并</a></li>
+            <li><a href="#录屏-gif">录屏 gif</a></li>
+            <li><a href="#流程图制作工具">流程图制作工具</a></li>
+            <li><a href="#calibre-mobi-转化器">Calibre mobi 转化器</a></li>
+            <li><a href="#视频播放器截取">视频播放器、截取</a></li>
+            <li><a href="#音乐频播放器">音乐频播放器</a></li>
+            <li><a href="#webarchive">*.webarchive</a></li>
+          </ul>
+        </li>
+        <li><a href="#常见问题">常见问题</a>
+          <ul>
+            <li><a href="#不能写-ntfs">不能写 NTFS</a></li>
+            <li><a href="#wi-fi-时常中断">Wi-Fi 时常中断</a></li>
+          </ul>
+        </li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#参考">参考</a></li>
+        <li><a href="#更新日志">更新日志</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。</p>
+<p>
+  <figure>
+    <img src="https://dn-mhke0kuv.qbox.me/cb49a18efb421a9624c5.png" alt="MacBook 你值得拥有">
+    <figcaption><center>MacBook 你值得拥有</center></figcaption>
+  </figure>
+
+</p>
+<h2 id="mac-os-简介">Mac OS 简介</h2>
+<p>Mac OS可以被分成操作系统的两个系列：</p>
 <ul>
 <li>一个是老旧且已不被支持的“Classic”Mac OS（系统搭载在1984年销售的首部Mac与其后代上，终极版本是Mac OS 9）。采用Mach作为內核，在Mac OS 7.6.1以前用“System vX.X”来称呼。</li>
-<li>新的OS X结合<a href="http://zh.wikipedia.org/wiki/BSD" target="_blank" rel="noopener">BSD Unix</a>、OpenStep和Mac OS 9的元素。它的最底层建基于Unix基础，其代码被称为Darwin，实行的是部分开放源代码。</li>
+<li>新的OS X结合<a href="http://zh.wikipedia.org/wiki/BSD">BSD Unix</a>、OpenStep和Mac OS 9的元素。它的最底层建基于Unix基础，其代码被称为Darwin，实行的是部分开放源代码。</li>
 </ul>
-<p>关于为什么Mac系统没有采用Linux内核，而是采用了BSD还有个小故事，感兴趣的大家可以看<a href="https://zhuanlan.zhihu.com/p/20263877" target="_blank" rel="noopener">Mac OS X 背后的故事（二）——Linus Torvalds的短视</a>这篇文章。</p>
+<p>关于为什么Mac系统没有采用Linux内核，而是采用了BSD还有个小故事，感兴趣的大家可以看<a href="https://zhuanlan.zhihu.com/p/20263877">Mac OS X 背后的故事（二）——Linus Torvalds的短视</a>这篇文章。</p>
 <p>尽管 Mac 的文件系统目录和 Linux 差不多，但还是有些差距，可参考下面的表格：</p>
-<p><img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2SgzpbXXXXXbSXpXXXXXXXXXX_!!581166664.png" alt="Mac-FileSystem"></p>
-<h2 id="Mac-开发环境部署"><a href="#Mac-开发环境部署" class="headerlink" title="Mac 开发环境部署"></a>Mac 开发环境部署</h2><h3 id="包管理器-Homebrew"><a href="#包管理器-Homebrew" class="headerlink" title="包管理器 Homebrew"></a>包管理器 <a href="http://brew.sh/" target="_blank" rel="noopener">Homebrew</a></h3><blockquote>
+<p>
+  <figure>
+    <img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2SgzpbXXXXXbSXpXXXXXXXXXX_!!581166664.png" alt="Mac-FileSystem">
+    <figcaption><center>Mac-FileSystem</center></figcaption>
+  </figure>
+
+</p>
+<h2 id="mac-开发环境部署">Mac 开发环境部署</h2>
+<h3 id="包管理器-homebrewhttpbrewsh">包管理器 <a href="http://brew.sh/">Homebrew</a></h3>
+<blockquote>
 <p>The missing package manager for macOS</p>
 </blockquote>
 <p><code>brew</code>相当于<code>Ubuntu</code>下的<code>apt-get</code>，<code>CentOS</code>中的<code>yum</code>。非常方便实用，一条命令即可安装：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/<span class="keyword">install</span>/<span class="keyword">master</span>/<span class="keyword">install</span>)<span class="string">"</span></span><br></pre></td></tr></table></figure>
-<ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ruby -e &#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&#34;
+</code></pre></td></tr></table>
+</div>
+</div><ul>
 <li><code>brew install &lt;cli-program&gt;</code>，安装命令行工具</li>
-<li><code>brew cask install &lt;gui-program&gt;</code>，安装图形界面软件，这得益于<a href="https://github.com/caskroom/homebrew-cask" target="_blank" rel="noopener">Homebrew-Cask</a>扩展</li>
+<li><code>brew cask install &lt;gui-program&gt;</code>，安装图形界面软件，这得益于<a href="https://github.com/caskroom/homebrew-cask">Homebrew-Cask</a>扩展</li>
 </ul>
 <p>可以根据需要，配置国内源：</p>
 <ul>
-<li>中科大，<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git" target="_blank" rel="noopener">https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git</a></li>
-<li>清华，<a href="https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/</a></li>
+<li>中科大，https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git</li>
+<li>清华，https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/</li>
 </ul>
-<h3 id="文本编辑器-VSCode"><a href="#文本编辑器-VSCode" class="headerlink" title="文本编辑器 VSCode"></a>文本编辑器 <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode</a></h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>visual-studio-code</span><br></pre></td></tr></table></figure>
-<p>新时代的文本编辑器，功能和 Atom/Sublime 差不多，但是不会出现卡顿现象，而且官方提供了 <a href="https://github.com/Microsoft/vscode-sublime-keybindings" target="_blank" rel="noopener">Sublime Text Keymap</a> 插件，如果之前熟悉 Sublime，推荐安装。下面是我非常依赖的快捷键：</p>
+<h3 id="文本编辑器-vscodehttpscodevisualstudiocom">文本编辑器 <a href="https://code.visualstudio.com/">VSCode</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install visual-studio-code
+</code></pre></td></tr></table>
+</div>
+</div><p>新时代的文本编辑器，功能和 Atom/Sublime 差不多，但是不会出现卡顿现象，而且官方提供了 <a href="https://github.com/Microsoft/vscode-sublime-keybindings">Sublime Text Keymap</a> 插件，如果之前熟悉 Sublime，推荐安装。下面是我非常依赖的快捷键：</p>
 <ul>
 <li>Multiple Selection: <code>Control+Command+G</code>（在 Linux/Windows 下，是 Alt+F3）</li>
 <li>选中多行 <code>Shift+Command+L</code></li>
 <li>多行合并为一行<code>Command+J</code></li>
 </ul>
-<h3 id="神之编辑器-Emacs"><a href="#神之编辑器-Emacs" class="headerlink" title="神之编辑器 Emacs"></a>神之编辑器 <a href="https://www.emacswiki.org/emacs?interface=en" target="_blank" rel="noopener">Emacs</a></h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>--with-cocoa --srgb emacs</span><br><span class="line"><span class="keyword">brew </span><span class="keyword">install </span><span class="keyword">sbcl </span><span class="comment"># 顺便把 common lisp 也装上</span></span><br></pre></td></tr></table></figure>
-<p>其实 Mac 是有自带 Emacs 的，位置是<code>/usr/bin/emacs</code>，只是版本非常旧，通过<code>brew</code>安装的位置在<code>/usr/local/bin/emacs</code>，可以通过下面的命令删除 Mac 自带的 Emacs：<br><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm <span class="meta-keyword">/usr/</span>bin/emacs</span><br><span class="line">sudo rm -rf <span class="meta-keyword">/usr/</span>share/emacs</span><br></pre></td></tr></table></figure></p>
-<p>为了能在 git，终端中默认使用 Emacs，需要做以下配置：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ~/.bashrc</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">EDITOR</span>=<span class="string">"emacsclient -t -a=\"\""</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">ALTERNATE_EDITOR</span>=<span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ~/.gitconfig</span></span><br><span class="line">[core]</span><br><span class="line">    editor = emacsclient -t <span class="attribute">-a</span>=\\\"\\\"</span><br></pre></td></tr></table></figure></p>
-<p>上面的配置会调用 <code>emacsclient</code> 去连接 <code>emacs daemon</code>服务，如果服务没启，就先启动服务再去连接。</p>
-<h3 id="API-查阅工具Dash"><a href="#API-查阅工具Dash" class="headerlink" title="API 查阅工具Dash"></a>API 查阅工具<a href="https://kapeli.com/dash" target="_blank" rel="noopener">Dash</a></h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>dash</span><br></pre></td></tr></table></figure>
-<blockquote>
+<h3 id="神之编辑器-emacshttpswwwemacswikiorgemacsinterfaceen">神之编辑器 <a href="https://www.emacswiki.org/emacs?interface=en">Emacs</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew install --with-cocoa --srgb emacs
+brew install sbcl # 顺便把 common lisp 也装上
+</code></pre></td></tr></table>
+</div>
+</div><p>其实 Mac 是有自带 Emacs 的，位置是<code>/usr/bin/emacs</code>，只是版本非常旧，通过<code>brew</code>安装的位置在<code>/usr/local/bin/emacs</code>，可以通过下面的命令删除 Mac 自带的 Emacs：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo rm /usr/bin/emacs
+sudo rm -rf /usr/share/emacs
+</code></pre></td></tr></table>
+</div>
+</div><p>为了能在 git，终端中默认使用 Emacs，需要做以下配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># ~/.bashrc
+export EDITOR=&#34;emacsclient -t -a=\&#34;\&#34;&#34;
+export ALTERNATE_EDITOR=&#34;&#34;
+
+# ~/.gitconfig
+[core]
+    editor = emacsclient -t -a=\\\&#34;\\\&#34;
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的配置会调用 <code>emacsclient</code> 去连接 <code>emacs daemon</code>服务，如果服务没启，就先启动服务再去连接。</p>
+<h3 id="api-查阅工具dashhttpskapelicomdash">API 查阅工具<a href="https://kapeli.com/dash">Dash</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install dash
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>Dash gives your Mac instant offline access to 150+ API documentation sets.</p>
 </blockquote>
 <p>安装 Dash 后，就可以离线查各种语言/框架的 API 文档了。🍺</p>
-<p><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2x_3QcNdkpuFjy0FbXXaNnpXa_!!581166664.png" alt></p>
-<h3 id="抓包工具-Wireshark"><a href="#抓包工具-Wireshark" class="headerlink" title="抓包工具 Wireshark"></a>抓包工具 <a href="https://www.wireshark.org/" target="_blank" rel="noopener">Wireshark</a></h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>wireshark</span><br></pre></td></tr></table></figure>
-<p>也许是最强大的抓包工具，从其名字上就能体现出：wire（线路）+ shark（鲨鱼）。但这个软件初次使用时有些难度，最重要的是区分两个概念：</p>
+<p>
+  <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2x_3QcNdkpuFjy0FbXXaNnpXa_!!581166664.png" alt="">
+
+</p>
+<h3 id="抓包工具-wiresharkhttpswwwwiresharkorg">抓包工具 <a href="https://www.wireshark.org/">Wireshark</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install wireshark
+</code></pre></td></tr></table>
+</div>
+</div><p>也许是最强大的抓包工具，从其名字上就能体现出：wire（线路）+ shark（鲨鱼）。但这个软件初次使用时有些难度，最重要的是区分两个概念：</p>
 <ul>
-<li><code>capture filter</code>，在抓包开始时指定。<br><img src="https://img.alicdn.com/imgextra/i1/581166664/TB2dcIUcHXlpuFjSszfXXcSGXXa_!!581166664.png" alt="capture filter"><br>常见表达式</li>
+<li><code>capture filter</code>，在抓包开始时指定。
+
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i1/581166664/TB2dcIUcHXlpuFjSszfXXcSGXXa_!!581166664.png" alt="capture filter">
+    <figcaption><center>capture filter</center></figcaption>
+  </figure>
+
+
+常见表达式</li>
 </ul>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Capture only traffic to or from IP address 172.18.5.4:</span></span><br><span class="line">host 172.18.5.4</span><br><span class="line"></span><br><span class="line"><span class="comment"># Capture traffic to or from a range of IP addresses:</span></span><br><span class="line">net 192.168.0.0/24</span><br><span class="line"></span><br><span class="line"><span class="comment"># Capture non-HTTP and non-SMTP traffic on your server (both are equivalent):</span></span><br><span class="line">host www.example.com <span class="keyword">and</span> <span class="keyword">not</span> (port 80 <span class="keyword">or</span><span class="built_in"> port </span>25)</span><br><span class="line">host www.example.com <span class="keyword">and</span> <span class="keyword">not</span><span class="built_in"> port </span>80 <span class="keyword">and</span> <span class="keyword">not</span><span class="built_in"> port </span>25</span><br><span class="line"></span><br><span class="line"><span class="comment"># Capture traffic within a range of ports  with newer versions of libpcap (0.9.1 and later):</span></span><br><span class="line">tcp portrange 1501-1549</span><br><span class="line"></span><br><span class="line"><span class="comment">#Capture only IPv4 traffic - the shortest filter, but sometimes very useful to get rid of lower layer protocols like ARP and STP:</span></span><br><span class="line">ip</span><br><span class="line"></span><br><span class="line"><span class="comment"># Capture only unicast traffic - useful to get rid of noise on the network if you only want to see traffic to and from your machine, not, for example, broadcast and multicast announcements:</span></span><br><span class="line"><span class="keyword">not</span> broadcast <span class="keyword">and</span> <span class="keyword">not</span> multicast</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>display filter</code>，在抓取一定包后进行过滤。<br><img src="https://img.alicdn.com/imgextra/i2/581166664/TB2L5U0cHJkpuFjy1zcXXa5FFXa_!!581166664.png" alt="display filter"><br>常见表达式</li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># Capture only traffic to or from IP address 172.18.5.4:
+host 172.18.5.4
+
+# Capture traffic to or from a range of IP addresses:
+net 192.168.0.0/24
+
+# Capture non-HTTP and non-SMTP traffic on your server (both are equivalent):
+host www.example.com and not (port 80 or port 25)
+host www.example.com and not port 80 and not port 25
+
+# Capture traffic within a range of ports  with newer versions of libpcap (0.9.1 and later):
+tcp portrange 1501-1549
+
+#Capture only IPv4 traffic - the shortest filter, but sometimes very useful to get rid of lower layer protocols like ARP and STP:
+ip
+
+# Capture only unicast traffic - useful to get rid of noise on the network if you only want to see traffic to and from your machine, not, for example, broadcast and multicast announcements:
+not broadcast and not multicast
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>display filter</code>，在抓取一定包后进行过滤。
+
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2L5U0cHJkpuFjy1zcXXa5FFXa_!!581166664.png" alt="display filter">
+    <figcaption><center>display filter</center></figcaption>
+  </figure>
+
+
+常见表达式</li>
 </ul>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">ip.dst_host</span> <span class="string">==</span> <span class="number">192.168</span><span class="number">.30</span><span class="number">.103</span> <span class="string">and</span> <span class="string">tcp.dstport</span> <span class="string">==</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="string">ip.addr</span> <span class="string">==</span> <span class="number">10.43</span><span class="number">.54</span><span class="number">.65</span></span><br><span class="line"><span class="comment"># is equivalent to</span></span><br><span class="line"><span class="string">ip.src</span> <span class="string">==</span> <span class="number">10.43</span><span class="number">.54</span><span class="number">.65</span> <span class="string">or</span> <span class="string">ip.dst</span> <span class="string">==</span> <span class="number">10.43</span><span class="number">.54</span><span class="number">.65</span></span><br></pre></td></tr></table></figure>
-<h3 id="终端-iTerm-2"><a href="#终端-iTerm-2" class="headerlink" title="终端 iTerm 2"></a>终端 <a href="http://iterm2.com/" target="_blank" rel="noopener">iTerm 2</a></h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>iterm2</span><br></pre></td></tr></table></figure>
-<p>Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了 iTerm2。需要设置一项：Left Option act as +Esc（Preferences–&gt;Profiles–&gt;Keys），这样 Option 就可以用作 Meta 键了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ip.dst_host == 192.168.30.103 and tcp.dstport == 80
+
+ip.addr == 10.43.54.65
+# is equivalent to
+ip.src == 10.43.54.65 or ip.dst == 10.43.54.65
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="终端-iterm-2httpiterm2com">终端 <a href="http://iterm2.com/">iTerm 2</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install iterm2
+</code></pre></td></tr></table>
+</div>
+</div><p>Mac自带的终端不是很强，程序员们需要一个强劲的终端来工作，于是有了 iTerm2。需要设置一项：Left Option act as +Esc（Preferences&ndash;&gt;Profiles&ndash;&gt;Keys），这样 Option 就可以用作 Meta 键了。</p>
 <ul>
-<li><code>Cmd + D</code> 垂直分屏 </li>
-<li><code>Cmd + Shift + D</code> 水平分屏 </li>
-<li><code>Cmd + T</code> 开多个Tab </li>
-<li><code>Cmd + 数字</code> 在多个Tab之间进行切换 </li>
-<li><code>Option + F/B（向前、向后）</code> 按字移动。Bash Shell 光标默认按照 Emacs 风格移动，也可改为 VIM，可参考<a href="http://www.hypexr.org/bash_tutorial.php#set" target="_blank" rel="noopener">Modifying the Bash Shell with the set Command</a>。 </li>
+<li><code>Cmd + D</code> 垂直分屏</li>
+<li><code>Cmd + Shift + D</code> 水平分屏</li>
+<li><code>Cmd + T</code> 开多个Tab</li>
+<li><code>Cmd + 数字</code> 在多个Tab之间进行切换</li>
+<li><code>Option + F/B（向前、向后）</code> 按字移动。Bash Shell 光标默认按照 Emacs 风格移动，也可改为 VIM，可参考<a href="http://www.hypexr.org/bash_tutorial.php#set">Modifying the Bash Shell with the set Command</a>。</li>
 <li><code>Ctrl + r</code> 搜索历史命令</li>
 <li><code>!!</code> 执行上条命令</li>
-<li><code>Ctrl+x Ctrl+e</code> 调用<a href="http://www.commandlinefu.com/commands/view/1446/rapidly-invoke-an-editor-to-write-a-long-complex-or-tricky-command" target="_blank" rel="noopener">默认编辑器去编辑一个特别长的命令</a></li>
+<li><code>Ctrl+x Ctrl+e</code> 调用<a href="http://www.commandlinefu.com/commands/view/1446/rapidly-invoke-an-editor-to-write-a-long-complex-or-tricky-command">默认编辑器去编辑一个特别长的命令</a></li>
 </ul>
-<p>当然，说到了 iTerm2，不得不提到终端复用软件 <a href="https://tmux.github.io/" target="_blank" rel="noopener">tmux</a>，tmux 默认配置文件在 Mac 上很别扭，你可以参考我这里的<a href="https://github.com/jiacai2050/conf/blob/master/.tmux.conf" target="_blank" rel="noopener">配置文件</a>，这样 tmux 就可以像 vim 一样实现各种分屏的效果了。如果你还不知道 tmux 为何物，强烈推荐你看这个13分钟的<a href="http://pan.baidu.com/s/1gdLZzB9" target="_blank" rel="noopener">视频</a>，绝对物超所值，感谢 <a href="http://haoduoshipin.com/u/happypeter" target="_blank" rel="noopener">happypeter</a> 的分享。</p>
-<p>我现在用的主题是：<a href="https://github.com/chriskempson/tomorrow-theme/blob/master/iTerm2/Tomorrow%20Night.itermcolors" target="_blank" rel="noopener">Tomorrow Night</a>。</p>
-<h3 id="bashrc"><a href="#bashrc" class="headerlink" title="~/.bashrc"></a>~/.bashrc</h3><p>Linux 一般通过<code>~/.bashrc</code>进行环境变量的配置，但是在 Mac 下配置后，发现根本没有效果，这是为什么呢？<br>其实这是个比较基础的问题，shell有两种：登录式shell与非登录式shell，直观理解，登录(login)式shell就是在你打开shell要求你输入用户名与密码的shell，我们在使用桌面Linux时一般只在登录时接触到这种shell，等我们进入系统后，再打开的Terminal就是非登录式shell了。这两种 shell 读取配置的文件是不同的：</p>
+<p>当然，说到了 iTerm2，不得不提到终端复用软件 <a href="https://tmux.github.io/">tmux</a>，tmux 默认配置文件在 Mac 上很别扭，你可以参考我这里的<a href="https://github.com/jiacai2050/conf/blob/master/.tmux.conf">配置文件</a>，这样 tmux 就可以像 vim 一样实现各种分屏的效果了。如果你还不知道 tmux 为何物，强烈推荐你看这个13分钟的<a href="http://pan.baidu.com/s/1gdLZzB9">视频</a>，绝对物超所值，感谢 <a href="http://haoduoshipin.com/u/happypeter">happypeter</a> 的分享。</p>
+<p>我现在用的主题是：<a href="https://github.com/chriskempson/tomorrow-theme/blob/master/iTerm2/Tomorrow%20Night.itermcolors">Tomorrow Night</a>。</p>
+<h3 id="bashrc">~/.bashrc</h3>
+<p>Linux 一般通过<code>~/.bashrc</code>进行环境变量的配置，但是在 Mac 下配置后，发现根本没有效果，这是为什么呢？
+其实这是个比较基础的问题，shell有两种：登录式shell与非登录式shell，直观理解，登录(login)式shell就是在你打开shell要求你输入用户名与密码的shell，我们在使用桌面Linux时一般只在登录时接触到这种shell，等我们进入系统后，再打开的Terminal就是非登录式shell了。这两种 shell 读取配置的文件是不同的：</p>
 <ul>
 <li>登录式Shell启动时会去读取<code>~/.profile</code>文件（Redhat、Mac上为 <code>~/.bash_profile</code>）</li>
 <li>非登录式Shell会去读取<code>~/.bashrc</code>文件</li>
 </ul>
-<p>这也就解释了为什么在 Linux 系统上只需要修改 <code>~/.bashrc</code> 后即可生效的原因。但在 Mac 上有些不同，开机后再通过 Terminal.app（或iTerm.app） 打开终端时，这时的 shell 是登录式shell，因为Terminal.app（或iTerm.app）这个应用程序是通过<code>/usr/bin/login</code>这个命令打开终端的，所以不会去<code>source ~/.bashrc</code>了。<br>解决方法也很简单，在~/.bash_profile加上下面一句代码就ok了<br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ -r ~<span class="string">/.bashrc</span> ] &amp;&amp; source ~<span class="string">/.bashrc</span></span><br></pre></td></tr></table></figure></p>
-<p>Mac下<code>ls</code>命令默认是没有颜色的，不是很直观，可以自己设置一个alias，参考<a href="http://apple.stackexchange.com/questions/33677/how-can-i-configure-mac-terminal-to-have-color-ls-output" target="_blank" rel="noopener">链接</a><br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">LSCOLORS</span>=gxBxhxDxfxhxhxhxhxcxcx</span><br><span class="line">alias <span class="attribute">ls</span>=<span class="string">'ls -FG'</span></span><br><span class="line">alias <span class="attribute">ll</span>=<span class="string">'ls -l'</span></span><br></pre></td></tr></table></figure></p>
-<p>为了在命令行提示符中显示时间，可以设置<code>PS1</code>变量<br><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export PS1="<span class="symbol">\n</span><span class="symbol">\e</span>[1;37m[<span class="symbol">\e</span>[m<span class="symbol">\e</span>[1;35m<span class="symbol">\u</span><span class="symbol">\e</span>[m<span class="symbol">\e</span>[1;36m@<span class="symbol">\e</span>[m<span class="symbol">\e</span>[1;37m<span class="symbol">\h</span><span class="symbol">\e</span>[m <span class="symbol">\e</span>[1;33m<span class="symbol">\t</span><span class="symbol">\e</span>[m <span class="symbol">\w</span><span class="symbol">\e</span>[m<span class="symbol">\e</span>[1;37m]<span class="symbol">\e</span>[m<span class="symbol">\e</span>[1;36m<span class="symbol">\e</span>[m<span class="symbol">\n</span><span class="symbol">\$</span> "</span><br><span class="line"></span><br><span class="line"># 效果如下</span><br><span class="line">[liujiacai@macbook 22:02:13 ~]</span><br></pre></td></tr></table></figure></p>
-<h3 id="ssh-config"><a href="#ssh-config" class="headerlink" title="~/.ssh/config"></a>~/.ssh/config</h3><p>在 macOS/OS X 截止到 Yosemite，ssh-agent 会一直记住 <code>ssh-add -K</code> 添加的 key，即使重启 keychain，ssh-agent 也会自动去读取保存在 keychain 中的密码（passphrase）。但在 Sierra 中，重启 keychain 后，ssh-agent 就不会去读取了。Apple 开发者也对这一现象作出<a href="https://openradar.appspot.com/27348363" target="_blank" rel="noopener">回应</a>：</p>
+<p>这也就解释了为什么在 Linux 系统上只需要修改 <code>~/.bashrc</code> 后即可生效的原因。但在 Mac 上有些不同，开机后再通过 Terminal.app（或iTerm.app） 打开终端时，这时的 shell 是登录式shell，因为Terminal.app（或iTerm.app）这个应用程序是通过<code>/usr/bin/login</code>这个命令打开终端的，所以不会去<code>source ~/.bashrc</code>了。
+解决方法也很简单，在~/.bash_profile加上下面一句代码就ok了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[ -r ~/.bashrc ] &amp;&amp; source ~/.bashrc
+</code></pre></td></tr></table>
+</div>
+</div><p>Mac下<code>ls</code>命令默认是没有颜色的，不是很直观，可以自己设置一个alias，参考<a href="http://apple.stackexchange.com/questions/33677/how-can-i-configure-mac-terminal-to-have-color-ls-output">链接</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+alias ls=&#39;ls -FG&#39;
+alias ll=&#39;ls -l&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p>为了在命令行提示符中显示时间，可以设置<code>PS1</code>变量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">export PS1=&#34;\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\$ &#34;
+
+# 效果如下
+[liujiacai@macbook 22:02:13 ~]
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="sshconfig">~/.ssh/config</h3>
+<p>在 macOS/OS X 截止到 Yosemite，ssh-agent 会一直记住 <code>ssh-add -K</code> 添加的 key，即使重启 keychain，ssh-agent 也会自动去读取保存在 keychain 中的密码（passphrase）。但在 Sierra 中，重启 keychain 后，ssh-agent 就不会去读取了。Apple 开发者也对这一现象作出<a href="https://openradar.appspot.com/27348363">回应</a>：</p>
 <blockquote>
-<p>That’s expected. We re-aligned our behavior with the mainstream OpenSSH in this area. </p>
+<p>That’s expected. We re-aligned our behavior with the mainstream OpenSSH in this area.</p>
 </blockquote>
-<p>解决办法也很简单，将<code>ssh-add -A</code> 放到 <code>~/.bashrc</code> 里面就可以了。除了这种方式，还可以在<code>~/.ssh/config</code>里面加入如下配置：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host * (<span class="name">asterisk</span> for all hosts or add specific host)</span><br><span class="line">  AddKeysToAgent yes</span><br><span class="line">  UseKeychain yes</span><br><span class="line">  IdentityFile &lt;key&gt; (<span class="name">e</span>.g. ~/.ssh/userKey)</span><br></pre></td></tr></table></figure></p>
-<p>参考：</p>
+<p>解决办法也很简单，将<code>ssh-add -A</code> 放到 <code>~/.bashrc</code> 里面就可以了。除了这种方式，还可以在<code>~/.ssh/config</code>里面加入如下配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Host * (asterisk for all hosts or add specific host)
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile &lt;key&gt; (e.g. ~/.ssh/userKey)
+</code></pre></td></tr></table>
+</div>
+</div><p>参考：</p>
 <ul>
-<li><a href="https://github.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain" target="_blank" rel="noopener">Saving SSH keys in macOS Sierra keychain</a></li>
+<li><a href="https://github.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain">Saving SSH keys in macOS Sierra keychain</a></li>
 </ul>
-<p>除此之外，对于 OpenSSH 4.0 以及之后的版本，引入一新功能 ControlMaster，可以复用之前已经登录的连接，建议开启：<br><figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host *</span><br><span class="line">  ControlMaster auto</span><br><span class="line">  ControlPath ~/.ssh/master-<span class="built_in">%r</span>@<span class="built_in">%h</span>:<span class="built_in">%p</span></span><br><span class="line">  ControlPersist <span class="number">60</span>m</span><br></pre></td></tr></table></figure></p>
-<p>参考：</p>
+<p>除此之外，对于 OpenSSH 4.0 以及之后的版本，引入一新功能 ControlMaster，可以复用之前已经登录的连接，建议开启：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Host *
+  ControlMaster auto
+  ControlPath ~/.ssh/master-%r@%h:%p
+  ControlPersist 60m
+</code></pre></td></tr></table>
+</div>
+</div><p>参考：</p>
 <ul>
-<li><a href="https://www.linux.com/news/accelerating-openssh-connections-controlmaster" target="_blank" rel="noopener">Accelerating OpenSSH connections with ControlMaster</a></li>
+<li><a href="https://www.linux.com/news/accelerating-openssh-connections-controlmaster">Accelerating OpenSSH connections with ControlMaster</a></li>
 <li><a href="OpenSSH/Cookbook/Multiplexing">https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing</a></li>
 </ul>
-<h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span><span class="keyword">java</span></span><br><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>maven</span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>intellij-idea-ce  <span class="comment"># IDE，不要告诉我你还在用 eclipse</span></span><br></pre></td></tr></table></figure>
-<p>通过<code>brew cask</code>安装后，可以通过执行<code>/usr/libexec/java_home</code>这个命令来获取JAVA_HOME<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=<span class="string">"<span class="variable">$(/usr/libexec/java_home)</span>"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>docker</span><br></pre></td></tr></table></figure>
-<p>国内访问 Docker Hub 有时会遇到困难，最好可以配置<a href="https://yeasy.gitbooks.io/docker_practice/install/mirror.html" target="_blank" rel="noopener">镜像加速器</a>。</p>
-<h3 id="数据库-GUI-客户端"><a href="#数据库-GUI-客户端" class="headerlink" title="数据库 GUI 客户端"></a>数据库 GUI 客户端</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>sequel-pro <span class="comment"># mysql</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>robo<span class="number">-3</span>t    <span class="comment"># mongodb</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>rdm        <span class="comment"># redis</span></span><br></pre></td></tr></table></figure>
-<h3 id="科学上网-Shadowsocks"><a href="#科学上网-Shadowsocks" class="headerlink" title="科学上网 Shadowsocks"></a>科学上网 Shadowsocks</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span><span class="keyword">shadowsocks-libev</span></span><br></pre></td></tr></table></figure>
-<p>Mac 下不推荐安装 GUI 版本，已经很久没人维护了。安装之后编辑<code>/usr/local/etc/shadowsocks-libev.json</code>，填入 server 地址即可。<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 测试</span></span><br><span class="line">ss-<span class="built_in">local</span> -v -c /usr/<span class="built_in">local</span>/etc/shadowsocks-libev.json</span><br><span class="line"><span class="comment"># 开机启动</span></span><br><span class="line">brew services <span class="built_in">start</span> shadowsocks-libev</span><br></pre></td></tr></table></figure></p>
-<p>为了让终端可以使用代理，需要将 http(s) 转为 socks 流量。ss 官方推荐的是 <a href="https://github.com/shadowsocks/shadowsocks/wiki/Using-Shadowsocks-with-Command-Line-Tools" target="_blank" rel="noopener">proxychains</a>，但是在OS X 10.11 以后引入了 <a href="https://developer.apple.com/library/content/releasenotes/MacOSX/WhatsNewInOSX/Articles/MacOSX10_11.html" target="_blank" rel="noopener">SIP安全机制</a>，导致无法直接使用，关闭 SIP 貌似也不可取，可以选用 <a href="https://www.privoxy.org/" target="_blank" rel="noopener">privoxy</a> 来替代 proxychains。（<a href="https://tech.jandou.com/to-accelerate-the-terminal.html" target="_blank" rel="noopener">参考</a>）<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">brew install privoxy</span><br><span class="line"><span class="comment"># privoxy 使用 8118 端口， ss 使用 1080</span></span><br><span class="line">echo <span class="string">'listen-address 0.0.0.0:8118\nforward-socks5 / localhost:1080 .'</span> &gt;&gt; /usr/local/etc/privoxy/config</span><br><span class="line"><span class="comment"># 测试，查看 8118 有没有在监听， netstat -an | grep 8118</span></span><br><span class="line">/usr/local/sbin/privoxy /usr/local/etc/privoxy/config</span><br><span class="line"><span class="comment"># 开机启动</span></span><br><span class="line">brew services start privoxy</span><br></pre></td></tr></table></figure></p>
-<p>经过上面这几步 <code>http(s)-&gt;socks5</code> 就完成，下面只需要让终端走这个代理即可：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">http_proxy</span>=<span class="string">'http://localhost:8118'</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">https_proxy</span>=<span class="string">'http://localhost:8118'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以将以下函数放入 ~/.bashrc 中，方便开启/关闭代理</span></span><br><span class="line">function proxy_off()&#123;</span><br><span class="line">    unset http_proxy</span><br><span class="line">    unset https_proxy</span><br><span class="line">    echo -e <span class="string">"已关闭代理"</span></span><br><span class="line">&#125;</span><br><span class="line">function proxy_on() &#123;</span><br><span class="line">    <span class="builtin-name">export</span> <span class="attribute">no_proxy</span>=<span class="string">"localhost,127.0.0.1,localaddress,.localdomain.com"</span></span><br><span class="line">    <span class="builtin-name">export</span> <span class="attribute">http_proxy</span>=<span class="string">"http://127.0.0.1:8118"</span></span><br><span class="line">    <span class="builtin-name">export</span> <span class="attribute">https_proxy</span>=<span class="variable">$http_proxy</span></span><br><span class="line">    echo -e <span class="string">"已开启代理"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="虚拟机-Virtualbox"><a href="#虚拟机-Virtualbox" class="headerlink" title="虚拟机 Virtualbox"></a>虚拟机 <a href="https://www.virtualbox.org/" target="_blank" rel="noopener">Virtualbox</a></h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>virtualbox</span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>vagrant   <span class="comment"># 虚拟机管理工具，方便命令行操作</span></span><br></pre></td></tr></table></figure>
-<p>在天朝，很多网站是只支持 IE 的，Mac 下的 Firefox, Chrome, Safari 这时候都显得心有力而不足了，而且很多软件也只有 Windows 版，所以装个虚拟机是非常有必要的。 Virtualbox 是我自用 Ubuntu 以来一直用的虚拟机，开源免费。</p>
-<p><a href="https://github.com/hashicorp/vagrant" target="_blank" rel="noopener">vagrant</a> 是一款非常简单且使用的虚拟机命令行工具，支持市面上主流虚拟机，当然包括 VBox，通过下面的命令即可安装一个干净的 Ubuntu 环境：<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vagrant <span class="keyword">init</span> hashicorp/precise32</span><br><span class="line">vagrant up</span><br></pre></td></tr></table></figure></p>
-<p>为了方便今后操作，我自己制作了一个基于 debian8 的 box，安装上了 <a href="https://app.vagrantup.com/jiacai2050/boxes/debian8" target="_blank" rel="noopener">Clojure 开发环境</a>，一键即可安装。</p>
-<p><img src="https://img.alicdn.com/imgextra/i4/581166664/TB2aVGdcNlmpuFjSZPfXXc9iXXa_!!581166664.png" alt="Virtualbox"></p>
-<h3 id="系统快捷键"><a href="#系统快捷键" class="headerlink" title="系统快捷键"></a>系统快捷键</h3><table>
+<h3 id="java">Java</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install java
+brew install maven
+brew cask install intellij-idea-ce  # IDE，不要告诉我你还在用 eclipse
+</code></pre></td></tr></table>
+</div>
+</div><p>通过<code>brew cask</code>安装后，可以通过执行<code>/usr/libexec/java_home</code>这个命令来获取JAVA_HOME</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">export JAVA_HOME=&#34;$(/usr/libexec/java_home)&#34;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="docker">Docker</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install docker
+</code></pre></td></tr></table>
+</div>
+</div><p>国内访问 Docker Hub 有时会遇到困难，最好可以配置<a href="https://yeasy.gitbooks.io/docker_practice/install/mirror.html">镜像加速器</a>。</p>
+<h3 id="数据库-gui-客户端">数据库 GUI 客户端</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install sequel-pro # mysql
+brew cask install robo-3t    # mongodb
+brew cask install rdm        # redis
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="科学上网-shadowsocks">科学上网 Shadowsocks</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">brew install shadowsocks-libev
+</code></pre></td></tr></table>
+</div>
+</div><p>Mac 下不推荐安装 GUI 版本，已经很久没人维护了。安装之后编辑<code>/usr/local/etc/shadowsocks-libev.json</code>，填入 server 地址即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 测试
+ss-local -v -c /usr/local/etc/shadowsocks-libev.json
+# 开机启动
+brew services start shadowsocks-libev
+</code></pre></td></tr></table>
+</div>
+</div><p>为了让终端可以使用代理，需要将 http(s) 转为 socks 流量。ss 官方推荐的是 <a href="https://github.com/shadowsocks/shadowsocks/wiki/Using-Shadowsocks-with-Command-Line-Tools">proxychains</a>，但是在OS X 10.11 以后引入了 <a href="https://developer.apple.com/library/content/releasenotes/MacOSX/WhatsNewInOSX/Articles/MacOSX10_11.html">SIP安全机制</a>，导致无法直接使用，关闭 SIP 貌似也不可取，可以选用 <a href="https://www.privoxy.org/">privoxy</a> 来替代 proxychains。（<a href="https://tech.jandou.com/to-accelerate-the-terminal.html">参考</a>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">brew install privoxy
+# privoxy 使用 8118 端口， ss 使用 1080
+echo &#39;listen-address 0.0.0.0:8118\nforward-socks5 / localhost:1080 .&#39; &gt;&gt; /usr/local/etc/privoxy/config
+# 测试，查看 8118 有没有在监听， netstat -an | grep 8118
+/usr/local/sbin/privoxy /usr/local/etc/privoxy/config
+# 开机启动
+brew services start privoxy
+</code></pre></td></tr></table>
+</div>
+</div><p>经过上面这几步 <code>http(s)-&gt;socks5</code> 就完成，下面只需要让终端走这个代理即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">export http_proxy=&#39;http://localhost:8118&#39;
+export https_proxy=&#39;http://localhost:8118&#39;
+
+# 可以将以下函数放入 ~/.bashrc 中，方便开启/关闭代理
+function proxy_off(){
+    unset http_proxy
+    unset https_proxy
+    echo -e &#34;已关闭代理&#34;
+}
+function proxy_on() {
+    export no_proxy=&#34;localhost,127.0.0.1,localaddress,.localdomain.com&#34;
+    export http_proxy=&#34;http://127.0.0.1:8118&#34;
+    export https_proxy=$http_proxy
+    echo -e &#34;已开启代理&#34;
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="虚拟机-virtualboxhttpswwwvirtualboxorg">虚拟机 <a href="https://www.virtualbox.org/">Virtualbox</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install virtualbox
+brew cask install vagrant   # 虚拟机管理工具，方便命令行操作
+</code></pre></td></tr></table>
+</div>
+</div><p>在天朝，很多网站是只支持 IE 的，Mac 下的 Firefox, Chrome, Safari 这时候都显得心有力而不足了，而且很多软件也只有 Windows 版，所以装个虚拟机是非常有必要的。 Virtualbox 是我自用 Ubuntu 以来一直用的虚拟机，开源免费。</p>
+<p><a href="https://github.com/hashicorp/vagrant">vagrant</a> 是一款非常简单且使用的虚拟机命令行工具，支持市面上主流虚拟机，当然包括 VBox，通过下面的命令即可安装一个干净的 Ubuntu 环境：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">vagrant init hashicorp/precise32
+vagrant up
+</code></pre></td></tr></table>
+</div>
+</div><p>为了方便今后操作，我自己制作了一个基于 debian8 的 box，安装上了 <a href="https://app.vagrantup.com/jiacai2050/boxes/debian8">Clojure 开发环境</a>，一键即可安装。</p>
+<p>
+  <figure>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2aVGdcNlmpuFjSZPfXXc9iXXa_!!581166664.png" alt="Virtualbox">
+    <figcaption><center>Virtualbox</center></figcaption>
+  </figure>
+
+</p>
+<h3 id="系统快捷键">系统快捷键</h3>
+<table>
 <thead>
 <tr>
 <th>功能</th>
@@ -144,112 +730,462 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 <td><code>Command + Option + esc</code>（Windows 下为<code>Ctrl+Alt+Delete</code>）</td>
 </tr>
 <tr>
-<td><a href="https://apple.stackexchange.com/questions/193937/shortcut-for-toggling-between-different-windows-of-same-app" target="_blank" rel="noopener">在同一应用不同窗口切换</a></td>
+<td><a href="https://apple.stackexchange.com/questions/193937/shortcut-for-toggling-between-different-windows-of-same-app">在同一应用不同窗口切换</a></td>
 <td><code>Command + ~</code></td>
 </tr>
 <tr>
-<td><a href="http://apple.stackexchange.com/questions/12391/why-is-it-not-possible-to-use-the-cut-command-to-manipulate-a-file-in-the-find" target="_blank" rel="noopener">Finder 里面剪切</a></td>
+<td><a href="http://apple.stackexchange.com/questions/12391/why-is-it-not-possible-to-use-the-cut-command-to-manipulate-a-file-in-the-find">Finder 里面剪切</a></td>
 <td><code>Cmd + Option + V</code></td>
 </tr>
 </tbody>
 </table>
-<h3 id="实用命令"><a href="#实用命令" class="headerlink" title="实用命令"></a>实用命令</h3><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 修改hostname</span></span><br><span class="line">sudo scutil --<span class="keyword">set</span> HostName &lt;name&gt;</span><br><span class="line"><span class="meta"># 查看USB设备</span></span><br><span class="line">system_profiler SPUSBDataType</span><br></pre></td></tr></table></figure>
-<p>下面的命令需要通过<code>brew</code>进行安装后在使用<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看网络请求</span></span><br><span class="line">brew install httpstat</span><br><span class="line">$ httpstat baidu.com</span><br><span class="line">Connected <span class="keyword">to</span> 180.149.132.47:80 <span class="keyword">from</span> 172.17.10.80:54727</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Sat, 14 Jan 2017 13:49:16 GMT</span><br><span class="line">Server: Apache</span><br><span class="line">Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT</span><br><span class="line">ETag: <span class="string">"51-47cf7e6ee8400"</span></span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Content-Length: 81</span><br><span class="line">Cache-Control: <span class="attribute">max-age</span>=86400</span><br><span class="line">Expires: Sun, 15 Jan 2017 13:49:16 GMT</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Content-Type: text/html</span><br><span class="line"></span><br><span class="line">Body stored <span class="keyword">in</span>: /var/folders/2g/fxz_98ks0lgc79sjp5vn5cxc0000gn/T/tmpsawHq4</span><br><span class="line"></span><br><span class="line"> <span class="built_in"> DNS </span>Lookup   TCP<span class="built_in"> Connection </span> <span class="built_in"> Server </span>Processing   Content Transfer</span><br><span class="line">[    69ms    |      37ms      |       33ms        |        0ms       ]</span><br><span class="line">             |                |                   |                  |</span><br><span class="line">    namelookup:69ms           |                   |                  |</span><br><span class="line">                        connect:106ms             |                  |</span><br><span class="line">                                      starttransfer:139ms            |</span><br><span class="line">                                                                 total:139ms</span><br><span class="line"></span><br><span class="line"><span class="comment"># Swiss Army Knife for macOS !</span></span><br><span class="line">brew install m-cli</span><br><span class="line">$ m trash status</span><br><span class="line">Size:  51G</span><br><span class="line">Number of files: 252172</span><br></pre></td></tr></table></figure></p>
-<h2 id="常用软件"><a href="#常用软件" class="headerlink" title="常用软件"></a>常用软件</h2><p>日常使用的软件首选通过<code>App Store</code>进行安装，默认安装在<code>/Applications</code>下，个人从互联网上单独下载的软件放在这里面即可出现在<code>Launchpad</code>中找到。<br>对于通过<code>App Store</code>安装的软件，在<code>Launchpad</code>界面，按住<code>Option</code>键可进行删除。但是需要注意一点的时，应用程序一般都会有些历史文件，存放的位置有如下三处</p>
+<h3 id="实用命令">实用命令</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 修改hostname
+sudo scutil --set HostName &lt;name&gt;
+# 查看USB设备
+system_profiler SPUSBDataType
+</code></pre></td></tr></table>
+</div>
+</div><p>下面的命令需要通过<code>brew</code>进行安装后在使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 查看网络请求
+brew install httpstat
+$ httpstat baidu.com
+Connected to 180.149.132.47:80 from 172.17.10.80:54727
+
+HTTP/1.1 200 OK
+Date: Sat, 14 Jan 2017 13:49:16 GMT
+Server: Apache
+Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+ETag: &#34;51-47cf7e6ee8400&#34;
+Accept-Ranges: bytes
+Content-Length: 81
+Cache-Control: max-age=86400
+Expires: Sun, 15 Jan 2017 13:49:16 GMT
+Connection: Keep-Alive
+Content-Type: text/html
+
+Body stored in: /var/folders/2g/fxz_98ks0lgc79sjp5vn5cxc0000gn/T/tmpsawHq4
+
+  DNS Lookup   TCP Connection   Server Processing   Content Transfer
+[    69ms    |      37ms      |       33ms        |        0ms       ]
+             |                |                   |                  |
+    namelookup:69ms           |                   |                  |
+                        connect:106ms             |                  |
+                                      starttransfer:139ms            |
+                                                                 total:139ms
+
+# Swiss Army Knife for macOS !
+brew install m-cli
+$ m trash status
+Size:  51G
+Number of files: 252172
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="常用软件">常用软件</h2>
+<p>日常使用的软件首选通过<code>App Store</code>进行安装，默认安装在<code>/Applications</code>下，个人从互联网上单独下载的软件放在这里面即可出现在<code>Launchpad</code>中找到。
+对于通过<code>App Store</code>安装的软件，在<code>Launchpad</code>界面，按住<code>Option</code>键可进行删除。但是需要注意一点的时，应用程序一般都会有些历史文件，存放的位置有如下三处</p>
 <ul>
 <li><code>~/Library/Application Support/&lt;Application name&gt;</code></li>
 <li><code>~/Library/Cache/&lt;Application name&gt;</code></li>
 <li><code>~/Library/Preferences/&lt;Application name&gt;.plist</code></li>
 </ul>
-<p>使用<code>find + grep</code>的方式就能轻松找出来了。网上也有诸如<a href="http://appcleaner.en.softonic.com/mac" target="_blank" rel="noopener">AppCleaner</a>、<a href="http://www.appzapper.com/" target="_blank" rel="noopener">AppZapper</a>的小软件，大家可以根据需要自取之。</p>
+<p>使用<code>find + grep</code>的方式就能轻松找出来了。网上也有诸如<a href="http://appcleaner.en.softonic.com/mac">AppCleaner</a>、<a href="http://www.appzapper.com/">AppZapper</a>的小软件，大家可以根据需要自取之。</p>
 <p>下面介绍下我日常使用的一些免费软件，供大家参考。</p>
 <blockquote>
-<p>PS: Mac 下有很多非常实用的收费软件，我个人用的并不多，这里就不在列举了。<br>大家可以参考知乎上的 <a href="https://www.zhihu.com/question/19550256" target="_blank" rel="noopener">macOS (OS X) 平台上有哪些值得推荐的常用软件？</a></p>
+<p>PS: Mac 下有很多非常实用的收费软件，我个人用的并不多，这里就不在列举了。
+大家可以参考知乎上的 <a href="https://www.zhihu.com/question/19550256">macOS (OS X) 平台上有哪些值得推荐的常用软件？</a></p>
 </blockquote>
-<h3 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h3><p>Mac 上自带的 Safari 比较轻量，虽然比较省电，但扩展性远不如 Chrome、Firefox，所以这两个是必须的。<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>firefox</span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>google-chrome</span><br></pre></td></tr></table></figure></p>
-<p>Chrome 默认会按照一个 Update 程序，在 <code>~/Library/Google/GoogleSoftwareUpdate</code>，可以执行<a href="https://superuser.com/a/1077420" target="_blank" rel="noopener">下面命令删除</a>：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd <span class="regexp">/Users/</span>liujiacai<span class="regexp">/Library/</span>Google<span class="regexp">/GoogleSoftwareUpdate/</span>GoogleSoftwareUpdate.bundle<span class="regexp">/Contents/</span>Resources<span class="regexp">/GoogleSoftwareUpdateAgent.app/</span>Contents/Resources</span><br><span class="line"></span><br><span class="line">./ksinstall --nuke</span><br></pre></td></tr></table></figure></p>
-<h3 id="图片截屏、合并"><a href="#图片截屏、合并" class="headerlink" title="图片截屏、合并"></a>图片截屏、合并</h3><p>Mac上的截图工具已经很好了，<code>Cmd + Shift + 3/4</code>就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用 Snip，才 2M 大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是<code>Cmd + Shift + 6</code>。<br>更重要的一点是，<a href="http://snip.qq.com/" target="_blank" rel="noopener">Snip</a> 可以解决Retina下截屏2x问题（就是截出来的图超大），就光这个特点就足以让你使用snip。</p>
-<center><br><img width="500px" src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2UXoxbFXXXXXnXXXXXXXXXXXX_!!581166664.png" alt="我的snip配置"><br></center><br>Mac自带的 Preview 可以对图片进行旋转、调整大小、添加文字，不需要在额外安装软件。<br><center><br><img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2KtMobFXXXXXkXpXXXXXXXXXX_!!581166664.png" alt="Preview工具栏"><br></center>
+<h3 id="浏览器">浏览器</h3>
+<p>Mac 上自带的 Safari 比较轻量，虽然比较省电，但扩展性远不如 Chrome、Firefox，所以这两个是必须的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">brew cask install firefox
+brew cask install google-chrome
+</code></pre></td></tr></table>
+</div>
+</div><p>Chrome 默认会按照一个 Update 程序，在 <code>~/Library/Google/GoogleSoftwareUpdate</code>，可以执行<a href="https://superuser.com/a/1077420">下面命令删除</a>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /Users/liujiacai/Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Resources/GoogleSoftwareUpdateAgent.app/Contents/Resources
 
-<p>此外，如果要对两张图片进行合并，需要通过安装 <a href="https://www.imagemagick.org" target="_blank" rel="noopener">ImageMagick</a>，并且通过以下命令操作：<a href="http://apple.stackexchange.com/a/52882/103966" target="_blank" rel="noopener">出处</a></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">brew</span> <span class="selector-tag">install</span> <span class="selector-tag">ImageMagick</span></span><br><span class="line"></span><br><span class="line"># 下面两条命令都会把 <span class="selector-tag">left</span><span class="selector-class">.png</span> <span class="selector-tag">right</span><span class="selector-class">.png</span> 合并到 <span class="selector-tag">merged</span><span class="selector-class">.png</span> 里面</span><br><span class="line"><span class="selector-tag">convert</span> +<span class="selector-tag">append</span> <span class="selector-tag">left</span><span class="selector-class">.png</span> <span class="selector-tag">right</span><span class="selector-class">.png</span> <span class="selector-tag">merged</span><span class="selector-class">.png</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">montage</span> <span class="selector-tag">-geometry</span> 100% <span class="selector-tag">left</span><span class="selector-class">.jpg</span> <span class="selector-tag">right</span><span class="selector-class">.jpg</span> <span class="selector-tag">merged</span><span class="selector-class">.jpg</span></span><br></pre></td></tr></table></figure>
-<p>如果你依赖于Evernote，可以试试<a href="https://www.yinxiang.com/skitch/" target="_blank" rel="noopener">圈点</a>，洋名skitch，同样很好很强大。</p>
-<h3 id="录屏-gif"><a href="#录屏-gif" class="headerlink" title="录屏 gif"></a>录屏 gif</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>licecap</span><br></pre></td></tr></table></figure>
-<p>很多时候我们需要把自己的操作展示给别人看，比较好的做法是通过录屏软件将自己的操作保存成 gif 格式的图片。<br><a href="https://github.com/lepht/licecap" target="_blank" rel="noopener">开源免费</a>的<a href="http://www.cockos.com/licecap/" target="_blank" rel="noopener">licecap</a> 很好的解决了这个问题。</p>
-<p><img src="http://ww3.sinaimg.cn/mw690/5fee18eegw1f17799uiz1g20ci0cijs2.gif" alt="使用 licecap 制作的例子"></p>
-<h3 id="流程图制作工具"><a href="#流程图制作工具" class="headerlink" title="流程图制作工具"></a>流程图制作工具</h3><p>对于程序员来说，流程图应该是再亲切不过的了，一张图胜过千言万语。之前我都是用 Keynote 来画，但是实在是不好用，<del>后来在<a href="https://www.zhihu.com/question/19588698" target="_blank" rel="noopener">知乎</a>上发现了在线版的<a href="https://www.processon.com/" target="_blank" rel="noopener">ProcessOn</a>，大大减少了我画流程图的时间，上手也比较快。</del>现在 ProcessOn 有了限制，只能保留 9 张流程图。我又找到了新的工具，<a href="https://www.draw.io" target="_blank" rel="noopener">draw.io</a>，时序图、状态图统统不在话下。</p>
-<p>其次，国外很多项目的图是用纯文本画的，比较好用的在线工具是：<a href="http://asciiflow.com/" target="_blank" rel="noopener">asciiflow</a>。</p>
-<h3 id="Calibre-mobi-转化器"><a href="#Calibre-mobi-转化器" class="headerlink" title="Calibre mobi 转化器"></a>Calibre mobi 转化器</h3><p>如果你有 Kinder 阅读器，那么这个应该适合你！<br><figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># 安装命令</span><br><span class="line">brew cask install calibre</span><br><span class="line"></span><br><span class="line">=<span class="ruby">=&gt; Installing Cask calibre</span></span><br><span class="line"><span class="ruby">==&gt; Moving App <span class="string">'calibre.app'</span> to <span class="string">'/Applications/calibre.app'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'calibre'</span> to <span class="string">'/usr/local/bin/calibre'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'calibre-complete'</span> to <span class="string">'/usr/local/bin/calibre-complete'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'calibre-customize'</span> to <span class="string">'/usr/local/bin/calibre-customize'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'calibre-debug'</span> to <span class="string">'/usr/local/bin/calibre-debug'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'calibre-parallel'</span> to <span class="string">'/usr/local/bin/calibre-parallel'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'calibre-server'</span> to <span class="string">'/usr/local/bin/calibre-server'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'calibre-smtp'</span> to <span class="string">'/usr/local/bin/calibre-smtp'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'calibredb'</span> to <span class="string">'/usr/local/bin/calibredb'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'ebook-convert'</span> to <span class="string">'/usr/local/bin/ebook-convert'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'ebook-device'</span> to <span class="string">'/usr/local/bin/ebook-device'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'ebook-edit'</span> to <span class="string">'/usr/local/bin/ebook-edit'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'ebook-meta'</span> to <span class="string">'/usr/local/bin/ebook-meta'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'ebook-polish'</span> to <span class="string">'/usr/local/bin/ebook-polish'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'ebook-viewer'</span> to <span class="string">'/usr/local/bin/ebook-viewer'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'fetch-ebook-metadata'</span> to <span class="string">'/usr/local/bin/fetch-ebook-metadata'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'lrf2lrs'</span> to <span class="string">'/usr/local/bin/lrf2lrs'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'lrfviewer'</span> to <span class="string">'/usr/local/bin/lrfviewer'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'lrs2lrf'</span> to <span class="string">'/usr/local/bin/lrs2lrf'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'markdown-calibre'</span> to <span class="string">'/usr/local/bin/markdown-calibre'</span>.</span></span><br><span class="line"><span class="ruby">==&gt; Linking Binary <span class="string">'web2disk'</span> to <span class="string">'/usr/local/bin/web2disk'</span>.</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="视频播放器、截取"><a href="#视频播放器、截取" class="headerlink" title="视频播放器、截取"></a>视频播放器、截取</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>vlc</span><br></pre></td></tr></table></figure>
-<p>Mac下的自带的播放器QuickTime，功能实在是太弱了，支持的格式既少又难用，快进什么的貌似都没快捷键，只能手动点击进度条，试用了一段时间的<a href="http://mplayerosx.ch/" target="_blank" rel="noopener">Mplayer</a>，发现效果也不好，会有视频卡顿的现象，最终选择了 <a href="http://www.videolan.org/vlc/download-macosx.html" target="_blank" rel="noopener">VLC</a>，一直用的还不错。<br>此外， 有网友补充道 <a href="https://mpv.io/" target="_blank" rel="noopener">mpv</a> 才是程序员最佳播放器，大家也可以尝试下。</p>
-<p>很多时候，我们只需要截取视频中的某一段视频，或者简单的进行格式转换，这时候就需要 ffmpeg 出马了。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 安装命令</span><br><span class="line"><span class="selector-tag">brew</span>  <span class="selector-tag">install</span> <span class="selector-tag">ffmpeg</span></span><br><span class="line"></span><br><span class="line"># 将 <span class="selector-tag">mov</span> 格式的视频转为 <span class="selector-tag">mp4</span>，<span class="selector-tag">ffmpeg</span> 能根据文件后缀名自动识别</span><br><span class="line"><span class="selector-tag">ffmpeg</span>  <span class="selector-tag">-i</span> <span class="selector-tag">foo</span><span class="selector-class">.mov</span> <span class="selector-tag">foo</span><span class="selector-class">.mp4</span></span><br><span class="line"># 从第 6 秒开始，截取10<span class="selector-tag">s</span> 视频，并且转为 <span class="selector-tag">mp4</span> 格式</span><br><span class="line"><span class="selector-tag">ffmpeg</span> <span class="selector-tag">-t</span> 10 <span class="selector-tag">-ss</span> 00<span class="selector-pseudo">:00</span><span class="selector-pseudo">:06</span> <span class="selector-tag">-i</span> <span class="selector-tag">foo</span><span class="selector-class">.mov</span> <span class="selector-tag">smaller</span><span class="selector-class">.mp4</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="音乐频播放器"><a href="#音乐频播放器" class="headerlink" title="音乐频播放器"></a>音乐频播放器</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装命令</span></span><br><span class="line"><span class="keyword">brew </span>cask <span class="keyword">install </span>vox</span><br></pre></td></tr></table></figure>
-<p>官方的 iTunes 实在是不适应，喜欢简洁清爽的朋友可以试试 <a href="http://coppertino.com/" target="_blank" rel="noopener">VOX</a></p>
-<h3 id="webarchive"><a href="#webarchive" class="headerlink" title="*.webarchive"></a>*.webarchive</h3><p>在windows下保存网页时，如果想把网页上的资源，比如css、js、image等一起下载下来，会单独生成个文件夹，但是用 Mac 上的 Safari 保存整个网页时，是以<code>webarchive</code>为后缀名的文件进行保存的，如何把打开这种文件呢？推荐：</p>
-<p><a href="http://sourceforge.net/projects/webarchivext/" target="_blank" rel="noopener">http://sourceforge.net/projects/webarchivext/</a></p>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="不能写-NTFS"><a href="#不能写-NTFS" class="headerlink" title="不能写 NTFS"></a>不能写 NTFS</h3><p>用惯了 Windows 的大家都习惯用 NTFS 文件系统格式，但是很遗憾，这个文件系统是微软自己搞得，不是开放的，所以 Mac 是不支持的，如果你以前的 NTFS 格式的硬盘放到 Mac 上，会发现只能进行读操作，不能写入，这属于正常现象，不要惊慌。</p>
+./ksinstall --nuke
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="图片截屏合并">图片截屏、合并</h3>
+<p>Mac上的截图工具已经很好了，<code>Cmd + Shift + 3/4</code>就够用了，但是如果想在图片上写些文字，马赛克某部分，就不行了，推荐用 Snip，才 2M 大小，虽说是腾讯开发的，但是不流氓。可以设置快捷键，我设定的是<code>Cmd + Shift + 6</code>。
+更重要的一点是，<a href="http://snip.qq.com/">Snip</a> 可以解决Retina下截屏2x问题（就是截出来的图超大），就光这个特点就足以让你使用snip。</p>
+<center>
+<img width="500px" src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2UXoxbFXXXXXnXXXXXXXXXXXX_!!581166664.png" alt="我的snip配置"/>
+</center>
+Mac自带的 Preview 可以对图片进行旋转、调整大小、添加文字，不需要在额外安装软件。
+<center>
+<img src="http://img01.taobaocdn.com/imgextra/i1/581166664/TB2KtMobFXXXXXkXpXXXXXXXXXX_!!581166664.png" alt="Preview工具栏"/>
+</center>
+<p>此外，如果要对两张图片进行合并，需要通过安装 <a href="https://www.imagemagick.org">ImageMagick</a>，并且通过以下命令操作：<a href="http://apple.stackexchange.com/a/52882/103966">出处</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">brew install ImageMagick
+
+# 下面两条命令都会把 left.png right.png 合并到 merged.png 里面
+convert +append left.png right.png merged.png
+
+montage -geometry 100% left.jpg right.jpg merged.jpg
+</code></pre></td></tr></table>
+</div>
+</div><p>如果你依赖于Evernote，可以试试<a href="https://www.yinxiang.com/skitch/">圈点</a>，洋名skitch，同样很好很强大。</p>
+<h3 id="录屏-gif">录屏 gif</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install licecap
+</code></pre></td></tr></table>
+</div>
+</div><p>很多时候我们需要把自己的操作展示给别人看，比较好的做法是通过录屏软件将自己的操作保存成 gif 格式的图片。
+<a href="https://github.com/lepht/licecap">开源免费</a>的<a href="http://www.cockos.com/licecap/">licecap</a> 很好的解决了这个问题。</p>
+<p>
+  <figure>
+    <img src="http://ww3.sinaimg.cn/mw690/5fee18eegw1f17799uiz1g20ci0cijs2.gif" alt="使用 licecap 制作的例子">
+    <figcaption><center>使用 licecap 制作的例子</center></figcaption>
+  </figure>
+
+</p>
+<h3 id="流程图制作工具">流程图制作工具</h3>
+<p>对于程序员来说，流程图应该是再亲切不过的了，一张图胜过千言万语。之前我都是用 Keynote 来画，但是实在是不好用，<del>后来在<a href="https://www.zhihu.com/question/19588698">知乎</a>上发现了在线版的<a href="https://www.processon.com/">ProcessOn</a>，大大减少了我画流程图的时间，上手也比较快。</del>现在 ProcessOn 有了限制，只能保留 9 张流程图。我又找到了新的工具，<a href="https://www.draw.io">draw.io</a>，时序图、状态图统统不在话下。</p>
+<p>其次，国外很多项目的图是用纯文本画的，比较好用的在线工具是：<a href="http://asciiflow.com/">asciiflow</a>。</p>
+<h3 id="calibre-mobi-转化器">Calibre mobi 转化器</h3>
+<p>如果你有 Kinder 阅读器，那么这个应该适合你！</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install calibre
+
+==&gt; Installing Cask calibre
+==&gt; Moving App &#39;calibre.app&#39; to &#39;/Applications/calibre.app&#39;.
+==&gt; Linking Binary &#39;calibre&#39; to &#39;/usr/local/bin/calibre&#39;.
+==&gt; Linking Binary &#39;calibre-complete&#39; to &#39;/usr/local/bin/calibre-complete&#39;.
+==&gt; Linking Binary &#39;calibre-customize&#39; to &#39;/usr/local/bin/calibre-customize&#39;.
+==&gt; Linking Binary &#39;calibre-debug&#39; to &#39;/usr/local/bin/calibre-debug&#39;.
+==&gt; Linking Binary &#39;calibre-parallel&#39; to &#39;/usr/local/bin/calibre-parallel&#39;.
+==&gt; Linking Binary &#39;calibre-server&#39; to &#39;/usr/local/bin/calibre-server&#39;.
+==&gt; Linking Binary &#39;calibre-smtp&#39; to &#39;/usr/local/bin/calibre-smtp&#39;.
+==&gt; Linking Binary &#39;calibredb&#39; to &#39;/usr/local/bin/calibredb&#39;.
+==&gt; Linking Binary &#39;ebook-convert&#39; to &#39;/usr/local/bin/ebook-convert&#39;.
+==&gt; Linking Binary &#39;ebook-device&#39; to &#39;/usr/local/bin/ebook-device&#39;.
+==&gt; Linking Binary &#39;ebook-edit&#39; to &#39;/usr/local/bin/ebook-edit&#39;.
+==&gt; Linking Binary &#39;ebook-meta&#39; to &#39;/usr/local/bin/ebook-meta&#39;.
+==&gt; Linking Binary &#39;ebook-polish&#39; to &#39;/usr/local/bin/ebook-polish&#39;.
+==&gt; Linking Binary &#39;ebook-viewer&#39; to &#39;/usr/local/bin/ebook-viewer&#39;.
+==&gt; Linking Binary &#39;fetch-ebook-metadata&#39; to &#39;/usr/local/bin/fetch-ebook-metadata&#39;.
+==&gt; Linking Binary &#39;lrf2lrs&#39; to &#39;/usr/local/bin/lrf2lrs&#39;.
+==&gt; Linking Binary &#39;lrfviewer&#39; to &#39;/usr/local/bin/lrfviewer&#39;.
+==&gt; Linking Binary &#39;lrs2lrf&#39; to &#39;/usr/local/bin/lrs2lrf&#39;.
+==&gt; Linking Binary &#39;markdown-calibre&#39; to &#39;/usr/local/bin/markdown-calibre&#39;.
+==&gt; Linking Binary &#39;web2disk&#39; to &#39;/usr/local/bin/web2disk&#39;.
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="视频播放器截取">视频播放器、截取</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install vlc
+</code></pre></td></tr></table>
+</div>
+</div><p>Mac下的自带的播放器QuickTime，功能实在是太弱了，支持的格式既少又难用，快进什么的貌似都没快捷键，只能手动点击进度条，试用了一段时间的<a href="http://mplayerosx.ch/">Mplayer</a>，发现效果也不好，会有视频卡顿的现象，最终选择了 <a href="http://www.videolan.org/vlc/download-macosx.html">VLC</a>，一直用的还不错。
+此外， 有网友补充道 <a href="https://mpv.io/">mpv</a> 才是程序员最佳播放器，大家也可以尝试下。</p>
+<p>很多时候，我们只需要截取视频中的某一段视频，或者简单的进行格式转换，这时候就需要 ffmpeg 出马了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew  install ffmpeg
+
+# 将 mov 格式的视频转为 mp4，ffmpeg 能根据文件后缀名自动识别
+ffmpeg  -i foo.mov foo.mp4
+# 从第 6 秒开始，截取10s 视频，并且转为 mp4 格式
+ffmpeg -t 10 -ss 00:00:06 -i foo.mov smaller.mp4
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="音乐频播放器">音乐频播放器</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 安装命令
+brew cask install vox
+</code></pre></td></tr></table>
+</div>
+</div><p>官方的 iTunes 实在是不适应，喜欢简洁清爽的朋友可以试试 <a href="http://coppertino.com/">VOX</a></p>
+<h3 id="webarchive">*.webarchive</h3>
+<p>在windows下保存网页时，如果想把网页上的资源，比如css、js、image等一起下载下来，会单独生成个文件夹，但是用 Mac 上的 Safari 保存整个网页时，是以<code>webarchive</code>为后缀名的文件进行保存的，如何把打开这种文件呢？推荐：</p>
+<p><a href="http://sourceforge.net/projects/webarchivext/">http://sourceforge.net/projects/webarchivext/</a></p>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="不能写-ntfs">不能写 NTFS</h3>
+<p>用惯了 Windows 的大家都习惯用 NTFS 文件系统格式，但是很遗憾，这个文件系统是微软自己搞得，不是开放的，所以 Mac 是不支持的，如果你以前的 NTFS 格式的硬盘放到 Mac 上，会发现只能进行读操作，不能写入，这属于正常现象，不要惊慌。</p>
 <p>解决的方法也很简单，把移动硬盘格式化成FAT32(单个文件大小不能超过4G)或FAText 格式都可以，Mac 自带的磁盘工具就可以进行格式转化，当然你需要先把移动硬盘上的数据拷贝出来。</p>
-<h3 id="Wi-Fi-时常中断"><a href="#Wi-Fi-时常中断" class="headerlink" title="Wi-Fi 时常中断"></a>Wi-Fi 时常中断</h3><p>Mac 生于乔帮主之手时，为了凸显尊贵，接口与一般的电脑有很大不同。常见的网线没办法直接连接 Mac 电脑，需要单独购买一个<a href="http://www.apple.com/cn/shop/product/MC704FE/A/apple-usb-ethernet-adapter" target="_blank" rel="noopener">以太网转接器</a>，所以大部分同学都是使用无线连接，但 Mac 这里应该是有个 bug，而且是很久的 bug，我用 Mac 两年了，偶尔会遇到几次，网上解决的方法有如下几种：</p>
+<h3 id="wi-fi-时常中断">Wi-Fi 时常中断</h3>
+<p>Mac 生于乔帮主之手时，为了凸显尊贵，接口与一般的电脑有很大不同。常见的网线没办法直接连接 Mac 电脑，需要单独购买一个<a href="http://www.apple.com/cn/shop/product/MC704FE/A/apple-usb-ethernet-adapter">以太网转接器</a>，所以大部分同学都是使用无线连接，但 Mac 这里应该是有个 bug，而且是很久的 bug，我用 Mac 两年了，偶尔会遇到几次，网上解决的方法有如下几种：</p>
 <ol>
 <li>修改网络位置，不是其默认的“自动”就好</li>
 <li>修改路由器，把无线信道改为6或9</li>
-<li>关闭蓝牙，Mac 中，同时打开蓝牙与 Wi-Fi 会冲突。<a href="http://apple.stackexchange.com/a/162406/103966" target="_blank" rel="noopener">详情</a></li>
+<li>关闭蓝牙，Mac 中，同时打开蓝牙与 Wi-Fi 会冲突。<a href="http://apple.stackexchange.com/a/162406/103966">详情</a></li>
 </ol>
 <p>如果你的 Mac 也遇到了 Wi-Fi 问题，可以试试上面三个解决方法。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<h2 id="总结">总结</h2>
+<blockquote>
 <p>Once you get Mac, you never come back!</p>
 </blockquote>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="http://havee.me/mac/2014-01/os-x-tips-and-tricks.html" target="_blank" rel="noopener">OS X 的一些技巧汇总</a></li>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://havee.me/mac/2014-01/os-x-tips-and-tricks.html">OS X 的一些技巧汇总</a></li>
 </ul>
-<h2 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h2><ul>
+<h2 id="更新日志">更新日志</h2>
+<ul>
 <li>2017/01/14，增加 emacs、dash、<code>brew cask</code>、<code>httpstat</code>、<code>m-cli</code></li>
 <li>2017/06/03，增加 ffmpeg、asciiflow</li>
 <li>2017/07/06，修改 iTerm2 部分，增加 docker</li>
 </ul>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/" data-id="ckhxlinvk0019szljx6ime779" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHklEQVR42u3aS3LEIAwFwLn/pZ3tbOw8CZwU0KyyYGzaqVLpw+cTr+trzd3/vaf6lvLCwMBYlnE9rrs9I89P3p6fDQMD4xxGEgrzY1Xxz+963o+BgYFxtycJgsmHwMDAwHg74D4H1vHSFwMDA6NaxJYfHTfX8jR0Qi2OgYGxICMPhX//9yvzDQwMjKUYV3H12nB5sO4tDAyMvRnVlC4vd/OBQS/gYmBgnMboHWjkYkSvkVcomDEwMA5g9MJrcog30lAMDIwzGclYMQ+s1U+Tjz8xMDBOYOTjwOQQvWFkfhHt9l0YGBhbM6qXG3opYB7v83BfvseBgYGxLCNJ2sbTuPwT5KH/NjXEwMDYlNHrruclazX1LId4DAyMrRlROCt27JLW2xvPx8DA2JWRN/1H2mH5cSdcrcDAwNiOUS4Xg/Zckj5WW37lyxYYGBjbMXrua2Dl1EL6iIGBsSmj5x5JJXspY3RnBAMDY1NGtaztNfHzEjo/9FB1joGBsSCjV2pWG2G9gUHyQTEwMM5h5Je98rK2F1ibpTUGBsYBjN6wsBeae6nkLyfEwMDYlDG3oV9uisVFcvR/wMDA2JRRDaxzebMueWBgYJzASI5YbfSPp5tDMw0MDIxNGdXiNh9q/kMtjoGBgVEMjslvJ4xLMTAwMIrDxbytVg2yt2EaAwPjAEaS2FX3JEOC8Z0YGBgnMHohLx9D9sYDc0M2BgbGsowfPQFLqVDIvKoAAAAASUVORK5CYII=">分享</a><div class="tags"><a href="/tags/best-practice/">最佳实践</a></div><div class="post-nav"><a class="pre" href="/blog/2014/12/07/regexp-favors/">正则表达式“派别”简述</a><a class="next" href="/blog/2014/11/08/secret-of-firefox-prefs/">让firefox与chrome一样快</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/';
-    this.page.identifier = 'blog/2014/11/23/first-taste-of-macbook/';
-    this.page.title = 'MacBook 最佳实践';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">最佳实践</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2014/12/07/regexp-favors/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">正则表达式“派别”简述</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2014/11/08/secret-of-firefox-prefs/">
+            <span class="next-text nav-default">让firefox与chrome一样快</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

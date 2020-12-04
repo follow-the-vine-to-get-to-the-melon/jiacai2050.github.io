@@ -1,529 +1,774 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="https://liujiacai.net/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://liujiacai.net/blog/2020/11/25/why-emacs/</loc>
-    
-    <lastmod>2020-11-28T15:24:51.638Z</lastmod>
-    
+    <loc>https://liujiacai.net/categories/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</loc>
-    
-    <lastmod>2020-09-08T16:02:59.679Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/emacs/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</loc>
-    
-    <lastmod>2020-09-08T16:02:59.678Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2020/11/25/why-emacs/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2020/03/14/go-struct-interface/</loc>
-    
-    <lastmod>2020-08-23T05:18:51.599Z</lastmod>
-    
+    <loc>https://liujiacai.net/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2020/08/08/go-meet-java/</loc>
-    
-    <lastmod>2020-08-08T17:05:47.403Z</lastmod>
-    
+    <loc>https://liujiacai.net/post/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/09/14/mozilla-history/</loc>
-    
-    <lastmod>2020-07-18T13:19:47.609Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/about/index.html</loc>
-    
-    <lastmod>2020-04-06T04:19:25.394Z</lastmod>
-    
+    <loc>https://liujiacai.net/categories/%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2019/10/24/go-modules/</loc>
-    
-    <lastmod>2020-04-01T13:46:47.483Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/go/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2019/07/17/hello-golang/</loc>
-    
-    <lastmod>2020-03-15T08:02:49.159Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/java/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2020/02/02/review-2019/</loc>
-    
-    <lastmod>2020-02-02T11:25:50.553Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2020/08/08/go-meet-java/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/01/21/review-2017/</loc>
-    
-    <lastmod>2020-02-02T04:17:01.087Z</lastmod>
-    
+    <loc>https://liujiacai.net/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/27/java-weakhashmap/</loc>
-    
-    <lastmod>2020-02-02T03:27:59.321Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2020/03/14/go-struct-interface/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/podcast/index.html</loc>
-    
-    <lastmod>2019-12-24T10:59:14.620Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2020/02/02/review-2019/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blogrolls/index.html</loc>
-    
-    <lastmod>2019-12-24T10:59:14.616Z</lastmod>
-    
+    <loc>https://liujiacai.net/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2019/04/21/experience-in-clojure/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.614Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2019/10/24/go-modules/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/11/10/damn-single-socket/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.613Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2019/07/17/hello-golang/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/12/29/how-java-synchronizer-work/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.613Z</lastmod>
-    
+    <loc>https://liujiacai.net/podcast/</loc>
+    <lastmod>2020-12-04T23:34:05+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/07/08/mark-sweep/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.612Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/clojure/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/08/04/incremental-gc/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.612Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2019/04/21/experience-in-clojure/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/08/18/generational-gc/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.612Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/gc/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2018/06/15/garbage-collection-intro/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.611Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/10/01/macro-in-action/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.610Z</lastmod>
-    
+    <loc>https://liujiacai.net/categories/%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.610Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2018/12/29/how-java-synchronizer-work/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/03/22/ace-technical-interview/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.609Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/linux/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/05/11/review-of-secret-of-silicon-valley/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.609Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2018/11/10/damn-single-socket/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/08/31/master-macro-theory/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.609Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2018/08/18/generational-gc/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/01/08/review-2016/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2018/08/04/incremental-gc/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2018/07/08/mark-sweep/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2018/06/15/garbage-collection-intro/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.608Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2018/01/21/review-2017/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/11/07/run-2-marathon-in-a-week/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.607Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/12/07/hello-jeju/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.607Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/10/01/macro-in-action/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/12/31/dev-in-clojure/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.607Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/08/31/master-macro-theory/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/05/28/scope-closure/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.606Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/ideas/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/06/30/python2-encoding/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.606Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/05/11/review-of-secret-of-silicon-valley/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/10/31/socket-programming/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.606Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/02/22/recursion-without-name/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.605Z</lastmod>
-    
+    <loc>https://liujiacai.net/categories/web/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.605Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/03/22/ace-technical-interview/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/04/23/sicp-chapter4-summary/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.605Z</lastmod>
-    
+    <loc>https://liujiacai.net/categories/%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.605Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/ruby/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/11/20/strings/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.604Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.604Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2016/01/08/review-2015/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.604Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/10/03/first-toy-scheme/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.603Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2017/01/08/review-2016/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/10/27/sf-hackathon/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.603Z</lastmod>
-    
+    <loc>https://liujiacai.net/blogrolls/</loc>
+    <lastmod>2020-12-04T23:34:05+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/10/21/programming-guide/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.603Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/12/31/dev-in-clojure/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/20/sicp-chapter2-summary/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.602Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/12/07/hello-jeju/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/12/java-linkedhashmap/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.602Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/11/07/run-2-marathon-in-a-week/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/01/java-collection-overview/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.601Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/python/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/04/java-treemap/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.601Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/10/31/socket-programming/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/09/03/java-hashmap/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.601Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/06/30/python2-encoding/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/04/03/leave-ucloud-to-youzan/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.600Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/javascript/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/07/11/review-3-month-life-in-youzan/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.600Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/05/28/scope-closure/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/07/18/sicp-chapter1-summary/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.600Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/sicp/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/12/07/regexp-favors/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/12/29/review-2014/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
-    
+    <loc>https://liujiacai.net/categories/%E7%A0%94%E4%B9%A0%E7%BB%8F%E5%85%B8/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/02/24/javascript-datatype/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/04/23/sicp-chapter4-summary/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2015/02/01/javascript-oop/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.599Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/11/08/secret-of-firefox-prefs/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.598Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/lambda/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.598Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/lisp/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.598Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/02/22/recursion-without-name/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/08/16/two-pot-question/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.597Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2016/01/08/review-2015/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/08/09/inter-intra-cept-ee-er/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.597Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/09/07/yarn-intro/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.597Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/string/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/07/17/cdh-ha-installation/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.596Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/11/20/strings/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/08/06/cdh-yarn-ha-kerberos/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.596Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/nodejs/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.596Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/10/27/sf-hackathon/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/06/06/computational-thinking-3/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.595Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/10/21/programming-guide/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.595Z</lastmod>
-    
+    <loc>https://liujiacai.net/tags/scheme/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/06/06/computational-thinking-1/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.594Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/10/03/first-toy-scheme/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/06/06/computational-thinking-2/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.594Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/09/27/java-weakhashmap/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/05/09/understand-serious-music/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.593Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/09/20/sicp-chapter2-summary/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/05/07/hello-weblog/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.593Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/09/12/java-linkedhashmap/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/05/19/go-into-java-world/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.593Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/09/04/java-treemap/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://liujiacai.net/blog/2014/05/22/search-engine-overview/</loc>
-    
-    <lastmod>2019-12-24T10:59:14.593Z</lastmod>
-    
+    <loc>https://liujiacai.net/blog/2015/09/03/java-hashmap/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2015/09/01/java-collection-overview/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2015/07/18/sicp-chapter1-summary/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2015/07/11/review-3-month-life-in-youzan/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2015/04/03/leave-ucloud-to-youzan/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2015/02/24/javascript-datatype/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2015/02/01/javascript-oop/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/tags/mozilla/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/12/29/review-2014/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/12/07/regexp-favors/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/11/08/secret-of-firefox-prefs/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/09/14/mozilla-history/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/tags/hadoop/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/09/07/yarn-intro/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/08/16/two-pot-question/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/tags/%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/08/09/inter-intra-cept-ee-er/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/about/</loc>
+    <lastmod>2020-12-05T00:30:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/08/06/cdh-yarn-ha-kerberos/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/07/17/cdh-ha-installation/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/tags/mooc/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/06/06/computational-thinking-1/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/06/06/computational-thinking-3/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/06/06/computational-thinking-2/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/tags/lucene/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/05/22/search-engine-overview/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/05/19/go-into-java-world/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/05/09/understand-serious-music/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2014/05/07/hello-weblog/</loc>
+    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
 </urlset>

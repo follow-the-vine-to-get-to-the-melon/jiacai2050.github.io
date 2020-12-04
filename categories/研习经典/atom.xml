@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>研习经典 on Keep Coding</title>
+    <link>https://liujiacai.net/categories/%E7%A0%94%E4%B9%A0%E7%BB%8F%E5%85%B8/</link>
+    <description>Recent content in 研习经典 on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 21 May 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/categories/%E7%A0%94%E4%B9%A0%E7%BB%8F%E5%85%B8/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SICP 第五章总结</title>
+      <link>https://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/</link>
+      <pubDate>Sat, 21 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/</guid>
+      <description>经过第四章元语言抽象的洗礼，我们已经能够深谙编译器内部的原理，核心就是eval-apply循环，只是说基于这个核心可以有各种延伸，像延迟求值</description>
+    </item>
+    
+    <item>
+      <title>SICP 第四章总结</title>
+      <link>https://liujiacai.net/blog/2016/04/23/sicp-chapter4-summary/</link>
+      <pubDate>Sat, 23 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/04/23/sicp-chapter4-summary/</guid>
+      <description>本书的前三章分别讨论了数据抽象、过程抽象、模块化三种程序设计的技术，这些都是编程的问题，一直采用的是 Scheme 作为编程语言。如果遇到的问题更复杂，或</description>
+    </item>
+    
+    <item>
+      <title>SICP 第三章总结</title>
+      <link>https://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/</link>
+      <pubDate>Sat, 26 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/</guid>
+      <description>历时三个月，终于把第三章看完了。这三月发生了太多的意外，本文不打算说了，后面在写 2015 年终总结时再来谈谈这三个月的事情。如今回过头来看看第三章的</description>
+    </item>
+    
+    <item>
+      <title>SICP 第二章总结</title>
+      <link>https://liujiacai.net/blog/2015/09/20/sicp-chapter2-summary/</link>
+      <pubDate>Sun, 20 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/20/sicp-chapter2-summary/</guid>
+      <description>到今天为止终于把第二章看完了，相比于第一章，感觉难点少了些，这章主要是通过大量例子（主要有图形语言、区间运算、符号求导、集合的表示、通用型算</description>
+    </item>
+    
+    <item>
+      <title>SICP 第一章总结</title>
+      <link>https://liujiacai.net/blog/2015/07/18/sicp-chapter1-summary/</link>
+      <pubDate>Sat, 18 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/07/18/sicp-chapter1-summary/</guid>
+      <description>最近两个月除了工作之外，业余时间一直在研习sicp这本经典书。关于这本书的讨论有很多，像老赵写过SICP的书托，我觉得与其讨论这本书有没有读</description>
+    </item>
+    
+  </channel>
+</rss>

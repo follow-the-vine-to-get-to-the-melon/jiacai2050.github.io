@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Keep Coding</title>
+    <link>https://liujiacai.net/post/</link>
+    <description>Recent content in Posts on Keep Coding</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 25 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/post/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Emacs 入门指南</title>
+      <link>https://liujiacai.net/blog/2020/11/25/why-emacs/</link>
+      <pubDate>Wed, 25 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/11/25/why-emacs/</guid>
+      <description>提到 Emacs，每个程序员应该或多或少听过其大名，毕竟 Emacs 已经有将近四十多年的悠久历史。不过由于 Emacs “入道”门槛较高，导致很多初学者还没领略其精</description>
+    </item>
+    
+    <item>
+      <title>实践总结：在 Java 中调用 Go 代码</title>
+      <link>https://liujiacai.net/blog/2020/08/08/go-meet-java/</link>
+      <pubDate>Sat, 08 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/08/08/go-meet-java/</guid>
+      <description>在 Java 中调用 Go 的大致过程如下 1 go --&amp;gt; cgo --&amp;gt; jna --&amp;gt; java 整个过程要解决的问题主要两个： 数据类型在两种语言中如何转化 何时清理无用的数据 下面就围绕上述调用过程</description>
+    </item>
+    
+    <item>
+      <title>Go struct/interface 最佳实践</title>
+      <link>https://liujiacai.net/blog/2020/03/14/go-struct-interface/</link>
+      <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/03/14/go-struct-interface/</guid>
+      <description>使用 Go 已经一年，深深沉浸在其简洁的设计中，就像其官网描述的： Go is expressive, concise, clean, and efficient. It&amp;rsquo;s a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language. Rob Pike 在 Simplicity is Complicated 中也提到 Go 的简洁是其流行</description>
+    </item>
+    
+    <item>
+      <title>2019 年终总结</title>
+      <link>https://liujiacai.net/blog/2020/02/02/review-2019/</link>
+      <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/02/02/review-2019/</guid>
+      <description>因起源于武汉的新型冠状病毒（2019 novel Coronavirus，2019-nCoV），让 2020 开年之初就与众不同，全国人民纷纷戴上了口罩，这也是我</description>
+    </item>
+    
+    <item>
+      <title>何处安放我们的 Go 代码</title>
+      <link>https://liujiacai.net/blog/2019/10/24/go-modules/</link>
+      <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/10/24/go-modules/</guid>
+      <description>用了近半年的 Go，真是有种相见恨晚的感觉。简洁的语法、完善并强大的开发工具链，省去新手不少折腾的时间，可以专注写代码。 这期间也掌握了不少技巧</description>
+    </item>
+    
+    <item>
+      <title>写给新手的 Go 开发指南</title>
+      <link>https://liujiacai.net/blog/2019/07/17/hello-golang/</link>
+      <pubDate>Wed, 17 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/07/17/hello-golang/</guid>
+      <description>转眼加入蚂蚁已经三个多月，这期间主要维护一 Go 写的服务器。虽然用的时间不算长，但还是积累了一些心得体会，这里总结归纳一下，供想尝试 Go 的同学参考</description>
+    </item>
+    
+    <item>
+      <title>Clojure 开发经验总结</title>
+      <link>https://liujiacai.net/blog/2019/04/21/experience-in-clojure/</link>
+      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/04/21/experience-in-clojure/</guid>
+      <description>大概在两年半前，我开始陆陆续续写了一系列文章，来介绍如何上手、深入 Clojure，后来有幸加入 LeanCloud 写了两年的 Clojure，期间制作了一套七集</description>
+    </item>
+    
+    <item>
+      <title>Java 垃圾回收权威指北</title>
+      <link>https://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</link>
+      <pubDate>Wed, 09 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2019/01/09/java-gc-definitive-guide/</guid>
+      <description>毫无疑问，GC（垃圾回收） 已经是现代编程语言标配，为了研究这个方向之前曾经写过四篇《深入浅出垃圾回收》博文来介绍其理论，之后也看了不少网络上</description>
+    </item>
+    
+    <item>
+      <title>Java 线程同步原理探析</title>
+      <link>https://liujiacai.net/blog/2018/12/29/how-java-synchronizer-work/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/12/29/how-java-synchronizer-work/</guid>
+      <description>现如今，服务器性能日益增长，并发（concurrency）编程已经“深入人心”，但由于冯诺依式计算机“指令存储，顺序执行”的特性，使得编写跨</description>
+    </item>
+    
+    <item>
+      <title>形单影只的 Socket</title>
+      <link>https://liujiacai.net/blog/2018/11/10/damn-single-socket/</link>
+      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/11/10/damn-single-socket/</guid>
+      <description>最近工作上遇到过几次因 http client 没有配置超时相关参数，导致线程数占满或应用卡住的情况，出问题时线程的堆栈大致是这样的： 1 2 3 4 5 6 7 8 9 10 11 12 13 14</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（四）分代式 GC</title>
+      <link>https://liujiacai.net/blog/2018/08/18/generational-gc/</link>
+      <pubDate>Sat, 18 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/08/18/generational-gc/</guid>
+      <description>上文介绍的增量式 GC 是对 mark 阶段的一大优化，可以极大避免 STW 的影响。本文将要介绍的分代式 GC 根据对象生命周期（后面称为 age）的特点来优化 GC，降低</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（三）增量式 GC</title>
+      <link>https://liujiacai.net/blog/2018/08/04/incremental-gc/</link>
+      <pubDate>Sat, 04 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/08/04/incremental-gc/</guid>
+      <description>在上一篇文章中介绍的 MS 优化策略都是围绕 sweep 阶段展开，但 mark 阶段会导致应用程序挂起，也就是常说的：stop-the-world（STW），这严重影</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（二）Mark-Sweep 详析及其优化</title>
+      <link>https://liujiacai.net/blog/2018/07/08/mark-sweep/</link>
+      <pubDate>Sun, 08 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/07/08/mark-sweep/</guid>
+      <description>在上一篇文中介绍的追踪类（tracing）GC 较引用计数（Reference Counting）性能更高，但原生的追踪类 GC 也有其自身缺点，需要</description>
+    </item>
+    
+    <item>
+      <title>深入浅出垃圾回收（一）简介篇</title>
+      <link>https://liujiacai.net/blog/2018/06/15/garbage-collection-intro/</link>
+      <pubDate>Fri, 15 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/06/15/garbage-collection-intro/</guid>
+      <description>GC 算法作为计算机科学领域非常热的研究话题之一，最早可追溯到 1959 年1，由 John McCarthy 在 Lisp 中实现来简化内存管理。早期的 Lisp 之所以被大众诟病慢，主要原因就是当</description>
+    </item>
+    
+    <item>
+      <title>2017 年终总结</title>
+      <link>https://liujiacai.net/blog/2018/01/21/review-2017/</link>
+      <pubDate>Sun, 21 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2018/01/21/review-2017/</guid>
+      <description>2018 年不知不觉已经过了 20 天，从元旦开始就一直在重写之前的 History Master，其实这个插件一开始就是为了写年终总结，但功能相对较简单，经过这十几天的</description>
+    </item>
+    
+    <item>
+      <title>使用 ClojureScript 开发浏览器插件的过程与收获</title>
+      <link>https://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</link>
+      <pubDate>Wed, 22 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/11/22/create-firefox-chrome-extensions-in-clojurescript/</guid>
+      <description>随着 Firefox 57 的到来，之前维护的一个浏览器插件 gooreplacer 必须升级到 WebExtensions 才能继续使用，看了下之前写的 JS 代码，毫无修改的冲动，怕改了这个地方，那个地方突然就 broken 了</description>
+    </item>
+    
+    <item>
+      <title>由浅入深学习 Lisp 宏之实战篇</title>
+      <link>https://liujiacai.net/blog/2017/10/01/macro-in-action/</link>
+      <pubDate>Sun, 01 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/10/01/macro-in-action/</guid>
+      <description>本文是宏系列的第二篇文章，侧重于实战，对于新手建议先阅读宏系列的理论篇，之后再来看本文。当然如果你有一定基础，也可以直接阅读本文。 其次，希望</description>
+    </item>
+    
+    <item>
+      <title>由浅入深学习 Lisp 宏之理论篇</title>
+      <link>https://liujiacai.net/blog/2017/08/31/master-macro-theory/</link>
+      <pubDate>Thu, 31 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/08/31/master-macro-theory/</guid>
+      <description>宏（macro）是 Lisp 语言中最重要的武器，它可以自动生成运行时的代码。宏也是编写领域特定语言（DSL）的利器，可以在不改动语言本身的基础上，增</description>
+    </item>
+    
+    <item>
+      <title>《硅谷之谜》读后感</title>
+      <link>https://liujiacai.net/blog/2017/05/11/review-of-secret-of-silicon-valley/</link>
+      <pubDate>Thu, 11 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/05/11/review-of-secret-of-silicon-valley/</guid>
+      <description>吴军博士的《硅谷之谜》 在年前就买了，可是一直迟迟没翻开。最近在一次出差的动车上把它看完了，可以说是一气呵成，根本停不下来，里面介绍的很多观点</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</link>
+      <pubDate>Sun, 02 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</guid>
+      <description>在 Clojure 众多的 Web 框架中，Ring 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、</description>
+    </item>
+    
+    <item>
+      <title>“玩转” 技术面试——链表的函数表示法</title>
+      <link>https://liujiacai.net/blog/2017/03/22/ace-technical-interview/</link>
+      <pubDate>Wed, 22 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/03/22/ace-technical-interview/</guid>
+      <description>简介 《Acing the technical interview》，老外写的白板面试的调侃文，声色并茂，兼具叙述文的生动与技术文的抽象。文中用函数来模拟链表的表示法我</description>
+    </item>
+    
+    <item>
+      <title>辨析 Ruby 中的 Method 与 Proc</title>
+      <link>https://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</link>
+      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/03/05/method-vs-proc-in-ruby/</guid>
+      <description>Ruby is simple in appearance, but is very complex inside, just like our human body. &amp;ndash; Matz https://www.ruby-lang.org/en/about Ruby 与 Python、Scala 类似，在一切皆是对象（Seeing Everything as an Object）的基础上，支持函数式编</description>
+    </item>
+    
+    <item>
+      <title>Clojure 运行原理之字节码生成篇</title>
+      <link>https://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</link>
+      <pubDate>Thu, 09 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/02/09/clojure-compiler-analyze-2/</guid>
+      <description>上一篇文章讲述了 Clojure 编译器工作的整体流程，主要涉及 LispReader 与 Compiler 这两个类，而且指出编译器并没有把 Clojure 转为相应的 Java 代码，而是直接使用 ASM 生成可运行在 JVM 中的 b</description>
+    </item>
+    
+    <item>
+      <title>Clojure 运行原理之编译器剖析篇</title>
+      <link>https://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</link>
+      <pubDate>Sun, 05 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/02/05/clojure-compiler-analyze/</guid>
+      <description>Clojure is a compiled language, yet remains completely dynamic &amp;ndash; every feature supported by Clojure is supported at runtime. Rich Hickey https://clojure.org/ 这里的 runtime 指的是 JVM，JVM 之初是为运行 Java 语言而设计，而现在已经发展成一重量级平台，除了 Clojure 之外，</description>
+    </item>
+    
+    <item>
+      <title>2016 年终总结</title>
+      <link>https://liujiacai.net/blog/2017/01/08/review-2016/</link>
+      <pubDate>Sun, 08 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2017/01/08/review-2016/</guid>
+      <description>又到一年总结时，本来想着在农历年前考完科目三拿到驾照后再写的，目前来看希望不大了，这个目标只能留在17年去实现了，有种书到用时方恨晚的感觉。</description>
+    </item>
+    
+    <item>
+      <title>Clojure 开发那些事</title>
+      <link>https://liujiacai.net/blog/2016/12/31/dev-in-clojure/</link>
+      <pubDate>Sat, 31 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/12/31/dev-in-clojure/</guid>
+      <description>Clojure —— 新世纪的 Lisp 方言，相信大多数同学多多少少都听过，毕竟有个杀手级应用 Storm，但是真正去写 Clojure 的同学估计不多，国内也罕见哪个公司招 Clojure 程序员</description>
+    </item>
+    
+    <item>
+      <title>韩国济州岛4日游</title>
+      <link>https://liujiacai.net/blog/2016/12/07/hello-jeju/</link>
+      <pubDate>Wed, 07 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/12/07/hello-jeju/</guid>
+      <description>公司年底 outing，济州岛 4 日游（12/2-12/5）。济州岛对国人不需要签证，从杭州坐飞机去不到2个小时，绝对是旅游胜地。济州岛在韩国算</description>
+    </item>
+    
+    <item>
+      <title>我为什么一周内连跑 2 个马拉松</title>
+      <link>https://liujiacai.net/blog/2016/11/07/run-2-marathon-in-a-week/</link>
+      <pubDate>Mon, 07 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/11/07/run-2-marathon-in-a-week/</guid>
+      <description>我微信里的朋友应该都知道，上周（2016/11/06）与大上周（2016/10/30）我分别跑了杭州与上海的马拉松，第一场上海站完成了人生首</description>
+    </item>
+    
+    <item>
+      <title>Socket 编程实战</title>
+      <link>https://liujiacai.net/blog/2016/10/31/socket-programming/</link>
+      <pubDate>Mon, 31 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/10/31/socket-programming/</guid>
+      <description>Socket 在英文中的含义为“（连接两个物品的）凹槽”，像the eye socket，意为“眼窝”，此外还有“插座”的意思。在计算机科学中，socket 通常</description>
+    </item>
+    
+    <item>
+      <title>Python2 中的编码问题</title>
+      <link>https://liujiacai.net/blog/2016/06/30/python2-encoding/</link>
+      <pubDate>Thu, 30 Jun 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/06/30/python2-encoding/</guid>
+      <description>先来看一个异常信息： UnicodeEncodeError: &amp;lsquo;ascii&amp;rsquo; codec can&amp;rsquo;t encode characters in position 51-52: ordinal not in range(128) 相信每个 Python 程序员对上面这个错误都再熟悉不过了，也许你这个问题的根源以及解决方法不是很清楚，那么</description>
+    </item>
+    
+    <item>
+      <title>编程语言中的变量作用域与闭包</title>
+      <link>https://liujiacai.net/blog/2016/05/28/scope-closure/</link>
+      <pubDate>Sat, 28 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/05/28/scope-closure/</guid>
+      <description>如果你写过 javascript，应该听说过变量提升（hoisting），如果你自诩“Life is short, I use Python”，那么多多少少会用过glo</description>
+    </item>
+    
+    <item>
+      <title>SICP 第五章总结</title>
+      <link>https://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/</link>
+      <pubDate>Sat, 21 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/05/21/sicp-chapter5-summary/</guid>
+      <description>经过第四章元语言抽象的洗礼，我们已经能够深谙编译器内部的原理，核心就是eval-apply循环，只是说基于这个核心可以有各种延伸，像延迟求值</description>
+    </item>
+    
+    <item>
+      <title>SICP 第四章总结</title>
+      <link>https://liujiacai.net/blog/2016/04/23/sicp-chapter4-summary/</link>
+      <pubDate>Sat, 23 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/04/23/sicp-chapter4-summary/</guid>
+      <description>本书的前三章分别讨论了数据抽象、过程抽象、模块化三种程序设计的技术，这些都是编程的问题，一直采用的是 Scheme 作为编程语言。如果遇到的问题更复杂，或</description>
+    </item>
+    
+    <item>
+      <title>python, ruby, javascript 浅析</title>
+      <link>https://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</link>
+      <pubDate>Sat, 26 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/03/26/python-ruby-javascript/</guid>
+      <description>最近一直在看红宝石（ruby）语言，到现在为止，算是对其设计有一些了解。作为一动态语言，ruby 经常会拿来与 python 对比，确实这两门语言在语法层面</description>
+    </item>
+    
+    <item>
+      <title>如何实现一个没有名字的递归函数</title>
+      <link>https://liujiacai.net/blog/2016/02/22/recursion-without-name/</link>
+      <pubDate>Mon, 22 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/02/22/recursion-without-name/</guid>
+      <description>递归 作为计算机科学中很重要的一个概念，应用范围非常广泛。比较重要的数据结构，像树、图，本身就是递归定义的。 比较常见的递归算法有阶乘、斐波那契</description>
+    </item>
+    
+    <item>
+      <title>2015 年终总结</title>
+      <link>https://liujiacai.net/blog/2016/01/08/review-2015/</link>
+      <pubDate>Fri, 08 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2016/01/08/review-2015/</guid>
+      <description>今天，已经是 2016 年的第八天了。时间总是这样，当我们身处其中时觉得很漫长，但是过后看看，也没觉得什么。 2015 年是毕业后正式工作的第一年，地点从上海转</description>
+    </item>
+    
+    <item>
+      <title>SICP 第三章总结</title>
+      <link>https://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/</link>
+      <pubDate>Sat, 26 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/12/26/sicp-chapter3-summary/</guid>
+      <description>历时三个月，终于把第三章看完了。这三月发生了太多的意外，本文不打算说了，后面在写 2015 年终总结时再来谈谈这三个月的事情。如今回过头来看看第三章的</description>
+    </item>
+    
+    <item>
+      <title>字符串，那些你不知道的事</title>
+      <link>https://liujiacai.net/blog/2015/11/20/strings/</link>
+      <pubDate>Fri, 20 Nov 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/11/20/strings/</guid>
+      <description>最近在看《Dive Into Python 3》，第四章讲了字符串相关知识，看后才发现，字符串远比我们想象的要复杂多。就像该书所说的 Everything you thought you knew about strings is wrong. 是的，我之前</description>
+    </item>
+    
+    <item>
+      <title>SF 黑客马拉松赛后回顾</title>
+      <link>https://liujiacai.net/blog/2015/10/27/sf-hackathon/</link>
+      <pubDate>Tue, 27 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/10/27/sf-hackathon/</guid>
+      <description>上个周末，也就是10月24、25号，参加了人生中第一次黑客马拉松（hackathon），虽然最终没有获奖，但是这个比赛过程中还是 hack 的挺爽，趁</description>
+    </item>
+    
+    <item>
+      <title>转载『非科班出身的人学习编程不负责任指南』</title>
+      <link>https://liujiacai.net/blog/2015/10/21/programming-guide/</link>
+      <pubDate>Wed, 21 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/10/21/programming-guide/</guid>
+      <description>来我们这个实验室里读研的学生可能自从来到这里的第一天就觉得自己的命运很苦逼。他们读本科时主修的是机械设计、制造以及自动化之类的专业，毕业时的</description>
+    </item>
+    
+    <item>
+      <title>我的第一个玩具语言 JCScheme 问世了</title>
+      <link>https://liujiacai.net/blog/2015/10/03/first-toy-scheme/</link>
+      <pubDate>Sat, 03 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/10/03/first-toy-scheme/</guid>
+      <description>记得在上大学那会，就想着能够实现个自己的编程语言。由于之前技能不足，一直没敢去尝试。现赶上国庆七天假期，SICP 看的也正起劲，终于鼓起勇气，</description>
+    </item>
+    
+    <item>
+      <title>Java WeakHashMap 源码解析</title>
+      <link>https://liujiacai.net/blog/2015/09/27/java-weakhashmap/</link>
+      <pubDate>Sun, 27 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/27/java-weakhashmap/</guid>
+      <description>前面把基于特定数据结构的Map介绍完了，它们分别利用了相应数据结构的特点来实现特殊的目的，像HashMap利用哈希表的快速插入、查找实现O(</description>
+    </item>
+    
+    <item>
+      <title>SICP 第二章总结</title>
+      <link>https://liujiacai.net/blog/2015/09/20/sicp-chapter2-summary/</link>
+      <pubDate>Sun, 20 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/20/sicp-chapter2-summary/</guid>
+      <description>到今天为止终于把第二章看完了，相比于第一章，感觉难点少了些，这章主要是通过大量例子（主要有图形语言、区间运算、符号求导、集合的表示、通用型算</description>
+    </item>
+    
+    <item>
+      <title>Java LinkedHashMap源码解析</title>
+      <link>https://liujiacai.net/blog/2015/09/12/java-linkedhashmap/</link>
+      <pubDate>Sat, 12 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/12/java-linkedhashmap/</guid>
+      <description>上周把HashMap、TreeMap这两个Map体系中比较有代表性的类介绍完了，大家应该也能体会到，如果该类所对应的数据结构与算法掌握好了，</description>
+    </item>
+    
+    <item>
+      <title>Java TreeMap 源码解析</title>
+      <link>https://liujiacai.net/blog/2015/09/04/java-treemap/</link>
+      <pubDate>Fri, 04 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/04/java-treemap/</guid>
+      <description>继上篇文章介绍完了HashMap，这篇文章开始介绍Map系列另一个比较重要的类TreeMap。 大家也许能感觉到，网络上介绍HashMap的文</description>
+    </item>
+    
+    <item>
+      <title>Java HashMap 源码解析</title>
+      <link>https://liujiacai.net/blog/2015/09/03/java-hashmap/</link>
+      <pubDate>Thu, 03 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/03/java-hashmap/</guid>
+      <description>继上一篇文章Java集合框架综述后，今天正式开始分析具体集合类的代码，首先以既熟悉又陌生的HashMap开始。 本文源码分析基于Oracle JDK</description>
+    </item>
+    
+    <item>
+      <title>Java集合框架综述</title>
+      <link>https://liujiacai.net/blog/2015/09/01/java-collection-overview/</link>
+      <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/09/01/java-collection-overview/</guid>
+      <description>最近被陆陆续续问了几遍HashMap的实现，回答的不好，打算复习复习JDK中的集合框架，并尝试分析其源码，这么做一方面是这些类非常实用，掌握</description>
+    </item>
+    
+    <item>
+      <title>SICP 第一章总结</title>
+      <link>https://liujiacai.net/blog/2015/07/18/sicp-chapter1-summary/</link>
+      <pubDate>Sat, 18 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/07/18/sicp-chapter1-summary/</guid>
+      <description>最近两个月除了工作之外，业余时间一直在研习sicp这本经典书。关于这本书的讨论有很多，像老赵写过SICP的书托，我觉得与其讨论这本书有没有读</description>
+    </item>
+    
+    <item>
+      <title>回顾来有赞的这三个月</title>
+      <link>https://liujiacai.net/blog/2015/07/11/review-3-month-life-in-youzan/</link>
+      <pubDate>Sat, 11 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/07/11/review-3-month-life-in-youzan/</guid>
+      <description>好久没写博客了，上一篇还是写在三个月前，当时应该是在有赞客满毕业后，现在转正也将近半个多月了。本来想的是每个月至少一篇原创技术文章的，没想到</description>
+    </item>
+    
+    <item>
+      <title>我来有赞了</title>
+      <link>https://liujiacai.net/blog/2015/04/03/leave-ucloud-to-youzan/</link>
+      <pubDate>Fri, 03 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/04/03/leave-ucloud-to-youzan/</guid>
+      <description>今天晚上终于有时间来写写博客了，想想决定从ucloud离职到现在，差不多一个多月了。关于离职的原因，一句话两句话也说不清楚，离职这事也纠结了</description>
+    </item>
+    
+    <item>
+      <title>javascript中的数据类型</title>
+      <link>https://liujiacai.net/blog/2015/02/24/javascript-datatype/</link>
+      <pubDate>Tue, 24 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/02/24/javascript-datatype/</guid>
+      <description>学一门编程语言，无非两方面：一是语法，二是数据类型。类C语言的语法不外乎if、while、for、函数、算术运算等，面向对象的语言再加上ob</description>
+    </item>
+    
+    <item>
+      <title>javascript中的面向对象编程</title>
+      <link>https://liujiacai.net/blog/2015/02/01/javascript-oop/</link>
+      <pubDate>Sun, 01 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2015/02/01/javascript-oop/</guid>
+      <description>最近工作一直在用nodejs做开发，有了nodejs，前端、后端、脚本全都可以用javascript搞定，很是方便。但是javascript</description>
+    </item>
+    
+    <item>
+      <title>2014 年终总结</title>
+      <link>https://liujiacai.net/blog/2014/12/29/review-2014/</link>
+      <pubDate>Mon, 29 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/12/29/review-2014/</guid>
+      <description>不知不觉间，又到一年尾，想想自己这正式工作也有大半年了，加上之前的实习，也算是有一年半多“工作经验”的人了。在今年的六月份，大学也划上了圆满</description>
+    </item>
+    
+    <item>
+      <title>正则表达式“派别”简述</title>
+      <link>https://liujiacai.net/blog/2014/12/07/regexp-favors/</link>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/12/07/regexp-favors/</guid>
+      <description>相信大家对于正则表达式都不陌生，在文本处理中或多或少的都会使用到它。但是，我们在使用linux下的文本处理工具如awk、sed等时，正则表达</description>
+    </item>
+    
+    <item>
+      <title>MacBook 最佳实践</title>
+      <link>https://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/</link>
+      <pubDate>Sun, 23 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/11/23/first-taste-of-macbook/</guid>
+      <description>MacBook 兼具命令行的高效与图形界面的酷炫，实在是程序员必备利器。本文主要介绍我在两年的使用过程中总结出的一些最佳实践，供大家参考、借鉴。 MacBook 你值得拥</description>
+    </item>
+    
+    <item>
+      <title>让firefox与chrome一样快</title>
+      <link>https://liujiacai.net/blog/2014/11/08/secret-of-firefox-prefs/</link>
+      <pubDate>Sat, 08 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/11/08/secret-of-firefox-prefs/</guid>
+      <description>在如今这个Web时代，浏览器可以说是仅次于操作系统的软件了，各种应用都可以放到云端、移动端随时随地的使用，HTML5标准的最终版正式发布， 再</description>
+    </item>
+    
+    <item>
+      <title>编程语言的基石——Lambda calculus</title>
+      <link>https://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</link>
+      <pubDate>Sun, 12 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/</guid>
+      <description>Lambda calculus我们一般称为λ演算，最早是由邱奇（Alonzo Church，图灵的博导）在20世纪30年代引入，当时的背景是解决函数可计算</description>
+    </item>
+    
+    <item>
+      <title>Mozilla 前世今生</title>
+      <link>https://liujiacai.net/blog/2014/09/14/mozilla-history/</link>
+      <pubDate>Sun, 14 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/09/14/mozilla-history/</guid>
+      <description>用过 Firefox 的同学多多少少都应该对 Mozilla 有些了解，Mozilla 作为一老牌软件公司，诞生了很多传奇性的故事和人物，本篇文章将带来读者重新回顾上个世纪九</description>
+    </item>
+    
+    <item>
+      <title>Yarn概述</title>
+      <link>https://liujiacai.net/blog/2014/09/07/yarn-intro/</link>
+      <pubDate>Sun, 07 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/09/07/yarn-intro/</guid>
+      <description>Yarn是随着hadoop发展而催生的新框架，全称是Yet Another Resource Negotiator，可以翻译为“另一个资源管理器”。yarn取代了以前had</description>
+    </item>
+    
+    <item>
+      <title>两个水壶问题</title>
+      <link>https://liujiacai.net/blog/2014/08/16/two-pot-question/</link>
+      <pubDate>Sat, 16 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/08/16/two-pot-question/</guid>
+      <description>问题描述是这样的： 假设有一个池塘，里面有无穷多的水。现有2个空水壶a，b，其容积分别为6升和5升。如何只用这2个水壶从池塘里取得3升的水**</description>
+    </item>
+    
+    <item>
+      <title>inter- intra- cept -ee -er词缀讲解</title>
+      <link>https://liujiacai.net/blog/2014/08/09/inter-intra-cept-ee-er/</link>
+      <pubDate>Sat, 09 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/08/09/inter-intra-cept-ee-er/</guid>
+      <description>故事是这么开始的，我遇到了inter-organizational与intra-organizational这么两个词组，其实也很好区分，前</description>
+    </item>
+    
+    <item>
+      <title>Yarn的安全模式与高可靠性安装总结</title>
+      <link>https://liujiacai.net/blog/2014/08/06/cdh-yarn-ha-kerberos/</link>
+      <pubDate>Wed, 06 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/08/06/cdh-yarn-ha-kerberos/</guid>
+      <description>&lt;p&gt;最近几天又重新把cdh的安全模块与高可靠性模块重新搭建了一遍，这次用是的目前最新的5.1.0的tar包安装，以前把MRv1搭建了好，这次主要是熟悉安装过程，并且把YARN的安全模块与HA模块成功搭建起来。遇到的错误还是不少，安装过程也是废了我好几天，现在想想很多错误都比较典型，现在此记录下我搭建过程中遇到的错误与心得，一方面为自己以后查阅，另一方面希望也能对遇到同样问题的人有所启发。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>hadoop1.0 高可靠性(HA)安装与总结</title>
+      <link>https://liujiacai.net/blog/2014/07/17/cdh-ha-installation/</link>
+      <pubDate>Thu, 17 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/07/17/cdh-ha-installation/</guid>
+      <description>&lt;p&gt;继上次&lt;a href=&#34;https://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/&#34;&gt;安装完Kerberos安全认证&lt;/a&gt;后，现在我在这基础上，又给CDH加上了HA（high availability），也就是高可靠性，具体来讲就是双NameNode，双Jobtracker（我还是在MRv1模式下），有了HA后，这下集群的健壮性就能够得到很好的保证了。&lt;/p&gt;
+&lt;p&gt;我还是按照&lt;a href=&#34;http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-High-Availability-Guide/CDH5-High-Availability-Guide.html&#34;&gt;官方文档&lt;/a&gt;来操作的，有了上次的经验，建议大家在具体操作实施前，先快速阅读一遍，做到心中有数，我还阅读了&lt;a href=&#34;http://hadoop.apache.org/docs/r2.3.0/hadoop-yarn/hadoop-yarn-site/HDFSHighAvailabilityWithNFS.html&#34;&gt;Apache官方的说明&lt;/a&gt;，也不用怎么详细，大概知道怎么回事就行了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>hadoop1.0 安全认证(kerberos)安装与总结</title>
+      <link>https://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/</link>
+      <pubDate>Tue, 15 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/07/15/cdh-kerberos-installation/</guid>
+      <description>&lt;p&gt;俗话说得好，万事开头难。在软件开发中，环境部署要算是第一门槛了。我最近折腾了一周时间把cdh5.0.2.tar.gz版本在MRv1模式下，成功集成了Kerberos安全认证，并且是在全分布式模式下。经过这次安装过程，对hadoop的了解又深入了一层。现在趁着自己刚搭建完环境，脑子还时不时的闪现遇到的错误，把我的安装过程记录于此，一方面方便自己今后查阅，另一方面希望对今后遇到同样问题人有所启发。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>JVM 的类初始化机制</title>
+      <link>https://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</link>
+      <pubDate>Sat, 12 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</guid>
+      <description>更新日志 2014-07-12, 根据校招经验，完成初稿，很多地方没写清楚 2017-01-15，全部重写，增加 Load、Link、Initialization 过程与</description>
+    </item>
+    
+    <item>
+      <title>计算思维之一序言篇</title>
+      <link>https://liujiacai.net/blog/2014/06/06/computational-thinking-1/</link>
+      <pubDate>Fri, 06 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/06/06/computational-thinking-1/</guid>
+      <description>&lt;p&gt;这一系列笔记是我在上一个mooc课&lt;a href=&#34;http://www.icourse163.org/course/hit/hit001?tid=7001&#34;&gt;大学计算机—计算思维导论&lt;/a&gt;上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。&lt;/p&gt;
+&lt;p&gt;##1. 学习三种境界&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>计算思维之三语义符号化表达与计算</title>
+      <link>https://liujiacai.net/blog/2014/06/06/computational-thinking-3/</link>
+      <pubDate>Fri, 06 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/06/06/computational-thinking-3/</guid>
+      <description>&lt;p&gt;##0和1与逻辑——思维符号化表达与逻辑运算&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>计算思维之二计算之树</title>
+      <link>https://liujiacai.net/blog/2014/06/06/computational-thinking-2/</link>
+      <pubDate>Fri, 06 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/06/06/computational-thinking-2/</guid>
+      <description>&lt;p&gt;这次从计算机的宏观角度对整个计算机行业做个剖析，这里老师引入一个计算之树的模型。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>搜索引擎概貌</title>
+      <link>https://liujiacai.net/blog/2014/05/22/search-engine-overview/</link>
+      <pubDate>Thu, 22 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/05/22/search-engine-overview/</guid>
+      <description>&lt;h2 id=&#34;1-前言&#34;&gt;1. 前言&lt;/h2&gt;
+&lt;p&gt;以前参加齐鲁软件大师时用过lucene，但是仅仅只是停留在API调用层面上，这次借着看《lucene in action》第二版的机会把与lucene和搜索相关的知识系统整理一遍。以下内容来自lucene in action的翻译加上我自己的理解，如有疑问或错误，请指出，谢谢。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>深入Java世界</title>
+      <link>https://liujiacai.net/blog/2014/05/19/go-into-java-world/</link>
+      <pubDate>Mon, 19 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/05/19/go-into-java-world/</guid>
+      <description>&lt;p&gt;俗话说的好：不经一事，不长一智。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>一个音乐盲如何才能听&#39;懂&#39;严肃音乐？</title>
+      <link>https://liujiacai.net/blog/2014/05/09/understand-serious-music/</link>
+      <pubDate>Fri, 09 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/05/09/understand-serious-music/</guid>
+      <description>##初识古典 今天收获太大了，我也终于能享受“严肃”音乐了。 事情的经过是这么样的，以前了解过GEB，都说他怎么怎么好，怎么把巴赫的音乐与艾舍尔</description>
+    </item>
+    
+    <item>
+      <title>开启个人博客之旅</title>
+      <link>https://liujiacai.net/blog/2014/05/07/hello-weblog/</link>
+      <pubDate>Wed, 07 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2014/05/07/hello-weblog/</guid>
+      <description>这是第一篇用octopress折腾的博客真是废了不少劲，以后就以这里为大本营了。 &amp;mdash;&amp;mdash;update&amp;mdash;&amp;mdash;&amp;mdash; octopress由于文章生成速度太慢，现在已经换成hex</description>
+    </item>
+    
+  </channel>
+</rss>

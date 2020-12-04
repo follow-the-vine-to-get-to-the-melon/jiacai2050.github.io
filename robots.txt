@@ -1,7 +1,2 @@
----
-layout: nil
----
 User-agent: *
-Allow: /
-
-Sitemap: {{ site.url }}/sitemap.xml 
+Sitemap: https://liujiacai.net/sitemap.xml

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>我的第一个玩具语言 JCScheme 问世了 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="记得在上大学那会，就想着能够实现个自己的编程语言。由于之前技能不足，一直没敢去尝试。现赶上国庆七天假期，SICP 看的也正起劲，终于鼓起勇气，" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/2015/10/03/first-toy-scheme/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="我的第一个玩具语言 JCScheme 问世了" />
+<meta property="og:description" content="记得在上大学那会，就想着能够实现个自己的编程语言。由于之前技能不足，一直没敢去尝试。现赶上国庆七天假期，SICP 看的也正起劲，终于鼓起勇气，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/2015/10/03/first-toy-scheme/" />
+<meta property="article:published_time" content="2015-10-03T17:13:49+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="我的第一个玩具语言 JCScheme 问世了">
+<meta itemprop="description" content="记得在上大学那会，就想着能够实现个自己的编程语言。由于之前技能不足，一直没敢去尝试。现赶上国庆七天假期，SICP 看的也正起劲，终于鼓起勇气，">
+<meta itemprop="datePublished" content="2015-10-03T17:13:49+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="4854">
+
+
+
+<meta itemprop="keywords" content="Scheme," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="我的第一个玩具语言 JCScheme 问世了"/>
+<meta name="twitter:description" content="记得在上大学那会，就想着能够实现个自己的编程语言。由于之前技能不足，一直没敢去尝试。现赶上国庆七天假期，SICP 看的也正起劲，终于鼓起勇气，"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">我的第一个玩具语言 JCScheme 问世了</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-10-03 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
+            </div>
+          <span class="more-meta"> 约 4854 字 </span>
+          <span class="more-meta"> 预计阅读 10 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#预备知识">预备知识</a>
+          <ul>
+            <li><a href="#前缀表达式">前缀表达式</a></li>
+            <li><a href="#编程语言分类">编程语言分类</a></li>
+            <li><a href="#jcscheme-解释器">JCScheme 解释器</a></li>
+          </ul>
+        </li>
+        <li><a href="#jcscheme-语法">JCScheme 语法</a></li>
+        <li><a href="#解析过程">解析过程</a>
+          <ul>
+            <li><a href="#词法分析">词法分析</a></li>
+            <li><a href="#语法分析">语法分析</a></li>
+            <li><a href="#语义分析">语义分析</a></li>
+          </ul>
+        </li>
+        <li><a href="#求值过程">求值过程</a>
+          <ul>
+            <li><a href="#类型定义">类型定义</a></li>
+            <li><a href="#作用域">作用域</a></li>
+          </ul>
+        </li>
+        <li><a href="#不足">不足</a></li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>记得在上大学那会，就想着能够实现个自己的编程语言。由于之前技能不足，一直没敢去尝试。现赶上国庆七天假期，SICP 看的也正起劲，终于鼓起勇气，把这个坑给填上了。甚是开心。
+实现 JCScheme 这个语言前后大概用了一天时间，功能虽然简单，但是“麻雀虽小，五脏俱全”，编程语言中最基本的类型、作用域、函数都涵盖了，以后在扩展时也很方便。
+如果你和之前的我一样，想实现一门语言但又苦于无从下手，那么你应该花半个小时看看本文，相信你肯定会有所收获。
+本文没有复杂难懂的编译原理知识，没有学过编译原理的人不要害怕。</p>
+<p>JCScheme 完整代码托管到我的 <a href="https://github.com/jiacai2050/JCScheme">Github</a>，并且以后会持续更新，如果你先从无到有实现个语言可以关注这个项目。由于 JCScheme 一直在更新中，下面某些设计或链接可以会失效，所以还是建议你关注  Github 上的项目。</p>
+<h2 id="预备知识">预备知识</h2>
+<h3 id="前缀表达式">前缀表达式</h3>
+<p>由于 JCScheme 极其简单，所以你不需要什么背景知识即可看懂本文，不过你最好了解点 Scheme 语言，如果不了解也没关系，你只需要知道 JCScheme 中的语句使用<a href="https://zh.wikipedia.org/zh/%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95">前缀表达式（也称为波兰表示法）</a>，如果你之前没了解过，需要适应下。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 这是我们常用的中缀表达式
+(5 − 6) * 7
+# 这就是前缀表达式
+* (− 5 6) 7
+</code></pre></td></tr></table>
+</div>
+</div><p>前缀表达式最明显的一个好处是其操作符的参数可以有不定个，像<code>(+ 1 2 3 4)</code>。</p>
+<h3 id="编程语言分类">编程语言分类</h3>
+<p>现在编程语言大致可以分为两种：</p>
+<ol>
+<li>编译型，该类型语言源代码经由编译器（compiler）转化为机器语言，再由机器运行机器码。像C/C++ 即属于这个范畴。更详细的可以参考<a href="http://segmentfault.com/a/1190000003814221">深入理解计算机之hello world背后的故事</a></li>
+<li>解释型，该类型语言不转化为最终的机器语言，而是由解释器（interpreter）逐行解释执行，像 Python、JavaScript 属于这个范畴， JCScheme 也是这种类型。</li>
+</ol>
+<p>由于我这里采用 Java 来实现 JCScheme 的解释器，所以 JCScheme 源代码的执行逻辑是这样的：</p>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2548UfVXXXXXiXXXXXXXXXXXX_!!581166664.png" alt="JCScheme 源程序执行逻辑"/>
+</center>
+<p>可以看到，JCScheme 解释器的主要工作就是将按照自定义语法规则书写的源程序，转化为 Java 代码，之后的事情就由 JVM 来处理了。</p>
+<h3 id="jcscheme-解释器">JCScheme 解释器</h3>
+<p>JCScheme解释器主要分为两部分，解析（Parse）和求值（Evaluation）：</p>
+<ul>
+<li>解析：解析源程序，并生成解释器可以理解的中间（Intermediate）结构。这部分包含词法分析，语法分析，语义分析，生成语法树。</li>
+<li>求值：执行解析阶段得到的中介结构然后得到运行结果。这部分包含作用域，类型系统设计和语法树遍历。</li>
+</ul>
+<p>明确了解释的工作后，我们第一步是制定语言的语法，然后进行解析、求值即可。</p>
+<h2 id="jcscheme-语法">JCScheme 语法</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">rlwrap java -jar target/JCScheme-*.jar
+&gt;&gt; (* 2 3 4 5)
+120
+&gt;&gt; (def a 4)
+null
+&gt;&gt; (def b 5)
+null
+&gt;&gt; (if (&gt; a b) a b)
+5
+&gt;&gt; (def max (lambda (a b) (if (&gt; a b) a b)))
+null
+&gt;&gt; (def c (max a b))
+null
+&gt;&gt; c
+5
+</code></pre></td></tr></table>
+</div>
+</div><p>从上面可以看出，JCScheme 有以下基本特性：</p>
+<ol>
+<li>支持整数（Java int实现）与布尔（Java bool实现）、函数三种类型</li>
+<li>提供<code>def</code>进行变量定义、<code>if</code>进行逻辑判断、<code>lambda</code>进行函数声明</li>
+<li>支持整数的<code>+</code>、<code>-</code>、<code>*</code>、<code>/</code>四种基本算术操作，<code>&gt;</code>、<code>&lt;</code>、<code>=</code>三种比较操作。参数可以为多个</li>
+<li>更多的特性可以参考<a href="https://github.com/jiacai2050/JCScheme#ChangeLog">ChangeLog</a></li>
+</ol>
+<h2 id="解析过程">解析过程</h2>
+<p><code>解析过程</code>的一般顺序为</p>
+<blockquote>
+<p>词法分析 &mdash;-&gt; 语法分析 &mdash;-&gt; 语义分析</p>
+</blockquote>
+<p>解析过程最主要的是得到语法树，之后，就可以由后面的<code>求值过程</code>进行求值了。</p>
+<h3 id="词法分析">词法分析</h3>
+<p>词法分析（lexical analysis）就是将源程序中的字符分割为一个个单词（token，构成源代码最小的单位）。
+由于 JCScheme 中使用前缀表示，所以词法解析很简单，两行代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">src = src.replaceAll(&#34;\\(&#34;, &#34;( &#34;).replaceAll(&#34;\\)&#34;, &#34; )&#34;);
+String[] tokens = src.split(&#34;\\s+&#34;);
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="语法分析">语法分析</h3>
+<p>语法分析（Syntactic analysis，也叫Parsing）也就是把词法分析得到的token序列转化为<a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">语法树（AST）</a>，语法树是程序的中间表示形式，与具体语言无关。JCScheme 采用 Lisp 中经典的<a href="https://en.wikipedia.org/wiki/S-expression">S表达式（S-expression）</a>来表示语法树。</p>
+<center>
+<img src="https://img.alicdn.com/imgextra/i1/581166664/TB2MKQ2fFXXXXX1XpXXXXXXXXXX_!!581166664.png" alt="(* 2 (+ 3 4)) 的语法树"/>
+</center>
+<p>AST 本质是一种树，大家可以先想想数据结构中一般都是怎么设计树的存储结构。（其实只要设计的数据结构能够保证获取到当前节点的父节点与子节点就可以了）。下面看看我的实现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">public class SExpression {
+    private String value;
+    private SExpression parent;
+    private List&lt;SExpression&gt; children;
+
+    public SExpression(String value, SExpression parent) {
+        this.value = value;
+        this.parent = parent;
+        this.children = new ArrayList&lt;&gt;();
+    }
+
+    public boolean addChild(SExpression child) {
+        return this.children.add(child);
+    }
+    // 3个 getter 函数省略
+    // 进行求值的 eval 函数省略，这是重点，后面会单独介绍
+    @Override
+    public String toString() {
+        if (0 == children.size()) {
+            return value;
+        } else {
+            StringBuffer displayBuffer = new StringBuffer(value + &#34; &#34;);
+            for (SExpression child : children) {
+                displayBuffer.append(child.toString() + &#34; &#34;);
+            }
+            return displayBuffer.toString();
+        }
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>解析token序列生产AST的函数是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    public static final String START_TOKEN = &#34;(&#34;;
+    public static final String END_TOKEN = &#34;)&#34;;
+
+    public static SExpression parse(String[] tokens) {
+        SExpression root = new SExpression(&#34;&#34;, null);
+        SExpression parent = root;
+        for (String token : tokens) {
+            SExpression newNode = new SExpression(token, parent);
+            parent.addChild(newNode);
+            switch (token) {
+            case Constants.START_TOKEN:
+                parent = newNode;
+                break;
+            case Constants.END_TOKEN:
+                parent = parent.getParent();
+                break;
+            }
+        }
+        return root;
+    }
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，每个 AST 根节点是token为空，父节点为 null 的一节点。
+这里解析的方法是：</p>
+<ol>
+<li>每一个token为AST上的一节点，父节点为 parent（初始为root）</li>
+<li>遇到<code>(</code> token时，开始创建该节点的子树（通过让这个节点成为 parent 实现）</li>
+<li>遇到<code>)</code> token时，进行回溯（通过把 parent 赋值为 parent.getParent() 实现）</li>
+</ol>
+<p>下面看下<code>(+ 1 2 (* 3 4))</code>生成怎样的 <code>SExpression</code>：</p>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i4/581166664/TB2l9NefVXXXXbeXXXXXXXXXXXX_!!581166664.png" alt="(+ 1 2 (* 3 4)) AST 示意图"/>
+</center>
+上图最主要的一点就是
+> 与左括号相匹配的右括号位于左括号的最后一个孩子节点上（从左到右）。
+<h3 id="语义分析">语义分析</h3>
+<p>语义分析（Semantic analysis，也叫context sensitive analysis）根据上一步生成的AST，收集源代码的信息，这包括类型校验、变量在使用前是否声明等一系列操作。</p>
+<p>因为 JCScheme 中类型比较简单，而且去做语义分析，需要做很多异常处理，有些繁琐，我这里为了简单都忽略了。所以如果你输入的语法有误（比如括号不匹配），那么解释器就会报错，在后面的迭代中会逐步改善这块。</p>
+<h2 id="求值过程">求值过程</h2>
+<p>经过<code>解析过程</code>，我们已经得到了与具体语言无关的 AST，那么如何进行求值呢，SICP 书中给出答案：<code>eval-apply cycle</code>，如下图</p>
+<center>
+    <img src="https://img.alicdn.com/imgextra/i2/581166664/TB2KjMVfFXXXXbOXpXXXXXXXXXX_!!581166664.png" alt="SICP-eval-apply"/>
+</center>
+eval、apply 这两个规则描述了求值过程的核心部分，也就是它的基本循环。在这一循环中
+> 表达式在环境中的求值被规约到过程对实际参数的应用，而这种应用又被规约到新的表达式在新的环境中的求值，如此下去，直到下降到符号（其值可以在环境中找到）或者基本过程（它们可以直接应用）。
+<p>在<a href="http://stackoverflow.com/a/6269132/2163429">StackOverflow</a>上找到一比较好理解的解释：</p>
+<ul>
+<li>the one that eval is doing, is dealing with the syntactic translation of code to its meaning &ndash; but it&rsquo;s doing almost nothing except dispatching over the expression type</li>
+<li>apply is to call function with values.</li>
+<li>A major enlightenment moment here is to realize that there is a major difference between this eval and apply &ndash; the former inherently deals with syntax, but the latter deals with values.</li>
+</ul>
+<p>如果你也在读 SICP，可以参考下面的<code>eval</code>、与<code>apply</code>的具体实现，对 Scheme 不了解的可以直接略过。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(define (eval exp env)
+  (cond ((self-evaluating? exp) exp)
+        ((variable? exp) (lookup-variable-value exp env))
+        ((quoted? exp) (text-of-quotation exp))
+        ((assignment? exp) (eval-assignment exp env))
+        ((definition? exp) (eval-definition exp env))
+        ((if? exp) (eval-if exp env))
+        ((lambda? exp)
+         (make-procedure (lambda-parameters exp)
+                         (lambda-body exp)
+                         env))
+        ((begin? exp)
+         (eval-sequence (begin-actions exp) env))
+        ((cond? exp) (eval (cond-&gt;if exp) env))
+        ((application? exp)
+         (apply (eval (operator exp) env)
+                (list-of-values (operands exp) env)))
+        (else
+         (error &#34;Unknown expression type -- EVAL&#34; exp))))
+
+(define (apply procedure arguments)
+  (cond ((primitive-procedure? procedure)
+         (apply-primitive-procedure procedure arguments))
+        ((compound-procedure? procedure)
+         (eval-sequence
+           (procedure-body procedure)
+           (extend-environment
+             (procedure-parameters procedure)
+             arguments
+             (procedure-environment procedure))))
+        (else
+         (error
+          &#34;Unknown procedure type -- APPLY&#34; procedure))))
+
+</code></pre></td></tr></table>
+</div>
+</div><p>简单来说，<code>eval</code>的主要作用就是理解 AST 的含义，根据其含义进行相应处理，比如赋值语句有其独特的处理方式，if 语句有其独特的处理方式等等。
+为了能够让<code>apply</code>进行函数调用求值，需要把 AST 解释为 JCScheme 中内置的类型，而这就是 JCScheme 中<code>eval</code>的主要作用。</p>
+<h3 id="类型定义">类型定义</h3>
+<p>定义一个基类</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">public abstract class SObject {
+
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>然后是整数类型与布尔类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">public class SNumber extends SObject{
+
+    private int value;
+
+    public int getValue() {
+        return value;
+    }
+    public SNumber(int value) {
+        this.value = value;
+    }
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+
+}
+public class SBool extends SObject{
+    private boolean value;
+
+    public boolean getValue() {
+        return value;
+    }
+
+    public SBool(boolean value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>这两个类比较简单，并且注意到没有为其成员变量提供<code>setter</code>函数，这说明这些类型是不可变的。
+最后一个比较重要的是函数类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">public class SFunction extends SObject{
+
+    List&lt;String&gt; param;
+    SExpression body;
+
+    public SFunction(List&lt;String&gt; param, SExpression body) {
+        this.param = param;
+        this.body = body;
+    }
+
+    public SObject apply(SObject... args) {
+        for(int i = 0; i&lt; args.length; i ++) {
+            SScope.env.put(param.get(i), args[i]);
+        }
+        SObject ret = body.eval();
+        for(int i = 0; i&lt; args.length; i ++) {
+            SScope.env.remove(param.get(i));
+        }
+        return ret;
+    }
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer(&#34;Function : args [&#34;);
+        for(String p : param) {
+            buffer.append(p + &#34;, &#34;);
+        }
+        buffer.append(&#34;]\n&#34;);
+        buffer.append(&#34;Body :\n&#34;);
+        buffer.append(body.toString());
+        return buffer.toString();
+    }
+
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，<code>SFunction</code>内部有两个成员变量，用来表示其<code>参数列表</code>与<code>函数体</code>。其中的<code>apply</code>表示函数调用，可以看到无非就是把形式参数与实际参数进行捆绑（现在放到全局环境中，按理说这时应该生成一新环境，后面讲求值过程时会介绍改进版的SFunction），之后调用<code>SExpression</code>的<code>eval</code>方法，得到用内置类型表示的结果。</p>
+<p>可以看到，这里的重点又回到<code>eval</code>方法上去了。 JCScheme 的主要复杂点也就算在<code>SExpression</code>的<code>eval</code>方法上，因为它涉及到把<code>SExpression</code>转为内置类型，所以按理说也应该是复杂的。</p>
+<p><code>eval</code>的工作原理最直接的方式就是看源码<a href="https://github.com/jiacai2050/JCScheme/blob/master/src/main/java/net/liujiacai/jcscheme/JCExpression.java#L41">JCScheme/SExpression.java</a>，这个方法后面会不断完善。</p>
+<h3 id="作用域">作用域</h3>
+<p>作用域也可以理解为环境，里面是一系列的 binding，用以保存变量名与其对应值。
+在现代编程语言中，作用域一般分为两种：</p>
+<ul>
+<li>静态作用域（static/lexical scope），环境在声明时指定。JCScheme、C、Java、Python 等现在大部分语言都属于此类。</li>
+<li>动态作用域（dynamic scope），环境在运行时指定。最常见的就是各种 Shell，像Bash、Ksh等，其次还有 emacs-lisp。更多可参考 <a href="http://stackoverflow.com/questions/1473111/besides-logo-and-emacs-lisp-what-are-other-pure-dynamically-scoped-languages">what are other pure dynamically scoped languages?</a></li>
+</ul>
+<p>为了解决在 JCScheme 中函数调用时，新创建环境的父环境应该指向运行时的环境还是声明时的这个问题，我去 Stackoverflow 上提了个<a href="http://stackoverflow.com/questions/33056236/scheme-environment-model-closure-issue">问题</a>，对作用域不清楚的可以去看看。</p>
+<p>JCScheme 中，一开始只有一个全局作用域，后面我逐渐把这快给完善了，主要是 <a href="https://github.com/jiacai2050/JCScheme/blob/master/src/main/java/net/liujiacai/jcscheme/SScope.java">SScope</a> 类 与 <a href="https://github.com/jiacai2050/JCScheme/blob/master/src/main/java/net/liujiacai/jcscheme/type/SFunction.java">SFunction</a> 类。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">public class SScope {
+   // 每个环境都指向一个父环境，全局环境父环境为 null
+   private SScope parent;
+   private Map&lt;String, SObject&gt; env;
+
+   public SScope getParent() {
+       return parent;
+   }
+
+   public Map&lt;String, SObject&gt; getEnv() {
+       return env;
+   }
+   // 在查找变量时，如何当前 scope 中没有，会沿着环境链，一直找到全局环境中
+   public SObject findVariable(String var) {
+       if (env.containsKey(var)) {
+           return env.get(var);
+       } else {
+           SScope p = this.getParent();
+           while (p != null) {
+               Map&lt;String, SObject&gt; subEnv = p.getEnv();
+               if (subEnv.containsKey(var)) {
+                   return subEnv.get(var);
+               }
+               p = p.getParent();
+           }
+           return null;
+       }
+   }
+   // 当前的环境
+   public static SScope current = null;
+   public static Map&lt;String, String&gt; builtinFuncs = new HashMap&lt;String, String&gt;();
+   public static Map&lt;String, String&gt; builtinKeywords = new HashMap&lt;String, String&gt;();
+   // 省略一个内置函数、关键字的初始化
+   // ...
+}
+public class SFunction extends SObject {
+
+   private List&lt;String&gt; param;
+   private List&lt;SExpression&gt; body;
+   private SScope scope;
+
+   public List&lt;String&gt; getParam() {
+       return param;
+   }
+   // 在声明函数时，传入当前的环境
+   public SFunction(List&lt;String&gt; param, List&lt;SExpression&gt; body, SScope scope) {
+       this.param = param;
+       this.body = body;
+       this.scope = scope;
+   }
+
+   public SObject apply(SObject... args) {
+       // 保存函数调用之前的环境，相当于入栈
+       SScope originScope = SScope.current;
+       // 创建一个指向函数声明传入的环境的新环境，保存形参与实参的绑定关系。
+       // 这里构造新环境时用到了声明函数时传入的环境，这点说明了 JCScheme 是静态作用域的
+       SScope funcScope = new SScope(this.scope);
+       // 设置当前环境为 新创建的环境，这时所有的求值，都是在其中进行
+       SScope.current = funcScope;
+       SObject ret = null;
+       for (int i = 0; i &lt; args.length; i++) {
+           SScope.current.getEnv().put(param.get(i), args[i]);
+       }
+       if (args.length &lt; param.size()) {
+           // 实现函数部分调用， currying
+           List&lt;String&gt; subParam = param.subList(args.length, param.size());
+           ret = new SFunction(subParam, body, funcScope);
+       } else {
+           int bodySize = body.size();
+           for (int i = 0; i &lt; bodySize - 1; i++) {
+               body.get(i).eval();
+           }
+           // only return last exp
+           ret = body.get(bodySize - 1).eval();
+       }
+       // GC will clean unused scope
+       // 恢复函数调用之前的环境，相当于出栈
+       SScope.current = originScope;
+       return ret;
+   }
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="不足">不足</h2>
+<p>经过上面这些工作，JCScheme 已经大功告成了（希望没有bug😊）。但是下面这些点都没有涉及</p>
+<ol>
+<li>函数的递归调用</li>
+<li><del>匿名函数的直接调用，如<code>((lambda (a b) (+ a b)) 1 2)</code>，现在这样的方式是不支持的， 需要先定义个变量，然后在调用</del>，已经支持。</li>
+<li><del>函数的部分调用，也就是<code>currying</code></del>，已经支持
+&hellip;&hellip;</li>
+</ol>
+<p>后面会逐步添坑，大家可以查看 JCScheme 的 <a href="https://github.com/jiacai2050/JCScheme#ChangeLog">ChangeLog</a> 获取最新进展。</p>
+<h2 id="总结">总结</h2>
+<p>“纸上得来终觉浅，绝知此事要躬行”，最开始时，觉得像 Scheme 语法这么简单的语言实现起来应该不难，做了后才发现眼高手低。比如，我第一次设计<code>SExpression</code>时没有<code>parent</code>这个属性导致了无法正确实现<code>parse</code>函数。以及后面在设计作用域时，分不清楚到底是声明时创建环境还是运行时创建，环境的父环境应该怎么指向，应该指向声明时的环境还是运行时的环境。
+不过感触最深应该是这点：动手。在之前学习编程语言，被各种语法类库虐的死去活来，虽然想尝试去实现个自己的语言，但是一直觉得自己能力不够，没敢去尝试，随着不断完善 JCScheme 的功能，对编程语言有了更深刻的认识，真是有种“不入虎穴,焉得虎子”的感觉。</p>
+<p>当然，JCScheme 语言只是刚开始，还比较简陋，高手请不要见笑，后面随着学习的深入我会逐步完善。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li>王垠的<a href="http://www.yinwang.org/blog-cn/2015/09/19/parser/">谈谈Parser</a></li>
+<li><a href="http://zh.lucida.me/blog/how-to-implement-an-interpreter-in-csharp/">90分钟实现一门编程语言——极简解释器教程</a></li>
+<li>Wiki <a href="https://en.wikipedia.org/wiki/Scope_%28computer_science%29">Scope (computer science)</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/scheme/">Scheme</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2015/10/21/programming-guide/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">转载『非科班出身的人学习编程不负责任指南』</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2015/09/27/java-weakhashmap/">
+            <span class="next-text nav-default">Java WeakHashMap 源码解析</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

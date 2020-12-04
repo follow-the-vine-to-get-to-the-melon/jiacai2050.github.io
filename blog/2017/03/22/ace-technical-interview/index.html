@@ -1,76 +1,574 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>“玩转” 技术面试——链表的函数表示法 | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">“玩转” 技术面试——链表的函数表示法</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">“玩转” 技术面试——链表的函数表示法</h1><div class="post-meta">Mar 22, 2017<span> | </span><span class="category"><a href="/categories/reproduce/">他山之石</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.6k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 6</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2017/03/22/ace-technical-interview/" href="/blog/2017/03/22/ace-technical-interview/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正文"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他实现"><span class="toc-number">3.</span> <span class="toc-text">其他实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python"><span class="toc-number">3.1.</span> <span class="toc-text">Python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ruby"><span class="toc-number">3.2.</span> <span class="toc-text">Ruby</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="https://aphyr.com/posts/340-acing-the-technical-interview" target="_blank" rel="noopener">《Acing the technical interview》</a>，老外写的白板面试的调侃文，声色并茂，兼具叙述文的生动与技术文的抽象。文中用函数来模拟链表的表示法我在<a href="/blog/2014/10/12/lambda-calculus-introduction/">《编程语言的基石——Lambda calculus》</a>里面有深入讲解，感兴趣的读者可以参考。本文最后，给出了 Python、Ruby 语言中链表的函数表示。</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>“玩转” 技术面试——链表的函数表示法 - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="简介 《Acing the technical interview》，老外写的白板面试的调侃文，声色并茂，兼具叙述文的生动与技术文的抽象。文中用函数来模拟链表的表示法我" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2017/03/22/ace-technical-interview/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="“玩转” 技术面试——链表的函数表示法" />
+<meta property="og:description" content="简介 《Acing the technical interview》，老外写的白板面试的调侃文，声色并茂，兼具叙述文的生动与技术文的抽象。文中用函数来模拟链表的表示法我" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2017/03/22/ace-technical-interview/" />
+<meta property="article:published_time" content="2017-03-22T11:31:11+00:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="“玩转” 技术面试——链表的函数表示法">
+<meta itemprop="description" content="简介 《Acing the technical interview》，老外写的白板面试的调侃文，声色并茂，兼具叙述文的生动与技术文的抽象。文中用函数来模拟链表的表示法我">
+<meta itemprop="datePublished" content="2017-03-22T11:31:11+00:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="1998">
+
+
+
+<meta itemprop="keywords" content="Clojure," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="“玩转” 技术面试——链表的函数表示法"/>
+<meta name="twitter:description" content="简介 《Acing the technical interview》，老外写的白板面试的调侃文，声色并茂，兼具叙述文的生动与技术文的抽象。文中用函数来模拟链表的表示法我"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">“玩转” 技术面试——链表的函数表示法</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-03-22 </span>
+        <div class="post-category">
+            <a href="/categories/%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3/"> 他山之石 </a>
+            </div>
+          <span class="more-meta"> 约 1998 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#正文">正文</a></li>
+        <li><a href="#其他实现">其他实现</a>
+          <ul>
+            <li><a href="#python">Python</a></li>
+            <li><a href="#ruby">Ruby</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="简介">简介</h2>
+<p><a href="https://aphyr.com/posts/340-acing-the-technical-interview">《Acing the technical interview》</a>，老外写的白板面试的调侃文，声色并茂，兼具叙述文的生动与技术文的抽象。文中用函数来模拟链表的表示法我在<a href="/blog/2014/10/12/lambda-calculus-introduction/">《编程语言的基石——Lambda calculus》</a>里面有深入讲解，感兴趣的读者可以参考。本文最后，给出了 Python、Ruby 语言中链表的函数表示。</p>
 <p>文中个别语句我翻译的不是很好或者没有翻译，希望感兴趣的读者予以补充。</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>如果你打算找一份程序员（software witch）的工作，那么你极有可能需要通过白板面试。白板面试已经成了我们程序员的家常便饭：在电脑桌面上排列出一组好看的 <code>xterm</code>，不由自主地在周边的文件夹里运行<code>ls</code>，以防环境在昨晚有什么变动——这就像在厨房的抽屉里找东西，而这个厨房储藏了各种奇怪的法兰（flanges，使管子与管子及和阀门相互连接的零件）、螺丝刀以及各种不知名的家用电器上掉下来的零件形成的各种奇怪的塑料碎片，现在谁也不知道这些家用电器的用途，或许从来就没知道过，但即使如此，我们还必须小心翼翼的对待它们。我现在给你分析一个非常常见的面试问题：反转链表（reverse linked list）。</p>
+<h2 id="正文">正文</h2>
+<p>如果你打算找一份程序员（software witch）的工作，那么你极有可能需要通过白板面试。白板面试已经成了我们程序员的家常便饭：在电脑桌面上排列出一组好看的 <code>xterm</code>，不由自主地在周边的文件夹里运行<code>ls</code>，以防环境在昨晚有什么变动——这就像在厨房的抽屉里找东西，而这个厨房储藏了各种奇怪的法兰（flanges，使管子与管子及和阀门相互连接的零件）、螺丝刀以及各种不知名的家用电器上掉下来的零件形成的各种奇怪的塑料碎片，现在谁也不知道这些家用电器的用途，或许从来就没知道过，但即使如此，我们还必须小心翼翼的对待它们。我现在给你分析一个非常常见的面试问题：反转链表（reverse linked list）。</p>
 <p>首先，我们需要一个链表。清空你工作空间里面不必要的<code>xterm</code>窗口，然后递归地在具有保护性的括号（译者注：Lisp 里面用括号分割代码块）里面撒些盐（译者注：这句话非常形象，想想我们做菜时放盐的场景，表示要开始了，忽略某些人后放盐）。从零开始反转一个链表。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> cons [h t] #(<span class="name"><span class="builtin-name">if</span></span> % h t))</span><br></pre></td></tr></table></figure>
-<p>“这不是一个链表，这只是一个<code>if</code>语句”，面试官说。<br>“但其他部分是链表，还有什么问题嘛？”你回答到，同时不屑地翻了一个白眼。<br><figure class="highlight clojure-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">user=&gt;</span><span class="clojure"> (<span class="name"><span class="builtin-name">def</span></span> x (<span class="name"><span class="builtin-name">cons</span></span> <span class="number">1</span> (<span class="name"><span class="builtin-name">cons</span></span> <span class="number">2</span> <span class="literal">nil</span>)))</span></span><br><span class="line">#'user/x</span><br><span class="line"><span class="meta">user=&gt;</span><span class="clojure"> (<span class="name">x</span> <span class="literal">true</span>)</span></span><br><span class="line">1</span><br><span class="line"><span class="meta">user=&gt;</span><span class="clojure"> ((<span class="name">x</span> <span class="literal">false</span>) <span class="literal">true</span>)</span></span><br><span class="line">2</span><br></pre></td></tr></table></figure></p>
-<p>“<code>x</code>到底是什么？”面试官尽量让自己看起来友善些。<br>答案在 REPL 里，但是不要被它一时误导了，它们可不是你的朋友。这与你在接待厅的誓言是相违背的（译者注：宣誓时一般都要求虔诚对待别人）。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user=&gt; x</span><br><span class="line"><span class="meta">#</span><span class="bash">object[user<span class="variable">$cons</span><span class="variable">$cell__4431</span> 0x3b89cc1c <span class="string">"user<span class="variable">$cons</span><span class="variable">$cell__4431</span>@3b89cc1c"</span>]</span></span><br></pre></td></tr></table></figure></p>
-<p>“了解一个事物最好的方式就是对它命名”，你建议到。好的名字非常有意义（True names have power）。由 Ursula K. Le Guin 发明的 <a href="https://en.wikipedia.org/wiki/K_%28programming_language%29" target="_blank" rel="noopener">K 语言</a>是最古老、最精练的魔幻型语言之一。让一个新语言映射成你自己的词汇需要忘掉自己之前的认知，原有知识会让你的记忆疼痛（译者注：作者是想表达 Lisp 里面惯用法与常见的语言差距比较大，不能简单类比）。</p>
-<p>“呃… 那好，那你会怎么从这个链表里面取出一个元素呢？”</p>
-<p>在你脑海中有非常漂亮解决方式，就像你赤裸的双脚下铺开了红地毯。奥斯卡的明星昨晚在这里出席过，但你还是等待着不同的明星来亲吻你。这就像你住在<a href="https://en.wikipedia.org/wiki/S%C3%B8r%C3%B8ya" target="_blank" rel="noopener">瑟略島</a>（挪威第八大岛） 的山上时，月亮就是你的爱人。（译者注：这里作者应该是想表达 s-expression 很优美）。除了一些边界条件的检查，你在第一时间写出了正确的获取一个元素的代码：<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> nth [l n]</span><br><span class="line">  (<span class="name"><span class="builtin-name">when</span></span> l (<span class="name"><span class="builtin-name">if</span></span> (<span class="name"><span class="builtin-name">=</span></span> <span class="number">0</span> n)</span><br><span class="line">            (<span class="name">l</span> <span class="literal">true</span>)</span><br><span class="line">            (<span class="name"><span class="builtin-name">recur</span></span> (<span class="name">l</span> <span class="literal">false</span>) (<span class="name"><span class="builtin-name">dec</span></span> n)))))</span><br></pre></td></tr></table></figure></p>
-<p>“你能不能给我写一个正常的链表，像 Python 里面的那样？”</p>
-<p>你摩拳擦掌起来，双脚站在地板上，从头开始写出了一个具有良好缩进格式的<code>print</code>函数。现在你的手掌长满老茧，眼睑里流露出晶莹的、碳黑的雪花（译者注：这是可能是说作者写这种函数很多次了，不屑于写了）。每一个函数都是有代价的，当然，除非它们是无副作用的纯函数。<br><figure class="highlight hy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> prn-list [l]</span><br><span class="line">  (<span class="name"><span class="builtin-name">print</span></span> <span class="string">"("</span>)</span><br><span class="line">  (<span class="name"><span class="builtin-name">loop</span></span> [l l]</span><br><span class="line">    (<span class="name"><span class="builtin-name">if</span></span> (<span class="name">nil?</span> l)</span><br><span class="line">      (<span class="name"><span class="builtin-name">print</span></span> <span class="string">")\n"</span>)</span><br><span class="line">      (<span class="name"><span class="builtin-name">do</span></span> (<span class="name"><span class="builtin-name">print</span></span> (<span class="name">l</span> <span class="literal">true</span>))</span><br><span class="line">          (<span class="name"><span class="builtin-name">when</span></span> (<span class="name">l</span> <span class="literal">false</span>)</span><br><span class="line">            (<span class="name"><span class="builtin-name">print</span></span> <span class="string">" "</span>))</span><br><span class="line">          (<span class="name">recur</span> (<span class="name">l</span> <span class="literal">false</span>))))))</span><br></pre></td></tr></table></figure></p>
-<p>没有时间去想有意义的变量名、示例、帮助文档（译者注：docstring，Clojure里面函数的注释）。在白板面试过程中，时间就是一切。 Pretend you are a Haskell programmer, as your grandmother was, before her continuation passed。（译者注：不清楚这句话作者想表达神马意思，懂 Haskell 同学解释下？）<br><figure class="highlight clojure-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">user=&gt;</span><span class="clojure"> (<span class="name">prn-list</span> (<span class="name"><span class="builtin-name">cons</span></span> <span class="number">1</span> (<span class="name"><span class="builtin-name">cons</span></span> <span class="number">2</span> (<span class="name"><span class="builtin-name">cons</span></span> <span class="number">3</span> <span class="literal">nil</span>))))</span></span><br><span class="line">(1 2 3)</span><br></pre></td></tr></table></figure></p>
-<p>这时面试官终于安心地笑了，最起码上面的输出看起来终于正常了。“那么，开始反转吧，你需要….”</p>
-<p>你突然攥住面试官的双手，这时他的大脑像紧张忙乱的闹钟发条似的发生了扭曲，飞掠而过心脏里面的绦虫，拍挞拍挞的心发生了偏斜，并且用古老的语言默背一首讽刺诗。<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">defn</span> reverse [l]</span><br><span class="line">  (<span class="name">loop</span> [r <span class="literal">nil</span>, l l]</span><br><span class="line">    (<span class="name">if</span> l</span><br><span class="line">      (<span class="name">recur</span> (<span class="name">cons</span> (<span class="name">l</span> true) r) (<span class="name">l</span> false))</span><br><span class="line">      r)))</span><br><span class="line"></span><br><span class="line">user=&gt; (<span class="name">prn-list</span> (<span class="name">reverse</span> (<span class="name">cons</span> <span class="number">1</span> (<span class="name">cons</span> <span class="number">2</span> (<span class="name">cons</span> <span class="number">3</span> <span class="literal">nil</span>)))))</span><br><span class="line">(<span class="number">3</span> <span class="number">2</span> <span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
-<p>当你放开面试官的手，他结结巴巴的说了些有礼貌的东西，拉上了兜帽上衣的拉锁来掩盖自己冷汗。下面这里会有其他会议，但是你不需要参加，你快点走吧（Send an eagle in your place ？是这么翻译嘛）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn cons [h t] #(if % h t))
+</code></pre></td></tr></table>
+</div>
+</div><p>“这不是一个链表，这只是一个<code>if</code>语句”，面试官说。
+“但其他部分是链表，还有什么问题嘛？”你回答到，同时不屑地翻了一个白眼。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">user=&gt; (def x (cons 1 (cons 2 nil)))
+#&#39;user/x
+user=&gt; (x true)
+1
+user=&gt; ((x false) true)
+2
+</code></pre></td></tr></table>
+</div>
+</div><p>“<code>x</code>到底是什么？”面试官尽量让自己看起来友善些。
+答案在 REPL 里，但是不要被它一时误导了，它们可不是你的朋友。这与你在接待厅的誓言是相违背的（译者注：宣誓时一般都要求虔诚对待别人）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">user=&gt; x
+#object[user$cons$cell__4431 0x3b89cc1c &#34;user$cons$cell__4431@3b89cc1c&#34;]
+</code></pre></td></tr></table>
+</div>
+</div><p>“了解一个事物最好的方式就是对它命名”，你建议到。好的名字非常有意义（True names have power）。由 Ursula K. Le Guin 发明的 <a href="https://en.wikipedia.org/wiki/K_%28programming_language%29">K 语言</a>是最古老、最精练的魔幻型语言之一。让一个新语言映射成你自己的词汇需要忘掉自己之前的认知，原有知识会让你的记忆疼痛（译者注：作者是想表达 Lisp 里面惯用法与常见的语言差距比较大，不能简单类比）。</p>
+<p>“呃&hellip; 那好，那你会怎么从这个链表里面取出一个元素呢？”</p>
+<p>在你脑海中有非常漂亮解决方式，就像你赤裸的双脚下铺开了红地毯。奥斯卡的明星昨晚在这里出席过，但你还是等待着不同的明星来亲吻你。这就像你住在<a href="https://en.wikipedia.org/wiki/S%C3%B8r%C3%B8ya">瑟略島</a>（挪威第八大岛） 的山上时，月亮就是你的爱人。（译者注：这里作者应该是想表达 s-expression 很优美）。除了一些边界条件的检查，你在第一时间写出了正确的获取一个元素的代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn nth [l n]
+  (when l (if (= 0 n)
+            (l true)
+            (recur (l false) (dec n)))))
+</code></pre></td></tr></table>
+</div>
+</div><p>“你能不能给我写一个正常的链表，像 Python 里面的那样？”</p>
+<p>你摩拳擦掌起来，双脚站在地板上，从头开始写出了一个具有良好缩进格式的<code>print</code>函数。现在你的手掌长满老茧，眼睑里流露出晶莹的、碳黑的雪花（译者注：这是可能是说作者写这种函数很多次了，不屑于写了）。每一个函数都是有代价的，当然，除非它们是无副作用的纯函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn prn-list [l]
+  (print &#34;(&#34;)
+  (loop [l l]
+    (if (nil? l)
+      (print &#34;)\n&#34;)
+      (do (print (l true))
+          (when (l false)
+            (print &#34; &#34;))
+          (recur (l false))))))
+</code></pre></td></tr></table>
+</div>
+</div><p>没有时间去想有意义的变量名、示例、帮助文档（译者注：docstring，Clojure里面函数的注释）。在白板面试过程中，时间就是一切。 Pretend you are a Haskell programmer, as your grandmother was, before her continuation passed。（译者注：不清楚这句话作者想表达神马意思，懂 Haskell 同学解释下？）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">user=&gt; (prn-list (cons 1 (cons 2 (cons 3 nil))))
+(1 2 3)
+</code></pre></td></tr></table>
+</div>
+</div><p>这时面试官终于安心地笑了，最起码上面的输出看起来终于正常了。“那么，开始反转吧，你需要&hellip;.”</p>
+<p>你突然攥住面试官的双手，这时他的大脑像紧张忙乱的闹钟发条似的发生了扭曲，飞掠而过心脏里面的绦虫，拍挞拍挞的心发生了偏斜，并且用古老的语言默背一首讽刺诗。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn reverse [l]
+  (loop [r nil, l l]
+    (if l
+      (recur (cons (l true) r) (l false))
+      r)))
+
+user=&gt; (prn-list (reverse (cons 1 (cons 2 (cons 3 nil)))))
+(3 2 1)
+</code></pre></td></tr></table>
+</div>
+</div><p>当你放开面试官的手，他结结巴巴的说了些有礼貌的东西，拉上了兜帽上衣的拉锁来掩盖自己冷汗。下面这里会有其他会议，但是你不需要参加，你快点走吧（Send an eagle in your place ？是这么翻译嘛）。</p>
 <p>他们肯定会决绝你，而且会嗤之以鼻，说你不符合他们的公司文化。Alight upon your cloud-pine, and exit through the window. （神马意思？）这地方不适合你。</p>
-<h2 id="其他实现"><a href="#其他实现" class="headerlink" title="其他实现"></a>其他实现</h2><h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cons</span><span class="params">(h, t)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">lambda</span> x: h <span class="keyword">if</span> x <span class="keyword">else</span> t</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printer</span><span class="params">(l)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> l <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        print(<span class="string">"nil"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">while</span> l:</span><br><span class="line">            e = l(<span class="literal">True</span>)</span><br><span class="line">            print(e, end=<span class="string">' '</span>)</span><br><span class="line">            l = l(<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse</span><span class="params">(l)</span>:</span></span><br><span class="line">    reversed_l = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> l:</span><br><span class="line">        e = l(<span class="literal">True</span>)</span><br><span class="line">        reversed_l = cons(e, reversed_l)</span><br><span class="line">        l = l(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> reversed_l</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">l = cons(<span class="number">3</span>, cons(<span class="number">2</span>, cons(<span class="number">1</span>, <span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line">printer(l)</span><br><span class="line"><span class="comment"># 3 2 1</span></span><br><span class="line"></span><br><span class="line">printer((reverse(l)))</span><br><span class="line"><span class="comment"># 1 2 3</span></span><br></pre></td></tr></table></figure>
-<h3 id="Ruby"><a href="#Ruby" class="headerlink" title="Ruby"></a>Ruby</h3><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cons</span><span class="params">(h, t)</span></span></span><br><span class="line">  lambda &#123; <span class="params">|e|</span> e ? h : t &#125;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printer</span><span class="params">(l)</span></span></span><br><span class="line">  <span class="keyword">while</span> l</span><br><span class="line">    e = l.call <span class="literal">true</span></span><br><span class="line">    print e, <span class="string">' '</span></span><br><span class="line">    l = l.call <span class="literal">false</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  puts <span class="string">''</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse</span><span class="params">(l)</span></span></span><br><span class="line">  reversed_l = <span class="literal">nil</span></span><br><span class="line">  <span class="keyword">while</span> l</span><br><span class="line">    e = l.call <span class="literal">true</span></span><br><span class="line">    reversed_l = cons e, reversed_l</span><br><span class="line">    l = l.call <span class="literal">false</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">return</span> reversed_l</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">l = cons(<span class="number">3</span>, cons(<span class="number">2</span>, cons(<span class="number">1</span>, <span class="literal">nil</span>)))</span><br><span class="line">printer l</span><br><span class="line"><span class="comment"># 3 2 1</span></span><br><span class="line">printer reverse l</span><br><span class="line"><span class="comment"># 1 2 3</span></span><br></pre></td></tr></table></figure>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2017/03/22/ace-technical-interview/" data-id="ckhxlinx0004dszljoizcqbyx" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aSW7DMBAFUd3/0vI2QCC6Pls0wGZxFTga+LRo9MDrwuv+t/7+Pr6ePJPfVVoyZMjYlnEP1xyDw9L3PlJlyJBxAOPpxXy74y2mYZfvTYYMGTL4FvmG0itlyJAho8IgCdw47HKeDBkyZJBispI4pviFtbgMGTI2ZMy9/jd/L5lvyJAhYyvGHa63qLwBh3YlQ4aM1oy06V8ZIcy124L9yJAh4xgGP6qVlp3pveTt8XeSIUPGhoy51n8aZN9qqz3uR4YMGQcw+A1zjbP00AYZr148fsuQIWNzxtyjSYDmwZc/f/xZZciQ0ZtROewVv2CqDRcPOGXIkNGIkQ4a098Jj//3cc8yZMhozSCpIQmjPMlLG3PBwECGDBkHMHhTjDTg0qKXl8SPH1SGDBlNGcGYMCxTeZiePCGS5o8yZMjYllEZaq44Ilb5xDJkyOjNqI8S+SAhHRjECaIMGTJaM+rVcHq8LK62yZkRGTJktGasLnHJlfyZX45cyJAhozUjHVXyhC/dOv9wMmTIOI3Bx5Yklaykg3ywKkOGDBlXuOZSw7QNF/cFZciQsS3jDhdPB+eOZcSFqwwZMg5gVM5Z8UZbmizOFbQyZMjozeBBFhWT4PpKYy7+0jJkyGjEGP/Oi9LK+HN5LS5DhoxjGOkAgB8j40FchgwZMirF5Log+6UAliFDxgGMNGhWruShnCejMmTI6M1IS0eetJEkkmd6Lww1ZciQsR/jA687aph7tsWUAAAAAElFTkSuQmCC">分享</a><div class="tags"><a href="/tags/Clojure/">Clojure</a></div><div class="post-nav"><a class="pre" href="/blog/2017/04/02/clojure-web-dev-ring-usage/">Clojure Web 开发-- Ring 使用指南</a><a class="next" href="/blog/2017/03/05/method-vs-proc-in-ruby/">辨析 Ruby 中的 Method 与 Proc</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2017/03/22/ace-technical-interview/';
-    this.page.identifier = 'blog/2017/03/22/ace-technical-interview/';
-    this.page.title = '“玩转” 技术面试——链表的函数表示法';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+<h2 id="其他实现">其他实现</h2>
+<h3 id="python">Python</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">from __future__ import print_function
+
+
+def cons(h, t):
+    return lambda x: h if x else t
+
+
+def printer(l):
+    if l is None:
+        print(&#34;nil&#34;)
+    else:
+        while l:
+            e = l(True)
+            print(e, end=&#39; &#39;)
+            l = l(False)
+        else:
+            print(&#34;&#34;)
+
+
+def reverse(l):
+    reversed_l = None
+    while l:
+        e = l(True)
+        reversed_l = cons(e, reversed_l)
+        l = l(False)
+
+    return reversed_l
+
+
+l = cons(3, cons(2, cons(1, None)))
+
+printer(l)
+# 3 2 1
+
+printer((reverse(l)))
+# 1 2 3
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="ruby">Ruby</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def cons(h, t)
+  lambda { |e| e ? h : t }
+end
+
+def printer(l)
+  while l
+    e = l.call true
+    print e, &#39; &#39;
+    l = l.call false
+  end
+  puts &#39;&#39;
+end
+
+def reverse(l)
+  reversed_l = nil
+  while l
+    e = l.call true
+    reversed_l = cons e, reversed_l
+    l = l.call false
+  end
+  return reversed_l
+end
+
+l = cons(3, cons(2, cons(1, nil)))
+printer l
+# 3 2 1
+printer reverse l
+# 1 2 3
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/clojure/">Clojure</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2017/04/02/clojure-web-dev-ring-usage/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default"></span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2017/03/05/method-vs-proc-in-ruby/">
+            <span class="next-text nav-default">辨析 Ruby 中的 Method 与 Proc</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

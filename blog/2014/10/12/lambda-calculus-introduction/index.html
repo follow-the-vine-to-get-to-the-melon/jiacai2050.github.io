@@ -1,82 +1,508 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Do have faith in what you are doing."><title>编程语言的基石——Lambda calculus | Keep Coding</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create','UA-50745138-1','auto');ga('send','pageview');
-</script><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = 'https://hm.baidu.com/hm.js?' + '3ffc15f400ce3f8b1db5afc4f29b6ce9';
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-  })();</script></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">编程语言的基石——Lambda calculus</h1><a id="logo" href="/.">Keep Coding</a><p class="description">Stay hungry, Stay foolish</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blogrolls/"><i class="fa fa-group"> 友情链接</i></a><a href="/podcast/"><i class="fa fa-podcast"> Podcast</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">编程语言的基石——Lambda calculus</h1><div class="post-meta">Oct 12, 2014<span> | </span><span class="category"><a href="/categories/aha-computer/">理解计算机</a></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.5k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-hourglass-half"></i><span class="post-count"> 13</span><span class="post-meta-item-text"> 分钟</span></span></span></div><a class="disqus-comment-count" data-disqus-identifier="blog/2014/10/12/lambda-calculus-introduction/" href="/blog/2014/10/12/lambda-calculus-introduction/#disqus_thread"></a><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#λ演算的语法与求值"><span class="toc-number">1.</span> <span class="toc-text">λ演算的语法与求值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#语法-syntax"><span class="toc-number">1.1.</span> <span class="toc-text">语法(syntax)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#λ表达式例子"><span class="toc-number">1.1.1.</span> <span class="toc-text">λ表达式例子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Currying带有多个参数的函数"><span class="toc-number">1.1.2.</span> <span class="toc-text">Currying带有多个参数的函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#求值-evaluation"><span class="toc-number">1.2.</span> <span class="toc-text">求值(evaluation)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Alpha-equivalence"><span class="toc-number">1.2.1.</span> <span class="toc-text">Alpha equivalence</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Beta-reduction"><span class="toc-number">1.2.2.</span> <span class="toc-text">Beta reduction</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#求值顺序"><span class="toc-number">1.2.3.</span> <span class="toc-text">求值顺序</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#λ演算与编程语言的关系"><span class="toc-number">2.</span> <span class="toc-text">λ演算与编程语言的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编码Boolean"><span class="toc-number">2.1.</span> <span class="toc-text">编码Boolean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码pair"><span class="toc-number">2.2.</span> <span class="toc-text">编码pair</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码number"><span class="toc-number">2.3.</span> <span class="toc-text">编码number</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#λ-演算与图灵机"><span class="toc-number">3.</span> <span class="toc-text">λ-演算与图灵机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="post-content"><p>Lambda calculus我们一般称为<a href="http://en.wikipedia.org/wiki/Lambda_calculus" target="_blank" rel="noopener">λ演算</a>，最早是由<a href="http://en.wikipedia.org/wiki/Alonzo_Church" target="_blank" rel="noopener">邱奇（Alonzo Church，图灵的博导）</a>在20世纪30年代引入，当时的背景是解决<a href="http://en.wikipedia.org/wiki/Computable_function" target="_blank" rel="noopener">函数可计算的本质</a>性问题，初期λ演算成功的解决了在可计算理论中的<a href="http://en.wikipedia.org/wiki/Entscheidungsproblem" target="_blank" rel="noopener">判定性问题</a>，后来根据<a href="http://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis" target="_blank" rel="noopener">Church–Turing thesis</a>，证明了λ演算与图灵机是等价的。</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>编程语言的基石——Lambda calculus - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="Lambda calculus我们一般称为λ演算，最早是由邱奇（Alonzo Church，图灵的博导）在20世纪30年代引入，当时的背景是解决函数可计算" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="编程语言的基石——Lambda calculus" />
+<meta property="og:description" content="Lambda calculus我们一般称为λ演算，最早是由邱奇（Alonzo Church，图灵的博导）在20世纪30年代引入，当时的背景是解决函数可计算" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/" />
+<meta property="article:published_time" content="2014-10-12T10:16:42+08:00" />
+<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="name" content="编程语言的基石——Lambda calculus">
+<meta itemprop="description" content="Lambda calculus我们一般称为λ演算，最早是由邱奇（Alonzo Church，图灵的博导）在20世纪30年代引入，当时的背景是解决函数可计算">
+<meta itemprop="datePublished" content="2014-10-12T10:16:42+08:00" />
+<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="wordCount" content="4598">
+
+
+
+<meta itemprop="keywords" content="Lambda,Lisp," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="编程语言的基石——Lambda calculus"/>
+<meta name="twitter:description" content="Lambda calculus我们一般称为λ演算，最早是由邱奇（Alonzo Church，图灵的博导）在20世纪30年代引入，当时的背景是解决函数可计算"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">编程语言的基石——Lambda calculus</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-10-12 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA/"> 理解计算机 </a>
+            </div>
+          <span class="more-meta"> 约 4598 字 </span>
+          <span class="more-meta"> 预计阅读 10 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#λ演算的语法与求值">λ演算的语法与求值</a>
+          <ul>
+            <li><a href="#语法syntax">语法(syntax)</a></li>
+            <li><a href="#求值evaluation">求值(evaluation)</a></li>
+          </ul>
+        </li>
+        <li><a href="#λ演算与编程语言的关系">λ演算与编程语言的关系</a>
+          <ul>
+            <li><a href="#编码boolean">编码Boolean</a></li>
+            <li><a href="#编码pair">编码pair</a></li>
+            <li><a href="#编码number">编码number</a></li>
+          </ul>
+        </li>
+        <li><a href="#λ-演算与图灵机">λ-演算与图灵机</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Lambda calculus我们一般称为<a href="http://en.wikipedia.org/wiki/Lambda_calculus">λ演算</a>，最早是由<a href="http://en.wikipedia.org/wiki/Alonzo_Church">邱奇（Alonzo Church，图灵的博导）</a>在20世纪30年代引入，当时的背景是解决<a href="http://en.wikipedia.org/wiki/Computable_function">函数可计算的本质</a>性问题，初期λ演算成功的解决了在可计算理论中的<a href="http://en.wikipedia.org/wiki/Entscheidungsproblem">判定性问题</a>，后来根据<a href="http://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis">Church–Turing thesis</a>，证明了λ演算与图灵机是等价的。</p>
 <p>好了，经过上边简单的介绍，大家应该对λ演算有了初步印象。下面我将重点介绍λ演算的具体内容，并且阐述λ演算是如何奠基了我们现在常用的编程语言（如：Java、python、Lisp等）。</p>
-<h2 id="λ演算的语法与求值"><a href="#λ演算的语法与求值" class="headerlink" title="λ演算的语法与求值"></a>λ演算的语法与求值</h2><h3 id="语法-syntax"><a href="#语法-syntax" class="headerlink" title="语法(syntax)"></a>语法(syntax)</h3><p>因为λ演算研究的是函数的本质性问题，所以形式极其简单：<br><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E = x           variables</span><br><span class="line">  | λx. E       <span class="function"><span class="keyword">function</span> <span class="title">creation</span><span class="params">(abstraction)</span></span></span><br><span class="line">  | E1 E2       <span class="function"><span class="keyword">function</span> <span class="title">application</span></span></span><br></pre></td></tr></table></figure></p>
-<p>上面的E称为λ-表达式(expressions)或λ-terms，它的值有三种形式：</p>
+<h2 id="λ演算的语法与求值">λ演算的语法与求值</h2>
+<h3 id="语法syntax">语法(syntax)</h3>
+<p>因为λ演算研究的是函数的本质性问题，所以形式极其简单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    E = x           variables
+      | λx. E       function creation(abstraction)
+      | E1 E2       function application           
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的E称为λ-表达式(expressions)或λ-terms，它的值有三种形式：</p>
 <ol>
 <li>变量(variables)。</li>
 <li>函数声明或抽象(function creation/abstraction)。需要注意是的，函数中<strong>有且仅有</strong>一个参数。在λx. E中，x是参数，E是函数体</li>
 <li>函数应用(function application)。也就是我们理解的函数调用，但官方术语就叫函数应用，本文后面也会采用“应用”的叫法。</li>
 </ol>
-<h4 id="λ表达式例子"><a href="#λ表达式例子" class="headerlink" title="λ表达式例子"></a>λ表达式例子</h4><p>上面就是λ演算的语法了，很是简单吧。下面看几个例子：</p>
+<h4 id="λ表达式例子">λ表达式例子</h4>
+<p>上面就是λ演算的语法了，很是简单吧。下面看几个例子：</p>
 <ol>
-<li>恒等函数<br><code>λx.x</code></li>
-<li>一个返回恒等函数的函数<br><code>λy. (λx.x)</code><br>可以看到，这里的y参数直接被忽略了</li>
+<li>恒等函数
+<code>λx.x</code></li>
+<li>一个返回恒等函数的函数
+<code>λy. (λx.x)</code>
+可以看到，这里的y参数直接被忽略了</li>
 </ol>
 <p>在使用λ演算时，有一些惯例需要说一下：</p>
 <ol>
-<li><p>函数声明时，函数体尽可能的向右扩展。什么意思呢，举个例子大家就明白了</p>
-<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">λ<span class="keyword">x</span>.<span class="keyword">x</span> λy.<span class="keyword">x</span> y z 应该理解为 λ <span class="keyword">x</span>. (<span class="keyword">x</span> (λy. ((<span class="keyword">x</span> y) z)))</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数应用时，遵循左结合。在举个例子：<br>x y z 应该解释为 (x y) z</p>
-</li>
+<li>函数声明时，函数体尽可能的向右扩展。什么意思呢，举个例子大家就明白了</li>
 </ol>
-<h4 id="Currying带有多个参数的函数"><a href="#Currying带有多个参数的函数" class="headerlink" title="Currying带有多个参数的函数"></a>Currying带有多个参数的函数</h4><p>从上面我们知道，λ演算中函数只有一个参数，那两个参数的函数的是不是就没法表示了呢，那λ演算的功能也太弱了吧，这就是λ的神奇之处，函数在本质上只需要一个参数即可。如果想要声明多个参数的函数，通过currying技术即可。下面来说说currying。<br><code>λx y. (+ x y)----&gt;λx. (λ y. + x y)</code><br>上面这个转化就叫currying，它展示了，我们如何实现加法（这里假设+这个符号已经具有相加的功能，后面我们会讲到如何用λ表达式来实现这个+的功能）。<br>其实就是我们现在意义上的闭包——你调用一个函数，这个函数返回另一个函数，返回的函数中存储保留了调用函数的变量。currying是闭包的鼻祖。<br>如果用Python来表示就是这样的东西：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">lambda</span> y: x+y</span><br><span class="line"></span><br><span class="line">add(<span class="number">4</span>)(<span class="number">3</span>) //<span class="keyword">return</span> <span class="number">7</span></span><br></pre></td></tr></table></figure></p>
-<p>如果用函数式语言clojure来表示就是：</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> add [x]</span><br><span class="line">  (<span class="name"><span class="builtin-name">fn</span></span> [y] (<span class="name"><span class="builtin-name">+</span></span> x y)))</span><br><span class="line"></span><br><span class="line">((<span class="name">add</span> <span class="number">4</span>) <span class="number">3</span>) <span class="comment">;return 7</span></span><br></pre></td></tr></table></figure>
-<h3 id="求值-evaluation"><a href="#求值-evaluation" class="headerlink" title="求值(evaluation)"></a>求值(evaluation)</h3><p>在λ演算中，有两条求值规则：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">λx.x λy.x y z 应该理解为 λ x. (x (λy. ((x y) z)))
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>函数应用时，遵循左结合。在举个例子：
+x y z 应该解释为 (x y) z</li>
+</ol>
+<h4 id="currying带有多个参数的函数">Currying带有多个参数的函数</h4>
+<p>从上面我们知道，λ演算中函数只有一个参数，那两个参数的函数的是不是就没法表示了呢，那λ演算的功能也太弱了吧，这就是λ的神奇之处，函数在本质上只需要一个参数即可。如果想要声明多个参数的函数，通过currying技术即可。下面来说说currying。
+<code>λx y. (+ x y)----&gt;λx. (λ y. + x y)</code>
+上面这个转化就叫currying，它展示了，我们如何实现加法（这里假设+这个符号已经具有相加的功能，后面我们会讲到如何用λ表达式来实现这个+的功能）。
+其实就是我们现在意义上的闭包——你调用一个函数，这个函数返回另一个函数，返回的函数中存储保留了调用函数的变量。currying是闭包的鼻祖。
+如果用Python来表示就是这样的东西：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def add(x):
+    return lambda y: x+y
+
+add(4)(3) //return 7   
+</code></pre></td></tr></table>
+</div>
+</div><p>如果用函数式语言clojure来表示就是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(defn add [x]
+  (fn [y] (+ x y)))
+
+((add 4) 3) ;return 7
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="求值evaluation">求值(evaluation)</h3>
+<p>在λ演算中，有两条求值规则：</p>
 <ol>
 <li>Alpha equivalence( or conversion )</li>
 <li>Beta reduction</li>
 </ol>
-<h4 id="Alpha-equivalence"><a href="#Alpha-equivalence" class="headerlink" title="Alpha equivalence"></a>Alpha equivalence</h4><p>这个比较简单也好理解，就是说λx.x与λy.y是等价的，并不因为换了变量名而改变函数的意义。<br>简单并不说这个规则不重要，在一些变量覆盖的场合很重要，如下这个例子：<br><code>λx. x (λx. x)</code>如果你这么写的话，第二个函数定义中的x与第一个函数定义中的x重复了，也就是在第二个函数里把第一个的x给覆盖了。<br>如果改为<code>λx. x (λy. y)</code>就不会有歧义了。</p>
-<h4 id="Beta-reduction"><a href="#Beta-reduction" class="headerlink" title="Beta reduction"></a>Beta reduction</h4><p>这个规则是λ演算中函数应用的重点了。一句话来解释就是，把参数应用到函数体中。举一个例子：<br>有这么一个函数应用<code>(λx.x)(λy.y)</code>，在这里把<code>(λy.y)</code>带入前面函数的x中，就能得到最终的结果<code>(λy.y)</code>，这里传入一个函数，然后又返回一个函数，这就是最终的结果。</p>
-<h4 id="求值顺序"><a href="#求值顺序" class="headerlink" title="求值顺序"></a>求值顺序</h4><p>考虑下面这个函数应用<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(λ y. (λ x. x) y) E</span><br></pre></td></tr></table></figure></p>
-<p>有两种计算方法，如下图<br><img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2fQf6aFXXXXa2XXXXXXXXXXXX_!!581166664.png" alt=" evaluation-order"><br>可以先计算内层的函数调用再计算外层的函数调用，反之也可。<br>根据<a href="http://en.wikipedia.org/wiki/Church%E2%80%93Rosser_theorem" target="_blank" rel="noopener">Church–Rosser定理</a>，这两种方法是等价的，最终会得到相等的结果，如上图最后都得到了E。<br>但如果我们要自己实现一种语言，就有可能必选二选其一，于是有了下面两种方式：</p>
+<h4 id="alpha-equivalence">Alpha equivalence</h4>
+<p>这个比较简单也好理解，就是说λx.x与λy.y是等价的，并不因为换了变量名而改变函数的意义。
+简单并不说这个规则不重要，在一些变量覆盖的场合很重要，如下这个例子：
+<code>λx. x (λx. x)</code>如果你这么写的话，第二个函数定义中的x与第一个函数定义中的x重复了，也就是在第二个函数里把第一个的x给覆盖了。
+如果改为<code>λx. x (λy. y)</code>就不会有歧义了。</p>
+<h4 id="beta-reduction">Beta reduction</h4>
+<p>这个规则是λ演算中函数应用的重点了。一句话来解释就是，把参数应用到函数体中。举一个例子：
+有这么一个函数应用<code>(λx.x)(λy.y)</code>，在这里把<code>(λy.y)</code>带入前面函数的x中，就能得到最终的结果<code>(λy.y)</code>，这里传入一个函数，然后又返回一个函数，这就是最终的结果。</p>
+<h4 id="求值顺序">求值顺序</h4>
+<p>考虑下面这个函数应用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    (λ y. (λ x. x) y) E
+</code></pre></td></tr></table>
+</div>
+</div><p>有两种计算方法，如下图
+<img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2fQf6aFXXXXa2XXXXXXXXXXXX_!!581166664.png" alt=" evaluation-order"/>
+可以先计算内层的函数调用再计算外层的函数调用，反之也可。
+根据<a href="http://en.wikipedia.org/wiki/Church%E2%80%93Rosser_theorem">Church–Rosser定理</a>，这两种方法是等价的，最终会得到相等的结果，如上图最后都得到了E。
+但如果我们要自己实现一种语言，就有可能必选二选其一，于是有了下面两种方式：</p>
 <ol>
-<li><p>Call by Value(Eager Evaluation及早求值)<br>也就是上图中的inner，这种方式在函数应用前，就计算函数参数的值。如：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(λy. (λx. x)</span> y) <span class="comment">((λu. u)</span> <span class="comment">(λv. v)</span>) ---&gt;</span><br><span class="line"><span class="comment">(λy. (λx. x)</span> y) <span class="comment">(λv. v)</span>  ---&gt;</span><br><span class="line"><span class="comment">(λx. x)</span> <span class="comment">(λv. v)</span>  ---&gt;</span><br><span class="line">λv. v</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Call by Name (Lazy Evaluation惰性求值)<br>也就是上图中的outer，这种方式在函数应用前，不计算函数参数的值，直到需要时才求值。如：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(λy. (λx. x)</span> y) <span class="comment">((λu. u)</span> <span class="comment">(λv. v)</span>) ---&gt;</span><br><span class="line"><span class="comment">(λx. x)</span> <span class="comment">((λu. u)</span> <span class="comment">(λv. v)</span>) ---&gt;</span><br><span class="line"><span class="comment">(λu. u)</span> <span class="comment">(λv. v)</span> ---&gt;</span><br><span class="line">λv. v</span><br></pre></td></tr></table></figure>
-</li>
+<li>Call by Value(Eager Evaluation及早求值)
+也就是上图中的inner，这种方式在函数应用前，就计算函数参数的值。如：</li>
 </ol>
-<p>值得一提的是，Call by Name这种方式在我们目前的语言中，只有函数式语言支持。</p>
-<h2 id="λ演算与编程语言的关系"><a href="#λ演算与编程语言的关系" class="headerlink" title="λ演算与编程语言的关系"></a>λ演算与编程语言的关系</h2><p>在λ演算中只有函数（变量依附于函数而有意义），如果要用纯λ演算来实现一门编程语言的话，我们还需要一些数据类型，比如boolean、number、list等，那怎么办呢？<br>λ的强大又再一次展现出来，所有的数据类型都能用函数模拟出来，秘诀就是<br><code>不要去关心数据的值是什么，重点是我们能对这个值做什么操作</code>，然后我们用合法的λ表达式把这些操作表示出来即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    (λy. (λx. x) y) ((λu. u) (λv. v)) ---&gt;
+    (λy. (λx. x) y) (λv. v)  ---&gt;
+    (λx. x) (λv. v)  ---&gt;
+    λv. v
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>Call by Name (Lazy Evaluation惰性求值)
+也就是上图中的outer，这种方式在函数应用前，不计算函数参数的值，直到需要时才求值。如：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    (λy. (λx. x) y) ((λu. u) (λv. v)) ---&gt;
+    (λx. x) ((λu. u) (λv. v)) ---&gt;
+    (λu. u) (λv. v) ---&gt;
+    λv. v
+</code></pre></td></tr></table>
+</div>
+</div><p>值得一提的是，Call by Name这种方式在我们目前的语言中，只有函数式语言支持。</p>
+<h2 id="λ演算与编程语言的关系">λ演算与编程语言的关系</h2>
+<p>在λ演算中只有函数（变量依附于函数而有意义），如果要用纯λ演算来实现一门编程语言的话，我们还需要一些数据类型，比如boolean、number、list等，那怎么办呢？
+λ的强大又再一次展现出来，所有的数据类型都能用函数模拟出来，秘诀就是
+<code>不要去关心数据的值是什么，重点是我们能对这个值做什么操作</code>，然后我们用合法的λ表达式把这些操作表示出来即可。</p>
 <p>听上去很些云里雾里，但看了我下面的讲解以后，你会发现，编程语言原来还可以这么玩，希望我能把这部分讲清楚些，个人感觉这些东西太funny了 :-)</p>
 <p>好了，我们先从最简单——boolean的开始。</p>
-<h3 id="编码Boolean"><a href="#编码Boolean" class="headerlink" title="编码Boolean"></a>编码Boolean</h3><p>Ask：我们能对boolean值做什么？<br>Answer：我们能够进行条件判断，二选其一。</p>
-<p>好，知道了能对boolean的操作，下面就用λ表达式来定义它：<br><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">true</span> = λ<span class="keyword">x</span>. λy. <span class="keyword">x</span></span><br><span class="line"><span class="keyword">false</span> = λ<span class="keyword">x</span>. λy. y</span><br><span class="line">if E<span class="number">1</span> then E<span class="number">2</span> else E<span class="number">3</span> = E<span class="number">1</span> E<span class="number">2</span> E<span class="number">3</span></span><br></pre></td></tr></table></figure></p>
-<p>来简单解释一下，boolean就是这么一个函数，它有两个参数（通过currying实现），返回其中一个。下面看个例子：<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="literal">true</span> <span class="keyword">then</span> u <span class="keyword">else</span> v 可以写成   </span><br><span class="line">(λ<span class="function"><span class="title">x</span>. λy. x) u v ---&gt;</span> (λ<span class="function"><span class="title">y</span>. u) v ---&gt;</span> u</span><br></pre></td></tr></table></figure></p>
-<p>哈哈，很神奇吧，更精彩的还在后头呢，继续</p>
-<h3 id="编码pair"><a href="#编码pair" class="headerlink" title="编码pair"></a>编码pair</h3><p>这里简单解释下pair，其实就是序列对，如(1 2)、(hello world)，这些就是pair，只有两个元素，但不要小看了pair，我们用的list就是通过pair连接起来形成的。</p>
-<p>Ask：我们能对pair做什么？<br>Answer：我们能够选择pair中的任意一个元素</p>
-<p>好，知道了能对pair的操作，下面就用λ表达式来定义它：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkpair x y = λ<span class="selector-tag">b</span>. (<span class="selector-tag">b</span> x y)</span><br><span class="line">fst <span class="selector-tag">p</span>      = <span class="selector-tag">p</span> true</span><br><span class="line">snd <span class="selector-tag">p</span>      = <span class="selector-tag">p</span> false</span><br></pre></td></tr></table></figure></p>
-<p>这里用到了true与false的编码。解释一下：<br>pair就是这么一个函数，参数是一个boolean值，根据这个参数确定返回值。还是看例子：<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">fst</span> (mkpair x y)---&gt;</span>(<span class="function"><span class="title">mkpair</span> x y) <span class="literal">true</span>---&gt;</span><span class="function"><span class="title">true</span> x y---&gt;</span>x</span><br></pre></td></tr></table></figure></p>
-<p>这样我们就能取到pair的第一个元素了。很好玩吧，下面的更有趣，继续</p>
-<h3 id="编码number"><a href="#编码number" class="headerlink" title="编码number"></a>编码number</h3><p>这里讲的number是指的自然数。</p>
-<p>Ask：我们能对number做什么？<br>Answer：我们能够依次遍历这些数字</p>
-<p>好，知道了能对number的操作，下面就用λ表达式来定义它：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> = λf. λs. s</span><br><span class="line"><span class="number">1</span> = λf. λs. f s</span><br><span class="line"><span class="number">2</span> = λf. λs. f (f s)</span><br><span class="line">......</span><br></pre></td></tr></table></figure></p>
-<p>解释一下，利用currying，我们知道上面的定义其实相当于一个具有两个参数的函数：一个函数f，另一个是起始值s，然后不断应用f实现遍历数字的操作。先不要管为什么这么定义，看了下面我们如何定义加法乘法的例子你应该就会豁然开朗了：<br>首先我们需要定义一个后继函数(The successor function)<br><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">succ <span class="built_in">n</span> = λf. λs. f (<span class="built_in">n</span> f s)</span><br></pre></td></tr></table></figure></p>
-<p>然后，就可以定义加法与乘法了<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add <span class="symbol">n1</span> <span class="symbol">n2</span> = <span class="symbol">n1</span> succ <span class="symbol">n2</span></span><br><span class="line">mult <span class="symbol">n1</span> <span class="symbol">n2</span> = <span class="symbol">n1</span> <span class="comment">(add n2)</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
-<p>只看定义要想弄懂应该还是有些困难，下面看个具体的例子：<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">add <span class="number">0</span> = <span class="comment">(λn1. λn2. n1 succ n2)</span> <span class="number">0</span>  <span class="comment">// 这里直接根据上面 add 定义进行展开</span></span><br><span class="line"> </span><br><span class="line">-------将 <span class="number">0</span> 带入 <span class="symbol">n1</span>，可得--------&gt;</span><br><span class="line">λ<span class="symbol">n2</span>. <span class="number">0</span> succ <span class="symbol">n2</span> = λ<span class="symbol">n2</span>. <span class="comment">(λf. λs. s)</span> succ <span class="symbol">n2</span> </span><br><span class="line"> </span><br><span class="line">-------将 succ 带入 f，<span class="symbol">n2</span> 带入 s，可得--&gt;</span><br><span class="line">λ<span class="symbol">n2</span>. <span class="symbol">n2</span> = λx. x</span><br></pre></td></tr></table></figure></p>
-<p>我第一次看这个例子有个疑问，add不是两个参数吗，你怎么就加一个0呢？其实还是currying没理解好，两个参数的函数内部不也是用一个参数的函数来表示的嘛，如果只传递一个参数，那么我们就知道还会返回一个函数，本例中就是<code>λx. x</code>，这是恒等函数，也就是说加 0 ,相当于什么也没加，还是本身。</p>
-<p>哈哈，看来也不过如此嘛，如果你能看到这里，说明你已经对lambda掌握的差不多了。下面再来看个“难点”的例子——<code>1+1</code>：<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">add</span> 1 1 ---&gt;</span></span><br><span class="line"><span class="number">1</span> <span class="function"><span class="title">succ</span> 1 ---&gt;</span></span><br><span class="line"><span class="function"><span class="title">succ</span> 1 ---&gt;</span></span><br><span class="line">λ<span class="function"><span class="title">f</span>. λs. f (f s) ---&gt;</span> <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
-<p>最后一个例子，<code>2*2</code>：<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">mult</span> 2 2 ---&gt;</span></span><br><span class="line"><span class="number">2</span> (<span class="function"><span class="title">add</span> 2) 0 ---&gt;</span></span><br><span class="line">(<span class="function"><span class="title">add</span> 2) ((add 2) 0) ---&gt;</span></span><br><span class="line"><span class="number">2</span> <span class="function"><span class="title">succ</span> (add 2 0) ---&gt;</span></span><br><span class="line"><span class="number">2</span> <span class="function"><span class="title">succ</span> (2 succ 0) ---&gt;</span></span><br><span class="line"><span class="function"><span class="title">succ</span> (succ (succ (succ 0))) ---&gt;</span></span><br><span class="line"><span class="function"><span class="title">succ</span> (succ (succ (λf. λs. f (0 f s)))) ---&gt;</span></span><br><span class="line"><span class="function"><span class="title">succ</span> (succ (succ (λf. λs. f s))) ---&gt;</span></span><br><span class="line">succ (succ (λg. λy. g ((λf. λs. f s) g y)))</span><br><span class="line"><span class="function"><span class="title">succ</span> (succ (λg. λy. g (g y))) ---&gt;</span>......---&gt; λg. λy. g (g (g (g y))) = <span class="number">4</span></span><br></pre></td></tr></table></figure></p>
-<p>不要一看到这么多步骤就吓跑了，原则很简单，就是不断进行函数应用，需要注意的就是这里的2、0不再是单纯的数字了，它是从具有两个参数的函数，如果你应用时只传入一个参数，说明它还会返回一个函数。</p>
+<h3 id="编码boolean">编码Boolean</h3>
+<p>Ask：我们能对boolean值做什么？
+Answer：我们能够进行条件判断，二选其一。</p>
+<p>好，知道了能对boolean的操作，下面就用λ表达式来定义它：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    true = λx. λy. x
+    false = λx. λy. y
+    if E1 then E2 else E3 = E1 E2 E3
+</code></pre></td></tr></table>
+</div>
+</div><p>来简单解释一下，boolean就是这么一个函数，它有两个参数（通过currying实现），返回其中一个。下面看个例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    if true then u else v 可以写成   
+    (λx. λy. x) u v ---&gt; (λy. u) v ---&gt; u
+</code></pre></td></tr></table>
+</div>
+</div><p>哈哈，很神奇吧，更精彩的还在后头呢，继续</p>
+<h3 id="编码pair">编码pair</h3>
+<p>这里简单解释下pair，其实就是序列对，如(1 2)、(hello world)，这些就是pair，只有两个元素，但不要小看了pair，我们用的list就是通过pair连接起来形成的。</p>
+<p>Ask：我们能对pair做什么？
+Answer：我们能够选择pair中的任意一个元素</p>
+<p>好，知道了能对pair的操作，下面就用λ表达式来定义它：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    mkpair x y = λb. (b x y)
+    fst p      = p true
+    snd p      = p false
+</code></pre></td></tr></table>
+</div>
+</div><p>这里用到了true与false的编码。解释一下：
+pair就是这么一个函数，参数是一个boolean值，根据这个参数确定返回值。还是看例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    fst (mkpair x y)---&gt;(mkpair x y) true---&gt;true x y---&gt;x   
+</code></pre></td></tr></table>
+</div>
+</div><p>这样我们就能取到pair的第一个元素了。很好玩吧，下面的更有趣，继续</p>
+<h3 id="编码number">编码number</h3>
+<p>这里讲的number是指的自然数。</p>
+<p>Ask：我们能对number做什么？
+Answer：我们能够依次遍历这些数字</p>
+<p>好，知道了能对number的操作，下面就用λ表达式来定义它：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    0 = λf. λs. s
+    1 = λf. λs. f s
+    2 = λf. λs. f (f s)
+    ......
+</code></pre></td></tr></table>
+</div>
+</div><p>解释一下，利用currying，我们知道上面的定义其实相当于一个具有两个参数的函数：一个函数f，另一个是起始值s，然后不断应用f实现遍历数字的操作。先不要管为什么这么定义，看了下面我们如何定义加法乘法的例子你应该就会豁然开朗了：
+首先我们需要定义一个后继函数(The successor function)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    succ n = λf. λs. f (n f s)
+</code></pre></td></tr></table>
+</div>
+</div><p>然后，就可以定义加法与乘法了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    add n1 n2 = n1 succ n2
+    mult n1 n2 = n1 (add n2) 0
+</code></pre></td></tr></table>
+</div>
+</div><p>只看定义要想弄懂应该还是有些困难，下面看个具体的例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">add 0 = (λn1. λn2. n1 succ n2) 0  // 这里直接根据上面 add 定义进行展开
+ 
+-------将 0 带入 n1，可得--------&gt;
+λn2. 0 succ n2 = λn2. (λf. λs. s) succ n2 
+ 
+-------将 succ 带入 f，n2 带入 s，可得--&gt;
+λn2. n2 = λx. x
+</code></pre></td></tr></table>
+</div>
+</div><p>我第一次看这个例子有个疑问，add不是两个参数吗，你怎么就加一个0呢？其实还是currying没理解好，两个参数的函数内部不也是用一个参数的函数来表示的嘛，如果只传递一个参数，那么我们就知道还会返回一个函数，本例中就是<code>λx. x</code>，这是恒等函数，也就是说加 0 ,相当于什么也没加，还是本身。</p>
+<p>哈哈，看来也不过如此嘛，如果你能看到这里，说明你已经对lambda掌握的差不多了。下面再来看个“难点”的例子——<code>1+1</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    add 1 1 ---&gt;
+    1 succ 1 ---&gt;
+    succ 1 ---&gt;
+    λf. λs. f (f s) ---&gt; 2
+</code></pre></td></tr></table>
+</div>
+</div><p>最后一个例子，<code>2*2</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    mult 2 2 ---&gt;
+    2 (add 2) 0 ---&gt;
+    (add 2) ((add 2) 0) ---&gt;
+    2 succ (add 2 0) ---&gt;
+    2 succ (2 succ 0) ---&gt;
+    succ (succ (succ (succ 0))) ---&gt;
+    succ (succ (succ (λf. λs. f (0 f s)))) ---&gt;
+    succ (succ (succ (λf. λs. f s))) ---&gt;
+    succ (succ (λg. λy. g ((λf. λs. f s) g y)))
+    succ (succ (λg. λy. g (g y))) ---&gt;......---&gt; λg. λy. g (g (g (g y))) = 4
+</code></pre></td></tr></table>
+</div>
+</div><p>不要一看到这么多步骤就吓跑了，原则很简单，就是不断进行函数应用，需要注意的就是这里的2、0不再是单纯的数字了，它是从具有两个参数的函数，如果你应用时只传入一个参数，说明它还会返回一个函数。</p>
 <p>不管怎样，如果你已经看到了这里，我希望你能把上面这个乘法的例子看懂，就是不断进行函数应用而已，没什么东西，我觉得难点在于思维的转化，因为以前都很理所当然认为2×2=4了，而不知道这么简单的计算后面的本质性东西，通过这个例子，希望大家能明确一点：<code>值是什么不重要，重要的是我们能对这个值进行的操作</code>。</p>
-<p>最后再来一个收尾菜：<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">如果想要判断一个数字是否为0，可以这么定义</span>                </span><br><span class="line"><span class="string">iszero</span> <span class="string">n</span> <span class="string">=</span> <span class="string">n</span> <span class="string">(λb.</span> <span class="literal">false</span><span class="string">)</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="λ-演算与图灵机"><a href="#λ-演算与图灵机" class="headerlink" title="λ-演算与图灵机"></a>λ-演算与图灵机</h2><p>本文一开始就说明了，λ-演算与图灵机是等价，这里简单说下我对图灵机的理解：</p>
+<p>最后再来一个收尾菜：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    如果想要判断一个数字是否为0，可以这么定义                
+    iszero n = n (λb. false) true        
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="λ-演算与图灵机">λ-演算与图灵机</h2>
+<p>本文一开始就说明了，λ-演算与图灵机是等价，这里简单说下我对图灵机的理解：</p>
 <blockquote>
 <p>在一个不限时间、不限资源的前提下，图灵机通过前进、后退、跳转、输出1或0这四个简单的命令，在一条无限长的纸带上执行事先编好的程序。</p>
 </blockquote>
@@ -93,60 +519,155 @@ ga('create','UA-50745138-1','auto');ga('send','pageview');
 <li>能够进行函数应用（也就是函数调用）</li>
 </ol>
 <p>鉴别一个语言是不是函数式的标准是：这个语言能否在运行时创建函数，如果能，就是函数式语言。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过上面长篇大论（希望你能抽时间看完），我们用一些无意义符号表达了我们已经熟知的一些概念，这就是λ演算的精髓之处，通过一套形式化的规则来描述这些东西，要知道，这里面的很多东西我们现如今想当然的接受了，但如何让笨重的计算机来理解这个世界呢，这就需要这些形式化的规则来指导了。</p>
-<p>我这里介绍的lambda calculus并不完全，只是其中的一部分，像<a href="http://en.wikipedia.org/wiki/Lambda_calculus#Recursion_and_fixed_points" target="_blank" rel="noopener">递归</a>这个重要的东西就没说，大家凭借兴趣再自己去看吧，我觉得我这篇文章就是个砖头，希望能引出大家的宝玉就好。</p>
-<p>我们现在的编程语言趋向于多范式化，像python、ruby的兴起就说明了这点。<br>因为纯函数式语言不能改变变量状态，这个恐怕在很多场合不适用吧。<br>纯OO也不好，因为我们大多数程序员，都是用OO的语言来写过程式的程序，看看大家有多Helper类，Util类就明白了。</p>
+<h2 id="总结">总结</h2>
+<p>通过上面长篇大论（希望你能抽时间看完），我们用一些无意义符号表达了我们已经熟知的一些概念，这就是λ演算的精髓之处，通过一套形式化的规则来描述这些东西，要知道，这里面的很多东西我们现如今想当然的接受了，但如何让笨重的计算机来理解这个世界呢，这就需要这些形式化的规则来指导了。</p>
+<p>我这里介绍的lambda calculus并不完全，只是其中的一部分，像<a href="http://en.wikipedia.org/wiki/Lambda_calculus#Recursion_and_fixed_points">递归</a>这个重要的东西就没说，大家凭借兴趣再自己去看吧，我觉得我这篇文章就是个砖头，希望能引出大家的宝玉就好。</p>
+<p>我们现在的编程语言趋向于多范式化，像python、ruby的兴起就说明了这点。
+因为纯函数式语言不能改变变量状态，这个恐怕在很多场合不适用吧。
+纯OO也不好，因为我们大多数程序员，都是用OO的语言来写过程式的程序，看看大家有多Helper类，Util类就明白了。</p>
 <p>有了对 lambda 的认识后，就可以尝试下一个主题了——Y 算子，下面给出我觉得讲解的最好的一篇文章：</p>
 <ul>
-<li><a href="http://shellfly.org/blog/2015/01/07/yi-the-y-combinator-slight-return/" target="_blank" rel="noopener">(译) The Y combinator (Slight Return)</a></li>
+<li><a href="http://shellfly.org/blog/2015/01/07/yi-the-y-combinator-slight-return/">(译) The Y combinator (Slight Return)</a></li>
 </ul>
 <p>最后，推荐王垠的一篇文章，以飨读者：</p>
 <ul>
-<li><a href="http://geek.csdn.net/news/detail/3603" target="_blank" rel="noopener">面向对象编程和函数式编程的问题出在哪里？</a></li>
+<li><a href="http://geek.csdn.net/news/detail/3603">面向对象编程和函数式编程的问题出在哪里？</a></li>
 </ul>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a class="article-share-link" data-url="http://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/" data-id="ckhxlinvm001cszlj0w7waw4t" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACs0lEQVR42u3a0W7bQAwEwPz/TzdAXxPLu6ROdYHRU2DA0o0KmOySX1/x9efv9fOTV5+/+vvnt5LPX53htgsPDw9vdPRX1/WtXyGvwdcv6/oF5WfGw8PDO81rj5UfKMckv+35mfHw8PA+gZc32TksKTl4eHh4/y8vaXajR8alJX/deHh4eM/zkh/iWQO9b5GT89yQteDh4eHFvHYA9gl/H5zv4eHh4S2m6m3LuxmqzQZdb56Ch4eHd4CXR7SzmCAJc/NWe7iShYeHh3eMNzvKJnSYxbL13fDw8PAe5+XxRLtq0Dbl7bfw8PDwTvDypaikPGyChv3CAR4eHt4zvHv/z94Wg3bVYFNm8PDw8O7lzQ5xvQh112pCe048PDy8Z3htIzsrGPsWOX+h9b8kHh4e3oi3Gdgnn28WvJLG/U1hwMPDw7uJN1tFzeOMBNw26EX8gYeHh3eAlzfTM9hmXXVWkIYxBB4eHl7Ma1vn/NZtSNFGtMlLxMPDwzvBa2/UAvKB2SYKyUdoeHh4eHte8oD2B3oz2s9D2+gMeHh4eMd4szCiHVO1xaMdhv3yLTw8PLwDvE24kAS1ySHyMtDGvnh4eHgneJs2uo0wNgtVw7YbDw8P7xivLQwn4td22SvKp/Hw8PCO8TZBatIuz15NCx5O8/Dw8PAWvH07m5SZzcitjkLw8PDwDvA2EW2+LpA067PmOyk5eHh4ePfy8gfnR88DjlmpKIJmPDw8vMO8WXAwo87Ws/KnRNkzHh4e3oi3CXw3sW9+xGjQtb/w8PDwSt5+LSAfYl3D8ldZ3AEPDw/vGK8NWGeDsbuoRXHCw8PD+6e8TWubl5x8BeEaiYeHh/dpvHy4lSQDm4WDN0g8PDy8Y7wkjGiR+8FYOzbDw8PDe4bXDsA2CwezgKMtP6v5Hh4eHt4V7xvvUrtgTnVIogAAAABJRU5ErkJggg==">分享</a><div class="tags"><a href="/tags/lambda/">Lambda</a><a href="/tags/lisp/">Lisp</a></div><div class="post-nav"><a class="pre" href="/blog/2014/11/08/secret-of-firefox-prefs/">让firefox与chrome一样快</a><a class="next" href="/blog/2014/09/14/mozilla-history/">Mozilla 前世今生</a></div><div id="disqus_thread"><div class="btn_click_load"><button class="disqus_click_btn">阅读评论（请确保 Disqus 可以正常加载）</button></div><script type="text/javascript">var disqus_config = function () {
-    this.page.url = 'http://liujiacai.net/blog/2014/10/12/lambda-calculus-introduction/';
-    this.page.identifier = 'blog/2014/10/12/lambda-calculus-introduction/';
-    this.page.title = '编程语言的基石——Lambda calculus';
-  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
-url: 'https://disqus.com/next/config.json',
-timeout: 2500,
-type: 'GET',
-success: function(){
-  var d = document;
-  var s = d.createElement('script');
-  s.src = '//jiacai2050.disqus.com/embed.js';
-  s.setAttribute('data-timestamp', + new Date());
-  (d.head || d.body).appendChild(s);
-  $('.disqus_click_btn').css('display', 'none');
-},
-error: function() {
-  $('.disqus_click_btn').css('display', 'block');
-}
-});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
-    (() => { // DON'T EDIT BELOW THIS LINE
-        var d = document;
-        var s = d.createElement('script');
-        s.src = '//jiacai2050.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', + new Date());
-        (d.head || d.body).appendChild(s);
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-04
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/lambda/">Lambda</a>
+          <a href="/tags/lisp/">Lisp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/blog/2014/11/08/secret-of-firefox-prefs/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">让firefox与chrome一样快</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/blog/2014/09/14/mozilla-history/">
+            <span class="next-text nav-default">Mozilla 前世今生</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
-    $('.disqus_click_btn').css('display','none');
-});</script><script type="text/javascript" id="disqus-count-script">$(function() {
-     var xhr = new XMLHttpRequest();
-     xhr.open('GET', '//disqus.com/next/config.json', true);
-     xhr.timeout = 2500;
-     xhr.onreadystatechange = function () {
-       if (xhr.readyState === 4 && xhr.status === 200) {
-         $('.post-meta .post-comments-count').show();
-         var s = document.createElement('script');
-         s.id = 'dsq-count-scr';
-         s.src = 'https://jiacai2050.disqus.com/count.js';
-         s.async = true;
-         (document.head || document.body).appendChild(s);
-       }
-     };
-     xhr.ontimeout = function () { xhr.abort(); };
-     xhr.send(null);
-   });
-</script></div></div></div></div><div class="pure-u-1 pure-u-md-1-4"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://liujiacai.net"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/reproduce/">他山之石</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">大数据</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/search-engine/">搜索引擎</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">热爱生活</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/aha-computer/">理解计算机</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/研习经典/">研习经典</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/langs/">编程语言</a><span class="category-list-count">26</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/GEB/" style="font-size: 15px;">GEB</a> <a href="/tags/java/" style="font-size: 15px;">Java</a> <a href="/tags/lucene/" style="font-size: 15px;">lucene</a> <a href="/tags/mooc/" style="font-size: 15px;">mooc</a> <a href="/tags/algorithm/" style="font-size: 15px;">算法</a> <a href="/tags/hadoop/" style="font-size: 15px;">hadoop</a> <a href="/tags/mozilla/" style="font-size: 15px;">mozilla</a> <a href="/tags/best-practice/" style="font-size: 15px;">最佳实践</a> <a href="/tags/linux/" style="font-size: 15px;">Linux</a> <a href="/tags/lambda/" style="font-size: 15px;">Lambda</a> <a href="/tags/lisp/" style="font-size: 15px;">Lisp</a> <a href="/tags/javascript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/sicp/" style="font-size: 15px;">sicp</a> <a href="/tags/scheme/" style="font-size: 15px;">Scheme</a> <a href="/tags/nodejs/" style="font-size: 15px;">nodejs</a> <a href="/tags/string/" style="font-size: 15px;">string</a> <a href="/tags/python/" style="font-size: 15px;">Python</a> <a href="/tags/ruby/" style="font-size: 15px;">Ruby</a> <a href="/tags/Clojure/" style="font-size: 15px;">Clojure</a> <a href="/tags/ideas/" style="font-size: 15px;">ideas</a> <a href="/tags/gc/" style="font-size: 15px;">GC</a> <a href="/tags/Go/" style="font-size: 15px;">Go</a> <a href="/tags/Emacs/" style="font-size: 15px;">Emacs</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2020/11/25/why-emacs/">Emacs 入门指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/08/08/go-meet-java/">实践总结：在 Java 中调用 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/03/14/go-struct-interface/">Go struct/interface 最佳实践</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2020/02/02/review-2019/">2019 年终总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/10/24/go-modules/">何处安放我们的 Go 代码</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/07/17/hello-golang/">写给新手的 Go 开发指南</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/04/21/experience-in-clojure/">Clojure 开发经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/01/09/java-gc-definitive-guide/">Java 垃圾回收权威指北</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/12/29/how-java-synchronizer-work/">Java 线程同步原理探析</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2018/11/10/damn-single-socket/">形单影只的 Socket</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> 最近评论</i></div><script type="text/javascript" src="//jiacai2050.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">Keep Coding.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>
