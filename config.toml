@@ -248,4 +248,4 @@ baseName = "atom"
   date = [":filename", ":default", ":fileModTime"]
 
 [permalinks]
-  post = "/:year/:month/:day/:slug/"
+  post = "/blog/:year/:month/:day/:slug/"

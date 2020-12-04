@@ -72,6 +72,7 @@
 - [[http://www.tudou.com/programs/view/lCsZxfWXJ0k/][《Revolution OS 操作系统革命》]]，一群改变世界的hacker
 
 * 站点更新日志
+- 2020-12-05，hexo3 --> hugo，主题 [[https://github.com/tufu9441/maupassant-hexo][maupassant]] --> [[https://github.com/olOwOlo/hugo-theme-even][even]]
 - 2017-03-06，hexo2 --> hexo3，主题 jacman --> maupassant
 - 2015-11-30，由多说评论迁移至 [[https://disqus.com/][disqus]]
 - 2014-08-10，使用 CNAME 自定义域名 [[http://liujiacai.net][liujiacai.net]]
