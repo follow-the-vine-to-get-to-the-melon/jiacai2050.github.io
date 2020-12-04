@@ -1,3 +1,4 @@
+---
 title: 让firefox与chrome一样快
 date: 2014-11-08 20:23:53 +0800
 tags: [mozilla, 最佳实践]

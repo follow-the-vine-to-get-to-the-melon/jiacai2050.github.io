@@ -1,3 +1,4 @@
+---
 title: 辨析 Ruby 中的 Method 与 Proc
 date: 2017-03-05 15:26:28
 categories: [编程语言]

@@ -1,3 +1,4 @@
+---
 title: javascript中的数据类型
 date: 2015-02-24 21:09:45
 categories: [编程语言]

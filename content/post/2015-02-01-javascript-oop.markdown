@@ -1,3 +1,4 @@
+---
 title: javascript中的面向对象编程
 date: 2015-02-01 12:53:18
 categories: [编程语言]

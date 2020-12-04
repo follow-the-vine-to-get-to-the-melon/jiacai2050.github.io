@@ -1,3 +1,4 @@
+---
 title: Java WeakHashMap 源码解析
 date: 2015-09-27 14:10:24
 categories: [编程语言]

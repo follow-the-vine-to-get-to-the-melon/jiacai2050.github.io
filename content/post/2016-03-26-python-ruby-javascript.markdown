@@ -1,3 +1,4 @@
+---
 title: python, ruby, javascript 浅析
 date: 2016-03-26 17:03:40
 categories: [编程语言]

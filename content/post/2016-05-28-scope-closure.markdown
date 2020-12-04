@@ -1,3 +1,4 @@
+---
 title: 编程语言中的变量作用域与闭包
 date: 2016-05-28 20:44:34
 tags: [Python, JavaScript]
