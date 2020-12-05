@@ -1,4 +1,4 @@
-#+TITLE: 博客系统迁移 Hexo 到 Hugo
+#+TITLE: 博客系统迁移：Hexo 到 Hugo
 #+DATE: 2020-12-05T13:12:21+08:00
 #+TAGS[]: blog, emacs
 #+CATEGORIES[]: 热爱生活
@@ -7,8 +7,8 @@
 
 * Hexo vs Hugo
 最近两年一直在用 [[https://hexo.io/][hexo]] 来写博客，记得静态托管类网站刚兴起时，hexo 是比较流行的，整个生态也比较完整。这次迁移博客系统时，决定不再用 hexo，原因主要有下面几个：
-1. 作为一个 Node.js 写的系统，安装时需要下载大量的 =node_modules= 。这一点不是很核心，毕竟安装只是一次性工作
-2. 记得当初在 hexo 2 升级到 3 时，遇到过不少坑，对 Node 的版本也有要求，如果部分依赖用了 C 代码（比如 [[https://www.npmjs.com/package/node-sass][node-sass]]），安装起来也比较费劲；现在 hexo 大版本已经到了 [[https://hexo.io/news/2020/09/17/hexo-5-2_wordpress-2-1-2_marked-3-2_stylus-2_less-2/][5.2.0]]，不想再去折腾
+1. 安装烦。作为一个 Node.js 写的系统，安装时需要下载大量的 =node_modules= 。这一点不是很核心，毕竟安装只是一次性工作
+2. 升级难。记得当初在 hexo 2 升级到 3 时，遇到过不少坑，对 Node 的版本也有要求，如果部分依赖用了 C 代码（比如 [[https://www.npmjs.com/package/node-sass][node-sass]]），安装起来也比较费劲；现在 hexo 大版本已经到了 [[https://hexo.io/news/2020/09/17/hexo-5-2_wordpress-2-1-2_marked-3-2_stylus-2_less-2/][5.2.0]]，不想再去折腾
 3. 原生不支持 org-mode，使用了下 [[https://github.com/coldnew/hexo-renderer-org/issues/69][hexo-renderer-org]] 插件，[[https://github.com/coldnew/hexo-renderer-org/issues/69][也没成功]]，而且其作者现在也没精力来维护了
 
 基于以上几点，hexo 于我而言，不再是最佳的选择，当然并不是说它不优秀，Hugo 也很有可能有类似问题。我之所以选择 Hugo 主要有两个原因：
@@ -19,7 +19,7 @@ Hugo 使用方式比较简单，这里不再赘述，新手可参考官方 [[htt
 
 * 迁移过程
 ** 旧博客备份
-虽然旧博客的源文件不会删除，但是旧博客的主题、布局等还有具有怀念意义的，因此采用之前自己写的[[https://github.com/jiacai2050/blog-backup][博客备份工具]]对旧博客备份，然后利用 [[https://github.com/Yanpas/PdfMerger][PdfMerger]] 将所有文章打成一个文件。
+虽然旧博客的源文件不会删除，但是其主题、布局等还是具有怀念意义的，因此采用之前自己写的[[https://github.com/jiacai2050/blog-backup][工具]]对其备份，然后利用 [[https://github.com/Yanpas/PdfMerger][PdfMerger]] 将所有文章打成一个文件。
 
 #+begin_src bash
 blog-backup -w ljc -o /tmp/blog -v
@@ -42,7 +42,7 @@ source/_posts/:year-:month-:day-:title.markdown
 #+end_src
 这样的好处是文件按照时间排列，管理方便。
 
-Hugo 则不同，它默认会用文件中 frontmatter 的 date，而非文件名中的。我已经习惯了 hexo 的组织方式，不想去改变，经过一番探索，最终在 hugo 添加下面的配置来解决：
+Hugo 则不同，它默认会用文件中 frontmatter 的 date，而非文件名中的。我已经习惯了 hexo 的组织方式，不想去改变，经过一番探索，最终在 hugo 添加下面的配置完美解决：
 
 #+begin_src toml
 [frontmatter]
@@ -53,6 +53,7 @@ Hugo 则不同，它默认会用文件中 frontmatter 的 date，而非文件名
 #+end_src
 
 这样 Hugo 就会首先从文件名中解析日期，同时也会解析 slug；失败时再从 frontmatter 中解析，更多用法可参考[[https://gohugo.io/getting-started/configuration/#configure-dates][官方文档 Configure Dates]]。
+
 同时，为了避免 =hugo new post/year-month-day-slug.org= 时标题中带日期，修改[[https://gohugo.io/content-management/archetypes/][默认模板]]如下：
 #+begin_src yaml
 title: {{ replace  .Name "-" " " | replaceRE "^\\d{4} \\d{2} \\d{2} (.*)" "$1" | title }}
@@ -68,9 +69,9 @@ baseName = "atom"
 #+end_src
 
 ** Frontmatter
-[[https://gohugo.io/content-management/front-matter][Frontmatter]] 定义了每篇文章的属性，比如标题、分类等。这也是在 hexo 迁移到 hugo 是问题最多的地方，根本原因在于 hexo 对 frontmatter 格式较宽松，而 hugo 则比较严格。
+[[https://gohugo.io/content-management/front-matter][Frontmatter]] 定义了每篇文章的属性，比如标题、分类等。这也是在 hexo 迁移到 hugo 时问题最多的地方，根本原因在于 hexo 对 frontmatter 格式较宽松，而 hugo 则比较严格。
 
-下面一个 hugo 中标准的 frontmatter 格式（除 yaml 外，还可以是 toml/json）：
+下面一个 hugo 中标准的 frontmatter（除 yaml 外，还可以是 toml/json）：
 #+begin_src yaml
 categories:
 - Development
@@ -89,13 +90,13 @@ title: spf13-vim 3.0 release and new website
 
 主要有两点需要注意：
 1. categories/tags 这两个属性必须是数组
-2. frontmatter 前后需要用 =---= 包围起来，与正文区分
+2. frontmatter 前后需要用 =---= 包起来，与正文区分
 
 而在 hexo 中，
 1. categories/tags 可以是数组，也可以是字符串，表示一个元素的数组
 2. 只需要 frontmatter 末尾强制用 =---= 与正文区分，前面的不做要求
 
-由于我文章较多（72篇需要迁移），且格式也都不一样，因此写了[[https://github.com/jiacai2050/jiacai2050.github.io/tree/hugo/hexo-2-hugo][两个脚本]]来辅助，最终生成符合 Hugo 要求的 frontmatter。如果 frontmatter 格式不对，可能会遇到下面的错误：
+由于我文章较多（72篇需要迁移），且格式也都不一样（可能是 hexo 2/3 的区别），因此写了[[https://github.com/jiacai2050/jiacai2050.github.io/tree/hugo/hexo-2-hugo][两个脚本]]来辅助，最终生成符合 hugo 要求的 frontmatter。如果 frontmatter 格式不对，可能会遇到下面的错误：
 
 #+begin_src shell
 Start building sites …
@@ -123,7 +124,7 @@ categories:
 #+end_src
 标签则没有；在 hugo 中分类与标签用法一样，都只有一层。由于我之前博客就没有用到多层分类的情况，所以也就不需要额外处理了。
 
-其次，在 hexo 可以通过 [[https://hexo.io/docs/configuration.html#Category-amp-Tag][category_map/tag_map]] 来定义 category/tags 的固定链接地址（即 slug） 在定义展示与 url 的，有需求的读者可参考：
+其次，在 hexo 可以通过 [[https://hexo.io/docs/configuration.html#Category-amp-Tag][category_map/tag_map]] 来定义 category/tags 的固定链接地址（即 slug），虽然我之前也了这个特性，但是这次并没有去适配，采用 hugo 默认的即可。有修改需求的读者可参考：
 - [[https://discourse.gohugo.io/t/is-it-possible-to-customize-the-categories-tages-url/9704][Is it possible to customize the categories/tages url?]]
 
 ** Render hook
@@ -156,7 +157,7 @@ markdown 中引用图片的标准做法是
 本次迁移的所有修改可以在 [[https://github.com/jiacai2050/jiacai2050.github.io/compare/f2ec7ca...ac415a24][Github]] 中查看，供有相同迁移需求的读者参考。
 
 * Easy-hugo
-经过上面的步骤，已经可以很好的把 hexo 迁移到 hugo，下一个要解决的问题就是如何用 Emacs 管理 Hugo。[[https://gohugo.io/tools/editors/][Hugo 官网]]上列举了一些与常用编辑整合的插件，这里介绍下 [[https://github.com/masasam/emacs-easy-hugo][easy hugo]] 的使用方式。
+经过上面的步骤，已经可以很好的把 hexo 迁移到 hugo，下一个要解决的问题就是如何用 Emacs 管理 Hugo。[[https://gohugo.io/tools/editors/][Hugo 官网]]上列举了一些与常用编辑整合的插件，这里介绍 [[https://github.com/masasam/emacs-easy-hugo][easy hugo]] 的使用方式。
 ** 配置
 由于目前我又两个博客（中文和[[https://en.liujiacai.net/][英文]]），因此需要做些配置让 easy hugo 识别这两个。
 
@@ -188,9 +189,9 @@ sCategories: ")
 	 (find-file filename)
 	 (insert
 	  (format "#+TITLE: %s
-,#+DATE: %s
-,#+TAGS[]: %s
-,#+CATEGORIES[]: %s
+#+DATE: %s
+#+TAGS[]: %s
+#+CATEGORIES[]: %s
 
 " title (my/iso-8601-date-string) tags categories))
 	 (goto-char (point-max))
@@ -199,11 +200,16 @@ sCategories: ")
 
 这样就可以通过调用 ~my/hugo-newpost~ 自动生成带日期的文件名，并且根据输入生成指定的 slug/title/tag/category。
 
-由于目前我全局开启了 evil mode，需要把 easy-hugo-mode 添加到 evil-emacs-state-modes 里面去才能使用 easy-hugo 的快捷键，顺道解决了 [[https://github.com/masasam/emacs-easy-hugo/pull/56][easy hugo 的一个 bug]]。
+#+CAPTION: 使用 my/hugo-newpost 创建新文章
+[[https://img.alicdn.com/imgextra/i4/581166664/O1CN01919NEK1z6A1ZyLbC8_!!581166664.gif]]
+
+由于目前我全局开启了 evil mode，需要把 easy-hugo-mode 添加到 evil-emacs-state-modes 里面去才能使用 easy-hugo 的快捷键，顺道解决了 [[https://github.com/masasam/emacs-easy-hugo/pull/56][easy hugo 的一个 bug]]。完整配置可参考[[https://github.com/jiacai2050/dotfiles/commit/5cefaa5f8f8400569e2d79b81605aee4180bf997][这次 Git 提交]]。
+
+easy-hugo 还提供了预览、发布（默认调用 deploy.sh）等命令，比较简单，这里不再赘述。
 
 * 总结
 
-屠龙刀已经磨好了，下面就来需要多去动“刀”写出更多文章了。
+屠龙刀已经磨好了，下面就需要多去动“刀”写出更多文章了。
 
 * 参考
 - [[https://sebastiandedeyne.com/captioned-images-with-markdown-render-hooks-in-hugo/][Caption images with markdown render hooks in Hugo]]

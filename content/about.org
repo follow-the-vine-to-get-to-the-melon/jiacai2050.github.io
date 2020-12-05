@@ -37,6 +37,7 @@
 是的，生活的乐趣就在于此。
 
 * 与我交流
+- 英文博客：https://en.liujiacai.net/
 - Email: jiacai2050+blog@gmail.com
 - [[https://twitter.com/liujiacai][Twitter]] / [[https://weibo.com/liujiacai/][微博]]
 - Telegram 群组：https://t.me/clojurists
