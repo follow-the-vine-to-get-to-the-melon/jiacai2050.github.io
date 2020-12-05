@@ -4,8 +4,8 @@ categories:
 date: 2017-04-02 23:56:30
 tags:
 - Clojure
+title: Clojure Web 开发-- Ring 使用指南
 ---
-
 
 在 Clojure 众多的 Web 框架中，[Ring](https://github.com/ring-clojure/ring) 以其简单统一的 HTTP 抽象模型脱颖而出。Ring 充分体现了函数式编程的思想——通过一系列函数的组合形成了一个易于理解、扩展的 HTTP 处理链。
 

@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# coding: utf-8
+
+# 作用：把 frontmatter 中 categories/tags 变成严格的数组格式
+# pip install pyyaml
 import yaml
 from os import listdir
 from os.path import isfile, join

@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# coding: utf-8
+
+# 作用：如果 frontmatter 缺少开头的分隔符，则追加上
 
 from os import listdir
 from os.path import isfile, join
