@@ -2,42 +2,63 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liujiacai.net/tags/blog/</loc>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://liujiacai.net/categories/</loc>
-    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://liujiacai.net/tags/emacs/</loc>
-    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://liujiacai.net/blog/2020/11/25/why-emacs/</loc>
-    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://liujiacai.net/</loc>
-    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://liujiacai.net/post/</loc>
-    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://liujiacai.net/tags/</loc>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2020/12/05/hexo-to-hugo/</loc>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/</loc>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://liujiacai.net/blog/2020/11/25/why-emacs/</loc>
     <lastmod>2020-12-04T22:35:59+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -93,13 +114,6 @@
   </url>
   
   <url>
-    <loc>https://liujiacai.net/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/</loc>
-    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://liujiacai.net/blog/2019/10/24/go-modules/</loc>
     <lastmod>2020-12-04T22:35:59+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -122,7 +136,7 @@
   
   <url>
     <loc>https://liujiacai.net/tags/clojure/</loc>
-    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -248,14 +262,14 @@
   
   <url>
     <loc>https://liujiacai.net/blog/2017/04/02/clojure-web-dev-ring-usage/</loc>
-    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://liujiacai.net/categories/web/</loc>
-    <lastmod>2020-12-04T22:35:59+08:00</lastmod>
+    <lastmod>2020-12-05T17:29:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

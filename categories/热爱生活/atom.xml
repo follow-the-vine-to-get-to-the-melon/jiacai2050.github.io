@@ -6,7 +6,16 @@
     <description>Recent content in 热爱生活 on Keep Coding</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 02 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/atom.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://liujiacai.net/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>博客系统迁移 Hexo 到 Hugo</title>
+      <link>https://liujiacai.net/blog/2020/12/05/hexo-to-hugo/</link>
+      <pubDate>Sat, 05 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://liujiacai.net/blog/2020/12/05/hexo-to-hugo/</guid>
+      <description>上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是</description>
+    </item>
+    
     <item>
       <title>2019 年终总结</title>
       <link>https://liujiacai.net/blog/2020/02/02/review-2019/</link>

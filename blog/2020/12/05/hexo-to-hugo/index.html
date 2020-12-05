@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>博客系统迁移 Hexo 到 Hugo - Keep Coding</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="刘家财" /><meta name="description" content="上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://liujiacai.net/blog/2020/12/05/hexo-to-hugo/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/jiacai.css">
+
+
+<meta property="og:title" content="博客系统迁移 Hexo 到 Hugo" />
+<meta property="og:description" content="上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://liujiacai.net/blog/2020/12/05/hexo-to-hugo/" />
+<meta property="article:published_time" content="2020-12-05T13:12:21+08:00" />
+<meta property="article:modified_time" content="2020-12-05T17:29:13+08:00" />
+<meta itemprop="name" content="博客系统迁移 Hexo 到 Hugo">
+<meta itemprop="description" content="上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是">
+<meta itemprop="datePublished" content="2020-12-05T13:12:21+08:00" />
+<meta itemprop="dateModified" content="2020-12-05T17:29:13+08:00" />
+<meta itemprop="wordCount" content="2244">
+
+
+
+<meta itemprop="keywords" content="blog,,emacs," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="博客系统迁移 Hexo 到 Hugo"/>
+<meta name="twitter:description" content="上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Keep Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/podcast/">
+        <li class="mobile-menu-item">Podcast</li>
+      </a><a href="/blogrolls/">
+        <li class="mobile-menu-item">友链</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Keep Coding</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/podcast/">Podcast</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/blogrolls/">友链</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">博客系统迁移 Hexo 到 Hugo</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/"> 热爱生活 </a>
+            </div>
+          <span class="more-meta"> 约 2244 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">Hexo vs Hugo</a>
+</li>
+<li><a href="#headline-2">迁移过程</a>
+<ul>
+<li><a href="#headline-3">旧博客备份</a>
+</li>
+<li><a href="#headline-4">文章链接</a>
+</li>
+<li><a href="#headline-5">RSS 链接</a>
+</li>
+<li><a href="#headline-6">Frontmatter</a>
+</li>
+<li><a href="#headline-7">Categories</a>
+</li>
+<li><a href="#headline-8">Render hook</a>
+</li>
+<li><a href="#headline-9">修改记录</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-10">Easy-hugo</a>
+<ul>
+<li><a href="#headline-11">配置</a>
+</li>
+<li><a href="#headline-12">创建新文章</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-13">总结</a>
+</li>
+<li><a href="#headline-14">参考</a>
+</li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+<p>
+上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是总感觉体验不如 org-mode。这周末就趁着手热，把博客系统升级了下，完美支持 org-mode，这篇文章就来讲一下迁移过程。</p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Hexo vs Hugo
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>最近两年一直在用 <a href="https://hexo.io/">hexo</a> 来写博客，记得静态托管类网站刚兴起时，hexo 是比较流行的，整个生态也比较完整。这次迁移博客系统时，决定不再用 hexo，原因主要有下面几个：</p>
+<ol>
+<li>
+<p>作为一个 Node.js 写的系统，安装时需要下载大量的 <code class="verbatim">node_modules</code> 。这一点不是很核心，毕竟安装只是一次性工作</p>
+</li>
+<li>
+<p>记得当初在 hexo 2 升级到 3 时，遇到过不少坑，对 Node 的版本也有要求，如果部分依赖用了 C 代码（比如 <a href="https://www.npmjs.com/package/node-sass">node-sass</a>），安装起来也比较费劲；现在 hexo 大版本已经到了 <a href="https://hexo.io/news/2020/09/17/hexo-5-2_wordpress-2-1-2_marked-3-2_stylus-2_less-2/">5.2.0</a>，不想再去折腾</p>
+</li>
+<li>
+<p>原生不支持 org-mode，使用了下 <a href="https://github.com/coldnew/hexo-renderer-org/issues/69">hexo-renderer-org</a> 插件，<a href="https://github.com/coldnew/hexo-renderer-org/issues/69">也没成功</a>，而且其作者现在也没精力来维护了</p>
+</li>
+</ol>
+<p>基于以上几点，hexo 于我而言，不再是最佳的选择，当然并不是说它不优秀，Hugo 也很有可能有类似问题。我之所以选择 Hugo 主要有两个原因：</p>
+<ol>
+<li>
+<p>基于 Golang 的 Hugo 实现，安装方便，只需一个二进制文件；而且最近两年我个人也一直在用 Golang 开发，比较熟悉</p>
+</li>
+<li>
+<p><a href="https://gohugo.io/content-management/formats/">原生支持 org-mode</a></p>
+</li>
+</ol>
+<p>Hugo 使用方式比较简单，这里不再赘述，新手可参考官方 <a href="https://gohugo.io/getting-started/quick-start/">Quick Start</a>。</p>
+</div>
+</div>
+<div id="outline-container-headline-2" class="outline-2">
+<h2 id="headline-2">
+迁移过程
+</h2>
+<div id="outline-text-headline-2" class="outline-text-2">
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+旧博客备份
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>虽然旧博客的源文件不会删除，但是旧博客的主题、布局等还有具有怀念意义的，因此采用之前自己写的<a href="https://github.com/jiacai2050/blog-backup">博客备份工具</a>对旧博客备份，然后利用 <a href="https://github.com/Yanpas/PdfMerger">PdfMerger</a> 将所有文章打成一个文件。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">blog-backup -w ljc -o /tmp/blog -v
+java -jar target/pdfmerger-1.2.2-jar-with-dependencies.jar  /tmp/blog/*pdf ljc-backup.pdf</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<figure>
+<img src="https://img.alicdn.com/imgextra/i3/581166664/O1CN017uZ3vH1z6A1cbCE4F_!!581166664.png" alt="https://img.alicdn.com/imgextra/i3/581166664/O1CN017uZ3vH1z6A1cbCE4F_!!581166664.png" title="https://img.alicdn.com/imgextra/i3/581166664/O1CN017uZ3vH1z6A1cbCE4F_!!581166664.png" /><figcaption>
+博客备份截图
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+文章链接
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>对于个人博客的迁移而言，保证文章链接不变是最重要的。在 hexo 中，文件名与链接的对应关系如下：</p>
+<div class="src src-yaml">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="l">blog/:year/:month/:day/:title/</span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+对应的 markdown 文件是</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">source/_posts/:year-:month-:day-:title.markdown</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>这样的好处是文件按照时间排列，管理方便。</p>
+<p>
+Hugo 则不同，它默认会用文件中 frontmatter 的 date，而非文件名中的。我已经习惯了 hexo 的组织方式，不想去改变，经过一番探索，最终在 hugo 添加下面的配置来解决：</p>
+<div class="src src-toml">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[</span><span class="nx">frontmatter</span><span class="p">]</span>
+  <span class="nx">date</span> <span class="p">=</span> <span class="p">[</span><span class="s2">&#34;:filename&#34;</span><span class="p">,</span> <span class="s2">&#34;:default&#34;</span><span class="p">,</span> <span class="s2">&#34;:fileModTime&#34;</span><span class="p">]</span>
+
+<span class="p">[</span><span class="nx">permalinks</span><span class="p">]</span>
+  <span class="nx">post</span> <span class="p">=</span> <span class="s2">&#34;/blog/:year/:month/:day/:slug/&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这样 Hugo 就会首先从文件名中解析日期，同时也会解析 slug；失败时再从 frontmatter 中解析，更多用法可参考<a href="https://gohugo.io/getting-started/configuration/#configure-dates">官方文档 Configure Dates</a>。
+同时，为了避免 <code class="verbatim">hugo new post/year-month-day-slug.org</code> 时标题中带日期，修改<a href="https://gohugo.io/content-management/archetypes/">默认模板</a>如下：</p>
+<div class="src src-yaml">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">title</span><span class="p">:</span><span class="w"> </span>{{<span class="w"> </span><span class="l">replace  .Name &#34;-&#34; &#34; &#34; | replaceRE &#34;^\\d{4} \\d{2} \\d{2} (.*)&#34; &#34;$1&#34; | title }}</span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+RSS 链接
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<p>默认 Hugo 生成的 RSS 链接为 <code class="verbatim">/index.xml</code> ，而我之前用的是 <a href="https://liujiacai.net/atom.xml">/atom.xml</a>，可以通过如下配置修改：</p>
+<div class="src src-toml">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[</span><span class="nx">outputFormats</span><span class="p">]</span>
+<span class="p">[</span><span class="nx">outputFormats</span><span class="p">.</span><span class="nx">RSS</span><span class="p">]</span>
+<span class="nx">mediatype</span> <span class="p">=</span> <span class="s2">&#34;application/rss&#34;</span>
+<span class="nx">baseName</span> <span class="p">=</span> <span class="s2">&#34;atom&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+Frontmatter
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p><a href="https://gohugo.io/content-management/front-matter">Frontmatter</a> 定义了每篇文章的属性，比如标题、分类等。这也是在 hexo 迁移到 hugo 是问题最多的地方，根本原因在于 hexo 对 frontmatter 格式较宽松，而 hugo 则比较严格。</p>
+<p>
+下面一个 hugo 中标准的 frontmatter 格式（除 yaml 外，还可以是 toml/json）：</p>
+<div class="src src-yaml">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">categories</span><span class="p">:</span><span class="w">
+</span><span class="w"></span>- <span class="l">Development</span><span class="w">
+</span><span class="w"></span>- <span class="l">VIM</span><span class="w">
+</span><span class="w"></span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2012-04-06&#34;</span><span class="w">
+</span><span class="w"></span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l">spf13-vim is a cross platform distribution of vim plugins and resources</span><span class="w">
+</span><span class="w">  </span><span class="l">for Vim.</span><span class="w">
+</span><span class="w"></span><span class="nt">slug</span><span class="p">:</span><span class="w"> </span><span class="l">spf13-vim-3-0-release-and-new-website</span><span class="w">
+</span><span class="w"></span><span class="nt">tags</span><span class="p">:</span><span class="w">
+</span><span class="w"></span>- <span class="l">.vimrc</span><span class="w">
+</span><span class="w"></span>- <span class="l">plugins</span><span class="w">
+</span><span class="w"></span>- <span class="l">spf13-vim</span><span class="w">
+</span><span class="w"></span>- <span class="l">vim</span><span class="w">
+</span><span class="w"></span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l">spf13-vim 3.0 release and new website</span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+主要有两点需要注意：</p>
+<ol>
+<li>
+<p>categories/tags 这两个属性必须是数组</p>
+</li>
+<li>
+<p>frontmatter 前后需要用 <code class="verbatim">---</code> 包围起来，与正文区分</p>
+</li>
+</ol>
+<p>而在 hexo 中，</p>
+<ol>
+<li>
+<p>categories/tags 可以是数组，也可以是字符串，表示一个元素的数组</p>
+</li>
+<li>
+<p>只需要 frontmatter 末尾强制用 <code class="verbatim">---</code> 与正文区分，前面的不做要求</p>
+</li>
+</ol>
+<p>由于我文章较多（72篇需要迁移），且格式也都不一样，因此写了<a href="https://github.com/jiacai2050/jiacai2050.github.io/tree/hugo/hexo-2-hugo">两个脚本</a>来辅助，最终生成符合 Hugo 要求的 frontmatter。如果 frontmatter 格式不对，可能会遇到下面的错误：</p>
+<div class="src src-shell">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Start building sites …
+ERROR 2020/12/04 20:33:38 render of <span class="s2">&#34;home&#34;</span> failed:
+execute of template failed: template: index.html:6:9:
+executing <span class="s2">&#34;content&#34;</span> at &lt;.Render&gt;: error calling Render: <span class="s2">&#34;~/quickstart/content/post/2016-04-23-sicp-chapter4-summary.markdown:8:19&#34;</span>:
+failed to execute template <span class="o">[</span><span class="s2">&#34;summary&#34;</span><span class="o">]</span> v: <span class="s2">&#34;~/quickstart/themes/even/layouts/post/summary.html:8:19&#34;</span>: execute of template failed:
+template: post/summary.html:8:19: executing <span class="s2">&#34;post/summary.html&#34;</span> at &lt;.&gt;: range can<span class="err">&#39;</span>t iterate over 研习经典</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>说明 categories 或 tags 有不是数组的，需要改成数组</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">EOF looking for end YAML front matter delimiter</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>说明缺少了 frontmatter 结尾的分隔符，如果缺少开头的分隔符，编译文章没有错误，但是最终生成的文章页面会没有标题。</p>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+Categories
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<p>在 hexo 中分类（category） 和标签（tags） 用法是不一样的，分类可以<a href="https://hexo.io/docs/front-matter.html#Categories-amp-Tags">有层次</a>，比如：</p>
+<div class="src src-yaml">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">categories</span><span class="p">:</span><span class="w">
+</span><span class="w"></span>- <span class="p">[</span><span class="l">Sports, Baseball]</span><span class="w">
+</span><span class="w"></span>- <span class="p">[</span><span class="l">MLB, American League, Boston Red Sox]</span><span class="w">
+</span><span class="w"></span>- <span class="p">[</span><span class="l">MLB, American League, New York Yankees]</span><span class="w">
+</span><span class="w"></span>- <span class="l">Rivalries</span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>标签则没有；在 hugo 中分类与标签用法一样，都只有一层。由于我之前博客就没有用到多层分类的情况，所以也就不需要额外处理了。</p>
+<p>
+其次，在 hexo 可以通过 <a href="https://hexo.io/docs/configuration.html#Category-amp-Tag">category_map/tag_map</a> 来定义 category/tags 的固定链接地址（即 slug） 在定义展示与 url 的，有需求的读者可参考：</p>
+<ul>
+<li>
+<p><a href="https://discourse.gohugo.io/t/is-it-possible-to-customize-the-categories-tages-url/9704">Is it possible to customize the categories/tages url?</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+Render hook
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<p>markdown 中引用图片的标准做法是</p>
+<div class="src src-md">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-md" data-lang="md">![<span class="nt">Alt text here</span>](<span class="na">/images/image.jpg &#34;Title here&#34;</span>)</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+但是我一般只写 alt，title 基本没写过，之前使用的主题 <a href="https://github.com/tufu9441/maupassant-hexo">maupassant</a> 默认会把图片的 alt 显式在图片下面，而 hugo 只认 title，搜索发现可以通过 hugo 提供的 <a href="https://gohugo.io/getting-started/configuration-markup#markdown-render-hooks">markdown render hook</a> 来实现。方式如下：</p>
+<ol>
+<li>
+<p>创建 <code class="verbatim">layouts/_default/_markup/render-image.html</code> 文件</p>
+</li>
+<li>
+<p>添加内容</p>
+<div class="src src-html">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">{{ if .Text }}
+<span class="p">&lt;</span><span class="nt">figure</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;{{ .Destination | safeURL }}&#34;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&#34;{{ .Text }}&#34;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">figcaption</span><span class="p">&gt;</span>{{ .Text }}<span class="p">&lt;/</span><span class="nt">figcaption</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">figure</span><span class="p">&gt;</span>
+{{ else }}
+<span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;{{ .Destination | safeURL }}&#34;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&#34;{{ .Text }}&#34;</span><span class="p">&gt;</span>
+{{ end }}</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</li>
+</ol>
+<p>对于 org-mode 而言，直接采用下面的方式即可：</p>
+<div class="src src-org">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-org" data-lang="org"><span class="cs">#+CAPTION</span><span class="c">: some-title</span>
+[[<span class="na">&lt;img-src&gt;</span>]]</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
+修改记录
+</h3>
+<div id="outline-text-headline-9" class="outline-text-3">
+<p>本次迁移的所有修改可以在 <a href="https://github.com/jiacai2050/jiacai2050.github.io/compare/f2ec7ca...ac415a24">Github</a> 中查看，供有相同迁移需求的读者参考。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-2">
+<h2 id="headline-10">
+Easy-hugo
+</h2>
+<div id="outline-text-headline-10" class="outline-text-2">
+<p>经过上面的步骤，已经可以很好的把 hexo 迁移到 hugo，下一个要解决的问题就是如何用 Emacs 管理 Hugo。<a href="https://gohugo.io/tools/editors/">Hugo 官网</a>上列举了一些与常用编辑整合的插件，这里介绍下 <a href="https://github.com/masasam/emacs-easy-hugo">easy hugo</a> 的使用方式。</p>
+<div id="outline-container-headline-11" class="outline-3">
+<h3 id="headline-11">
+配置
+</h3>
+<div id="outline-text-headline-11" class="outline-text-3">
+<p>由于目前我又两个博客（中文和<a href="https://en.liujiacai.net/">英文</a>），因此需要做些配置让 easy hugo 识别这两个。</p>
+<div class="src src-elisp">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-elisp" data-lang="elisp"><span class="p">(</span><span class="nb">use-package</span> <span class="nv">easy-hugo</span>
+  <span class="nb">:custom</span> <span class="p">((</span><span class="nv">easy-hugo-basedir</span>  <span class="s">&#34;~/gh/jiacai2050.github.io/&#34;</span><span class="p">)</span>
+		   <span class="p">(</span><span class="nv">easy-hugo-url</span>  <span class="s">&#34;https://liujiacai.net&#34;</span><span class="p">)</span>
+           <span class="p">(</span><span class="nv">easy-hugo-default-ext</span> <span class="s">&#34;.org&#34;</span><span class="p">)</span>
+           <span class="p">(</span><span class="nv">easy-hugo-bloglist</span> <span class="o">&#39;</span><span class="p">(((</span><span class="nv">easy-hugo-basedir</span> <span class="o">.</span> <span class="s">&#34;~/gh/en-blog/&#34;</span><span class="p">)</span>
+                                  <span class="p">(</span><span class="nv">easy-hugo-default-ext</span> <span class="s">&#34;.org&#34;</span><span class="p">)</span>
+		                          <span class="p">(</span><span class="nv">easy-hugo-url</span> <span class="o">.</span> <span class="s">&#34;https://en.liujiacai.net&#34;</span><span class="p">))))))</span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-3">
+<h3 id="headline-12">
+创建新文章
+</h3>
+<div id="outline-text-headline-12" class="outline-text-3">
+<p>虽然可以用 <code>hugo new post/xxx.org</code> 的方式来创建新文件，但是由于文件名中需要有固定格式的日期，每次手动输入很繁琐，因此基于 easy hugo 的多博客管理，自己实现了 <code>hugo-newpost</code> 函数，实现如下：</p>
+<div class="src src-elisp">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-elisp" data-lang="elisp"><span class="p">(</span><span class="nb">defun</span> <span class="nv">my/hugo-newpost</span> <span class="p">(</span><span class="nv">slug</span> <span class="nv">title</span> <span class="nv">tags</span> <span class="nv">categories</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">interactive</span> <span class="s">&#34;sSlug:
+</span><span class="s">sTitle:
+</span><span class="s">sTags:
+</span><span class="s">sCategories: &#34;</span><span class="p">)</span>
+  <span class="p">(</span><span class="nv">easy-hugo-with-env</span>
+   <span class="p">(</span><span class="nb">let*</span> <span class="p">((</span><span class="nv">now</span> <span class="p">(</span><span class="nf">current-time</span><span class="p">))</span>
+		  <span class="p">(</span><span class="nv">basename</span> <span class="p">(</span><span class="nf">concat</span> <span class="p">(</span><span class="nf">format-time-string</span> <span class="s">&#34;%Y-%m-%d-&#34;</span> <span class="nv">now</span><span class="p">)</span>
+							<span class="nv">slug</span> <span class="nv">easy-hugo-default-ext</span><span class="p">))</span>
+		  <span class="p">(</span><span class="nv">postdir</span> <span class="p">(</span><span class="nf">expand-file-name</span> <span class="nv">easy-hugo-postdir</span> <span class="nv">easy-hugo-basedir</span><span class="p">))</span>
+		  <span class="p">(</span><span class="nv">filename</span> <span class="p">(</span><span class="nf">expand-file-name</span> <span class="nv">basename</span> <span class="nv">postdir</span><span class="p">)))</span>
+	 <span class="p">(</span><span class="nb">when</span> <span class="p">(</span><span class="nf">file-exists-p</span> <span class="nv">filename</span><span class="p">)</span>
+       <span class="p">(</span><span class="ne">error</span> <span class="s">&#34;%s already exists!&#34;</span> <span class="nv">filename</span><span class="p">))</span>
+	 <span class="p">(</span><span class="nv">find-file</span> <span class="nv">filename</span><span class="p">)</span>
+	 <span class="p">(</span><span class="nf">insert</span>
+	  <span class="p">(</span><span class="nf">format</span> <span class="s">&#34;#+TITLE: %s
+</span><span class="s">,#+DATE: %s
+</span><span class="s">,#+TAGS[]: %s
+</span><span class="s">,#+CATEGORIES[]: %s
+</span><span class="s">
+</span><span class="s">&#34;</span> <span class="nv">title</span> <span class="p">(</span><span class="nv">my/iso-8601-date-string</span><span class="p">)</span> <span class="nv">tags</span> <span class="nv">categories</span><span class="p">))</span>
+	 <span class="p">(</span><span class="nf">goto-char</span> <span class="p">(</span><span class="nf">point-max</span><span class="p">))</span>
+	 <span class="p">(</span><span class="nv">save-buffer</span><span class="p">))))</span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这样就可以通过调用 <code>my/hugo-newpost</code> 自动生成带日期的文件名，并且根据输入生成指定的 slug/title/tag/category。</p>
+<p>
+由于目前我全局开启了 evil mode，需要把 easy-hugo-mode 添加到 evil-emacs-state-modes 里面去才能使用 easy-hugo 的快捷键，顺道解决了 <a href="https://github.com/masasam/emacs-easy-hugo/pull/56">easy hugo 的一个 bug</a>。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-2">
+<h2 id="headline-13">
+总结
+</h2>
+<div id="outline-text-headline-13" class="outline-text-2">
+<p>
+屠龙刀已经磨好了，下面就来需要多去动“刀”写出更多文章了。</p>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-2">
+<h2 id="headline-14">
+参考
+</h2>
+<div id="outline-text-headline-14" class="outline-text-2">
+<ul>
+<li>
+<p><a href="https://sebastiandedeyne.com/captioned-images-with-markdown-render-hooks-in-hugo/">Caption images with markdown render hooks in Hugo</a></p>
+</li>
+<li>
+<p><a href="https://scarletsky.github.io/2019/05/02/migrate-hexo-to-hugo/">从 Hexo 迁移到 Hugo</a></p>
+</li>
+<li>
+<p><a href="https://jdhao.github.io/2018/10/10/hexo_to_hugo/">把博客从 Hexo 迁移到 Hugo</a></p>
+</li>
+<li>
+<p><a href="https://discourse.gohugo.io/t/how-can-i-change-the-rss-url/118/16">https://discourse.gohugo.io/t/how-can-i-change-the-rss-url/118/16</a></p>
+</li>
+</ul>
+</div>
+</div>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">刘家财</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-05
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/2aadfbfc3fe7e1afca4cbab2740f9942e116c3dc" title="add new post hexo-to-hugo">(2aadfbf)</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/blog/">blog,</a>
+          <a href="/tags/emacs/">emacs</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/blog/2020/11/25/why-emacs/">
+            <span class="next-text nav-default">Emacs 入门指南</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'jiacai2050';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:jiacai2050&#43;blog@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/2163429/jiacai-liu" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://www.twitter.com/liujiacai" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://github.com/jiacai2050" class="iconfont icon-github" title="github"></a>
+      <a href="http://weibo.com/liujiacai" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/jiacai2050" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/liujiacai/" class="iconfont icon-douban" title="douban"></a>
+  <a href="https://liujiacai.net/atom.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2014 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>刘家财</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-50745138-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?3ffc15f400ce3f8b1db5afc4f29b6ce9";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>
