@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>博客系统迁移 Hexo 到 Hugo - Keep Coding</title>
+  <title>博客系统迁移：Hexo 到 Hugo - Keep Coding</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -40,23 +40,23 @@
 <link rel="stylesheet" href="/css/jiacai.css">
 
 
-<meta property="og:title" content="博客系统迁移 Hexo 到 Hugo" />
+<meta property="og:title" content="博客系统迁移：Hexo 到 Hugo" />
 <meta property="og:description" content="上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://liujiacai.net/blog/2020/12/05/hexo-to-hugo/" />
 <meta property="article:published_time" content="2020-12-05T13:12:21+08:00" />
 <meta property="article:modified_time" content="2020-12-05T17:57:41+08:00" />
-<meta itemprop="name" content="博客系统迁移 Hexo 到 Hugo">
+<meta itemprop="name" content="博客系统迁移：Hexo 到 Hugo">
 <meta itemprop="description" content="上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是">
 <meta itemprop="datePublished" content="2020-12-05T13:12:21+08:00" />
 <meta itemprop="dateModified" content="2020-12-05T17:57:41+08:00" />
-<meta itemprop="wordCount" content="2265">
+<meta itemprop="wordCount" content="2347">
 
 
 
 <meta itemprop="keywords" content="blog,,emacs," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="博客系统迁移 Hexo 到 Hugo"/>
+<meta name="twitter:title" content="博客系统迁移：Hexo 到 Hugo"/>
 <meta name="twitter:description" content="上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是"/>
 
 <!--[if lte IE 9]>
@@ -132,14 +132,14 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">博客系统迁移 Hexo 到 Hugo</h1>
+      <h1 class="post-title">博客系统迁移：Hexo 到 Hugo</h1>
 
       <div class="post-meta">
         <span class="post-time"> 2020-12-05 </span>
         <div class="post-category">
             <a href="/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/"> 热爱生活 </a>
             </div>
-          <span class="more-meta"> 约 2265 字 </span>
+          <span class="more-meta"> 约 2347 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         
       </div>
@@ -198,10 +198,10 @@ Hexo vs Hugo
 <p>最近两年一直在用 <a href="https://hexo.io/">hexo</a> 来写博客，记得静态托管类网站刚兴起时，hexo 是比较流行的，整个生态也比较完整。这次迁移博客系统时，决定不再用 hexo，原因主要有下面几个：</p>
 <ol>
 <li>
-<p>作为一个 Node.js 写的系统，安装时需要下载大量的 <code class="verbatim">node_modules</code> 。这一点不是很核心，毕竟安装只是一次性工作</p>
+<p>安装烦。作为一个 Node.js 写的系统，安装时需要下载大量的 <code class="verbatim">node_modules</code> 。这一点不是很核心，毕竟安装只是一次性工作</p>
 </li>
 <li>
-<p>记得当初在 hexo 2 升级到 3 时，遇到过不少坑，对 Node 的版本也有要求，如果部分依赖用了 C 代码（比如 <a href="https://www.npmjs.com/package/node-sass">node-sass</a>），安装起来也比较费劲；现在 hexo 大版本已经到了 <a href="https://hexo.io/news/2020/09/17/hexo-5-2_wordpress-2-1-2_marked-3-2_stylus-2_less-2/">5.2.0</a>，不想再去折腾</p>
+<p>升级难。记得当初在 hexo 2 升级到 3 时，遇到过不少坑，对 Node 的版本也有要求，如果部分依赖用了 C 代码（比如 <a href="https://www.npmjs.com/package/node-sass">node-sass</a>），安装起来也比较费劲；现在 hexo 大版本已经到了 <a href="https://hexo.io/news/2020/09/17/hexo-5-2_wordpress-2-1-2_marked-3-2_stylus-2_less-2/">5.2.0</a>，不想再去折腾</p>
 </li>
 <li>
 <p>原生不支持 org-mode，使用了下 <a href="https://github.com/coldnew/hexo-renderer-org/issues/69">hexo-renderer-org</a> 插件，<a href="https://github.com/coldnew/hexo-renderer-org/issues/69">也没成功</a>，而且其作者现在也没精力来维护了</p>
@@ -229,7 +229,7 @@ Hexo vs Hugo
 旧博客备份
 </h3>
 <div id="outline-text-headline-3" class="outline-text-3">
-<p>虽然旧博客的源文件不会删除，但是旧博客的主题、布局等还有具有怀念意义的，因此采用之前自己写的<a href="https://github.com/jiacai2050/blog-backup">博客备份工具</a>对旧博客备份，然后利用 <a href="https://github.com/Yanpas/PdfMerger">PdfMerger</a> 将所有文章打成一个文件。</p>
+<p>虽然旧博客的源文件不会删除，但是其主题、布局等还是具有怀念意义的，因此采用之前自己写的<a href="https://github.com/jiacai2050/blog-backup">工具</a>对其备份，然后利用 <a href="https://github.com/Yanpas/PdfMerger">PdfMerger</a> 将所有文章打成一个文件。</p>
 <div class="src src-bash">
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -279,7 +279,7 @@ java -jar target/pdfmerger-1.2.2-jar-with-dependencies.jar  /tmp/blog/*pdf ljc-b
 </div>
 <p>这样的好处是文件按照时间排列，管理方便。</p>
 <p>
-Hugo 则不同，它默认会用文件中 frontmatter 的 date，而非文件名中的。我已经习惯了 hexo 的组织方式，不想去改变，经过一番探索，最终在 hugo 添加下面的配置来解决：</p>
+Hugo 则不同，它默认会用文件中 frontmatter 的 date，而非文件名中的。我已经习惯了 hexo 的组织方式，不想去改变，经过一番探索，最终在 hugo 添加下面的配置完美解决：</p>
 <div class="src src-toml">
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -299,7 +299,8 @@ Hugo 则不同，它默认会用文件中 frontmatter 的 date，而非文件名
 </div>
 </div>
 <p>
-这样 Hugo 就会首先从文件名中解析日期，同时也会解析 slug；失败时再从 frontmatter 中解析，更多用法可参考<a href="https://gohugo.io/getting-started/configuration/#configure-dates">官方文档 Configure Dates</a>。
+这样 Hugo 就会首先从文件名中解析日期，同时也会解析 slug；失败时再从 frontmatter 中解析，更多用法可参考<a href="https://gohugo.io/getting-started/configuration/#configure-dates">官方文档 Configure Dates</a>。</p>
+<p>
 同时，为了避免 <code class="verbatim">hugo new post/year-month-day-slug.org</code> 时标题中带日期，修改<a href="https://gohugo.io/content-management/archetypes/">默认模板</a>如下：</p>
 <div class="src src-yaml">
 <div class="highlight"><div class="chroma">
@@ -342,9 +343,9 @@ RSS 链接
 Frontmatter
 </h3>
 <div id="outline-text-headline-6" class="outline-text-3">
-<p><a href="https://gohugo.io/content-management/front-matter">Frontmatter</a> 定义了每篇文章的属性，比如标题、分类等。这也是在 hexo 迁移到 hugo 是问题最多的地方，根本原因在于 hexo 对 frontmatter 格式较宽松，而 hugo 则比较严格。</p>
+<p><a href="https://gohugo.io/content-management/front-matter">Frontmatter</a> 定义了每篇文章的属性，比如标题、分类等。这也是在 hexo 迁移到 hugo 时问题最多的地方，根本原因在于 hexo 对 frontmatter 格式较宽松，而 hugo 则比较严格。</p>
 <p>
-下面一个 hugo 中标准的 frontmatter 格式（除 yaml 外，还可以是 toml/json）：</p>
+下面一个 hugo 中标准的 frontmatter（除 yaml 外，还可以是 toml/json）：</p>
 <div class="src src-yaml">
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -386,7 +387,7 @@ Frontmatter
 <p>categories/tags 这两个属性必须是数组</p>
 </li>
 <li>
-<p>frontmatter 前后需要用 <code class="verbatim">---</code> 包围起来，与正文区分</p>
+<p>frontmatter 前后需要用 <code class="verbatim">---</code> 包起来，与正文区分</p>
 </li>
 </ol>
 <p>而在 hexo 中，</p>
@@ -398,7 +399,7 @@ Frontmatter
 <p>只需要 frontmatter 末尾强制用 <code class="verbatim">---</code> 与正文区分，前面的不做要求</p>
 </li>
 </ol>
-<p>由于我文章较多（72篇需要迁移），且格式也都不一样，因此写了<a href="https://github.com/jiacai2050/jiacai2050.github.io/tree/hugo/hexo-2-hugo">两个脚本</a>来辅助，最终生成符合 Hugo 要求的 frontmatter。如果 frontmatter 格式不对，可能会遇到下面的错误：</p>
+<p>由于我文章较多（72篇需要迁移），且格式也都不一样（可能是 hexo 2/3 的区别），因此写了<a href="https://github.com/jiacai2050/jiacai2050.github.io/tree/hugo/hexo-2-hugo">两个脚本</a>来辅助，最终生成符合 hugo 要求的 frontmatter。如果 frontmatter 格式不对，可能会遇到下面的错误：</p>
 <div class="src src-shell">
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -459,7 +460,7 @@ Categories
 </div>
 <p>标签则没有；在 hugo 中分类与标签用法一样，都只有一层。由于我之前博客就没有用到多层分类的情况，所以也就不需要额外处理了。</p>
 <p>
-其次，在 hexo 可以通过 <a href="https://hexo.io/docs/configuration.html#Category-amp-Tag">category_map/tag_map</a> 来定义 category/tags 的固定链接地址（即 slug） 在定义展示与 url 的，有需求的读者可参考：</p>
+其次，在 hexo 可以通过 <a href="https://hexo.io/docs/configuration.html#Category-amp-Tag">category_map/tag_map</a> 来定义 category/tags 的固定链接地址（即 slug），虽然我之前也了这个特性，但是这次并没有去适配，采用 hugo 默认的即可。有修改需求的读者可参考：</p>
 <ul>
 <li>
 <p><a href="https://discourse.gohugo.io/t/is-it-possible-to-customize-the-categories-tages-url/9704">Is it possible to customize the categories/tages url?</a></p>
@@ -547,7 +548,7 @@ Render hook
 Easy-hugo
 </h2>
 <div id="outline-text-headline-10" class="outline-text-2">
-<p>经过上面的步骤，已经可以很好的把 hexo 迁移到 hugo，下一个要解决的问题就是如何用 Emacs 管理 Hugo。<a href="https://gohugo.io/tools/editors/">Hugo 官网</a>上列举了一些与常用编辑整合的插件，这里介绍下 <a href="https://github.com/masasam/emacs-easy-hugo">easy hugo</a> 的使用方式。</p>
+<p>经过上面的步骤，已经可以很好的把 hexo 迁移到 hugo，下一个要解决的问题就是如何用 Emacs 管理 Hugo。<a href="https://gohugo.io/tools/editors/">Hugo 官网</a>上列举了一些与常用编辑整合的插件，这里介绍 <a href="https://github.com/masasam/emacs-easy-hugo">easy hugo</a> 的使用方式。</p>
 <div id="outline-container-headline-11" class="outline-3">
 <h3 id="headline-11">
 配置
@@ -647,6 +648,8 @@ Easy-hugo
 </figure>
 <p>
 由于目前我全局开启了 evil mode，需要把 easy-hugo-mode 添加到 evil-emacs-state-modes 里面去才能使用 easy-hugo 的快捷键，顺道解决了 <a href="https://github.com/masasam/emacs-easy-hugo/pull/56">easy hugo 的一个 bug</a>。完整配置可参考<a href="https://github.com/jiacai2050/dotfiles/commit/5cefaa5f8f8400569e2d79b81605aee4180bf997">这次 Git 提交</a>。</p>
+<p>
+easy-hugo 还提供了预览、发布（默认调用 deploy.sh）等命令，比较简单，这里不再赘述。</p>
 </div>
 </div>
 </div>
@@ -657,7 +660,7 @@ Easy-hugo
 </h2>
 <div id="outline-text-headline-13" class="outline-text-2">
 <p>
-屠龙刀已经磨好了，下面就来需要多去动“刀”写出更多文章了。</p>
+屠龙刀已经磨好了，下面就需要多去动“刀”写出更多文章了。</p>
 </div>
 </div>
 <div id="outline-container-headline-14" class="outline-2">
@@ -693,7 +696,7 @@ Easy-hugo
     <span class="item-title">上次更新</span>
     <span class="item-content">
         2020-12-05
-        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/84b5fd62ccd2294f1b6d86b62926d950f66d91d2" title="add easy-hugo newpost gif">(84b5fd6)</a>
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/e0397524bc4ebac406ff1d027e764538b3bd11f1" title="add easy-hugo newpost gif">(e039752)</a>
     </span>
   </p>
   
