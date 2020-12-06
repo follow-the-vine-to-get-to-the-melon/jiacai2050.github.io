@@ -3,7 +3,7 @@
 #+TAGS[]: blog, emacs
 #+CATEGORIES[]: 热爱生活
 
-上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是总感觉体验不如 org-mode。这周末就趁着手热，把博客系统升级了下，完美支持 org-mode，这篇文章就来讲一下迁移过程。
+上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是总感觉体验不如 org-mode。这周末就趁着手热，把博客系统进行了升级，完美支持 org-mode，这篇文章就是用 org-mode 完成的，下面就来讲一下迁移过程。
 
 * Hexo vs Hugo
 最近两年一直在用 [[https://hexo.io/][hexo]] 来写博客，记得静态托管类网站刚兴起时，hexo 是比较流行的，整个生态也比较完整。这次迁移博客系统时，决定不再用 hexo，原因主要有下面几个：
@@ -203,7 +203,7 @@ sCategories: ")
 #+CAPTION: 使用 my/hugo-newpost 创建新文章
 [[https://img.alicdn.com/imgextra/i4/581166664/O1CN01919NEK1z6A1ZyLbC8_!!581166664.gif]]
 
-由于目前我全局开启了 evil mode，需要把 easy-hugo-mode 添加到 evil-emacs-state-modes 里面去才能使用 easy-hugo 的快捷键，顺道解决了 [[https://github.com/masasam/emacs-easy-hugo/pull/56][easy hugo 的一个 bug]]。完整配置可参考[[https://github.com/jiacai2050/dotfiles/commit/5cefaa5f8f8400569e2d79b81605aee4180bf997][这次 Git 提交]]。
+由于目前我全局开启了 evil mode，需要把 easy-hugo-mode 添加到 evil-emacs-state-modes 里面去才能使用 easy-hugo 的快捷键，顺道解决了 [[https://github.com/masasam/emacs-easy-hugo/pull/56][easy hugo 的一个 bug]]。完整配置可参考这次的[[https://github.com/jiacai2050/dotfiles/commit/94070a624b626c91e3c1fd5aa85f89bb7a51a924][ Git 提交]]。
 
 easy-hugo 还提供了预览、发布（默认调用 deploy.sh）等命令，比较简单，这里不再赘述。
 
