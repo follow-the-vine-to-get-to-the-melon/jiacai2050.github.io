@@ -68,6 +68,28 @@ mediatype = "application/rss"
 baseName = "atom"
 #+end_src
 
+** Tags 链接
+Hugo 中默认会把链接中的字母变成小写，比如标签 =Go= ，在之前对应地址 =/tags/Go= ，换成 Hugo 后则是 =/tags/go= ，可以通过下面的配置关闭这个转化。
+#+begin_src toml
+disablePathToLower = true
+#+end_src
+如果想保留这个功能，可以进行下面的操作：
+#+begin_src bash
+# 让 git 区分文件名大小写
+git config --global core.ignorecase true
+# 删掉仓库中已有的大写目录
+git rm -rf 'tags/Go'
+# 重新生成网站
+hugo
+# 重新添加
+git add .
+#+end_src
+这时 =git status= 会显示
+#+begin_src bash
+renamed:    tags/Go/index.html -> tags/go/index.html
+#+end_src
+然后提交就可以了。
+
 ** Frontmatter
 [[https://gohugo.io/content-management/front-matter][Frontmatter]] 定义了每篇文章的属性，比如标题、分类等。这也是在 hexo 迁移到 hugo 时问题最多的地方，根本原因在于 hexo 对 frontmatter 格式较宽松，而 hugo 则比较严格。
 
