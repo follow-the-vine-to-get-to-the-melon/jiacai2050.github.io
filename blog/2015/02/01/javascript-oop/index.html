@@ -45,12 +45,12 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://liujiacai.net/blog/2015/02/01/javascript-oop/" />
 <meta property="article:published_time" content="2015-02-01T12:53:18+00:00" />
-<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta property="article:modified_time" content="2020-12-09T22:15:51+08:00" />
 <meta itemprop="name" content="javascript中的面向对象编程">
 <meta itemprop="description" content="最近工作一直在用nodejs做开发，有了nodejs，前端、后端、脚本全都可以用javascript搞定，很是方便。但是javascript">
 <meta itemprop="datePublished" content="2015-02-01T12:53:18+00:00" />
-<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
-<meta itemprop="wordCount" content="5506">
+<meta itemprop="dateModified" content="2020-12-09T22:15:51+08:00" />
+<meta itemprop="wordCount" content="5484">
 
 
 
@@ -139,7 +139,7 @@
         <div class="post-category">
             <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
             </div>
-          <span class="more-meta"> 约 5506 字 </span>
+          <span class="more-meta"> 约 5484 字 </span>
           <span class="more-meta"> 预计阅读 11 分钟 </span>
         
       </div>
@@ -153,6 +153,16 @@
     <li>
       <ul>
         <li><a href="#设计理念">设计理念</a></li>
+        <li><a href="#对象">对象</a>
+          <ul>
+            <li><a href="#字面量literal">字面量(literal)</a></li>
+            <li><a href="#原型链prototype-linkage">原型链(prototype linkage)</a></li>
+            <li><a href="#函数对象function">函数对象Function</a></li>
+            <li><a href="#数组对象array">数组对象Array</a></li>
+          </ul>
+        </li>
+        <li><a href="#继承inheritance">继承Inheritance</a></li>
+        <li><a href="#总结">总结</a></li>
         <li><a href="#参考">参考</a></li>
       </ul>
     </li>
@@ -173,13 +183,13 @@
 </ul>
 <p>Javascript1.0的功能相对简单，为了在今后不断丰富javascript本身功能的同时保持旧代码的兼容性，javascript通过改变运行时的支持来增加新功能，而不是通过修改javascript的语法，这就保证了旧代码的兼容性。这也就是javascript选择基于运行时的原型机制的原因。
 wikipedia这样描述到：JavaScript is classified as a <a href="http://en.wikipedia.org/wiki/Prototype-based_programming">prototype-based</a> scripting language with <a href="http://en.wikipedia.org/wiki/Dynamic_language">dynamic typing</a> and <a href="http://en.wikipedia.org/wiki/First-class_functions">first-class functions</a>。这些特性使得javascript是一种<a href="http://en.wikipedia.org/wiki/Multi-paradigm">多范式</a>的<a href="http://en.wikipedia.org/wiki/Interpreter_%28computing%29">解释性</a>编程语言，支持<a href="http://en.wikipedia.org/wiki/Object-oriented_programming">面向对象</a>,<a href="http://en.wikipedia.org/wiki/Imperative_programming">命令式(imperative)</a>, <a href="http://en.wikipedia.org/wiki/Functional_programming">函数式(functional)</a>编程风格。</p>
-<p>##对象
-在javascript中，除了<code>Undefined</code>, <code>Null</code>, <code>Boolean</code>, <code>Number</code>, <code>String</code>这几个简单类型外，其他的都是对象。
+<h2 id="对象">对象</h2>
+<p>在javascript中，除了<code>Undefined</code>, <code>Null</code>, <code>Boolean</code>, <code>Number</code>, <code>String</code>这几个简单类型外，其他的都是对象。
 数字、字符串、布尔值这些简单类型都是不可变量，对象是可变的键值对的集合(mutable keyed conllections)，对象包括数组<code>Array</code>、正则表达式<code>RegExp</code>、函数<code>Function</code>，当然对象<code>Object</code>也是对象。
 对象在javascript中说白了就是<code>一系列的键值对</code>。键可以是任意字符串，包括空串；值可以是任何值。在javascript中是没有类的概念(class-free)的，但是它有一个原型链(prototype linkage)。javascript对象通过这个链来实现继承关系。</p>
 <p>javascript中有一些<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects">预定义对象</a>，像是<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>等。</p>
-<p>###字面量(literal)
-javascript中的每种类型的对象都可以采用<code>字面量(literal)</code>的方式创建。
+<h3 id="字面量literal">字面量(literal)</h3>
+<p>javascript中的每种类型的对象都可以采用<code>字面量(literal)</code>的方式创建。
 对于Object对象，可以使用<code>对象字面量(Object literal)</code>来创建，例如：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -201,8 +211,8 @@ var stooge = {
 </div>
 </div><p>当然，也可以用<code>new Object()</code>或<code>Object.create()</code>的方式来创建对象。
 对于<code>Function</code>、<code>Array</code>对象都有其相应的字面量形式，后面会讲到，这里不再赘述。</p>
-<p>###原型链(prototype linkage)
-javascript中的每个对象都隐式含有一个<code>[[prototype]]</code>属性，这是ECMAScript中的记法，目前各大浏览器厂商在实现自己的javascript解释器时，采用的记法是<code>__proto__</code>，也就是说每个对象都隐式包含一个<code>__proto__</code>属性。举个例子：</p>
+<h3 id="原型链prototype-linkage">原型链(prototype linkage)</h3>
+<p>javascript中的每个对象都隐式含有一个<code>[[prototype]]</code>属性，这是ECMAScript中的记法，目前各大浏览器厂商在实现自己的javascript解释器时，采用的记法是<code>__proto__</code>，也就是说每个对象都隐式包含一个<code>__proto__</code>属性。举个例子：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -272,8 +282,8 @@ c.calculate(40); // 80
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf">getPropertyOf()</a>，用于获取对象的原型</li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">create()</a>，在创建对象时设置对象的原型。</li>
 </ul>
-<p>####__proto__ vs prototype
-除了我们这里说的<code>__proto__</code>属性，相信大家平常更常见的是<code>prototype</code>属性。比如，Date对象中没有加几天的函数，那么我们可以这么做：</p>
+<h4 id="__proto__-vs-prototype">__proto__ vs prototype</h4>
+<p>除了我们这里说的<code>__proto__</code>属性，相信大家平常更常见的是<code>prototype</code>属性。比如，Date对象中没有加几天的函数，那么我们可以这么做：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -299,7 +309,7 @@ d.<strong>proto</strong> === Date.prototype; //这里为true
 Date.<strong>proto</strong> === Object.<strong>proto</strong>  //这里为true</li>
 </ol>
 <p>看到这里，希望大家能够理解这两个属性的区别了。</p>
-<p>####instanceof</p>
+<h4 id="instanceof">instanceof</h4>
 <p>instanceof在javascript中是个<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords">关键字</a>，用法如下：</p>
 <pre><code>obj instanceof constructorFunction
 </code></pre>
@@ -351,7 +361,7 @@ mycar instanceof Object; // true，因为mycar.__proto__.__proto__ === Object.pr
 </code></pre></td></tr></table>
 </div>
 </div><p>在javascript，原型和函数是最重要的两个概念，上面说完了原型，下面说说函数对象。</p>
-<p>###函数对象Function</p>
+<h3 id="函数对象function">函数对象Function</h3>
 <p>首先，函数在javascript中无非也是个对象，可以作为value赋值给某个变量，唯一不同的是函数能够被执行。</p>
 <ul>
 <li>使用对象字面量方式创建的对象的<code>__proto__</code>属性指向<code>Object.prototype</code>(<code>Object.prototype</code>的<code>__proto__</code>属性指向<code>null</code>)；</li>
@@ -384,8 +394,8 @@ var add = function (a, b) {
 <li>由圆括号括起来的一系列参数，必选项。</li>
 <li>由花括号括起来的一系列语句，必选项。该函数执行时将会执行这些语句。</li>
 </ol>
-<p>####函数调用与this
-一个函数在被调用时，除了声明的参数外，还会隐式传递两个额外的参数：<code>this</code>与<code>arguments</code>。
+<h4 id="函数调用与this">函数调用与this</h4>
+<p>一个函数在被调用时，除了声明的参数外，还会隐式传递两个额外的参数：<code>this</code>与<code>arguments</code>。
 this在OOP中很重要，this的值随着调用方式的不同而不同。javascript中共有四种调用方式：</p>
 <ol>
 <li>
@@ -436,8 +446,8 @@ sum(4, 8, 15, 16, 23, 42); // 108
 </div>
 </div><p>需要注意的是，这里的arguments不是一个数组，它只是一个有length属性的类数组对象(Array-like)，它并不拥有数组的其他方法。
 关于对象，最后说一下数组，javascript中的数组和平常编程中的数组不大一样。</p>
-<p>###数组对象Array
-数组是一种在内存中线性分配的数据结构，通过下标计算出元素偏移量，从而取出元素。数组应该是一个快速存取的数据结构，但是在javascript中，数组不具备这种特性。
+<h3 id="数组对象array">数组对象Array</h3>
+<p>数组是一种在内存中线性分配的数据结构，通过下标计算出元素偏移量，从而取出元素。数组应该是一个快速存取的数据结构，但是在javascript中，数组不具备这种特性。
 数组在javascript中一个具有传统数组特性的对象，这种对象能够把数组下标转为字符串，然后把这个字符串作为对象的key，最后对取出对应该key的value（这又一次说明了对象在javascript中就是一系列键值对）。</p>
 <p>虽然javascript中的数组没有传统语言中的数组那么快，但是由于javascript是弱类型的语言，所以javascript中的数组可以存放任何值。此外Array有很多实用的方法，大家可以去<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">MDN Array</a>查看。
 javascript也为数组提供了很方便的<code>字面量(Array Literal)</code>定义方式：</p>
@@ -450,7 +460,7 @@ javascript也为数组提供了很方便的<code>字面量(Array Literal)</code>
 </code></pre></td></tr></table>
 </div>
 </div><p>通过数组字面量创建的数组对象的<code>__proto__</code>指向Array.prototype。</p>
-<p>##继承Inheritance</p>
+<h2 id="继承inheritance">继承Inheritance</h2>
 <p>在Java中，对象是某个类的实例，一个类可以从另一个类中继承。但是在基于原型链的javascript中，对象可以直接从另一个对象创建。</p>
 <p>在上面讲解对象时，我们知道了在创建一个对象时，该对象会自动赋予一个<code>__proto__</code>属性，使用对象<code>字面量(Literal)</code>来创建对象时，javascript解释器自动为<code>__proto__</code>赋值。当我们在javascript使用new操作符创建对象时，javascript解释器在调用构造函数时，会执行类似于下面的语句</p>
 <div class="highlight"><div class="chroma">
@@ -518,7 +528,7 @@ d.__proto__.constructor === Date //这里为true
 </div>
 </div><p>因为所有的数组对象的<code>__proto__</code>都指向Array.prototype对象，所以我们为这个对象增加方法，那么所有的数组对象就都拥有了这个方法。
 javascript解释器会顺着原型链查看某个方法或属性。如果想查看某对象的是否有某个属性，可以使用<code>Object.prototype.hasOwnProperty</code>方法。</p>
-<p>##总结</p>
+<h2 id="总结">总结</h2>
 <p>通过上面多次讲解，希望大家对<code>对象在javascript中就是一系列的键值对</code>、<code>原型</code>与<code>函数</code>这三个概念有更加深刻的认识，使用javascript来写前端、后端与脚本。在<a href="http://conf.reactjs.com/">React.js 2015大会</a>上，Facebook公布了即将开源的<a href="https://github.com/facebook/react">React Native</a>，这意味着今后我们可以用javascript来写IOS、Android的原生应用了，这可真是<code>learn-once, write-anywhere</code>。相信随着ECMAScript 6的发布，javascript这门语言还会有一系列翻天覆地的变化，Stay Tuned。:-)</p>
 <h2 id="参考">参考</h2>
 <ul>
@@ -538,8 +548,8 @@ javascript解释器会顺着原型链查看某个方法或属性。如果想查�
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-        2020-12-04
-        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+        2020-12-09
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/7baed381ccd039448ee6c345058e7a3472cf81fc" title="fix bad format">(7baed38)</a>
     </span>
   </p>
   

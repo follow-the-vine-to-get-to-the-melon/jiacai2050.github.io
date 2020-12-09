@@ -599,7 +599,7 @@
       <pubDate>Sat, 12 Jul 2014 00:00:00 +0000</pubDate>
       
       <guid>https://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</guid>
-      <description>更新日志 2014-07-12, 根据校招经验，完成初稿，很多地方没写清楚 2017-01-15，全部重写，增加 Load、Link、Initialization 过程与</description>
+      <description>当你在 Java 程序中new对象时，有没有考虑过 JVM 是如何把静态的字节码（byte code）转化为运行时对象的呢，这个问题看似简单，但里面的细节很多，</description>
     </item>
     
     <item>
@@ -609,7 +609,7 @@
       
       <guid>https://liujiacai.net/blog/2014/06/06/computational-thinking-1/</guid>
       <description>&lt;p&gt;这一系列笔记是我在上一个mooc课&lt;a href=&#34;http://www.icourse163.org/course/hit/hit001?tid=7001&#34;&gt;大学计算机—计算思维导论&lt;/a&gt;上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。&lt;/p&gt;
-&lt;p&gt;##1. 学习三种境界&lt;/p&gt;</description>
+&lt;h2 id=&#34;1-学习三种境界&#34;&gt;1. 学习三种境界&lt;/h2&gt;</description>
     </item>
     
     <item>
@@ -655,7 +655,7 @@
       <pubDate>Fri, 09 May 2014 00:00:00 +0000</pubDate>
       
       <guid>https://liujiacai.net/blog/2014/05/09/understand-serious-music/</guid>
-      <description>##初识古典 今天收获太大了，我也终于能享受“严肃”音乐了。 事情的经过是这么样的，以前了解过GEB，都说他怎么怎么好，怎么把巴赫的音乐与艾舍尔</description>
+      <description>初识古典 今天收获太大了，我也终于能享受“严肃”音乐了。 事情的经过是这么样的，以前了解过GEB，都说他怎么怎么好，怎么把巴赫的音乐与艾舍尔的画</description>
     </item>
     
     <item>

@@ -17,8 +17,7 @@
 
 
 <meta name="author" content="刘家财" /><meta name="description" content="这一系列笔记是我在上一个mooc课大学计算机—计算思维导论上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。
-##1. 学习三种境界
-" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
+1. 学习三种境界" /><meta name="keywords" content="lisp, clojure, emacs, database, life" />
 
 
 
@@ -44,16 +43,16 @@
 
 <meta property="og:title" content="计算思维之一序言篇" />
 <meta property="og:description" content="这一系列笔记是我在上一个mooc课大学计算机—计算思维导论上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。
-##1. 学习三种境界" />
+1. 学习三种境界" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://liujiacai.net/blog/2014/06/06/computational-thinking-1/" />
 <meta property="article:published_time" content="2014-06-06T11:58:43+08:00" />
-<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta property="article:modified_time" content="2020-12-09T22:15:51+08:00" />
 <meta itemprop="name" content="计算思维之一序言篇">
 <meta itemprop="description" content="这一系列笔记是我在上一个mooc课大学计算机—计算思维导论上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。
-##1. 学习三种境界">
+1. 学习三种境界">
 <meta itemprop="datePublished" content="2014-06-06T11:58:43+08:00" />
-<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
+<meta itemprop="dateModified" content="2020-12-09T22:15:51+08:00" />
 <meta itemprop="wordCount" content="1202">
 
 
@@ -62,7 +61,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="计算思维之一序言篇"/>
 <meta name="twitter:description" content="这一系列笔记是我在上一个mooc课大学计算机—计算思维导论上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。
-##1. 学习三种境界"/>
+1. 学习三种境界"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -151,12 +150,26 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents"></nav>
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-学习三种境界">1. 学习三种境界</a></li>
+        <li><a href="#2-三种思维">2. 三种思维</a></li>
+        <li><a href="#3-自动计算的探索数据表示自动存储自动执行的角度">3. 自动计算的探索（数据表示——自动存储——自动执行的角度）</a>
+          <ul>
+            <li><a href="#31-自动计算过程中元器件的发展">3.1 自动计算过程中元器件的发展</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
   </div>
 </div>
     <div class="post-content">
       <p>这一系列笔记是我在上一个mooc课<a href="http://www.icourse163.org/course/hit/hit001?tid=7001">大学计算机—计算思维导论</a>上的笔记，我觉得比较实用，尤其是在知识爆炸的如今，如何找到一种科学的学习方式，准确理解事物的本质是非常重要的能力。</p>
-<p>##1. 学习三种境界</p>
+<h2 id="1-学习三种境界">1. 学习三种境界</h2>
 <p>首先，老师讲了一下王国维关于学习三种境界的总结，这三个境界我姐在我上高中的时候也给我说过，如今再次提及，有种醍醐灌顶的感觉，具体内容如下：</p>
 <ul>
 <li>看山是山，看水是水 <strong>概念与知识</strong></li>
@@ -165,7 +178,7 @@
 </ul>
 <p>也就是说对一个知识先从基本概念入手，有个大概了解;然后通过不断实践与验证，对自己先前的理解产生质疑;最后是通过一段时间的总结与归纳，对这个新知识点有了自己的理解方式。</p>
 <p>很合理的学习进阶方式，希望自己在今后的学习过程中严格按照上述三个步骤来进行，把看过的每个知识点都转化为自己的东西。</p>
-<p>##2. 三种思维</p>
+<h2 id="2-三种思维">2. 三种思维</h2>
 <p>讲完了学习的三种境界后，老师讲了现在社会中人们应该具备的三种思维：</p>
 <ul>
 <li>实验思维：实验—&gt;观察—&gt;发现、推断总结。  <strong>归纳与观察</strong></li>
@@ -174,7 +187,7 @@
 </ul>
 <p>这个mooc课主要讲解计算思维，实验思维与理论思维我们在中学阶段的化学与数学课程中已经接触过了。</p>
 <p>计算思维的本质是抽象（abstraction）与自动化（automation），即在<strong>不同层面</strong>进行抽象，以及将这些抽象“机器化”。</p>
-<p>##3. 自动计算的探索（数据表示——自动存储——自动执行的角度）</p>
+<h2 id="3-自动计算的探索数据表示自动存储自动执行的角度">3. 自动计算的探索（数据表示——自动存储——自动执行的角度）</h2>
 <ul>
 <li>Pascal（1623-1662）机：告诉人们“用纯机械装置可代替人的思维与记忆”，开辟了“自动计算”的道路。</li>
 <li>Leibniz莱布尼茨（1646-1716）机：连续重复自动执行。提出二进制及其计算规则。数理逻辑创始人。</li>
@@ -184,7 +197,7 @@
 <li>……</li>
 </ul>
 <p>冯.诺依曼的创新：将运算与存储分离why、how？？</p>
-<p>###3.1 自动计算过程中元器件的发展</p>
+<h3 id="31-自动计算过程中元器件的发展">3.1 自动计算过程中元器件的发展</h3>
 <ul>
 <li>电子管：可自动控制0和1变化的元件</li>
 <li>晶体管：体积变小</li>
@@ -217,8 +230,8 @@
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-        2020-12-04
-        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+        2020-12-09
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/7baed381ccd039448ee6c345058e7a3472cf81fc" title="fix bad format">(7baed38)</a>
     </span>
   </p>
   

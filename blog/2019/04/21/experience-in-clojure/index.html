@@ -45,12 +45,12 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://liujiacai.net/blog/2019/04/21/experience-in-clojure/" />
 <meta property="article:published_time" content="2019-04-21T13:10:52+00:00" />
-<meta property="article:modified_time" content="2020-12-04T22:35:59+08:00" />
+<meta property="article:modified_time" content="2020-12-09T22:15:51+08:00" />
 <meta itemprop="name" content="Clojure 开发经验总结">
 <meta itemprop="description" content="大概在两年半前，我开始陆陆续续写了一系列文章，来介绍如何上手、深入 Clojure，后来有幸加入 LeanCloud 写了两年的 Clojure，期间制作了一套七集">
 <meta itemprop="datePublished" content="2019-04-21T13:10:52+00:00" />
-<meta itemprop="dateModified" content="2020-12-04T22:35:59+08:00" />
-<meta itemprop="wordCount" content="3748">
+<meta itemprop="dateModified" content="2020-12-09T22:15:51+08:00" />
+<meta itemprop="wordCount" content="3646">
 
 
 
@@ -139,7 +139,7 @@
         <div class="post-category">
             <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"> 编程语言 </a>
             </div>
-          <span class="more-meta"> 约 3748 字 </span>
+          <span class="more-meta"> 约 3646 字 </span>
           <span class="more-meta"> 预计阅读 8 分钟 </span>
         
       </div>
@@ -156,6 +156,11 @@
           <ul>
             <li><a href="#emacs">Emacs</a></li>
             <li><a href="#cider--lein">Cider + Lein</a></li>
+          </ul>
+        </li>
+        <li><a href="#clojure-踩雷区">Clojure 踩雷区</a>
+          <ul>
+            <li><a href="#lazy">Lazy</a></li>
             <li><a href="#动态变量">动态变量</a></li>
             <li><a href="#nil">nil</a></li>
             <li><a href="#future">future</a></li>
@@ -214,25 +219,10 @@
 <li>慎重升级。每次升级 cider，我都会<a href="https://github.com/clojure-emacs/cider/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+commenter%3Ajiacai2050+">或多或少遇到些问题</a>，这很烦人，尤其是你要开始干活的时候，IDE 突然坏了，于是乎你不得不停下手中的活，来修复它。虽然社区反应还算快，但还是挺影响效率的。</li>
 <li><a href="https://github.com/technomancy/leiningen">lein</a> 作为 Clojure 默认的项目管理工具，已够用，不需要再去折腾 <a href="https://github.com/boot-clj/boot">boot-clj</a>
 <ul>
-<li><a href="https://github.com/technomancy/leiningen/blob/master/doc/TUTORIAL.md#checkout-dependencies">Checkout Dependencies</a> 多项目开发时必备的技巧。项目目录大概是这样子的：</li>
+<li><a href="https://github.com/technomancy/leiningen/blob/master/doc/TUTORIAL.md#checkout-dependencies">Checkout Dependencies</a> 多项目开发时必备的技巧，可以快速定位依赖的源码。项目目录大概是这样子的：</li>
 </ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback"></code></pre></td></tr></table>
-</div>
-</div></li>
+</li>
 </ol>
-<p>.
-|&ndash; project.clj
-|&ndash; README.md
-|&ndash; checkouts
-|   <code>-- suchwow [link to ~/code/oss/suchwow] |   </code>&ndash; commons [link to ~/code/company/commons]
-|&ndash; src
-|   <code>-- my_stuff |       </code>&ndash; core.clj
-<code>-- test</code>&ndash; my_stuff
-`&ndash; core_test.clj</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -248,43 +238,55 @@
 </span><span class="lnt">11
 </span><span class="lnt">12
 </span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">3. Clojure REPL 启动很慢，所以正确的姿势是启动一个 REPL 后，不去关闭它，一直在里面去调试代码，有下面几个 plugin 使用的推荐：
-- [lein-shorthand](https://github.com/palletops/lein-shorthand) + [alembic](https://github.com/pallet/alembic) 可以在已启动的 REPL 中动态添加新依赖，不需要重启，必备！
-- [scope-capture](https://github.com/vvvvalvalval/scope-capture) 让 REPL 开发、测试流程如丝般柔滑！
-- [profiles.clj](https://github.com/jiacai2050/dotfiles/blob/master/.lein/profiles.clj) 是我目前的配置，供参考
-- REPL 启动久了，难免变得比较“脏”，对于改动较多的情况，在正式 push 到 remote 前，建议重启 REPL 测试
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">.
+|-- project.clj
+|-- README.md
+|-- checkouts
+|   `-- suchwow [link to ~/code/oss/suchwow]
+|   `-- commons [link to ~/code/company/commons]
+|-- src
+|   `-- my_stuff
+|       `-- core.clj
+`-- test
+  `-- my_stuff
+      `-- core_test.clj
 
-## Clojure 踩雷区
+</code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>Clojure REPL 启动很慢，所以正确的姿势是启动一个 REPL 后，不去关闭它，一直在里面去调试代码，有下面几个 plugin 使用的推荐：
+<ul>
+<li><a href="https://github.com/palletops/lein-shorthand">lein-shorthand</a> + <a href="https://github.com/pallet/alembic">alembic</a> 可以在已启动的 REPL 中动态添加新依赖，不需要重启，必备！</li>
+<li><a href="https://github.com/vvvvalvalval/scope-capture">scope-capture</a> 让 REPL 开发、测试流程如丝般柔滑！</li>
+<li><a href="https://github.com/jiacai2050/dotfiles/blob/master/.lein/profiles.clj">profiles.clj</a> 是我目前的配置，供参考</li>
+<li>REPL 启动久了，难免变得比较“脏”，对于改动较多的情况，在正式 push 到 remote 前，建议重启 REPL 测试</li>
+</ul>
+</li>
+</ol>
+<h2 id="clojure-踩雷区">Clojure 踩雷区</h2>
+<p>每门语言都会过度宣扬自己的长处，而刻意回避自己不擅长的地方，这无可厚非。这一小节就会介绍下 Clojure 中容易出问题的几个地方：</p>
+<h3 id="lazy">Lazy</h3>
+<p><a href="https://clojure.org/reference/lazy">惰性</a>是 Clojure 语言的一重要特性，按需求值，看起来很美好，但是用起来坑缺很多。
+首先就是官方文档里介绍的 <a href="https://clojure.org/reference/lazy#_dont_hang_onto_your_head">Don’t hang (onto) your head</a>，类似的变种还有 <a href="https://stuartsierra.com/2015/04/26/clojure-donts-concat">lazy-seq + concat</a> 的组合，非常容易写出看似优雅、实则暗藏 bug 的代码，到现在我都必须非常小心的使用它们，并且不能完全保证没有错误。</p>
+<p>另一个是与动态变量结合时，比如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">*some-predict*</span> <span class="nv">true</span><span class="p">)</span>
 
-每门语言都会过度宣扬自己的长处，而刻意回避自己不擅长的地方，这无可厚非。这一小节就会介绍下 Clojure 中容易出问题的几个地方：
-
-### Lazy
-
-[惰性](https://clojure.org/reference/lazy)是 Clojure 语言的一重要特性，按需求值，看起来很美好，但是用起来坑缺很多。
-首先就是官方文档里介绍的 [Don’t hang (onto) your head](https://clojure.org/reference/lazy#_dont_hang_onto_your_head)，类似的变种还有 [lazy-seq + concat](https://stuartsierra.com/2015/04/26/clojure-donts-concat) 的组合，非常容易写出看似优雅、实则暗藏 bug 的代码，到现在我都必须非常小心的使用它们，并且不能完全保证没有错误。
-
-另一个是与动态变量结合时，比如
-
-```clj
-(def *some-predict* true)
-
-(def do-somework [exercises]
-(binding [*some-predict* false]
- (map (fn [x] (do-with x))
-      exercises)))
+<span class="p">(</span><span class="k">def </span><span class="nv">do-somework</span> <span class="p">[</span><span class="nv">exercises</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">binding </span><span class="p">[</span><span class="nv">*some-predict*</span> <span class="nv">false</span><span class="p">]</span>
+    <span class="p">(</span><span class="nb">map </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">x</span><span class="p">]</span> <span class="p">(</span><span class="nf">do-with</span> <span class="nv">x</span><span class="p">))</span>
+         <span class="nv">exercises</span><span class="p">)))</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>由于 map 是惰性求值的，导致 do-somework 在返回后还没有真正求值（realize），导致没有用到函数内 binding 的值。</p>
@@ -311,23 +313,23 @@
 </span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="o">(</span><span class="n">def</span> <span class="o">^:</span><span class="n">dynamic</span> <span class="o">*</span><span class="n">num</span><span class="o">*</span> <span class="n">1</span><span class="o">)</span>
-<span class="o">(</span><span class="n">binding</span> <span class="o">[*</span><span class="n">num</span><span class="o">*</span> <span class="n">2</span><span class="o">]</span> 
-  <span class="o">(</span><span class="n">future</span> <span class="o">(</span><span class="n">println</span> <span class="o">*</span><span class="n">num</span><span class="o">*)))</span>
-<span class="o">;;</span> <span class="n">因为</span> <span class="n">binding</span> <span class="n">conveyance</span><span class="err">，</span><span class="n">这里打印</span> <span class="s">&#34;2&#34;</span>
+<pre class="chroma"><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="o">^</span><span class="ss">:dynamic</span> <span class="nv">*num*</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">binding </span><span class="p">[</span><span class="nv">*num*</span> <span class="mi">2</span><span class="p">]</span>
+  <span class="p">(</span><span class="nf">future</span> <span class="p">(</span><span class="nb">println </span><span class="nv">*num*</span><span class="p">)))</span>
+<span class="c1">;; 因为 binding conveyance，这里打印 &#34;2&#34;</span>
 
-<span class="o">(</span><span class="n">let</span> <span class="o">[^</span><span class="n">ExecutorService</span> <span class="nf">executor</span> <span class="o">(</span><span class="n">Executors</span><span class="o">/</span><span class="n">newFixedThreadPool</span> <span class="n">1</span><span class="o">)]</span>
-  <span class="o">(</span><span class="n">binding</span> <span class="o">[*</span><span class="n">num</span><span class="o">*</span> <span class="n">2</span><span class="o">]</span>
-    <span class="o">(.</span><span class="na">submit</span> <span class="n">executor</span> <span class="o">^</span><span class="n">Callable</span> <span class="o">(</span><span class="n">fn</span> <span class="o">[]</span> <span class="o">(</span><span class="n">println</span> <span class="o">*</span><span class="n">num</span><span class="o">*)))</span>
-    <span class="o">(.</span><span class="na">shutdown</span> <span class="n">executor</span><span class="o">)))</span>
-<span class="o">;;</span> <span class="n">对于自定义线程池</span><span class="err">，</span><span class="n">这里打印</span> <span class="s">&#34;1&#34;</span>
+<span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="o">^</span><span class="nv">ExecutorService</span> <span class="nv">executor</span> <span class="p">(</span><span class="nf">Executors/newFixedThreadPool</span> <span class="mi">1</span><span class="p">)]</span>
+  <span class="p">(</span><span class="nb">binding </span><span class="p">[</span><span class="nv">*num*</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="p">(</span><span class="nf">.submit</span> <span class="nv">executor</span> <span class="o">^</span><span class="nv">Callable</span> <span class="p">(</span><span class="k">fn </span><span class="p">[]</span> <span class="p">(</span><span class="nb">println </span><span class="nv">*num*</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">.shutdown</span> <span class="nv">executor</span><span class="p">)))</span>
+<span class="c1">;; 对于自定义线程池，这里打印 &#34;1&#34;</span>
 
-<span class="o">(</span><span class="n">let</span> <span class="o">[^</span><span class="n">ExecutorService</span> <span class="nf">executor</span> <span class="o">(</span><span class="n">Executors</span><span class="o">/</span><span class="n">newFixedThreadPool</span> <span class="n">1</span><span class="o">)]</span>
-  <span class="o">(</span><span class="n">binding</span> <span class="o">[*</span><span class="n">num</span><span class="o">*</span> <span class="n">2</span><span class="o">]</span>
-    <span class="o">(.</span><span class="na">submit</span> <span class="n">executor</span> <span class="o">^</span><span class="n">Callable</span> <span class="o">(</span><span class="n">bound</span><span class="o">-</span><span class="n">fn</span> <span class="o">[]</span> <span class="o">(</span><span class="n">println</span> <span class="o">*</span><span class="n">num</span><span class="o">*)))</span>
-    <span class="o">(.</span><span class="na">shutdown</span> <span class="n">executor</span><span class="o">)))</span>
-<span class="o">;;</span> <span class="n">对于</span> <span class="n">bound</span><span class="o">-</span><span class="n">fn</span> <span class="err">，</span><span class="n">这里打印</span> <span class="s">&#34;2&#34;</span>
-    
+<span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="o">^</span><span class="nv">ExecutorService</span> <span class="nv">executor</span> <span class="p">(</span><span class="nf">Executors/newFixedThreadPool</span> <span class="mi">1</span><span class="p">)]</span>
+  <span class="p">(</span><span class="nb">binding </span><span class="p">[</span><span class="nv">*num*</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="p">(</span><span class="nf">.submit</span> <span class="nv">executor</span> <span class="o">^</span><span class="nv">Callable</span> <span class="p">(</span><span class="nf">bound-fn</span> <span class="p">[]</span> <span class="p">(</span><span class="nb">println </span><span class="nv">*num*</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">.shutdown</span> <span class="nv">executor</span><span class="p">)))</span>
+<span class="c1">;; 对于 bound-fn ，这里打印 &#34;2&#34;</span>
+
 </code></pre></td></tr></table>
 </div>
 </div><p>更多可参考：</p>
@@ -346,7 +348,7 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-clj" data-lang="clj"><span class="nv">user&gt;</span> <span class="p">(</span><span class="nb">str </span><span class="nv">nil</span> <span class="s">&#34;abc&#34;</span><span class="p">)</span>
+<pre class="chroma"><code class="language-clojure" data-lang="clojure"><span class="nv">user&gt;</span> <span class="p">(</span><span class="nb">str </span><span class="nv">nil</span> <span class="s">&#34;abc&#34;</span><span class="p">)</span>
 <span class="s">&#34;abc&#34;</span>
 <span class="nv">user&gt;</span> <span class="p">(</span><span class="nb">conj </span><span class="nv">nil</span> <span class="s">&#34;abc&#34;</span><span class="p">)</span>
 <span class="p">(</span><span class="s">&#34;abc&#34;</span><span class="p">)</span>
@@ -362,7 +364,7 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">let </span><span class="p">[{</span><span class="nv">v1-msgs</span> <span class="nv">false</span> <span class="nv">v2-msgs</span> <span class="nv">true</span><span class="p">}</span>
+<pre class="chroma"><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">let </span><span class="p">[{</span><span class="nv">v1-msgs</span> <span class="nv">false</span> <span class="nv">v2-msgs</span> <span class="nv">true</span><span class="p">}</span>
       <span class="p">(</span><span class="nf">group-by</span> <span class="o">#</span><span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">string? </span><span class="nv">%</span><span class="p">)</span>
                    <span class="p">(</span><span class="nf">.startsWith</span> <span class="o">^</span><span class="nv">String</span> <span class="nv">%</span> <span class="s">&#34;v2:&#34;</span><span class="p">))</span> <span class="nv">msgs</span><span class="p">)])</span>
 </code></pre></td></tr></table>
@@ -375,7 +377,7 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">let </span><span class="p">[{</span><span class="nv">v1-msgs</span> <span class="nv">false</span> <span class="nv">v2-msgs</span> <span class="nv">true</span><span class="p">}</span>
+<pre class="chroma"><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">let </span><span class="p">[{</span><span class="nv">v1-msgs</span> <span class="nv">false</span> <span class="nv">v2-msgs</span> <span class="nv">true</span><span class="p">}</span>
       <span class="p">(</span><span class="nf">group-by</span> <span class="o">#</span><span class="p">(</span><span class="nb">boolean </span><span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">string? </span><span class="nv">%</span><span class="p">)</span>
                    <span class="p">(</span><span class="nf">.startsWith</span> <span class="o">^</span><span class="nv">String</span> <span class="nv">%</span> <span class="s">&#34;v2:&#34;</span><span class="p">)))</span> <span class="nv">msgs</span><span class="p">)])</span>
 </code></pre></td></tr></table>
@@ -459,8 +461,8 @@ Clojure 不是银弹，肯定是有一些瑕疵，但这并不妨碍它是一门
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-        2020-12-04
-        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/8f8c30acc9eabc6498854bdbb13df6a4b744f17d" title="fix bad categories">(8f8c30a)</a>
+        2020-12-09
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/7baed381ccd039448ee6c345058e7a3472cf81fc" title="fix bad format">(7baed38)</a>
     </span>
   </p>
   

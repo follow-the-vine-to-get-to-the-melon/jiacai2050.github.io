@@ -229,7 +229,7 @@
       <pubDate>Sat, 12 Jul 2014 00:00:00 +0000</pubDate>
       
       <guid>https://liujiacai.net/blog/2014/07/12/order-of-initialization-in-java/</guid>
-      <description>更新日志 2014-07-12, 根据校招经验，完成初稿，很多地方没写清楚 2017-01-15，全部重写，增加 Load、Link、Initialization 过程与</description>
+      <description>当你在 Java 程序中new对象时，有没有考虑过 JVM 是如何把静态的字节码（byte code）转化为运行时对象的呢，这个问题看似简单，但里面的细节很多，</description>
     </item>
     
     <item>
