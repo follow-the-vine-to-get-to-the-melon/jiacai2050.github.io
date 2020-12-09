@@ -71,28 +71,35 @@ AOL 接管 Netscape 之后也发布过几次 Navigator 的版本，但到2003年
 纪录片[《Code Rush》](http://www.imdb.com/title/tt0499004/)截图
 
 <img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2_jO2apXXXXcHXXXXXXXXXXXX_!!581166664.png" alt=" Brendan-Eich"/>
+
 没错，就是[Eich 这家伙](http://en.wikipedia.org/wiki/Brendan_Eich)，用了10天时间开发出来JavaScript，其他一开始他是想把 Scheme 移植到 Navigator 上的，但公司管理层想借当时大红大紫的 Java 的光，于是语法既想 Scheme 又想 Java 的 JS 就这么诞生了。
 
 <img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2L4eSapXXXXbtXpXXXXXXXXXX_!!581166664.png" alt=" CEO-of-mozilla"/>
+
 [Jim Barksdale](http://en.wikipedia.org/wiki/Jim_Barksdale) 在纪录片第 15 分钟在审判微软垄断的法案时说的一段话：
 > "How many of you use Intel-based PCs in this audience, not Macintoshes?" Most people in the room raised their hands. "Of that group who use PCs? How many of you use a PC without Microsoft's operating system?". All of the hands went down. He said to the Senate panel, "Gentlemen, that is a monopoly."
 
 <img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2d4K0apXXXXX4XpXXXXXXXXXX_!!581166664.png" alt="Tara-Hernandez"/>
+
 [Tara-Hernandez](http://www.linkedin.com/pub/tara-hernandez/3/b26/755)这是当时的测试工程师吧，她负责 Navigator 上线前的最后检查。
 
 <img src="http://img02.taobaocdn.com/imgextra/i2/581166664/TB28GG4apXXXXb_XXXXXXXXXXXX_!!581166664.png" alt=" Jamie-Zawinski"/>
 <img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2w7eVapXXXXacXpXXXXXXXXXX_!!581166664.png" alt=" Jamie-Zawinski自由开源软件布道师"/>
+
 [Jamie-Zawinski](http://en.wikipedia.org/wiki/Jamie_Zawinski)发型好帅，是个LISP程序员，[xemacs](http://www.xemacs.org/)、[xscreensaver](http://www.jwz.org/xscreensaver/)作者，[个人博客](http://www.jwz.org)
 
 <img src="http://img02.taobaocdn.com/imgextra/i2/581166664/TB20A96apXXXXasXXXXXXXXXXXX_!!581166664.png" alt="Jim-Roskind"/>
+
 哥，Chrome 快是快，但是你知道他有多占内存吗！[个人博客](http://www.roskind.com/)
 
 <img src="http://img04.taobaocdn.com/imgextra/i4/581166664/TB2n.S1apXXXXXfXpXXXXXXXXXX_!!581166664.png" alt=" Scott-Collins"/>
+
 比较低调的胖子，网上就找到这么[一篇关于他的采访](http://arstechnica.com/information-technology/2004/06/collins-interview/)。
 
 <img src="http://img03.taobaocdn.com/imgextra/i3/581166664/TB2oB5QapXXXXbYXpXXXXXXXXXX_!!581166664.png" alt=" Stuart-Parmenter"/>
 <img src="http://img02.taobaocdn.com/imgextra/i2/581166664/TB2e090apXXXXXxXpXXXXXXXXXX_!!581166664.png" alt=" Stuart-Pamener2"/>
-又是一个牛叉的小胖子，[Mozilla 官方博客](https://blog.mozilla.org/blog/author/pavlovmozilla-com/)，创办 [rise](http://www.rise.us/)，并且是CTO。
+
+又是一个牛叉的小胖子，[Mozilla 官方博客](https://blog.mozilla.org/blog/author/pavlovmozilla-com/) ，[Linkedin 账号](https://www.linkedin.com/in/stuartparmenter/)。
 
 
 好了，纪录片截图就这些，看完后我觉得你也一定会忍不住看一遍吧。Go ahead, buddy!

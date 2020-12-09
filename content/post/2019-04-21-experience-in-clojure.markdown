@@ -41,8 +41,9 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
 参考 flyingmachine 的配置，能把 cider+lein 跑起来，在使用过程中，我逐渐总结出一套“最佳实践”，供大家参考：
 1. 慎重升级。每次升级 cider，我都会[或多或少遇到些问题](https://github.com/clojure-emacs/cider/issues?utf8=%E2%9C%93&q=is%3Aissue+commenter%3Ajiacai2050+)，这很烦人，尤其是你要开始干活的时候，IDE 突然坏了，于是乎你不得不停下手中的活，来修复它。虽然社区反应还算快，但还是挺影响效率的。
 2. [lein](https://github.com/technomancy/leiningen) 作为 Clojure 默认的项目管理工具，已够用，不需要再去折腾 [boot-clj](https://github.com/boot-clj/boot)
-   - [Checkout Dependencies](https://github.com/technomancy/leiningen/blob/master/doc/TUTORIAL.md#checkout-dependencies) 多项目开发时必备的技巧。项目目录大概是这样子的：
-   ```
+   - [Checkout Dependencies](https://github.com/technomancy/leiningen/blob/master/doc/TUTORIAL.md#checkout-dependencies) 多项目开发时必备的技巧，可以快速定位依赖的源码。项目目录大概是这样子的：
+
+  ```
 .
 |-- project.clj
 |-- README.md
@@ -62,7 +63,7 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
    - [scope-capture](https://github.com/vvvvalvalval/scope-capture) 让 REPL 开发、测试流程如丝般柔滑！
    - [profiles.clj](https://github.com/jiacai2050/dotfiles/blob/master/.lein/profiles.clj) 是我目前的配置，供参考
    - REPL 启动久了，难免变得比较“脏”，对于改动较多的情况，在正式 push 到 remote 前，建议重启 REPL 测试
-   
+
 ## Clojure 踩雷区
 
 每门语言都会过度宣扬自己的长处，而刻意回避自己不擅长的地方，这无可厚非。这一小节就会介绍下 Clojure 中容易出问题的几个地方：
@@ -74,7 +75,7 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
 
 另一个是与动态变量结合时，比如
 
-```clj
+```clojure
 (def *some-predict* true)
 
 (def do-somework [exercises]
@@ -88,9 +89,9 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
 
 动态变量解决的问题就是在不改变函数签名（主要是参数）的情况下，改变函数的行为。但用好它并不容易，除了上面提及的与 lazy 整合的问题，还要注意，其 binding 的值是不能跨线程的，为了解决这个问题，Clojure 1.3 版本提出了 [binding conveyance](https://github.com/clojure/clojure/blob/master/changes.md#234-binding-conveyance)，但仅仅对 Clojure 自身的线程池有效，然后又增加了 [bound-fn](https://clojuredocs.org/clojure.core/bound-fn) 来解决这个问题。可以参考下面的例子：
 
-```java
+```clojure
 (def ^:dynamic *num* 1)
-(binding [*num* 2] 
+(binding [*num* 2]
   (future (println *num*)))
 ;; 因为 binding conveyance，这里打印 "2"
 
@@ -105,16 +106,16 @@ Cider 全称是 The Clojure Interactive Development Environment that Rocks for E
     (.submit executor ^Callable (bound-fn [] (println *num*)))
     (.shutdown executor)))
 ;; 对于 bound-fn ，这里打印 "2"
-    
+
 ```
 更多可参考：
 - https://stuartsierra.com/2013/03/29/perils-of-dynamic-scope
 
-### nil 
+### nil
 
 nil 表示无，在不同场景下有不同含义，而且 Clojure 想尽量屏蔽掉这种差异性，比如：
 
-```clj
+```clojure
 user> (str nil "abc")
 "abc"
 user> (conj nil "abc")
@@ -124,13 +125,13 @@ user> (assoc nil :a 1)
 ```
 但时不时 nil 就会出来咬你一口。记得之前有这么一个需求，需要对消息的格式做了升级，之前可能是 map/string，升级后只能是 string 并且用 v2 标示，处理的代码需要找出这两类消息，分别处理，代码大致如下
 
-```clj
+```clojure
 (let [{v1-msgs false v2-msgs true}
       (group-by #(when (string? %)
                    (.startsWith ^String % "v2:")) msgs)])
 ```
 可以看到，代码很简单，就是判断 msg 是不是字符串，如果是，再看看版本是不是 v2，由于 nil 与 false 是不同的值，导致会丢失一部分数据，正确的写法是这样的：
-```clj
+```clojure
 (let [{v1-msgs false v2-msgs true}
       (group-by #(boolean (when (string? %)
                    (.startsWith ^String % "v2:"))) msgs)])
@@ -142,7 +143,7 @@ user> (assoc nil :a 1)
 future 可以很方便的起一个新线程来工作，但其运行的线程池是无限制的，如果无节制的使用会导致线上服务 oom，这里推荐一个并发的库 [com.climate/claypoole](https://github.com/TheClimateCorporation/claypoole) 可以完美替换 `pmap/future/run!` 等！
 
 ## 长期维护 Clojure 项目
-   
+
 Clojure 作为一门动态语言，同样有“编写爽，维护难”痛点，解决方式也是统一的：完备的测试，外加 lint（代码质量检测）。
 
 ### Test
@@ -185,7 +186,7 @@ Clojure 社区虽小，但不乏高手，通过阅读高手的代码，是熟悉
 - [Riemann](http://riemann.io/) 一个强大的监控系统，具备丰富的[数据流操作](http://riemann.io/api/riemann.streams.html)
 - [Jepsen](https://jepsen.io/) 著名的分布式系统测试框架
 - [Clojure from the Ground Up](https://aphyr.com/tags/Clojure-from-the-ground-up) 介绍 Clojure 的一系列文章
-- https://github.com/aphyr 
+- https://github.com/aphyr
 
 ### [Zach Tellman](https://ideolalia.com/)
 

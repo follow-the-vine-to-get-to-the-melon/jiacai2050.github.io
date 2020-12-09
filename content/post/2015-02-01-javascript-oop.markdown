@@ -23,14 +23,14 @@ javascript1.0 最初是由网景公司的[Brendan Eich](http://en.wikipedia.org/
 Javascript1.0的功能相对简单，为了在今后不断丰富javascript本身功能的同时保持旧代码的兼容性，javascript通过改变运行时的支持来增加新功能，而不是通过修改javascript的语法，这就保证了旧代码的兼容性。这也就是javascript选择基于运行时的原型机制的原因。
 wikipedia这样描述到：JavaScript is classified as a [prototype-based](http://en.wikipedia.org/wiki/Prototype-based_programming) scripting language with [dynamic typing](http://en.wikipedia.org/wiki/Dynamic_language) and [first-class functions](http://en.wikipedia.org/wiki/First-class_functions)。这些特性使得javascript是一种[多范式](http://en.wikipedia.org/wiki/Multi-paradigm)的[解释性](http://en.wikipedia.org/wiki/Interpreter_%28computing%29)编程语言，支持[面向对象](http://en.wikipedia.org/wiki/Object-oriented_programming),[命令式(imperative)](http://en.wikipedia.org/wiki/Imperative_programming), [函数式(functional)](http://en.wikipedia.org/wiki/Functional_programming)编程风格。
 
-##对象
+## 对象
 在javascript中，除了`Undefined`, `Null`, `Boolean`, `Number`, `String`这几个简单类型外，其他的都是对象。
 数字、字符串、布尔值这些简单类型都是不可变量，对象是可变的键值对的集合(mutable keyed conllections)，对象包括数组`Array`、正则表达式`RegExp`、函数`Function`，当然对象`Object`也是对象。
 对象在javascript中说白了就是`一系列的键值对`。键可以是任意字符串，包括空串；值可以是任何值。在javascript中是没有类的概念(class-free)的，但是它有一个原型链(prototype linkage)。javascript对象通过这个链来实现继承关系。
 
 javascript中有一些[预定义对象](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)，像是[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)、[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)、[Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)、[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)、[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)、[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)等。
 
-###字面量(literal)
+### 字面量(literal)
 javascript中的每种类型的对象都可以采用`字面量(literal)`的方式创建。
 对于Object对象，可以使用`对象字面量(Object literal)`来创建，例如：
 ```
@@ -44,7 +44,7 @@ var stooge = {
 当然，也可以用`new Object()`或`Object.create()`的方式来创建对象。
 对于`Function`、`Array`对象都有其相应的字面量形式，后面会讲到，这里不再赘述。
 
-###原型链(prototype linkage)
+### 原型链(prototype linkage)
 javascript中的每个对象都隐式含有一个`[[prototype]]`属性，这是ECMAScript中的记法，目前各大浏览器厂商在实现自己的javascript解释器时，采用的记法是`__proto__`，也就是说每个对象都隐式包含一个`__proto__`属性。举个例子：
 ```
 var foo = {
@@ -89,7 +89,7 @@ c.calculate(40); // 80
 - [getPropertyOf()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf)，用于获取对象的原型
 - [create()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create)，在创建对象时设置对象的原型。
 
-####\_\_proto\_\_ vs prototype
+#### \_\_proto\_\_ vs prototype
 除了我们这里说的`__proto__`属性，相信大家平常更常见的是`prototype`属性。比如，Date对象中没有加几天的函数，那么我们可以这么做：
 ```
 Date.prototype.addDays = function(n) {
@@ -108,7 +108,7 @@ Date.prototype.addDays = function(n) {
 
 看到这里，希望大家能够理解这两个属性的区别了。
 
-####instanceof
+#### instanceof
 
 instanceof在javascript中是个[关键字](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords)，用法如下：
 
@@ -140,7 +140,7 @@ mycar instanceof Object; // true，因为mycar.__proto__.__proto__ === Object.pr
 
 在javascript，原型和函数是最重要的两个概念，上面说完了原型，下面说说函数对象。
 
-###函数对象Function
+### 函数对象Function
 
 首先，函数在javascript中无非也是个对象，可以作为value赋值给某个变量，唯一不同的是函数能够被执行。
 - 使用对象字面量方式创建的对象的`__proto__`属性指向`Object.prototype`(`Object.prototype`的`__proto__`属性指向`null`)；
@@ -162,7 +162,7 @@ var add = function (a, b) {
 3. 由圆括号括起来的一系列参数，必选项。
 4. 由花括号括起来的一系列语句，必选项。该函数执行时将会执行这些语句。
 
-####函数调用与this
+#### 函数调用与this
 一个函数在被调用时，除了声明的参数外，还会隐式传递两个额外的参数：`this`与`arguments`。
 this在OOP中很重要，this的值随着调用方式的不同而不同。javascript中共有四种调用方式：
 1. method invocation pattern。当函数作为某对象一个属性调用时，this指向这个对象。this赋值过程发生在函数调用时（也就是运行时），这叫做late binding
@@ -195,7 +195,7 @@ sum(4, 8, 15, 16, 23, 42); // 108
 需要注意的是，这里的arguments不是一个数组，它只是一个有length属性的类数组对象(Array-like)，它并不拥有数组的其他方法。
 关于对象，最后说一下数组，javascript中的数组和平常编程中的数组不大一样。
 
-###数组对象Array
+### 数组对象Array
 数组是一种在内存中线性分配的数据结构，通过下标计算出元素偏移量，从而取出元素。数组应该是一个快速存取的数据结构，但是在javascript中，数组不具备这种特性。
 数组在javascript中一个具有传统数组特性的对象，这种对象能够把数组下标转为字符串，然后把这个字符串作为对象的key，最后对取出对应该key的value（这又一次说明了对象在javascript中就是一系列键值对）。
 
@@ -206,7 +206,7 @@ var arr = [1,2,3]
 ```
 通过数组字面量创建的数组对象的`__proto__`指向Array.prototype。
 
-##继承Inheritance
+## 继承Inheritance
 
 在Java中，对象是某个类的实例，一个类可以从另一个类中继承。但是在基于原型链的javascript中，对象可以直接从另一个对象创建。
 
@@ -244,7 +244,7 @@ Array.prototype.map = function(f) {
 因为所有的数组对象的`__proto__`都指向Array.prototype对象，所以我们为这个对象增加方法，那么所有的数组对象就都拥有了这个方法。
 javascript解释器会顺着原型链查看某个方法或属性。如果想查看某对象的是否有某个属性，可以使用`Object.prototype.hasOwnProperty`方法。
 
-##总结
+## 总结
 
 通过上面多次讲解，希望大家对`对象在javascript中就是一系列的键值对`、`原型`与`函数`这三个概念有更加深刻的认识，使用javascript来写前端、后端与脚本。在[React.js 2015大会](http://conf.reactjs.com/)上，Facebook公布了即将开源的[React Native](https://github.com/facebook/react)，这意味着今后我们可以用javascript来写IOS、Android的原生应用了，这可真是`learn-once, write-anywhere`。相信随着ECMAScript 6的发布，javascript这门语言还会有一系列翻天覆地的变化，Stay Tuned。:-)
 

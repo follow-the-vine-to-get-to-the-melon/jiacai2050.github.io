@@ -7,14 +7,6 @@ tags:
 title: JVM 的类初始化机制
 ---
 
-
-> 更新日志
-
-- 2014-07-12, 根据校招经验，完成[初稿](https://github.com/jiacai2050/jiacai2050.github.io/blob/c7a3e971d8906841eb2ac8b592ea2453d3ad2533/source/_posts/2014-07-12-order-of-initialization-in-java.markdown)，很多地方没写清楚
-- 2017-01-15，全部重写，[增加 Load、Link、Initialization 过程与三个示例](https://github.com/jiacai2050/jiacai2050.github.io/blob/c9f20af48feec16904c666b87f5cc44b3408b765/source/_posts/2014-07-12-order-of-initialization-in-java.markdown)
-- 2018-03-30，调整示例代码，增加「什么是类的加载」、「双亲委托模式」两小节
--------
-
 当你在 Java 程序中`new`对象时，有没有考虑过 JVM 是如何把静态的字节码（byte code）转化为运行时对象的呢，这个问题看似简单，但里面的细节很多，而且由于开发者在平时与之打交道较少，很少有同学会去主动探索这块知识，但这个知识点却是面试时常考的地方，而且熟练掌握类加载是实现代码热部署的关键。
 
 本文将结合几个具体案例，来阐述 JVM 类初始化这个问题，希望引起大家对这个知识点的注意。
@@ -43,7 +35,7 @@ JVM 规定了以下六种情况为 **主动调用**，其余的皆为 **被动�
 
 关于主动加载与被动加载的区别，可以参考下面这个例子：
 
-```
+```java
 class NewParent {
 
     static int hoursOfSleep = (int) (Math.random() * 3.0);
@@ -106,7 +98,7 @@ Loading 过程主要工作是由`ClassLoader`完成。该过程具体包括三�
 ![ClassLoader 继承关系，不同 CL 负责加载不同类](https://img.alicdn.com/imgextra/i2/581166664/TB2HtNyc4dkpuFjy0FbXXaNnpXa_!!581166664.gif)
 
 JVM 中除了最顶层的`Boostrap ClassLoader`是用 C/C++ 实现外，其余类加载器均由 Java 实现，我们可以用`getClassLoader`方法来获取当前类的类加载器：
-```
+```java
 public class ClassLoaderDemo {
     public static void main(String[] args) {
         System.out.println(ClassLoaderDemo.class.getClassLoader());
@@ -197,7 +189,7 @@ double	0.0d
 
 ### 属性在不同时期的赋值
 
-```
+```java
 class Singleton {
 
     private static Singleton mInstance = new Singleton();// 位置1
@@ -240,7 +232,7 @@ counter2: 1
 
 ### 首次主动调用才会初始化
 
-```
+```java
 public class Alibaba {
 
     public static int k = 0;
@@ -340,3 +332,10 @@ public class Alibaba {
 - [JVM Internals](http://blog.jamesdbloom.com/JVMInternals.html)
 - [What kind of method is Constructor, static or non static?](https://www.quora.com/What-kind-of-method-is-Constructor-static-or-non-static)
 - [Understanding the Java ClassLoader](http://www.ibm.com/developerworks/java/tutorials/j-classloader/j-classloader.html)
+
+## 更新日志
+
+- 2014-07-12, 根据校招经验，完成[初稿](https://github.com/jiacai2050/jiacai2050.github.io/blob/c7a3e971d8906841eb2ac8b592ea2453d3ad2533/source/_posts/2014-07-12-order-of-initialization-in-java.markdown)，很多地方没写清楚
+- 2017-01-15，全部重写，[增加 Load、Link、Initialization 过程与三个示例](https://github.com/jiacai2050/jiacai2050.github.io/blob/c9f20af48feec16904c666b87f5cc44b3408b765/source/_posts/2014-07-12-order-of-initialization-in-java.markdown)
+- 2018-03-30，调整示例代码，增加「什么是类的加载」、「双亲委托模式」两小节
+-------

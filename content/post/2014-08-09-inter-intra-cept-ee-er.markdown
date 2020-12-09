@@ -7,7 +7,7 @@ title: inter- intra- cept -ee -er词缀讲解
 
 故事是这么开始的，我遇到了inter-organizational与intra-organizational这么两个词组，其实也很好区分，前面是“不同组织之间的”，后者是“同一组织内部的”，搞计算机的应该知道有个叫intranet的网，它是与internet不一样的，专指企业内部网络。我这里想以这两个词缀为基准，展开一系列联想，学英语的乐趣不就在于此嘛。
 
-##inter-
+## inter-
 a prefix occurring in loanwords from Latin, where it meant “between,” “among,” “in the midst of,” “mutually,” “reciprocally,” “together,” “during”
 
 >intercept　拦截。在里面（inter）握住（cept），想想小时侯站在河里用手抓鱼的场景吧
@@ -32,7 +32,7 @@ a prefix occurring in loanwords from Latin, where it meant “between,” “amo
 
 解释inter-含义时出现了个词loanword，loan就是贷款的意思，那loan接＋word字→外来词，借用词。
 
-##intra-
+## intra-
 a prefix meaning “within,” used in the formation of compound words
 
 >intramural校内的(反义intermural)；市内的(反义extramural)(intra+mural抽象概念的"墙")
@@ -40,7 +40,7 @@ a prefix meaning “within,” used in the formation of compound words
 
 说实话，ee、er后缀是我看到loan后想到的
 
-##-ee
+## -ee
 
 1. a suffix forming from transitive verbs nouns which denote a person who is the object or beneficiary of the act specified by the verb ( addressee; employee; grantee  ); recent formations now also mark the performer of an act, with the base being an intransitive verb ( escapee; returnee; standee ) or, less frequently, a transitive verb ( attendee  ) or another part of speech ( absentee; refugee  ).
 我简单翻译下上面的解释。-ee后缀一般的功能是把一个动词转化为具有该动词性质的人，通常是被动的，像loanee(债务人，借入者)、employee（员工）、addressee(收件人)、grantee(受颁赠者)。
@@ -49,7 +49,7 @@ a prefix meaning “within,” used in the formation of compound words
 
 2. 除了上面的含义外，还有一个意思，indicating a diminutive小型的 form of something，典型的例子有bootee女人的短靴
 
-##-er
+## -er
 1. 从人所占用的物品来指明人的身份。
 > hatter帽子制造者
 > tiler盖瓦工人
@@ -67,6 +67,6 @@ a prefix meaning “within,” used in the formation of compound words
 > shiver发抖，颤抖
 > shudder战栗； 发抖； 震动； 颤动
 
-##单词参考
+## 单词参考
 1. http://dictionary.reference.com/
 2. http://www.iciba.com/

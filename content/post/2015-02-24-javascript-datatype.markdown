@@ -22,7 +22,7 @@ String s = "hello";
 int l = s.getBytes().length;
 ```
 编译器是怎么知道`.length`是合法的表达式呢？这是因为编译器知道`s`的数据类型为`String`，当调用`String`的`getBytes`方法时，返回值的数据类型为`byte[]`，所以`.length`是合法的表达式。
-这两者真正的区别是：  
+这两者真正的区别是：
 > 在强类型的语言，每个表达式的类型都能够在编译时确定，并且只允许适用于该类型的操作；
 > 弱类型的语言允许对任意类型施加任何操作，只是这个操作有可能在运行时报错。
 
@@ -190,7 +190,7 @@ Object.defineProperty(obj, 'conflict', {
 
 ```
 
-##typeof
+## typeof
 
 如果想在运行时获知某变量的类型，可以使用typeof操作符。typeof的返回值如下表：
 <center>
@@ -200,7 +200,7 @@ Object.defineProperty(obj, 'conflict', {
 其中有一处需要注意，那就是`typeof null == "object"`，按照[ECMAScript 5.1](http://www.ecma-international.org/ecma-262/5.1/#sec-4.3.2)标准，`Null`类型应该是个基本类型，为什么这里返回`object`呢？原因是这样的：
 > 在javascript 1.0中，javascript中的值是用一个类型标志（type tag）和一个实际值这样的结构表示的，对象的类型标志为0，null在C语言中表示NULL指针（0x00），所以null的类型标志就为0了。
 
-##参考
+## 参考
 
 - [《Speaking JavaScript》 Chapter 8. Values](http://speakingjs.com/es5/ch08.html#undefined_null)
 - [A Survey of the JavaScript Programming Language](http://javascript.crockford.com/survey.html)

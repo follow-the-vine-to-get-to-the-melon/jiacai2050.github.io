@@ -60,7 +60,7 @@ GNU Emacs [官方网站](https://www.gnu.org/software/emacs/)是这么介绍的�
 #!Users!liujiacai!.emacs.d!elpa!lsp-java-20201105.1758!lsp-java.el#
 #!Users!liujiacai!.emacs.d!init.el#
 ```
-上面是我电脑中部分的备份文件，得益于这两个功能，好多次把我从崩溃的边缘救回来。据我了解，还没有哪个编辑器有这么贴心的功能。
+上面是我电脑中部分的备份文件，得益于这两个功能，好多次把我从崩溃的边缘救回来。
 
 #### Undo/Redo
 
