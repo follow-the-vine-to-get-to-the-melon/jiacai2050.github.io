@@ -45,12 +45,12 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://liujiacai.net/blog/2020/12/05/hexo-to-hugo/" />
 <meta property="article:published_time" content="2020-12-05T13:12:21+08:00" />
-<meta property="article:modified_time" content="2020-12-06T18:06:59+08:00" />
+<meta property="article:modified_time" content="2020-12-09T22:41:50+08:00" />
 <meta itemprop="name" content="博客系统迁移：Hexo 到 Hugo">
 <meta itemprop="description" content="上一篇文章介绍了 Emacs 的理念以及其强大的扩展功能，基本上能在 Emacs 里面做到事，我都在 Emacs 里面做。之前的博客一直都是用的 markdown 来书写，虽然 Emacs 也有 markdown 插件，但是">
 <meta itemprop="datePublished" content="2020-12-05T13:12:21+08:00" />
-<meta itemprop="dateModified" content="2020-12-06T18:06:59+08:00" />
-<meta itemprop="wordCount" content="2361">
+<meta itemprop="dateModified" content="2020-12-09T22:41:50+08:00" />
+<meta itemprop="wordCount" content="2522">
 
 
 
@@ -139,8 +139,8 @@
         <div class="post-category">
             <a href="/categories/%E7%83%AD%E7%88%B1%E7%94%9F%E6%B4%BB/"> 热爱生活 </a>
             </div>
-          <span class="more-meta"> 约 2361 字 </span>
-          <span class="more-meta"> 预计阅读 5 分钟 </span>
+          <span class="more-meta"> 约 2522 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
         
       </div>
     </header>
@@ -160,27 +160,29 @@
 </li>
 <li><a href="#headline-5">RSS 链接</a>
 </li>
-<li><a href="#headline-6">Frontmatter</a>
+<li><a href="#headline-6">Tags 链接</a>
 </li>
-<li><a href="#headline-7">Categories</a>
+<li><a href="#headline-7">Frontmatter</a>
 </li>
-<li><a href="#headline-8">Render hook</a>
+<li><a href="#headline-8">Categories</a>
 </li>
-<li><a href="#headline-9">修改记录</a>
+<li><a href="#headline-9">Render hook</a>
+</li>
+<li><a href="#headline-10">修改记录</a>
 </li>
 </ul>
 </li>
-<li><a href="#headline-10">Easy-hugo</a>
+<li><a href="#headline-11">Easy-hugo</a>
 <ul>
-<li><a href="#headline-11">配置</a>
+<li><a href="#headline-12">配置</a>
 </li>
-<li><a href="#headline-12">创建新文章</a>
+<li><a href="#headline-13">创建新文章</a>
 </li>
 </ul>
 </li>
-<li><a href="#headline-13">总结</a>
+<li><a href="#headline-14">总结</a>
 </li>
-<li><a href="#headline-14">参考</a>
+<li><a href="#headline-15">参考</a>
 </li>
 </ul>
 </nav>
@@ -340,9 +342,64 @@ RSS 链接
 </div>
 <div id="outline-container-headline-6" class="outline-3">
 <h3 id="headline-6">
-Frontmatter
+Tags 链接
 </h3>
 <div id="outline-text-headline-6" class="outline-text-3">
+<p>Hugo 中默认会把链接中的字母变成小写，比如标签 <code class="verbatim">Go</code> ，在之前对应地址 <code class="verbatim">/tags/Go</code> ，换成 Hugo 后则是 <code class="verbatim">/tags/go</code> ，可以通过下面的配置关闭这个转化。</p>
+<div class="src src-toml">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-toml" data-lang="toml"><span class="nx">disablePathToLower</span> <span class="p">=</span> <span class="kc">true</span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>如果想保留这个功能，可以进行下面的操作：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 让 git 区分文件名大小写</span>
+git config --global core.ignorecase <span class="nb">true</span>
+<span class="c1"># 删掉仓库中已有的大写目录</span>
+git rm -rf <span class="s1">&#39;tags/Go&#39;</span>
+<span class="c1"># 重新生成网站</span>
+hugo
+<span class="c1"># 重新添加</span>
+git add .</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>这时 <code class="verbatim">git status</code> 会显示</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">renamed:    tags/Go/index.html -&gt; tags/go/index.html</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>然后提交就可以了。</p>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+Frontmatter
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
 <p><a href="https://gohugo.io/content-management/front-matter">Frontmatter</a> 定义了每篇文章的属性，比如标题、分类等。这也是在 hexo 迁移到 hugo 时问题最多的地方，根本原因在于 hexo 对 frontmatter 格式较宽松，而 hugo 则比较严格。</p>
 <p>
 下面一个 hugo 中标准的 frontmatter（除 yaml 外，还可以是 toml/json）：</p>
@@ -434,11 +491,11 @@ template: post/summary.html:8:19: executing <span class="s2">&#34;post/summary.h
 <p>说明缺少了 frontmatter 结尾的分隔符，如果缺少开头的分隔符，编译文章没有错误，但是最终生成的文章页面会没有标题。</p>
 </div>
 </div>
-<div id="outline-container-headline-7" class="outline-3">
-<h3 id="headline-7">
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
 Categories
 </h3>
-<div id="outline-text-headline-7" class="outline-text-3">
+<div id="outline-text-headline-8" class="outline-text-3">
 <p>在 hexo 中分类（category） 和标签（tags） 用法是不一样的，分类可以<a href="https://hexo.io/docs/front-matter.html#Categories-amp-Tags">有层次</a>，比如：</p>
 <div class="src src-yaml">
 <div class="highlight"><div class="chroma">
@@ -468,11 +525,11 @@ Categories
 </ul>
 </div>
 </div>
-<div id="outline-container-headline-8" class="outline-3">
-<h3 id="headline-8">
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
 Render hook
 </h3>
-<div id="outline-text-headline-8" class="outline-text-3">
+<div id="outline-text-headline-9" class="outline-text-3">
 <p>markdown 中引用图片的标准做法是</p>
 <div class="src src-md">
 <div class="highlight"><div class="chroma">
@@ -533,27 +590,27 @@ Render hook
 </div>
 </div>
 </div>
-<div id="outline-container-headline-9" class="outline-3">
-<h3 id="headline-9">
+<div id="outline-container-headline-10" class="outline-3">
+<h3 id="headline-10">
 修改记录
 </h3>
-<div id="outline-text-headline-9" class="outline-text-3">
+<div id="outline-text-headline-10" class="outline-text-3">
 <p>本次迁移的所有修改可以在 <a href="https://github.com/jiacai2050/jiacai2050.github.io/compare/f2ec7ca...ac415a24">Github</a> 中查看，供有相同迁移需求的读者参考。</p>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-headline-10" class="outline-2">
-<h2 id="headline-10">
+<div id="outline-container-headline-11" class="outline-2">
+<h2 id="headline-11">
 Easy-hugo
 </h2>
-<div id="outline-text-headline-10" class="outline-text-2">
+<div id="outline-text-headline-11" class="outline-text-2">
 <p>经过上面的步骤，已经可以很好的把 hexo 迁移到 hugo，下一个要解决的问题就是如何用 Emacs 管理 Hugo。<a href="https://gohugo.io/tools/editors/">Hugo 官网</a>上列举了一些与常用编辑整合的插件，这里介绍 <a href="https://github.com/masasam/emacs-easy-hugo">easy hugo</a> 的使用方式。</p>
-<div id="outline-container-headline-11" class="outline-3">
-<h3 id="headline-11">
+<div id="outline-container-headline-12" class="outline-3">
+<h3 id="headline-12">
 配置
 </h3>
-<div id="outline-text-headline-11" class="outline-text-3">
+<div id="outline-text-headline-12" class="outline-text-3">
 <p>由于目前我又两个博客（中文和<a href="https://en.liujiacai.net/">英文</a>），因此需要做些配置让 easy hugo 识别这两个。</p>
 <div class="src src-elisp">
 <div class="highlight"><div class="chroma">
@@ -579,11 +636,11 @@ Easy-hugo
 </div>
 </div>
 </div>
-<div id="outline-container-headline-12" class="outline-3">
-<h3 id="headline-12">
+<div id="outline-container-headline-13" class="outline-3">
+<h3 id="headline-13">
 创建新文章
 </h3>
-<div id="outline-text-headline-12" class="outline-text-3">
+<div id="outline-text-headline-13" class="outline-text-3">
 <p>虽然可以用 <code>hugo new post/xxx.org</code> 的方式来创建新文件，但是由于文件名中需要有固定格式的日期，每次手动输入很繁琐，因此基于 easy hugo 的多博客管理，自己实现了 <code>hugo-newpost</code> 函数，实现如下：</p>
 <div class="src src-elisp">
 <div class="highlight"><div class="chroma">
@@ -654,20 +711,20 @@ easy-hugo 还提供了预览、发布（默认调用 deploy.sh）等命令，比
 </div>
 </div>
 </div>
-<div id="outline-container-headline-13" class="outline-2">
-<h2 id="headline-13">
+<div id="outline-container-headline-14" class="outline-2">
+<h2 id="headline-14">
 总结
 </h2>
-<div id="outline-text-headline-13" class="outline-text-2">
+<div id="outline-text-headline-14" class="outline-text-2">
 <p>
 屠龙刀已经磨好了，下面就需要多去动“刀”写出更多文章了。</p>
 </div>
 </div>
-<div id="outline-container-headline-14" class="outline-2">
-<h2 id="headline-14">
+<div id="outline-container-headline-15" class="outline-2">
+<h2 id="headline-15">
 参考
 </h2>
-<div id="outline-text-headline-14" class="outline-text-2">
+<div id="outline-text-headline-15" class="outline-text-2">
 <ul>
 <li>
 <p><a href="https://sebastiandedeyne.com/captioned-images-with-markdown-render-hooks-in-hugo/">Caption images with markdown render hooks in Hugo</a></p>
@@ -695,8 +752,8 @@ easy-hugo 还提供了预览、发布（默认调用 deploy.sh）等命令，比
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-        2020-12-06
-        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/923e21f12abb54f63a7866863046fc9548b09f99" title="update css, why-emacs post">(923e21f)</a>
+        2020-12-09
+        <a href="https://github.com/jiacai2050/jiacai2050.github.io/commit/0b18ff3d5bbc4ac1f9554cf3112b694a53e6b238" title="add fix tags link">(0b18ff3)</a>
     </span>
   </p>
   
